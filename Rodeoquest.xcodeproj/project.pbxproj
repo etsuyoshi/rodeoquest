@@ -265,14 +265,14 @@
 		3419C41617FD2B3300980E71 /* explode5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode5.png; sourceTree = "<group>"; };
 		341D9C65182DDE7C009B904E /* kira_img11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kira_img11.png; sourceTree = "<group>"; };
 		341D9C67182DE67E009B904E /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
-		342057CE17F2B34C0084E99D /* Shooting8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooting8.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		342057CE17F2B34C0084E99D /* Rodeoquest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rodeoquest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		342057D117F2B34C0084E99D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		342057D317F2B34C0084E99D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		342057D517F2B34C0084E99D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		342057D917F2B34C0084E99D /* Shooting8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Shooting8-Info.plist"; sourceTree = "<group>"; };
+		342057D917F2B34C0084E99D /* Rodeoquest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Rodeoquest-Info.plist"; sourceTree = "<group>"; };
 		342057DB17F2B34C0084E99D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		342057DD17F2B34C0084E99D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		342057DF17F2B34C0084E99D /* Shooting8-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shooting8-Prefix.pch"; sourceTree = "<group>"; };
+		342057DF17F2B34C0084E99D /* Rodeoquest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rodeoquest-Prefix.pch"; sourceTree = "<group>"; };
 		342057E017F2B34C0084E99D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		342057E117F2B34C0084E99D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		342057E317F2B34C0084E99D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -508,7 +508,7 @@
 		342057C517F2B34C0084E99D = {
 			isa = PBXGroup;
 			children = (
-				342057D717F2B34C0084E99D /* Shooting8 */,
+				342057D717F2B34C0084E99D /* rodeoquest */,
 				342057D017F2B34C0084E99D /* Frameworks */,
 				342057CF17F2B34C0084E99D /* Products */,
 			);
@@ -517,7 +517,7 @@
 		342057CF17F2B34C0084E99D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				342057CE17F2B34C0084E99D /* Shooting8.app */,
+				342057CE17F2B34C0084E99D /* Rodeoquest.app */,
 				347E0D22180C07AC00B0DC09 /* TestsShootingTests.octest */,
 			);
 			name = Products;
@@ -538,7 +538,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		342057D717F2B34C0084E99D /* Shooting8 */ = {
+		342057D717F2B34C0084E99D /* rodeoquest */ = {
 			isa = PBXGroup;
 			children = (
 				3473AA07183F32EF002D94CC /* System */,
@@ -550,8 +550,8 @@
 				342057E917F2B34C0084E99D /* MainStoryboard.storyboard */,
 				342057D817F2B34C0084E99D /* Supporting Files */,
 			);
-			name = Shooting8;
-			path = /Users/oqo52025257/Documents/iOS/Shooting8/Shooting8;
+			name = rodeoquest;
+			path = /Users/oqo52025257/Documents/iOS/rodeoquest/rodeoquest;
 			sourceTree = "<absolute>";
 		};
 		342057D817F2B34C0084E99D /* Supporting Files */ = {
@@ -596,8 +596,8 @@
 				342C039D17F4604E0023C11F /* nothing32.png */,
 				34A087451803F017005458EF /* red.png */,
 				348D635F17FE1A9D00A3049B /* ribrary.png */,
-				342057D917F2B34C0084E99D /* Shooting8-Info.plist */,
-				342057DF17F2B34C0084E99D /* Shooting8-Prefix.pch */,
+				342057D917F2B34C0084E99D /* Rodeoquest-Info.plist */,
+				342057DF17F2B34C0084E99D /* Rodeoquest-Prefix.pch */,
 				342ECBBB17FC570500123886 /* star.png */,
 				34A08749180419CE005458EF /* white_128.png */,
 				34C09EDA18009C5E00E4A4D8 /* yellow_item_thunder.png */,
@@ -821,7 +821,7 @@
 				34BD6DAF18193135006BC523 /* AppSocially.framework */,
 			);
 			name = AppSociallySDK;
-			path = Shooting8/AppSociallySDK;
+			path = rodeoquest/AppSociallySDK;
 			sourceTree = "<group>";
 		};
 		34E216BF181BE7F300B939E6 /* se */ = {
@@ -985,9 +985,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		342057CD17F2B34C0084E99D /* Shooting8 */ = {
+		342057CD17F2B34C0084E99D /* Rodeoquest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 342057F117F2B34C0084E99D /* Build configuration list for PBXNativeTarget "Shooting8" */;
+			buildConfigurationList = 342057F117F2B34C0084E99D /* Build configuration list for PBXNativeTarget "Rodeoquest" */;
 			buildPhases = (
 				342057CA17F2B34C0084E99D /* Sources */,
 				342057CB17F2B34C0084E99D /* Frameworks */,
@@ -997,9 +997,9 @@
 			);
 			dependencies = (
 			);
-			name = Shooting8;
+			name = Rodeoquest;
 			productName = ShootingTest;
-			productReference = 342057CE17F2B34C0084E99D /* Shooting8.app */;
+			productReference = 342057CE17F2B34C0084E99D /* Rodeoquest.app */;
 			productType = "com.apple.product-type.application";
 		};
 		347E0D21180C07AC00B0DC09 /* TestsShootingTests */ = {
@@ -1030,7 +1030,7 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = endo.tuyo;
 			};
-			buildConfigurationList = 342057C917F2B34C0084E99D /* Build configuration list for PBXProject "Shooting8" */;
+			buildConfigurationList = 342057C917F2B34C0084E99D /* Build configuration list for PBXProject "Rodeoquest" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1042,7 +1042,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				342057CD17F2B34C0084E99D /* Shooting8 */,
+				342057CD17F2B34C0084E99D /* Rodeoquest */,
 				347E0D21180C07AC00B0DC09 /* TestsShootingTests */,
 			);
 		};
@@ -1287,7 +1287,7 @@
 /* Begin PBXTargetDependency section */
 		347E0D39180C13B900B0DC09 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 342057CD17F2B34C0084E99D /* Shooting8 */;
+			target = 342057CD17F2B34C0084E99D /* Rodeoquest */;
 			targetProxy = 347E0D38180C13B900B0DC09 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1373,17 +1373,17 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Shooting8/AppSociallySDK\"",
+					"\"$(SRCROOT)/rodeoquest/AppSociallySDK\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Shooting8/Shooting8-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/Shooting8/Shooting8-Info.plist";
+				GCC_PREFIX_HEADER = "rodeoquest/Rodeoquest-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/rodeoquest/Rodeoquest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
-				PRODUCT_NAME = Shooting8;
+				PRODUCT_NAME = Rodeoquest;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1393,17 +1393,17 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Shooting8/AppSociallySDK\"",
+					"\"$(SRCROOT)/rodeoquest/AppSociallySDK\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Shooting8/Shooting8-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/Shooting8/Shooting8-Info.plist";
+				GCC_PREFIX_HEADER = "rodeoquest/Rodeoquest-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/rodeoquest/Rodeoquest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
-				PRODUCT_NAME = Shooting8;
+				PRODUCT_NAME = Rodeoquest;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1445,7 +1445,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		342057C917F2B34C0084E99D /* Build configuration list for PBXProject "Shooting8" */ = {
+		342057C917F2B34C0084E99D /* Build configuration list for PBXProject "Rodeoquest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				342057EF17F2B34C0084E99D /* Debug */,
@@ -1454,7 +1454,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		342057F117F2B34C0084E99D /* Build configuration list for PBXNativeTarget "Shooting8" */ = {
+		342057F117F2B34C0084E99D /* Build configuration list for PBXNativeTarget "Rodeoquest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				342057F217F2B34C0084E99D /* Debug */,

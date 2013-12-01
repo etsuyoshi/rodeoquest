@@ -14,10 +14,38 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "342057CD17F2B34C0084E99D"
+               BuildableName = "Shooting8.app"
+               BlueprintName = "Rodeoquest"
+               ReferencedContainer = "container:Rodeoquest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "347E0D00180C07AB00B0DC09"
                BuildableName = "TestsShooting.app"
                BlueprintName = "TestsShooting"
-               ReferencedContainer = "container:Shooting8.xcodeproj">
+               ReferencedContainer = "container:Rodeoquest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "347E0D21180C07AC00B0DC09"
+               BuildableName = "TestsShootingTests.octest"
+               BlueprintName = "TestsShootingTests"
+               ReferencedContainer = "container:Rodeoquest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,23 +57,23 @@
       buildConfiguration = "Debug">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "347E0D21180C07AC00B0DC09"
                BuildableName = "TestsShootingTests.octest"
                BlueprintName = "TestsShootingTests"
-               ReferencedContainer = "container:Shooting8.xcodeproj">
+               ReferencedContainer = "container:Rodeoquest.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "347E0D00180C07AB00B0DC09"
-            BuildableName = "TestsShooting.app"
-            BlueprintName = "TestsShooting"
-            ReferencedContainer = "container:Shooting8.xcodeproj">
+            BlueprintIdentifier = "342057CD17F2B34C0084E99D"
+            BuildableName = "Shooting8.app"
+            BlueprintName = "Rodeoquest"
+            ReferencedContainer = "container:Rodeoquest.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -61,10 +89,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "347E0D00180C07AB00B0DC09"
-            BuildableName = "TestsShooting.app"
-            BlueprintName = "TestsShooting"
-            ReferencedContainer = "container:Shooting8.xcodeproj">
+            BlueprintIdentifier = "342057CD17F2B34C0084E99D"
+            BuildableName = "Shooting8.app"
+            BlueprintName = "Rodeoquest"
+            ReferencedContainer = "container:Rodeoquest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -79,10 +107,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "347E0D00180C07AB00B0DC09"
-            BuildableName = "TestsShooting.app"
-            BlueprintName = "TestsShooting"
-            ReferencedContainer = "container:Shooting8.xcodeproj">
+            BlueprintIdentifier = "342057CD17F2B34C0084E99D"
+            BuildableName = "Shooting8.app"
+            BlueprintName = "Rodeoquest"
+            ReferencedContainer = "container:Rodeoquest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
