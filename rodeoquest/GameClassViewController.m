@@ -1586,12 +1586,14 @@ UIView *viewMyEffect;
             
             
             if([EnemyArray count] > MAX_ENEMY_NUM) {
-                [[[EnemyArray lastObject] getImageView] removeFromSuperview];
-                //(パーティクルを生成していたら)パーティクルを消去
-                [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
-                [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
-                //配列から削除してメモリを解放
-                [EnemyArray removeLastObject];
+//                for(int i = 0; i < 10;i++){//
+                    [[[EnemyArray lastObject] getImageView] removeFromSuperview];
+                    //(パーティクルを生成していたら)パーティクルを消去
+                    [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
+                    [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
+                    //配列から削除してメモリを解放
+                    [EnemyArray removeLastObject];
+//                }
                 
             }
         }
