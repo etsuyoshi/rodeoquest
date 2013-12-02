@@ -513,7 +513,7 @@ UIView *viewMyEffect;
 
 
 - (void)ordinaryAnimationStart{
-    
+//    NSLog(@"orinary animation start");
     //ユーザーインターフェース
     [self.view bringSubviewToFront:iv_frame];
     
@@ -539,9 +539,11 @@ UIView *viewMyEffect;
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/生成_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+//    NSLog(@"yield enemy");
     [self yieldEnemy];
 
     
+//    NSLog(@"detection touch");
     //ビーム生成はタッチ検出場所で実行
     if([MyMachine getIsAlive] && isTouched){
         //弾丸が画面上になければ無条件に弾丸を出す
@@ -579,7 +581,7 @@ UIView *viewMyEffect;
     //_/_/_/_/進行:各オブジェクトのdoNext_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
-    
+//    NSLog(@"mymachine donext");
     
     if([MyMachine getIsAlive] ||
        [MyMachine getDeadTime] < explosionCycle){
@@ -597,6 +599,8 @@ UIView *viewMyEffect;
             return;
         }
     }
+    
+//    NSLog(@"enemy donext");
     
     //敵機進行or爆発後のカウント
     for(int i = 0; i < [EnemyArray count] ; i++){
@@ -636,6 +640,7 @@ UIView *viewMyEffect;
 //        }
 //    }
     
+//    NSLog(@"item judgement start");
     
     //アイテムの進行=[アイテム自体の移動 & 生成したパーティクルの時間経過:寿命判定は別途]
     for(int i = 0 ; i< [ItemArray count]; i ++){
@@ -647,6 +652,7 @@ UIView *viewMyEffect;
 //                [KiraArray insertObject:[((ItemClass*)[ItemArray objectAtIndex:i]) getMovingParticle:0] atIndex:0];
 //                [self.view addSubview:[KiraArray objectAtIndex:0]];
             }
+//            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
 
             //確認用
 //            CALayer *_itemLayer1 = [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer];
@@ -888,19 +894,26 @@ UIView *viewMyEffect;
                     
                 }
             }
-        }
-    }
-
-//    NSLog(@"敵機配列");
-    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-    //_/_/_/_/表示_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-    
-    
-    //アイテム取得判定：前倒しに取得させる
-    for(int itemCount = 0; itemCount < [ItemArray count] ; itemCount++){
-        _item = [ItemArray objectAtIndex:itemCount];
-        if([_item getIsAlive]){//アイテムの獲得判定
+            
+//            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
+            
+            //test
+            _item = [ItemArray objectAtIndex:i];
+//        }//if([[ItemArray objectAtIndex:i] getIsAlive]){
+//    }//for(int i = 0 ; i< [ItemArray count]; i ++){
+//
+////    NSLog(@"敵機配列");
+//    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+//    //_/_/_/_/表示_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+//    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+//    
+//    
+//    //アイテム取得判定：前倒しに取得させる
+//    for(int itemCount = 0; itemCount < [ItemArray count] ; itemCount++){
+//        _item = [ItemArray objectAtIndex:itemCount];
+            
+//        if([_item getIsAlive]){//アイテムの獲得判定
+            
             _xItem = [_item getX];
             _yItem = [_item getY];
 //            NSLog(@"y=%d", _yItem);
@@ -936,8 +949,11 @@ UIView *viewMyEffect;
                 [self dispEffectItemAcq];
                 
 //                NSLog(@"Item acquired");
-                [[[ItemArray objectAtIndex:itemCount] getImageView] removeFromSuperview];
-                [[ItemArray objectAtIndex:itemCount] die];
+//                [[[ItemArray objectAtIndex:itemCount] getImageView] removeFromSuperview];
+//                [[ItemArray objectAtIndex:itemCount] die];
+                [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
+                [[ItemArray objectAtIndex:i] die];
+
 //                NSLog(@"num item = %d", [ItemArray count]);
                 //アイテム取得時のパーティクル表示
 //                [self.view addSubview:[[ItemArray objectAtIndex:itemCount] getKilledParticle]];
@@ -1298,15 +1314,15 @@ UIView *viewMyEffect;
  *一定間隔呼び出しは[tm invalidate];によって停止される
  */
 - (void)time:(NSTimer*)timer{
-//    NSLog(@"magnetMode = %d", isMagnetMode);
+//    NSLog(@"timer start");
     if(count == 0){
-        NSLog(@"start animation from game class view controller");
+//        NSLog(@"start animation from game class view controller");
         [BackGround startAnimation];//3sec-Round
     }
     if(isGameMode){
-//        NSLog(@"count = %f", count);
+//        NSLog(@"count = %f from timer", count);
         [self ordinaryAnimationStart];
-//        NSLog(@"complete ordinaryAnimation");
+//        NSLog(@"complete ordinaryAnimation from timer");
         //一定時間経過するとゲームオーバー
 //        if(count >= TIMEOVER_SECOND || ![MyMachine getIsAlive]){
 //            NSLog(@"gameover");
@@ -1328,6 +1344,7 @@ UIView *viewMyEffect;
         //停止中画面に移行(一時停止用UIImageViewの表示)
         
     }
+//    NSLog(@"timer complete");
 }
 //- (void)onLongPressedFrame:(UILongPressGestureRecognizer *)gr {
 ////    [self yieldBeam:0 init_x:(x_myMachine + size_machine/2) init_y:(y_myMachine - length_beam)];

@@ -1029,6 +1029,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = endo.tuyo;
+				TargetAttributes = {
+					342057CD17F2B34C0084E99D = {
+						DevelopmentTeam = Y7QGWHWRZ7;
+					};
+				};
 			};
 			buildConfigurationList = 342057C917F2B34C0084E99D /* Build configuration list for PBXProject "Rodeoquest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1371,6 +1376,7 @@
 		342057F217F2B34C0084E99D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/rodeoquest/AppSociallySDK\"",
@@ -1391,6 +1397,7 @@
 		342057F317F2B34C0084E99D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/rodeoquest/AppSociallySDK\"",

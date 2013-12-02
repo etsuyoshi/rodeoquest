@@ -389,8 +389,9 @@ int numCell;
  *アイテム移動中にパーティクルが発生したらtrueを返す
  */
 -(Boolean)doNext{
+    NSLog(@"count=%d", lifetime_count);
     if(lifetime_count == 0){
-        
+        NSLog(@"start item animation initialization");
         
         CGPoint kStartPos = iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
         CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
@@ -407,6 +408,7 @@ int numCell;
                 //途中で何らかの理由で遮られた場合
                 //            NSLog(@"animation key frame not exit");
             }
+            NSLog(@"finished item animation initialization");
             
         }];
         
@@ -442,6 +444,8 @@ int numCell;
         [CATransaction commit];
     }
     
+    NSLog(@"count=%d", lifetime_count);
+    
 //    NSLog(@"donext at item class");
     Boolean isOccurringParticle = false;
     
@@ -457,6 +461,7 @@ int numCell;
 //    NSLog(@"process : %d , %d",
 //          x_loc, y_loc);
     
+    NSLog(@"count=%d", lifetime_count);
     //動線上に新規キラキラ発生
     if(lifetime_count % 50 ==0){//generate every count
 //    if(true){
@@ -481,8 +486,11 @@ int numCell;
     
     }
     
+    NSLog(@"count=%d", lifetime_count);
     
     lifetime_count ++;
+    
+    NSLog(@"count=%d", lifetime_count);
     return isOccurringParticle;
     
     

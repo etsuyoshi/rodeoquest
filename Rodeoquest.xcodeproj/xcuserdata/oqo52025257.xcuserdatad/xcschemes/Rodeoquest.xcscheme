@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "342057CD17F2B34C0084E99D"
-               BuildableName = "Shooting8.app"
+               BuildableName = "Rodeoquest.app"
                BlueprintName = "Rodeoquest"
                ReferencedContainer = "container:Rodeoquest.xcodeproj">
             </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "342057CD17F2B34C0084E99D"
-            BuildableName = "Shooting8.app"
+            BuildableName = "Rodeoquest.app"
             BlueprintName = "Rodeoquest"
             ReferencedContainer = "container:Rodeoquest.xcodeproj">
          </BuildableReference>
@@ -90,7 +90,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "342057CD17F2B34C0084E99D"
-            BuildableName = "Shooting8.app"
+            BuildableName = "Rodeoquest.app"
             BlueprintName = "Rodeoquest"
             ReferencedContainer = "container:Rodeoquest.xcodeproj">
          </BuildableReference>
@@ -108,7 +108,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "342057CD17F2B34C0084E99D"
-            BuildableName = "Shooting8.app"
+            BuildableName = "Rodeoquest.app"
             BlueprintName = "Rodeoquest"
             ReferencedContainer = "container:Rodeoquest.xcodeproj">
          </BuildableReference>
