@@ -162,7 +162,9 @@ int x_pg, y_pg, width_pg, height_pg;
 
 NSTimer *tm;
 BGMClass *bgmClass;
-float count = 0;//timer
+float count = 0;//timer->0.01sec
+int timeEnemyRowYield = 100;//100countで敵列発生
+int countEnemyRowYield = 0;//上記timeのカウンター
 int countItem = 0;//テスト用
 
 //ordinaryMethod内部で使用するテンポラリー変数
@@ -1524,7 +1526,7 @@ UIView *viewMyEffect;
  *16-20sec:0.25secに一回
  *21-25sec:0.125secに一回=ほぼ毎回
  */
--(void) yieldEnemy{
+-(void)yieldEnemy{
     Boolean isYield = false;
     
 #ifndef ENEMY_TEST//本番
@@ -1554,98 +1556,43 @@ UIView *viewMyEffect;
         }
     }
 #else
-//    //1秒にfreq*10回発生
-//    float freq = 0.1f;
-//    float error = 0.01f;//内部計算誤差
-//    //freq10:0.1, 0.2, 0.3
-//    //freq4 :0.25,0.50,0.75
-//    //freq3 :0.33,0.66,0.99
-////    if(1.0f / freq == count){
-//    for(int i = 0;i < 100000;i++){
-//        if((1.0f / freq * (float)i >= count - error) &&
-//           (1.0f / freq * (float)i <= count + error)){
-//            isYield = true;
-//            break;
-//        }
-//    }
-//    NSLog(@"%f", count);
-    
-    
-//#ifdef FREQ_ENEMY
-//    for(int tempCount = 0; tempCount < 1000;tempCount++){
-//        //Freq_Enemyカウントに一回発生
-//        if((int)(count * 100) % (tempCount * FREQ_ENEMY) == 0){
-////            NSLog(@"%dsec", (int)(count));
-//            isYield = true;
-//            break;
-//        }else{
-//            isYield = false;
-//        }
-//    }
-//#endif
-    
-    //randomに発生
-    if(arc4random() % FREQ_ENEMY == 0){
+
+    if(countEnemyRowYield == 0){
+        countEnemyRowYield = timeEnemyRowYield;
         isYield = true;
+    }else{
+        countEnemyRowYield --;
     }
     
 #endif
     if(isYield){
-        enemyCount ++;
-//        NSLog(@"enemyCount %d", enemyCount);
-        int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
-        
-        EnemyClass *enemy = [[EnemyClass alloc]init:x size:OBJECT_SIZE];
-        
-        [EnemyArray insertObject:enemy atIndex:0];
-        [self.view addSubview:[[EnemyArray objectAtIndex:0] getImageView]];
-        [self.view bringSubviewToFront:[[EnemyArray objectAtIndex:0] getImageView]];
-        
-        
-        
-        if([EnemyArray count] > MAX_ENEMY_NUM) {
-            [[[EnemyArray lastObject] getImageView] removeFromSuperview];
-            //(パーティクルを生成していたら)パーティクルを消去
-            [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
-            [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
-            //配列から削除してメモリを解放
-            [EnemyArray removeLastObject];
+        int occurredX = 0;
+        for(int eneCnt = 0; eneCnt < 5 ;eneCnt++){
             
-            //発生した中で古いものから画面外にあるenemyを消去
-//            for(int i = [EnemyArray count] - 1; i > 0;i--){
-//                if([[EnemyArray objectAtIndex:i] getImageView].center.y > self.view.bounds.size.height ||
-//                   !([[EnemyArray objectAtIndex:i] getIsAlive])){
-////                    NSLog(@"memory release at enemy %d", i);
-//                    //画面から消去
-//                    [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];
-//                    //(パーティクルを生成していたら)パーティクルを消去
-//                    [[[EnemyArray objectAtIndex:i] getDamageParticle] removeFromSuperview];
-//                    [[[EnemyArray objectAtIndex:i] getExplodeParticle] removeFromSuperview];
-//                    //配列から削除してメモリを解放
-//                    [EnemyArray removeObjectAtIndex:i];
-//                    break;
-//                }
-//            }
+            enemyCount ++;
+            //        NSLog(@"enemyCount %d", enemyCount);
+//            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
+            occurredX = OBJECT_SIZE/2 + eneCnt * OBJECT_SIZE;
+            EnemyClass *enemy = [[EnemyClass alloc]init:occurredX size:OBJECT_SIZE];
+            
+            [EnemyArray insertObject:enemy atIndex:0];
+            [self.view addSubview:[[EnemyArray objectAtIndex:0] getImageView]];
+            [self.view bringSubviewToFront:[[EnemyArray objectAtIndex:0] getImageView]];
+            
+            
+            
+            if([EnemyArray count] > MAX_ENEMY_NUM) {
+                [[[EnemyArray lastObject] getImageView] removeFromSuperview];
+                //(パーティクルを生成していたら)パーティクルを消去
+                [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
+                [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
+                //配列から削除してメモリを解放
+                [EnemyArray removeLastObject];
+                
+            }
         }
-//        if([EnemyArray count] > 30) {
-//            [EnemyArray removeLastObject];
-//        }
-        
-        
     }
 }
-
-//yieldBeamメソッドはMyMachine内に実装
-//-(void)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y{
-//    //
-//    if([MyMachine getIsAlive] && isTouched){
-//        BeamClass *beam = [[BeamClass alloc] init:x - size_machine/3 y_init:y + size_machine/2 width:50 height:50];
-//        [BeamArray addObject:beam];
-//    }
-//    
-//    
-//}
-
 
 -(void)exitProcess{
     
