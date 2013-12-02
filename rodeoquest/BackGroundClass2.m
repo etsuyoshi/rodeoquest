@@ -293,12 +293,12 @@ int imageMargin;
             NSLog(@"count =%d", count-1);
             
             if(count > 0){
-                NSLog(@"count=%d->recursive", count);
+//                NSLog(@"count=%d->recursive", count);
                 [self oscillate1:count-1];
             }else{
                 [iv_oscillate1 removeFromSuperview];
                 //                [iv_oscillate2 removeFromSuperview];
-                NSLog(@"finished oscillate at kStartPos1.y=%f", kStartPos1.y);
+//                NSLog(@"finished oscillate at kStartPos1.y=%f", kStartPos1.y);
                 //                [self animation1:gSecs start:kStartPos1.y];
                 [self resumeAnimations];
             }
@@ -342,11 +342,11 @@ int imageMargin;
             NSLog(@"count =%d", count);
             
             if(count > 0){
-                NSLog(@"count=%d->recursive", count);
+//                NSLog(@"count=%d->recursive", count);
                 [self oscillate2:count-1];
             }else{
                 [iv_oscillate2 removeFromSuperview];
-                NSLog(@"finished oscillate at kStartPos2.y=%f", kStartPos2.y);
+//                NSLog(@"finished oscillate at kStartPos2.y=%f", kStartPos2.y);
 //                [self resumeAnimations];//not execute here , it is only for 1
             }
         }

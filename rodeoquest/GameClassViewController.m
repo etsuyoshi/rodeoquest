@@ -1572,9 +1572,13 @@ UIView *viewMyEffect;
             enemyCount ++;
             //        NSLog(@"enemyCount %d", enemyCount);
 //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
+//            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * OBJECT_SIZE;
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX size:OBJECT_SIZE];
-            
+            [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
+                                                                     green:0
+                                                                      blue:0
+                                                                     alpha:0.5f]];//test:enemy
             [EnemyArray insertObject:enemy atIndex:0];
             [self.view addSubview:[[EnemyArray objectAtIndex:0] getImageView]];
             [self.view bringSubviewToFront:[[EnemyArray objectAtIndex:0] getImageView]];
