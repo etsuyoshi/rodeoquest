@@ -12,6 +12,7 @@
     
     NSMutableArray *arrIv;
     NSMutableArray *arrTv;
+    NSMutableArray *arrCost;
 //    NSMutableArray *arrBtn;
 }
 

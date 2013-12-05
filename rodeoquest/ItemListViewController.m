@@ -8,32 +8,41 @@
 
 #import "ItemListViewController.h"
 #import "CreateComponentClass.h"
+#import "AttrClass.h"
 
 @interface ItemListViewController ()
 
 @end
 
 @implementation ItemListViewController
-
+int gold;
+AttrClass *attr;
+UITextView *tvGoldAmount;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        //UIImageView
         arrIv = [NSMutableArray arrayWithObjects:
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  nil];
-        //UITextView
         arrTv = [NSMutableArray arrayWithObjects:
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  nil];
+        arrCost = [NSMutableArray arrayWithObjects:
+                   @"100",
+                   @"100",
+                   @"100",
+                   @"100",
+                nil];
+        attr = [[AttrClass alloc]init];
+        gold =[[attr getValueFromDevice:@"gold"] intValue];
         //UIButton
 //        arrBtn = [NSMutableArray arrayWithObjects:
 //                 @"close.png",
@@ -99,10 +108,10 @@
     CGRect rectGoldAmount = CGRectMake(cashFrameInitX + 50,
                                        cashFrameInitY + 10,
                                        150, 32);
-    UITextView *tvGoldAmount = [[UITextView alloc]initWithFrame:rectGoldAmount];
+    tvGoldAmount = [[UITextView alloc]initWithFrame:rectGoldAmount];
     //@"AmericanTypewriter-Bold"
     [tvGoldAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
-    tvGoldAmount.text = [NSString stringWithFormat:@"%@", @"9876543210"];
+    tvGoldAmount.text = [NSString stringWithFormat:@"%d", gold];
     tvGoldAmount.textColor = [UIColor whiteColor];
     tvGoldAmount.backgroundColor = [UIColor clearColor];//gray?
     tvGoldAmount.editable = NO;
@@ -160,7 +169,8 @@
                                                        image:@"bullet_level6.png"
                                                        title:@"get"
                                                       target:self
-                                                    selector:@"buyBtnPressed"];
+                                                    selector:@"buyBtnPressed:"];
+        btn.tag = [[arrCost objectAtIndex:i] intValue];
         [self.view addSubview:btn];
         
     }
@@ -186,14 +196,25 @@
 //    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)buyBtnPressed{
-    NSLog(@"buy button pressed");
+-(void)buyBtnPressed:(id)sender{
+    
+    NSLog(@"buy button pressed : %d", [sender tag]);
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)displayCoin{
+    NSLog(@"now coin = %d", [[attr getValueFromDevice:@"gold"] intValue]);
+    gold = [[attr getValueFromDevice:@"gold"] intValue];
+    tvGoldAmount.text = [NSString stringWithFormat:@"%d", gold];
+}
+-(void)updateToDeviceCoin:(int)coin{
+    [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", coin]];
+    
 }
 
 @end
