@@ -19,10 +19,11 @@
 //#define BOMB_TEST
 //#define MYMACHINE_TEST
 //#define BUTTON_TEST
-#define BACKGROUND_TEST
+//#define BACKGROUND_TEST
+#define BTNPRESS_TEST
 
 
-
+#import "MenuButtonWithView.h"
 #import "ExplodeParticleView.h"
 #import "EnemyClass.h"
 #import "ItemClass.h"
@@ -49,6 +50,10 @@ NSMutableArray *uiArray;
     NSMutableArray *array_uiv;
     NSMutableArray *array_layer;
     NSMutableArray *array_item;
+#endif
+
+#ifdef BTNPRESS_TEST
+    UIImageView *imv_test;
 #endif
 
 
@@ -727,6 +732,21 @@ int tempCount = 0;
 //        }
     }
 //    NSLog(@"count : %d , y=%f", counter, ((CALayer *)[notif.layer presentationLayer]).position.y);
+#elif defined BTNPRESS_TEST
+    if(counter == 0){
+//        UIButton *btn = [UIButton allo
+//        imv_test = [[UIImageView alloc]initWithFrame:CGRectMake(100, 200, 60, 60)];
+//        imv_test.image = [UIImage imageNamed:@"btn_g_off2.png"];
+//        [self.view addSubview:imv_test];
+//        imv_test.userInteractionEnabled = YES;
+        imv_test = [[MenuButtonWithView alloc]initWithFrame:CGRectMake(100, 200, 60, 60)
+                                                       type:MenuBtnTypeInn
+                                                     target:self
+                                                   selector:@"buttonPressed:"];
+        [self.view addSubview:imv_test];
+        
+    }
+    
 #else
     NSLog(@"aaa");
     //nothing
@@ -740,6 +760,44 @@ int tempCount = 0;
     counter ++;
 }
 
+#ifdef BTNPRESS_TEST
+-(void)buttonPressed:(id)sender{
+    NSLog(@"%d", [sender tag]);
+}
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // シングルタッチの場合
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInView:imv_test];
+    NSLog(@"touchedBegan x:%f y:%f", location.x, location.y);
+    if(imv_test.image == [UIImage imageNamed:@"btn_g_off2.png"]){
+        imv_test.image = [UIImage imageNamed:@"btn_g_on2.png"];
+    }else{
+        imv_test.image = [UIImage imageNamed:@"btn_g_off2.png"];
+    }
+    
+    
+//    // マルチタッチの場合
+//    for (UITouch *touch in touches) {
+//        CGPoint location = [touch locationInView:self];
+//        NSLog(@"x:%f y:%f", location.x, location.y);
+//    }
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInView:imv_test];
+    //離れた位置がボタン中心から離れていれば元に戻して何もしない
+    NSLog(@"touchedEnded x:%f y:%f", location.x, location.y);
+//    if(ABS(location.x - originalPressedX) > 100 || ...){
+    if(imv_test.image == [UIImage imageNamed:@"btn_g_off2.png"]){
+        imv_test.image = [UIImage imageNamed:@"btn_g_on2.png"];
+    }else{
+        imv_test.image = [UIImage imageNamed:@"btn_g_off2.png"];
+    }
+}
+
+#endif
 
 #ifdef BACKGROUND_TEST
 -(void)animationDidStop:(CAAnimation *)theAnimation2 finished:(BOOL)flag {

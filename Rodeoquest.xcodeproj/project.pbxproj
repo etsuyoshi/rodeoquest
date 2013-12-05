@@ -68,6 +68,9 @@
 		342ECBBC17FC570500123886 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 342ECBBB17FC570500123886 /* star.png */; };
 		342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342ECBC417FC5AF900123886 /* DamageParticleView.m */; };
 		3436369C180FDA8B005A5C01 /* FontTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3436369B180FDA8B005A5C01 /* FontTestViewController.m */; };
+		343D9702184F3296000239F4 /* icon_gear_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 343D9700184F3296000239F4 /* icon_gear_b.png */; };
+		343D9703184F3296000239F4 /* icon_INN_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 343D9701184F3296000239F4 /* icon_INN_b.png */; };
+		343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 343D9705184F3A0C000239F4 /* MenuButtonWithView.m */; };
 		343F802B17FF947100224839 /* ScoreBoardClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 343F802A17FF947100224839 /* ScoreBoardClass.m */; };
 		3440529A182BBC1A0049AE46 /* tool_magnet.png in Resources */ = {isa = PBXBuildFile; fileRef = 34405292182BBC1A0049AE46 /* tool_magnet.png */; };
 		3440529B182BBC1A0049AE46 /* coin_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 34405293182BBC1A0049AE46 /* coin_red.png */; };
@@ -314,6 +317,10 @@
 		342ECBC417FC5AF900123886 /* DamageParticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageParticleView.m; sourceTree = "<group>"; };
 		3436369A180FDA8B005A5C01 /* FontTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontTestViewController.h; path = TestsShootingTests/FontTestViewController.h; sourceTree = SOURCE_ROOT; };
 		3436369B180FDA8B005A5C01 /* FontTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontTestViewController.m; path = TestsShootingTests/FontTestViewController.m; sourceTree = SOURCE_ROOT; };
+		343D9700184F3296000239F4 /* icon_gear_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_gear_b.png; path = ../../../../Downloads/icon_gear_b.png; sourceTree = "<group>"; };
+		343D9701184F3296000239F4 /* icon_INN_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_INN_b.png; path = ../../../../Downloads/icon_INN_b.png; sourceTree = "<group>"; };
+		343D9704184F3A0C000239F4 /* MenuButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuButtonWithView.h; sourceTree = "<group>"; };
+		343D9705184F3A0C000239F4 /* MenuButtonWithView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuButtonWithView.m; sourceTree = "<group>"; };
 		343F802917FF947100224839 /* ScoreBoardClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreBoardClass.h; sourceTree = "<group>"; };
 		343F802A17FF947100224839 /* ScoreBoardClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreBoardClass.m; sourceTree = "<group>"; };
 		34405292182BBC1A0049AE46 /* tool_magnet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_magnet.png; sourceTree = "<group>"; };
@@ -661,6 +668,8 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				343D9700184F3296000239F4 /* icon_gear_b.png */,
+				343D9701184F3296000239F4 /* icon_INN_b.png */,
 				3422319C1845B5C400055ADF /* btn_g_off2.png */,
 				3422319D1845B5C400055ADF /* btn_g_on2.png */,
 			);
@@ -1048,6 +1057,8 @@
 				340C7612180D37E500169658 /* CreateComponentClass.m */,
 				3420AB941827AA9200AB0A84 /* UIView+Animation.h */,
 				3420AB951827AA9200AB0A84 /* UIView+Animation.m */,
+				343D9704184F3A0C000239F4 /* MenuButtonWithView.h */,
+				343D9705184F3A0C000239F4 /* MenuButtonWithView.m */,
 			);
 			name = Component;
 			sourceTree = "<group>";
@@ -1152,6 +1163,7 @@
 				34A22759182A4B690050CFDB /* 09.png in Resources */,
 				34D30EC2181EDB25006D05F0 /* WingBow.png in Resources */,
 				34D55FD1183CA05400788533 /* bomb017.png in Resources */,
+				343D9702184F3296000239F4 /* icon_gear_b.png in Resources */,
 				342057E817F2B34C0084E99D /* Default-568h@2x.png in Resources */,
 				342057EB17F2B34C0084E99D /* MainStoryboard.storyboard in Resources */,
 				342C03AB17F4604E0023C11F /* nothing32.png in Resources */,
@@ -1242,6 +1254,7 @@
 				340A4641181E412200D9B005 /* ClothBow.png in Resources */,
 				34A22752182A39ED0050CFDB /* tool_heal.png in Resources */,
 				3440529F182BBC1A0049AE46 /* coin_purple.png in Resources */,
+				343D9703184F3296000239F4 /* icon_INN_b.png in Resources */,
 				34CA558418447A9B00F9657A /* laser_g03.png in Resources */,
 				3488ACC7183D272F00833F93 /* img06.png in Resources */,
 				348AD7F3180ACD52007226EC /* back_desert.png in Resources */,
@@ -1341,6 +1354,7 @@
 				3400396F17F408070093E07E /* EnemyClass.m in Sources */,
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
 				34EB7ACE182F2E850079B0EB /* Effect.m in Sources */,
+				343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */,
 				34043A5A17FA0FE50000E338 /* ExplodeParticleView.m in Sources */,
 				34FA999E17FBCEF000317D83 /* ItemClass.m in Sources */,
 				342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */,
@@ -1463,6 +1477,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/rodeoquest/AppSociallySDK\"",
@@ -1482,6 +1497,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Rodeoquest;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1490,6 +1506,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/rodeoquest/AppSociallySDK\"",
@@ -1509,6 +1526,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Rodeoquest;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

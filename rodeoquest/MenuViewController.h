@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 //#import <AVFoundation/AVFoundation.h>
+#import "GADBannerView.h"
 
 @interface MenuViewController : UIViewController{
-    
+    //admob
+    GADBannerView *bannerView_;
+
 }
 //@property (nonatomic, retain) AVAudioPlayer *audioPlayer;
 

@@ -1574,7 +1574,7 @@ UIView *viewMyEffect;
 //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
 //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * OBJECT_SIZE;
-            EnemyClass *enemy = [[EnemyClass alloc]init:occurredX size:OBJECT_SIZE];
+            EnemyClass *enemy = [[EnemyClass alloc]init:occurredX size:OBJECT_SIZE time:MAX(5.0f-(float)count/10.0f, 0.25f)];
             [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
                                                                      green:0
                                                                       blue:0

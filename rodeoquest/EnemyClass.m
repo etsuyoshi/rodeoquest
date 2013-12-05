@@ -14,7 +14,12 @@
 @synthesize enemyType;
 
 int unique_id;
+
 -(id) init:(int)x_init size:(int)size{
+    return [self init:x_init size:size time:5.0f];//standard
+}
+-(id) init:(int)x_init size:(int)size time:(float)time{
+    gTime = time;
     unique_id++;
     hitPoint = 3;
     mySize = size;
@@ -131,7 +136,7 @@ int unique_id;
 //        [iv moveTo:CGPointMake(x_loc - mySize/2, iv.superview.bounds.size.height)
 //          duration:5.0f
 //            option:UIViewAnimationOptionCurveLinear];
-        [UIView animateWithDuration:5.0f
+        [UIView animateWithDuration:gTime
                               delay:0.0
                              options:UIViewAnimationOptionCurveLinear
                          animations:^{

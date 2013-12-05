@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, EnemyType) {
     int y_loc;
     int hitPoint;
     int mySize;
+    float gTime;
     int lifetime_count;
     int bomb_size;
     int dead_time;
@@ -38,8 +39,9 @@ typedef NS_ENUM(NSInteger, EnemyType) {
 @property(nonatomic) EnemyType enemyType;
 
 
--(id)init:(int)x_init size:(int)size;
 -(id)init;
+-(id)init:(int)x_init size:(int)size;
+-(id)init:(int)x_init size:(int)size time:(float)time;
 
 -(void)setDamage:(int)damage location:(CGPoint)location;
 -(int)getHitPoint;

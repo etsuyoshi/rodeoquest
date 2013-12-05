@@ -8,6 +8,7 @@
 
 //#define TEST//TestViewController-transition
 
+#import "GADBannerView.h"
 #import "BGMClass.h"
 #import "MenuViewController.h"
 #import "GameClassViewController.h"
@@ -31,8 +32,14 @@
 //#define COMPONENT_09 9
 //#define COMPONENT_10 10
 
+//#define AD_UPPER
+
 #define MARGIN_UPPER_COMPONENT 5
-#define Y_MOST_UPPER_COMPONENT 30
+#ifdef AD_UPPER
+    #define Y_MOST_UPPER_COMPONENT 53//広告縦幅50
+#else
+    #define Y_MOST_UPPER_COMPONENT 3//53//広告縦幅50
+#endif
 #define W_MOST_UPPER_COMPONENT 100
 #define H_MOST_UPPER_COMPONENT 50
 
@@ -62,6 +69,8 @@ UIButton *closeButton;//閉じるボタン
 BGMClass *bgmClass;
 BackGroundClass2 *backGround;
 AttrClass *attr;
+
+
 
 //CreateComponentClass *createComponentClass;
 
@@ -93,10 +102,98 @@ AttrClass *attr;
     return YES;
 }
 
+//admob関連
+- (void)viewDidUnload {
+    // ARCが有効の場合は、以下のbannerView_ のリリースは不要
+    bannerView_.delegate = nil;
+}
+
+- (void)dealloc {
+
+}
+
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error {
+    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+    
+    // 他の広告ネットワークの広告を表示させるなど。
+}
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    // 他の広告ネットワーク用のビューの非表示など。
+    
+    NSLog(@"adViewDidReceivedAd");
+    // 表示位置
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         bannerView.frame = CGRectMake(0.0,
+                                                       self.view.frame.size.height -
+                                                       bannerView.frame.size.height,
+                                                       bannerView.frame.size.width,
+                                                       bannerView.frame.size.height);
+                     }];
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    //admob
+    
+    //deviceID:52aefdfc304953d5ec510b1d5fb41806c4942f83
+    
+    // サイズを指定してAdMob広告のインスタンスを生成
+    // 指定できる広告サイズは、GADAdSize.h か https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate を参考に。
+    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];//縦
+#ifdef AD_UPPER
+    //画面上部に配置
+    bannerView_.frame = CGRectMake(0, 0,
+                                   bannerView_.bounds.size.width,
+                                   bannerView_.bounds.size.height);
+#else
+    //画面下部に配置
+    bannerView_.frame = CGRectMake(0, self.view.bounds.size.height - bannerView_.bounds.size.height,
+                                   bannerView_.bounds.size.width,
+                                   bannerView_.bounds.size.height);
+#endif
+//    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBanner];
+    
+    // AdMobのパブリッシャーIDを指定
+    bannerView_.adUnitID = @"ca-app-pub-2428023138794278/3840801740";//nend
+    
+    // AdMob広告を表示するUIViewController(自分自身)の指定し、ビューに広告を追加
+    bannerView_.rootViewController = self;
+    [self.view addSubview:bannerView_];
+    
+    // 広告をビューの一番下に表示する場合
+    //[bannerView_ setCenter:CGPointMake(self.view.bounds.size.width/2,
+    //                                   self.view.bounds.size.height-bannerView_.bounds.size.height/2)];
+    
+    // AdMob広告データの読み込みを要求
+    GADRequest *request = [GADRequest request];
+//    request.testing = YES;
+//    request.testDevices = [NSArray arrayWithObjects:
+//                           GAD_SIMULATOR_ID,                               // シミュレータ
+//                           @"TEST_DEVICE_ID",                              // iOS 端末をテスト
+//                           nil];
+//    request.testDevices = @[ @"d42e39771eb546945bbd35e0f9cfa39e" ];
+    request.testDevices = [NSArray arrayWithObjects:
+                           GAD_SIMULATOR_ID,
+                           @"d850cff511c013cdcf44a5b2c294c80ff1939605", nil];
+//                           @"d42e39771eb546945bbd35e0f9cfa39e", nil];
+//                           @"52aefdfc304953d5ec510b1d5fb41806c4942f83", nil];
+//                           GAD_SIMULATOR_ID,
+////                           @"d42e39771eb546945bbd35e0f9cfa39e", nil];
+//                           @"52aefdfc304953d5ec510b1d5fb41806c4942f83", nil];
+//    52aefdfc304953d5ec510b1d5fb41806c4942f83
+//    d42e39771eb546945bbd35e0f9cfa39e
+    
+//    [bannerView_ loadRequest:[GADRequest request]];
+    [bannerView_ loadRequest:request];
+
+    
+    //admob終了
     
     
     // ステータスバーを非表示にする:plistでの処理はiOS7以降非推奨
@@ -202,6 +299,7 @@ AttrClass *attr;
     
     [backGround startAnimation];//3sec-Round
     
+    [self.view bringSubviewToFront:bannerView_];
     
     //時間を遅らせてBGM
     [self performSelector:@selector(playBGM) withObject:nil afterDelay:0.3];
