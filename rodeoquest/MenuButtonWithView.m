@@ -13,13 +13,15 @@
 
 - (id)initWithFrame:(CGRect)frame
                type:(MenuBtnType)_type
-             target:(id)target
-           selector:(NSString *)selName{
+             target:(id)_target
+           selector:(NSString *)_selName{
     
     originalFrame = frame;
     self = [super initWithFrame:frame];
     isPressed = false;
     menuBtnType = _type;
+    target = _target;
+    strMethod = _selName;
     if (self) {
         // Initialization code
         // タッチを有効にする
@@ -43,16 +45,6 @@
         // マルチタッチを有効にする
 //        [self setMultipleTouchEnabled:YES];
         
-//        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:target
-//                                                                           action:NSSelectorFromString(selName)]];
-//        self.tag = _type;
-//        NSLog(@"aaaa");
-//        [btn addTarget:self action:@selector(nextview:)forControlEvents:UIControlEventTouchUpInside];
-        [mask addTarget:target
-                 action:NSSelectorFromString(selName)
-       forControlEvents:UIControlEventTouchUpInside];
-
-
     }
     return self;
 }
@@ -71,7 +63,7 @@
 //    touchedX = touches.x;
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
-    NSLog(@"touchedtouched x:%f y:%f", location.x, location.y);
+//    NSLog(@"touchedtouched x:%f y:%f", location.x, location.y);
     touchedX = location.x;
     touchedY = location.y;
     isPressed = true;
@@ -88,7 +80,7 @@
     CGPoint location = [touch locationInView:self];
     if(ABS(location.x - touchedX) > 100 ||
        ABS(location.y - touchedY) > 100 ){
-        //rechange image
+        //originalization
         
         self.frame = originalFrame;
         isPressed = false;
@@ -106,15 +98,17 @@
         
         self.center = CGPointMake(self.center.x,
                                   self.center.y - 3);
-        UITouch *touch = [touches anyObject];
-        CGPoint location = [touch locationInView:self];
+//        UITouch *touch = [touches anyObject];
+//        CGPoint location = [touch locationInView:self];
         //離れた位置がボタン中心から離れていれば元に戻して何もしない
-        NSLog(@"touchedEnded x:%f y:%f", location.x, location.y);
+//        NSLog(@"touchedEnded x:%f y:%f", location.x, location.y);
         isPressed = false;
         [self setBack];
         [self switchLight];
 //        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:target
 //                                                                           action:NSSelectorFromString(selName)]];
+//        [target performSelector:@selector(strMethod) withObject:nil afterDelay:0.01f];
+        [target performSelector:NSSelectorFromString(strMethod) withObject:nil afterDelay:0.01f];
         
     }
     

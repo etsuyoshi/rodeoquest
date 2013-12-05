@@ -21,8 +21,9 @@ typedef NS_ENUM(NSInteger, MenuBtnType) {
     Boolean isPressed;
     CGRect originalFrame;
     UIControl *mask;
-    id taget;
+    id target;
 //    selector *selector;
+    NSString *strMethod;
 }
 
 
