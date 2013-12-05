@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
     ButtonMenuImageTypeInn,
     ButtonMenuImageTypeSet,
     ButtonMenuImageTypeCoin,
+    ButtonMenuImageTypeWpnUp,
     ButtonMenuImageTypeStart
     
     

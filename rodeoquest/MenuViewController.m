@@ -232,17 +232,10 @@ AttrClass *attr;
 //    _imageFile = [NSArray arrayWithObjects:@"red.png", @"blue_item_yuri_big.png", nil];
     arrNoImage = [NSMutableArray arrayWithObjects:
                   [NSArray arrayWithObjects:
-                       [NSNumber numberWithInt:ButtonMenuImageTypeInn],
                        [NSNumber numberWithInt:ButtonMenuImageTypeWeapon],
-                       [NSNumber numberWithInt:ButtonMenuImageTypeItem],
-                       //                       @"blue_item_yuri_big2.png",
-                       //                       @"blue_item_yuri_big2.png",
-                       //                       @"blue_item_yuri_big2.png",
-                       //                       @"blue_item_yuri_big2.png",
-                       //                       @"red.png",
-                       //                       @"red.png",
-                       //                       @"blue_item_yuri_big2.png",
-                       //                       @"yellow_item_thunder.png",
+                       [NSNumber numberWithInt:ButtonMenuImageTypeDefense],
+                       [NSNumber numberWithInt:ButtonMenuImageTypeItem],//item-time-up
+                       [NSNumber numberWithInt:ButtonMenuImageTypeWpnUp],//weapon-time-up
                        nil],
                       [NSArray arrayWithObjects:
                        [NSNumber numberWithInt:ButtonMenuImageTypeInn],
@@ -475,7 +468,7 @@ AttrClass *attr;
         for(int col = 0; col < [[arrNoImage objectAtIndex:row] count] ;col++){
 //            NSLog(@"row = %d, col = %d", row, col);
             CGRect rect_bt = CGRectMake(
-                                        x_frame_center - (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count]/2 +
+                                        x_frame_center - (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [[arrNoImage objectAtIndex:0] count]/2 +
                                         (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * col,
                                         
                                         Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
@@ -509,8 +502,8 @@ AttrClass *attr;
                                                          imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
                                                               rect:(CGRect)rect_start
                                                             target:(id)self
-                                                          selector:(NSString *)@"pushedButton"
-                                                               tag:(int)0];
+                                                          selector:(NSString *)@"pushedButton:"
+                                                               tag:ButtonMenuImageTypeStart];
     //丸角
 //    [[bt_start layer] setCornerRadius:10.0];
 //    [bt_start setClipsToBounds:YES];
@@ -543,21 +536,11 @@ AttrClass *attr;
 -(void)pushedButton:(NSNumber *)num
 {
     NSLog(@"num = %d", num.integerValue);
-    switch(num.integerValue){
-        case 0:{//start game
+    switch((ButtonMenuImageType)num.integerValue){
+        case ButtonMenuImageTypeStart:{
+            
             NSLog(@"start games");
             
-            //background stop
-//            [backGround stopAnimation];
-            
-            //BGM STOP
-//            if( !audioPlayer.playing ){
-//                [audioPlayer play];
-//            } else {
-//                [audioPlayer pause];
-//            }
-            
-//            NSLog(@"isplaying = %d", BGMClass.getIsPlaying);
             if(bgmClass.getIsPlaying){
                 [bgmClass stop];
             }
@@ -568,47 +551,27 @@ AttrClass *attr;
             [self presentViewController: tvc animated:YES completion: nil];
 #else
             [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
-
+            
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
             [self performSelector:@selector(gotoGame) withObject:nil afterDelay:0.1f];
 #endif
-            //参考戻る時(時間経過等ゲーム終了時で)：[self dismissModalViewControllerAnimated:YES];=>deprecated
-//            NSLog(@"return");
-//            [self dismissViewControllerAnimated:YES completion:nil];
+
+            
             break;
         }
-        //上段
-        case 200:{//武器バージョンアップ
-            subView = [CreateComponentClass createView];
-            [self.view bringSubviewToFront:subView];
-            [self.view addSubview:subView];
-            
-            
-            CGRect rect_close = CGRectMake(285, 57, 20, 20);
-//            closeButton = [self createButtonWithImage:@"close.png" tag:999 frame:rect_close];
-            closeButton = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeGreen
-                                                                rect:rect_close
-                                                               image:@"close.png"
-                                                              target:self
-                                                            selector:@"pushed_button:"];//selector記述する必要あり。
-            closeButton.tag = 999;//
-            [self.view addSubview:closeButton];
-            break;
-        }
-        case 201:{//ドラゴン選択(フリックで選択)
-            
+        case ButtonMenuImageTypeWeapon:{
             NSArray *imageArray = [NSArray arrayWithObjects:@"RockBow.png",
-                                  @"FireBow.png",
-                                  @"WaterBow.png",
-                                  @"IceBow.png",
-                                  @"BugBow.png",
-                                  @"AnimalBow.png",
-                                  @"GrassBow.png",
-                                  @"ClothBow.png",
-                                  @"SpaceBow.png",
-                                  @"WingBow.png",
-                                  nil];
+                                   @"FireBow.png",
+                                   @"WaterBow.png",
+                                   @"IceBow.png",
+                                   @"BugBow.png",
+                                   @"AnimalBow.png",
+                                   @"GrassBow.png",
+                                   @"ClothBow.png",
+                                   @"SpaceBow.png",
+                                   @"WingBow.png",
+                                   nil];
             //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
             //購入した武器の分だけ右を見れる
             UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
@@ -625,24 +588,31 @@ AttrClass *attr;
             
             break;
         }
-        case 202:{//回復
+        case ButtonMenuImageTypeDefense:{
+            
+            break;
+        }
+        case ButtonMenuImageTypeItem:{
+            
             ItemListViewController *ilvc = [[ItemListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
-        case 203:{//配合
+        case ButtonMenuImageTypeWpnUp:{
+            
             break;
         }
-        //下段
-        case 210:{//ドラゴン購入？＝＞ドラゴン選択と同じで良い？
-            break;
-        }
-        case 211:{//アイテム
+        case ButtonMenuImageTypeInn:{
+            
             ItemListViewController *ilvc = [[ItemListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
-        case 212:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
+        case ButtonMenuImageTypeCoin:{
+            
+            break;
+        }
+        case ButtonMenuImageTypeSet:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
             UIView *viewSuper = [CreateComponentClass createViewNoFrame:self.view.bounds
                                                                   color:[UIColor clearColor]
                                                                     tag:9999
@@ -657,7 +627,7 @@ AttrClass *attr;
             int imageWidth = 70;
             int imageHeight = 70;
             int imageMargin = 10;
-//            NSArray *image_array = [NSArray arrayWithObjects:@"bgm.png",@"sound.png", @"difficulty.png",nil] ;
+            //            NSArray *image_array = [NSArray arrayWithObjects:@"bgm.png",@"sound.png", @"difficulty.png",nil] ;
             NSArray *image_array = [NSArray arrayWithObjects:@"close.png",@"close.png", @"close.png",nil] ;
             
             for (int i = 0; i < [image_array count]; i++){
@@ -667,47 +637,176 @@ AttrClass *attr;
                                                imageHeight);
                 
                 UIImageView *iv_item = [CreateComponentClass createImageView:rect_image
-                                                                      image:[image_array objectAtIndex:i]
-                                                                        tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
-                                                                     target:self
-                                                                   selector:@"imageTapped:"];
-//                iv_item.tag = 1;
+                                                                       image:[image_array objectAtIndex:i]
+                                                                         tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
+                                                                      target:self
+                                                                    selector:@"imageTapped:"];
+                //                iv_item.tag = 1;
                 [viewFrame addSubview:iv_item];
             }
             
             [viewSuper addSubview:viewFrame];
             [self.view addSubview:viewSuper];
             
-            break;
-        }
-        case 213:{//課金画面
-            break;
-        }
-            /*
-        case 220:{
-            break;
-        }
-        case 221:{
-            break;
-        }
-        case 222:{
-            break;
-        }
-        case 223:{
-            break;
-        }
-             */
-        case 999:{
-            [subView removeFromSuperview];
-            [closeButton removeFromSuperview];
-            break;
-        }
-        case 9999:{
-            NSLog(@"pushed close button 9999");
+            
             break;
         }
             
     }
+//    switch(num.integerValue){
+//        case 0:{//start game
+//            NSLog(@"start games");
+//            
+//            if(bgmClass.getIsPlaying){
+//                [bgmClass stop];
+//            }
+//            
+//            
+//#ifdef TEST
+//            TestViewController *tvc = [[TestViewController alloc]init];
+//            [self presentViewController: tvc animated:YES completion: nil];
+//#else
+//            [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
+//
+//            //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
+//            //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
+//            [self performSelector:@selector(gotoGame) withObject:nil afterDelay:0.1f];
+//#endif
+//            //参考戻る時(時間経過等ゲーム終了時で)：[self dismissModalViewControllerAnimated:YES];=>deprecated
+////            NSLog(@"return");
+////            [self dismissViewControllerAnimated:YES completion:nil];
+//            break;
+//        }
+//        //上段
+//        case 200:{//武器バージョンアップ
+//            subView = [CreateComponentClass createView];
+//            [self.view bringSubviewToFront:subView];
+//            [self.view addSubview:subView];
+//            
+//            
+//            CGRect rect_close = CGRectMake(285, 57, 20, 20);
+////            closeButton = [self createButtonWithImage:@"close.png" tag:999 frame:rect_close];
+//            closeButton = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeGreen
+//                                                                rect:rect_close
+//                                                               image:@"close.png"
+//                                                              target:self
+//                                                            selector:@"pushed_button:"];//selector記述する必要あり。
+//            closeButton.tag = 999;//
+//            [self.view addSubview:closeButton];
+//            break;
+//        }
+//        case 201:{//ドラゴン選択(フリックで選択)
+//            
+//            NSArray *imageArray = [NSArray arrayWithObjects:@"RockBow.png",
+//                                  @"FireBow.png",
+//                                  @"WaterBow.png",
+//                                  @"IceBow.png",
+//                                  @"BugBow.png",
+//                                  @"AnimalBow.png",
+//                                  @"GrassBow.png",
+//                                  @"ClothBow.png",
+//                                  @"SpaceBow.png",
+//                                  @"WingBow.png",
+//                                  nil];
+//            //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
+//            //購入した武器の分だけ右を見れる
+//            UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
+//                                                                                 50,
+//                                                                                 self.view.bounds.size.width,
+//                                                                                 self.view.bounds.size.height)
+//                                                            imageFile:imageArray
+//                                                               target:self
+//                                                            selector1:@"closeView:"
+//                                                            selector2:@"imageTapped:"];
+//            superView.tag = 0;
+//            [self.view addSubview:superView];
+//            
+//            
+//            break;
+//        }
+//        case 202:{//回復
+//            ItemListViewController *ilvc = [[ItemListViewController alloc]init];
+//            [self presentViewController: ilvc animated:YES completion: nil];
+//            break;
+//        }
+//        case 203:{//配合
+//            break;
+//        }
+//        //下段
+//        case 210:{//ドラゴン購入？＝＞ドラゴン選択と同じで良い？
+//            break;
+//        }
+//        case 211:{//アイテム
+//            ItemListViewController *ilvc = [[ItemListViewController alloc]init];
+//            [self presentViewController: ilvc animated:YES completion: nil];
+//            break;
+//        }
+//        case 212:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
+//            UIView *viewSuper = [CreateComponentClass createViewNoFrame:self.view.bounds
+//                                                                  color:[UIColor clearColor]
+//                                                                    tag:9999
+//                                                                 target:self
+//                                                               selector:@"closeView:"];//透明ビュー
+//            [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
+//            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(100, 70, 210, 250)];
+//            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.6f blue:0.1f alpha:0.6f]];//どちらでも良い
+//            
+//            int imageInitX = 10;
+//            int imageInitY = 10;
+//            int imageWidth = 70;
+//            int imageHeight = 70;
+//            int imageMargin = 10;
+////            NSArray *image_array = [NSArray arrayWithObjects:@"bgm.png",@"sound.png", @"difficulty.png",nil] ;
+//            NSArray *image_array = [NSArray arrayWithObjects:@"close.png",@"close.png", @"close.png",nil] ;
+//            
+//            for (int i = 0; i < [image_array count]; i++){
+//                CGRect rect_image = CGRectMake(imageInitX,
+//                                               imageInitY + i * (imageHeight + imageMargin),
+//                                               imageWidth,
+//                                               imageHeight);
+//                
+//                UIImageView *iv_item = [CreateComponentClass createImageView:rect_image
+//                                                                      image:[image_array objectAtIndex:i]
+//                                                                        tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
+//                                                                     target:self
+//                                                                   selector:@"imageTapped:"];
+////                iv_item.tag = 1;
+//                [viewFrame addSubview:iv_item];
+//            }
+//            
+//            [viewSuper addSubview:viewFrame];
+//            [self.view addSubview:viewSuper];
+//            
+//            break;
+//        }
+//        case 213:{//課金画面
+//            break;
+//        }
+//            /*
+//        case 220:{
+//            break;
+//        }
+//        case 221:{
+//            break;
+//        }
+//        case 222:{
+//            break;
+//        }
+//        case 223:{
+//            break;
+//        }
+//             */
+//        case 999:{
+//            [subView removeFromSuperview];
+//            [closeButton removeFromSuperview];
+//            break;
+//        }
+//        case 9999:{
+//            NSLog(@"pushed close button 9999");
+//            break;
+//        }
+//            
+//    }
 }
 
 -(void)imageTapped:(id)sender{

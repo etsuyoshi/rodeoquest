@@ -232,6 +232,10 @@
 		34FA999917FBBEE500317D83 /* bullet_level1.png in Resources */ = {isa = PBXBuildFile; fileRef = 34FA999317FBBEE500317D83 /* bullet_level1.png */; };
 		34FA999B17FBC36300317D83 /* bullet_level6.png in Resources */ = {isa = PBXBuildFile; fileRef = 34FA999A17FBC36300317D83 /* bullet_level6.png */; };
 		34FA999E17FBCEF000317D83 /* ItemClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FA999D17FBCEEF00317D83 /* ItemClass.m */; };
+		34FD281E1850934200C751FC /* up_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 34FD281B1850934200C751FC /* up_blue.png */; };
+		34FD281F1850934200C751FC /* up_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 34FD281C1850934200C751FC /* up_green.png */; };
+		34FD28201850934200C751FC /* up_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34FD281D1850934200C751FC /* up_yellow.png */; };
+		34FD2822185094B900C751FC /* up_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 34FD2821185094B900C751FC /* up_red.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -506,6 +510,10 @@
 		34FA999A17FBC36300317D83 /* bullet_level6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bullet_level6.png; path = "../../../一般材料/UI/shooting/bullet_level6.png"; sourceTree = "<group>"; };
 		34FA999C17FBCEEF00317D83 /* ItemClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemClass.h; sourceTree = "<group>"; };
 		34FA999D17FBCEEF00317D83 /* ItemClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemClass.m; sourceTree = "<group>"; };
+		34FD281B1850934200C751FC /* up_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up_blue.png; path = "../../../一般材料/UI/矢印/up_blue.png"; sourceTree = "<group>"; };
+		34FD281C1850934200C751FC /* up_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up_green.png; path = "../../../一般材料/UI/矢印/up_green.png"; sourceTree = "<group>"; };
+		34FD281D1850934200C751FC /* up_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up_yellow.png; path = "../../../一般材料/UI/矢印/up_yellow.png"; sourceTree = "<group>"; };
+		34FD2821185094B900C751FC /* up_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up_red.png; path = "../../../一般材料/UI/矢印/up_red.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -668,6 +676,10 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				34FD2821185094B900C751FC /* up_red.png */,
+				34FD281B1850934200C751FC /* up_blue.png */,
+				34FD281C1850934200C751FC /* up_green.png */,
+				34FD281D1850934200C751FC /* up_yellow.png */,
 				343D9700184F3296000239F4 /* icon_gear_b.png */,
 				343D9701184F3296000239F4 /* icon_INN_b.png */,
 				3422319C1845B5C400055ADF /* btn_g_off2.png */,
@@ -1173,6 +1185,7 @@
 				34FA999417FBBEE500317D83 /* bullet_default.png in Resources */,
 				34FA999517FBBEE500317D83 /* bullet_level5.png in Resources */,
 				340A4640181E412200D9B005 /* AnimalBow.png in Resources */,
+				34FD28201850934200C751FC /* up_yellow.png in Resources */,
 				34FA999617FBBEE500317D83 /* bullet_level4.png in Resources */,
 				3440529E182BBC1A0049AE46 /* coin_green.png in Resources */,
 				34FA999717FBBEE500317D83 /* bullet_level3.png in Resources */,
@@ -1213,6 +1226,7 @@
 				3411FB7917FED1DF001D1491 /* powerGauge_pt7.png in Resources */,
 				3411FB7A17FED1DF001D1491 /* powerGauge_pt8.png in Resources */,
 				3411FB7B17FED1DF001D1491 /* powerGauge_pt9.png in Resources */,
+				34FD281E1850934200C751FC /* up_blue.png in Resources */,
 				34A2275A182A4B690050CFDB /* 10.png in Resources */,
 				3488ACC5183D272F00833F93 /* img04.png in Resources */,
 				3460F9501824FA2700951A99 /* tool_bomb.png in Resources */,
@@ -1225,6 +1239,7 @@
 				3411FB7F17FED1DF001D1491 /* powerGauge_pt13.png in Resources */,
 				34CA558618447A9B00F9657A /* laser_r02.png in Resources */,
 				3411FB8017FED1DF001D1491 /* powerGauge_pt14.png in Resources */,
+				34FD2822185094B900C751FC /* up_red.png in Resources */,
 				3411FB8117FED1DF001D1491 /* powerGauge_pt15.png in Resources */,
 				3411FB8617FEF392001D1491 /* mechanical_design_3.png in Resources */,
 				34F30068182161A30082DCBC /* kira2.png in Resources */,
@@ -1245,6 +1260,7 @@
 				34A087441803EC79005458EF /* chara_test2.png in Resources */,
 				34CA558718447A9B00F9657A /* laser_r03.png in Resources */,
 				34F30067182161A30082DCBC /* kira.png in Resources */,
+				34FD281F1850934200C751FC /* up_green.png in Resources */,
 				34E216C6181BF62F00B939E6 /* bgm_game_687.mp3 in Resources */,
 				34A087461803F017005458EF /* red.png in Resources */,
 				34A087481803F194005458EF /* coin2.png in Resources */,

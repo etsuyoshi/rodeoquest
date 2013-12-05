@@ -192,7 +192,11 @@
                 break;
             }
             case ButtonMenuImageTypeDefense:{
-                imgAdd.image = [UIImage imageNamed:@"defense_sheild.png"];
+                imgAdd.image = [UIImage imageNamed:@"defense_shield.png"];
+                break;
+            }
+            case  ButtonMenuImageTypeWpnUp:{
+                imgAdd.image = [UIImage imageNamed:@"up_red.png"];
                 break;
             }
             case ButtonMenuImageTypeCoin:{
