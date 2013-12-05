@@ -231,7 +231,8 @@ AttrClass *attr;
 //    imageFile = [[NSMutableArray alloc]init];
 //    _imageFile = [NSArray arrayWithObjects:@"red.png", @"blue_item_yuri_big.png", nil];
     arrNoImage = [NSMutableArray arrayWithObjects:
-                      [NSArray arrayWithObjects:
+                  [NSArray arrayWithObjects:
+                       [NSNumber numberWithInt:ButtonMenuImageTypeInn],
                        [NSNumber numberWithInt:ButtonMenuImageTypeWeapon],
                        [NSNumber numberWithInt:ButtonMenuImageTypeItem],
                        //                       @"blue_item_yuri_big2.png",

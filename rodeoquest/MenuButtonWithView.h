@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
     ButtonMenuImageTypeWeapon,
+    ButtonMenuImageTypeDefense,
     ButtonMenuImageTypeItem,
     ButtonMenuImageTypeInn,
     ButtonMenuImageTypeSet,

@@ -191,6 +191,10 @@
                 imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
                 break;
             }
+            case ButtonMenuImageTypeDefense:{
+                imgAdd.image = [UIImage imageNamed:@"defense_sheild.png"];
+                break;
+            }
             case ButtonMenuImageTypeCoin:{
                 imgAdd.image = [UIImage imageNamed:@"coin_yellow.png"];
                 break;
