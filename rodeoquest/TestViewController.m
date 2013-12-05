@@ -740,9 +740,12 @@ int tempCount = 0;
 //        [self.view addSubview:imv_test];
 //        imv_test.userInteractionEnabled = YES;
         imv_test = [[MenuButtonWithView alloc]initWithFrame:CGRectMake(100, 200, 60, 60)
-                                                       type:MenuBtnTypeInn
+                                                   backType:ButtonMenuBackTypeBlue
+                                                  imageType:ButtonMenuImageTypeInn
                                                      target:self
-                                                   selector:@"buttonPressed:"];
+                                                   selector:@"buttonPressed:"
+                                                        tag:0];//arg
+
         [self.view addSubview:imv_test];
         
     }
@@ -761,8 +764,11 @@ int tempCount = 0;
 }
 
 #ifdef BTNPRESS_TEST
--(void)buttonPressed:(id)sender{
-    NSLog(@"%d", [sender tag]);
+//-(void)buttonPressed:(id)sender{
+//    NSLog(@"%d", [sender tag]);
+//}
+-(void)buttonPressed:(NSNumber *)num{
+    NSLog(@"arg = %d", num.integerValue);
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

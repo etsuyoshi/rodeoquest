@@ -9,17 +9,22 @@
 #import "MenuButtonWithView.h"
 
 @implementation MenuButtonWithView
-@synthesize menuBtnType;
+//@synthesize menuBtnType;
+@synthesize buttonMenuBackType;
+@synthesize buttonMenuImageType;
 
 - (id)initWithFrame:(CGRect)frame
-               type:(MenuBtnType)_type
+               backType:(ButtonMenuBackType)_backType
+          imageType:(ButtonMenuImageType)_imageType
              target:(id)_target
-           selector:(NSString *)_selName{
-    
+           selector:(NSString *)_selName
+                tag:(int)_tag_img{
+    tag_img = _tag_img;
     originalFrame = frame;
     self = [super initWithFrame:frame];
     isPressed = false;
-    menuBtnType = _type;
+    buttonMenuBackType = _backType;
+    buttonMenuImageType = _imageType;
     target = _target;
     strMethod = _selName;
     if (self) {
@@ -108,7 +113,9 @@
 //        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:target
 //                                                                           action:NSSelectorFromString(selName)]];
 //        [target performSelector:@selector(strMethod) withObject:nil afterDelay:0.01f];
-        [target performSelector:NSSelectorFromString(strMethod) withObject:nil afterDelay:0.01f];
+        [target performSelector:NSSelectorFromString(strMethod)
+                     withObject:[NSNumber numberWithInt:tag_img]
+                     afterDelay:0.01f];
         
     }
     
@@ -123,27 +130,69 @@
     }
 }
 -(void)setBack{
-    if(isPressed){
-        self.image = [UIImage imageNamed:@"btn_g_on2.png"];
-        
-    }else{
-        self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+    switch (buttonMenuBackType) {
+        case ButtonMenuBackTypeBlue:{
+            if(isPressed){
+                self.image = [UIImage imageNamed:@"btn_g_on2.png"];//blue
+                
+            }else{
+                self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+            }
+            break;
+        }
+        case ButtonMenuBackTypeGreen:{
+            if(isPressed){
+                self.image = [UIImage imageNamed:@"btn_g_on2.png"];
+                
+            }else{
+                self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+            }
+            break;
+        }
+        case ButtonMenuBackTypeOrange:{
+            if(isPressed){
+                self.image = [UIImage imageNamed:@"btn_g_on2.png"];//orange
+                
+            }else{
+                self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+            }
+            break;
+        }
+        case ButtonMenuBackTypeDefault:{
+            
+        }
+            
+        default:{
+            break;
+        }
     }
+    
 }
 -(void)setImage{
 //    if(isPressed){
-        switch (menuBtnType) {
-            case MenuBtnTypeInn:{
+        switch (buttonMenuImageType) {
+            case ButtonMenuImageTypeInn:{
                 imgAdd.image = [UIImage imageNamed:@"icon_INN_b.png"];
                 break;
             }
-            case MenuBtnTypeSet:{
+            case ButtonMenuImageTypeSet:{
                 imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
                 break;
             }
-            case MenuBtnTypeWeapon:{
+            case ButtonMenuImageTypeWeapon:{
                 imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
-                
+                break;
+            }
+            case ButtonMenuImageTypeStart: {
+                imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+                break;
+            }
+            case ButtonMenuImageTypeItem:{
+                imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+                break;
+            }
+            case ButtonMenuImageTypeCoin:{
+                imgAdd.image = [UIImage imageNamed:@"coin_yellow.png"];
                 break;
             }
         }

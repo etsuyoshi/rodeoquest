@@ -7,10 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef NS_ENUM(NSInteger, MenuBtnType) {
-    MenuBtnTypeWeapon,
-    MenuBtnTypeSet,
-    MenuBtnTypeInn
+typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
+    ButtonMenuImageTypeWeapon,
+    ButtonMenuImageTypeItem,
+    ButtonMenuImageTypeInn,
+    ButtonMenuImageTypeSet,
+    ButtonMenuImageTypeCoin,
+    ButtonMenuImageTypeStart
+    
+    
+};
+
+typedef NS_ENUM(NSInteger, ButtonMenuBackType) {
+    ButtonMenuBackTypeDefault = 0,          // default
+    ButtonMenuBackTypeOrange,
+    ButtonMenuBackTypeBlue,
+    ButtonMenuBackTypeGreen
 };
 
 @interface MenuButtonWithView : UIImageView{
@@ -24,12 +36,17 @@ typedef NS_ENUM(NSInteger, MenuBtnType) {
     id target;
 //    selector *selector;
     NSString *strMethod;
+    int tag_img;
 }
 
 
-@property(nonatomic) MenuBtnType menuBtnType;
+@property(nonatomic) ButtonMenuImageType buttonMenuImageType;
+@property(nonatomic) ButtonMenuBackType buttonMenuBackType;
 -(id)initWithFrame:(CGRect)frame
-              type:(MenuBtnType)_type
+          backType:(ButtonMenuBackType)_backType
+         imageType:(ButtonMenuImageType)_imageType
             target:(id)target
-          selector:(NSString *)selName;
+          selector:(NSString *)selName
+               tag:(int)_tag;
+
 @end

@@ -113,7 +113,7 @@
                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
                                     imageFrameWidth,
                                     imageFrameHeight);
-        UIButton *btn = [CreateComponentClass createQBButton:ButtonTypeWithImage
+        UIButton *btn = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
                                                         rect:btnRect
                                                        image:@"bullet_level6.png"
                                                        title:@"get"
@@ -128,7 +128,7 @@
     //参考戻る時(時間経過等ゲーム終了時で)：[self dismissModalViewControllerAnimated:YES];
     //            NSLog(@"return");
     //            [self dismissViewControllerAnimated:YES completion:nil];
-    UIButton *closeBtn = [CreateComponentClass createButtonWithType:ButtonTypeWithImage
+    UIButton *closeBtn = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
                                                                rect:CGRectMake(300, 3, 20, 20)
                                                               image:@"close.png"
                                                              target:self

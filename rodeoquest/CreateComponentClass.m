@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
+#import "MenuButtonWithView.h"
 #import "CreateComponentClass.h"
 #import "QBFlatButton.h"
 #import <Foundation/Foundation.h>
@@ -176,7 +177,7 @@
     int btWidth = 100;
     int btHeight = 40;
     
-    return [self createButtonWithType:ButtonTypeDefault
+    return [self createButtonWithType:ButtonMenuBackTypeDefault
                                  rect:CGRectMake(320/2-btWidth/2, 480/2-btHeight/2, btWidth, btHeight)//center
                                 image:nil
                                target:target
@@ -185,14 +186,14 @@
 }
 
 //manufact
-+(UIButton *)createButtonWithType:(ButtonType)buttonType
++(UIButton *)createButtonWithType:(ButtonMenuBackType)buttonType
                              rect:(CGRect)rect
                             image:(NSString *)image
                            target:(id)target
                          selector:(NSString *)selName{
     
     
-    if (buttonType == ButtonTypeDefault) {
+    if (buttonType == ButtonMenuBackTypeDefault) {
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setFrame:rect];
@@ -205,7 +206,7 @@
                    action:NSSelectorFromString(selName)
          forControlEvents:UIControlEventTouchUpInside];
         return button;
-    }else if(buttonType == ButtonTypeWithImage){
+    }else if(buttonType == ButtonMenuBackTypeBlue){
         UIButton *button = [[UIButton alloc] initWithFrame:rect];
         button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -224,14 +225,14 @@
 
 
 //manufacture
-+(UIButton *)createQBButton:(ButtonType)type
++(UIButton *)createQBButton:(ButtonMenuBackType)type
                        rect:(CGRect)rect
                       image:(NSString *)image
                       title:(NSString *)title
                      target:(id)target
                    selector:(NSString *)selName{
     
-    if (type == ButtonTypeDefault) {
+    if (type == ButtonMenuBackTypeDefault) {
         QBFlatButton *qbBtn = [QBFlatButton buttonWithType:UIButtonTypeCustom];
         qbBtn.frame = rect;
 //        qbBtn.faceColor = [UIColor colorWithRed:154.0/255.0 green:255.0/255.0 blue:154.0/255.0 alpha:1.0];//palegreen 1
@@ -252,7 +253,7 @@
         return qbBtn;
     }
     
-    if (type == ButtonTypeWithImage) {
+    if (type == ButtonMenuBackTypeBlue) {
         QBFlatButton *qbBtn = [QBFlatButton buttonWithType:UIButtonTypeCustom];
         qbBtn.frame = rect;
         //        qbBtn.faceColor = [UIColor colorWithRed:154.0/255.0 green:255.0/255.0 blue:154.0/255.0 alpha:1.0];//palegreen 1
@@ -349,38 +350,43 @@
     return superView;
 
 }
++(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
+                       imageType:(ButtonMenuImageType)_imageType
+                            rect:(CGRect)rect
+                          target:(id)target
+                        selector:(NSString *)selector
+                             tag:(int)_tag{
+    
+    
+    UIImageView *imv = [[MenuButtonWithView alloc]initWithFrame:rect
+                                                       backType:_backType
+                                                      imageType:_imageType
+                                                         target:target
+                                                       selector:selector
+                                                            tag:_tag
+                        ];
+    
+    
+    return imv;
+}
 
-+(UIButton *)createMenuButton:(ButtonType)type
++(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
+                       imageType:(ButtonMenuImageType)_imageType
                          rect:(CGRect)rect
                        target:(id)target
                      selector:(NSString *)selector{
-    UIButton *buttonD = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonD.frame = rect;//CGRectMake(7, 362, 46, 46);
-    if(type == ButtonTypeBlue){
-        [buttonD setBackgroundImage:[UIImage imageNamed:@"btn_g_on2.png"]
-                           forState:UIControlStateHighlighted];
-        [buttonD setBackgroundImage:[UIImage imageNamed:@"btn_g_off2.png"]
-                           forState:UIControlStateNormal];
-    }else if(type == ButtonTypeGreen){
-        [buttonD setBackgroundImage:[UIImage imageNamed:@"btn_g_on.png"]
-                           forState:UIControlStateHighlighted];
-        [buttonD setBackgroundImage:[UIImage imageNamed:@"btn_g_off.png"]
-                           forState:UIControlStateNormal];
-    }else if(type == ButtonTypeOrange){
-        [buttonD setBackgroundImage:[UIImage imageNamed:@"btn_glasjdf.png"]
-                           forState:UIControlStateHighlighted];
-        [buttonD setBackgroundImage:[UIImage imageNamed:@"btn_g_on.png"]
-                           forState:UIControlStateNormal];
-    }else{
-        return nil;
-    }
-    [buttonD addTarget:target
-                action:NSSelectorFromString(selector)
-      forControlEvents:UIControlEventTouchUpInside];
     
-    return buttonD;
+    
+    return [self createMenuButton:_backType
+                        imageType:_imageType
+                             rect:rect
+                           target:target
+                         selector:selector
+                              tag:0];
     
 }
+
+
 
 
 +(UIButton *)createGradButton{
@@ -435,5 +441,6 @@
     
     return btn;
 }
+
 
 @end

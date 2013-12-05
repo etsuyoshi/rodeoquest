@@ -60,9 +60,10 @@
 
 #define ALPHA_COMPONENT 0.5
 
-NSMutableArray *imageFileArray;
-NSMutableArray *tagArray;
-NSMutableArray *titleArray;
+//NSMutableArray *imageFileArray;
+//NSMutableArray *tagArray;
+//NSMutableArray *titleArray;
+NSMutableArray *arrNoImage;
 
 UIView *subView;
 UIButton *closeButton;//閉じるボタン
@@ -213,72 +214,49 @@ AttrClass *attr;
     
     
     //タイトル配列
-    titleArray = [NSMutableArray arrayWithObjects:
-                  [NSArray arrayWithObjects:
-                   @"wpn",//
-                   @"drgn",
-                   @"heal",//INN:try-count recover
-                   @"配合",
-                   nil],
-                  [NSArray arrayWithObjects:
-                   @"buy",
-                   @"item",//
-                   @"set",//
-                   @"gold",//
-                   nil],
-                  nil];
+//    titleArray = [NSMutableArray arrayWithObjects:
+//                  [NSArray arrayWithObjects:
+//                   @"wpn",//
+//                   @"drgn",
+//                   @"heal",//INN:try-count recover
+//                   @"配合",
+//                   nil],
+//                  [NSArray arrayWithObjects:
+//                   @"buy",
+//                   @"item",//
+//                   @"set",//
+//                   @"gold",//
+//                   nil],
+//                  nil];
 //    imageFile = [[NSMutableArray alloc]init];
 //    _imageFile = [NSArray arrayWithObjects:@"red.png", @"blue_item_yuri_big.png", nil];
-    imageFileArray = [NSMutableArray arrayWithObjects:
+    arrNoImage = [NSMutableArray arrayWithObjects:
                       [NSArray arrayWithObjects:
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-//                       @"red.png",
-//                       @"red.png",
-//                       @"blue_item_yuri_big2.png",
-//                       @"yellow_item_thunder.png",
+                       [NSNumber numberWithInt:ButtonMenuImageTypeWeapon],
+                       [NSNumber numberWithInt:ButtonMenuImageTypeItem],
+                       //                       @"blue_item_yuri_big2.png",
+                       //                       @"blue_item_yuri_big2.png",
+                       //                       @"blue_item_yuri_big2.png",
+                       //                       @"blue_item_yuri_big2.png",
+                       //                       @"red.png",
+                       //                       @"red.png",
+                       //                       @"blue_item_yuri_big2.png",
+                       //                       @"yellow_item_thunder.png",
                        nil],
                       [NSArray arrayWithObjects:
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-//                       @"red.png",
-//                       @"yellow_item_thunder.png",
-//                       @"red.png",
+                       [NSNumber numberWithInt:ButtonMenuImageTypeInn],
+                       [NSNumber numberWithInt:ButtonMenuImageTypeCoin],
+                       [NSNumber numberWithInt:ButtonMenuImageTypeSet],
                        nil],
-                      /*
-                      [NSArray arrayWithObjects:
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-//                       @"red.png",
-//                       @"yellow_item_thunder.png",
-//                       @"red.png",
-                       nil],
-                      
-                      [NSArray arrayWithObjects:
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-                       @"blue_item_yuri_big2.png",
-//                       @"red.png",
-//                       @"yellow_item_thunder.png",
-//                       @"red.png",
-                       nil],
-                       */
                       nil];
 //    NSLog(@"imageFileArray initialization complete");
     
-    tagArray = [NSMutableArray arrayWithObjects:
-                [NSArray arrayWithObjects:@"200", @"201", @"202", @"203", nil],
-                [NSArray arrayWithObjects:@"210", @"211", @"212", @"213", nil],
-                [NSArray arrayWithObjects:@"220", @"221", @"222", @"223", nil],
-                [NSArray arrayWithObjects:@"230", @"231", @"232", @"233", nil],
-                nil];
+//    tagArray = [NSMutableArray arrayWithObjects:
+//                [NSArray arrayWithObjects:@"200", @"201", @"202", @"203", nil],
+//                [NSArray arrayWithObjects:@"210", @"211", @"212", @"213", nil],
+//                [NSArray arrayWithObjects:@"220", @"221", @"222", @"223", nil],
+//                [NSArray arrayWithObjects:@"230", @"231", @"232", @"233", nil],
+//                nil];
 //    NSLog(@"tagArray initialization complete");
 
 	// Do any additional setup after loading the view.
@@ -490,13 +468,13 @@ AttrClass *attr;
 //    NSLog(@"count = %d", [[imageFileArray objectAtIndex:0] count]);
     
     //各種アイコン表示部分
-    for(int row = 0; row < [imageFileArray count];row++){
+    for(int row = 0; row < [arrNoImage count];row++){
 //        NSLog(@"row = %d", row);
 
-        for(int col = 0; col < [[imageFileArray objectAtIndex:row] count] ;col++){
+        for(int col = 0; col < [[arrNoImage objectAtIndex:row] count] ;col++){
 //            NSLog(@"row = %d, col = %d", row, col);
             CGRect rect_bt = CGRectMake(
-                                        x_frame_center - (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * 2 +
+                                        x_frame_center - (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count]/2 +
                                         (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * col,
                                         
                                         Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
@@ -506,35 +484,14 @@ AttrClass *attr;
                                         SIZE_FORMAL_BUTTON,
                                         SIZE_FORMAL_BUTTON);
             
-//            UIButton *bt = [self createButtonWithImage:[[imageFileArray objectAtIndex:row] objectAtIndex:col]
-//                                                   tag:[[[tagArray objectAtIndex:row] objectAtIndex:col ] intValue]//COMPONENT_00でも可
-//                                                 frame:rect_bt];
-//            [bt addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
+            UIImageView *bt = [CreateComponentClass createMenuButton:ButtonMenuBackTypeGreen
+                                                           imageType:[[[arrNoImage objectAtIndex:row] objectAtIndex:col] intValue]
+                                                                rect:rect_bt
+                                                              target:self
+                                                            selector:@"pushedButton:"
+                                                                 tag:[[[arrNoImage objectAtIndex:row] objectAtIndex:col] intValue]];
             
-            
-            
-//            UIButton *bt = [CreateComponentClass createQBButton:ButtonTypeWithImage
-//                                                           rect:rect_bt
-//                                                          image:[[imageFileArray objectAtIndex:row] objectAtIndex:col]
-//                                                          title:[[titleArray objectAtIndex:row] objectAtIndex:col]
-//                                                         target:self
-//                                                       selector:@"pushed_button:"];
-            UIButton *bt = [CreateComponentClass createMenuButton:ButtonTypeGreen
-                                                             rect:rect_bt
-                                                           target:self
-                                                         selector:@"pushed_button:"];
-            
-            bt.tag = [[[tagArray objectAtIndex:row] objectAtIndex:col] intValue];
             [self.view addSubview:bt];
-            
-            
-            
-
-            
-//            NSLog(@"row = %d, col = %d, x = %d, y = %d, image = %@",
-//                  row, col,
-//                  (int)rect_bt.origin.x, (int)rect_bt.origin.y,
-//                  [[imageFileArray objectAtIndex:row] objectAtIndex:col]);
         }
     }
     
@@ -543,25 +500,16 @@ AttrClass *attr;
     CGRect rect_start = CGRectMake(x_frame_center - W_BT_START/2,
                                    Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
                                    H_RANKING_COMPONENT + MARGIN_RANKING_TO_FORMAL_BUTTON +
-                                   (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [imageFileArray count] + MARGIN_FORMAL_TO_START,
+                                   (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count] + MARGIN_FORMAL_TO_START,
                                    W_BT_START,
                                    H_BT_START);
-//    UIButton *bt_start = [self createButtonWithImage:@"white_128.png"
-//                                           tag:0
-//                                         frame:rect_start];
-//    
-//    [bt_start addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
-//    UIButton *bt_start = [CreateComponentClass createButtonWithType:ButtonTypeWithImage
-//                                                               rect:rect_start
-//                                                              image:@"white_128.png"
-//                                                             target:self
-//                                                           selector:@"pushed_button:"];
-    UIButton *bt_start = [CreateComponentClass createMenuButton:ButtonTypeBlue
-                                                           rect:rect_start
-                                                         target:self
-                                                       selector:@"pushed_button:"];
-    bt_start.tag = 0;
     
+    UIImageView *bt_start = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
+                                                         imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
+                                                              rect:(CGRect)rect_start
+                                                            target:(id)self
+                                                          selector:(NSString *)@"pushedButton"
+                                                               tag:(int)0];
     //丸角
 //    [[bt_start layer] setCornerRadius:10.0];
 //    [bt_start setClipsToBounds:YES];
@@ -591,18 +539,15 @@ AttrClass *attr;
 
 }
 
--(void)pushed_button:(id)sender
+-(void)pushedButton:(NSNumber *)num
 {
-    NSLog(@"%d", [sender tag]);
-    if ([sender tag] == 0) {
-        NSLog(@"%d", 0);
-    }
-    switch([sender tag]){
+    NSLog(@"num = %d", num.integerValue);
+    switch(num.integerValue){
         case 0:{//start game
             NSLog(@"start games");
             
             //background stop
-            [backGround stopAnimation];
+//            [backGround stopAnimation];
             
             //BGM STOP
 //            if( !audioPlayer.playing ){
@@ -641,7 +586,7 @@ AttrClass *attr;
             
             CGRect rect_close = CGRectMake(285, 57, 20, 20);
 //            closeButton = [self createButtonWithImage:@"close.png" tag:999 frame:rect_close];
-            closeButton = [CreateComponentClass createButtonWithType:ButtonTypeWithImage
+            closeButton = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeGreen
                                                                 rect:rect_close
                                                                image:@"close.png"
                                                               target:self
@@ -777,7 +722,7 @@ AttrClass *attr;
             [viewAll setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.9f]];//タップイベントを受け付けないビューを画面全体に配置
             UIView *viewFrame = [CreateComponentClass createView:CGRectMake(10, 80, 300, 300)];
             [viewFrame setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:1.0f alpha:0.5f]];
-            UIButton *bt = [CreateComponentClass createButtonWithType:ButtonTypeWithImage
+            UIButton *bt = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
                                                                  rect:CGRectMake(260, 50, 25, 25)
                                                                 image:@"close.png"
                                                                target:self

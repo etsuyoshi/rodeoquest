@@ -1771,7 +1771,7 @@ UIView *viewMyEffect;
                                     view_go.bounds.size.height - go_height - 10,
                                     go_component_width,
                                     go_height);
-    UIButton *qbBtn = [CreateComponentClass createQBButton:ButtonTypeWithImage
+    UIButton *qbBtn = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
                                                       rect:rect_btn
                                                      image:@"blue_item_yuri_big2.png"
                                                      title:@"exit"

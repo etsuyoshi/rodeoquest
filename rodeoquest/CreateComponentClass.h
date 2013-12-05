@@ -7,15 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MenuButtonWithView.h"
 
-
-typedef NS_ENUM(NSInteger, ButtonType) {
-    ButtonTypeDefault = 0,          // default
-    ButtonTypeWithImage,            // imageDefault
-    ButtonTypeOrange,
-    ButtonTypeBlue,
-    ButtonTypeGreen
-};
 
 @interface CreateComponentClass : NSObject{
     
@@ -64,13 +57,13 @@ typedef NS_ENUM(NSInteger, ButtonType) {
 
 +(UIButton *)createButton:(id)target
                  selector:(NSString *)selName;
-+(UIButton *)createButtonWithType:(ButtonType)type
++(UIButton *)createButtonWithType:(ButtonMenuBackType)type
                              rect:(CGRect)rect
                             image:(NSString *)image
                            target:(id)target
                          selector:(NSString *)selName;
 
-+(UIButton *)createQBButton:(ButtonType)type
++(UIButton *)createQBButton:(ButtonMenuBackType)type
                      rect:(CGRect)rect
                     image:(NSString *)image
                       title:(NSString *)title
@@ -85,10 +78,16 @@ typedef NS_ENUM(NSInteger, ButtonType) {
                  selector2:(NSString *)selector2;
 
 
-+(UIButton *)createMenuButton:(ButtonType)type
-                         rect:(CGRect)rect
-                       target:(id)target
-                     selector:(NSString *)selector;
-
++(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
+                       imageType:(ButtonMenuImageType)_imageType
+                            rect:(CGRect)rect
+                          target:(id)target
+                        selector:(NSString *)selector;
++(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
+                       imageType:(ButtonMenuImageType)_imageType
+                            rect:(CGRect)rect
+                          target:(id)target
+                        selector:(NSString *)selector
+                             tag:(int)_tag;
 +(UIButton *)createGradButton;
 @end
