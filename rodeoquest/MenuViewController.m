@@ -14,6 +14,9 @@
 #import "GameClassViewController.h"
 #import "BackGroundClass2.h"
 #import "ItemListViewController.h"
+#import "ItemUpListViewController.h"
+#import "WeaponUpListViewController.h"
+#import "LifeUpListViewController.h"
 #import "CreateComponentClass.h"
 #import "InviteFriendsViewController.h"
 #import "TestViewController.h"
@@ -550,8 +553,8 @@ AttrClass *attr;
             TestViewController *tvc = [[TestViewController alloc]init];
             [self presentViewController: tvc animated:YES completion: nil];
 #else
-            [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
-            
+//            [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
+            [backGround stopAnimation];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
             [self performSelector:@selector(gotoGame) withObject:nil afterDelay:0.1f];
@@ -593,18 +596,21 @@ AttrClass *attr;
             break;
         }
         case ButtonMenuImageTypeItem:{
-            
-            ItemListViewController *ilvc = [[ItemListViewController alloc]init];
+            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            ItemUpListViewController *ilvc = [[ItemUpListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
         case ButtonMenuImageTypeWpnUp:{
-            
+            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            WeaponUpListViewController *ilvc = [[WeaponUpListViewController alloc]init];
+            [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
         case ButtonMenuImageTypeInn:{
-            
-            ItemListViewController *ilvc = [[ItemListViewController alloc]init];
+//            [backGround pauseAnimations];
+            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            LifeUpListViewController *ilvc = [[LifeUpListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }

@@ -205,6 +205,9 @@
 		34D55FCF183CA05400788533 /* bomb010.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D55FCC183CA05400788533 /* bomb010.png */; };
 		34D55FD0183CA05400788533 /* bomb013.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D55FCD183CA05400788533 /* bomb013.png */; };
 		34D55FD1183CA05400788533 /* bomb017.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D55FCE183CA05400788533 /* bomb017.png */; };
+		34E041D91850A93400CA3034 /* ItemUpListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E041D81850A93400CA3034 /* ItemUpListViewController.m */; };
+		34E041DC1850AEEC00CA3034 /* WeaponUpListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E041DB1850AEEC00CA3034 /* WeaponUpListViewController.m */; };
+		34E041DF1850B0CC00CA3034 /* LifeUpListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */; };
 		34E216C1181BE80400B939E6 /* flinging.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C0181BE80400B939E6 /* flinging.mp3 */; };
 		34E216C6181BF62F00B939E6 /* bgm_game_687.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C5181BF62F00B939E6 /* bgm_game_687.mp3 */; };
 		34E216C8181BF64F00B939E6 /* mahotoshi_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C7181BF64F00B939E6 /* mahotoshi_hmix.mp3 */; };
@@ -479,6 +482,12 @@
 		34D55FCC183CA05400788533 /* bomb010.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb010.png; sourceTree = "<group>"; };
 		34D55FCD183CA05400788533 /* bomb013.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb013.png; sourceTree = "<group>"; };
 		34D55FCE183CA05400788533 /* bomb017.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb017.png; sourceTree = "<group>"; };
+		34E041D71850A93400CA3034 /* ItemUpListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemUpListViewController.h; sourceTree = "<group>"; };
+		34E041D81850A93400CA3034 /* ItemUpListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemUpListViewController.m; sourceTree = "<group>"; };
+		34E041DA1850AEEC00CA3034 /* WeaponUpListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponUpListViewController.h; sourceTree = "<group>"; };
+		34E041DB1850AEEC00CA3034 /* WeaponUpListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeaponUpListViewController.m; sourceTree = "<group>"; };
+		34E041DD1850B0CC00CA3034 /* LifeUpListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LifeUpListViewController.h; sourceTree = "<group>"; };
+		34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LifeUpListViewController.m; sourceTree = "<group>"; };
 		34E216C0181BE80400B939E6 /* flinging.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flinging.mp3; sourceTree = "<group>"; };
 		34E216C5181BF62F00B939E6 /* bgm_game_687.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_game_687.mp3; sourceTree = "<group>"; };
 		34E216C7181BF64F00B939E6 /* mahotoshi_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mahotoshi_hmix.mp3; sourceTree = "<group>"; };
@@ -1052,6 +1061,12 @@
 				344928B118025E6100315F2D /* MenuViewController.m */,
 				34A6A1A1180EF48F006F26D6 /* ItemListViewController.h */,
 				34A6A1A2180EF48F006F26D6 /* ItemListViewController.m */,
+				34E041DA1850AEEC00CA3034 /* WeaponUpListViewController.h */,
+				34E041DB1850AEEC00CA3034 /* WeaponUpListViewController.m */,
+				34E041D71850A93400CA3034 /* ItemUpListViewController.h */,
+				34E041D81850A93400CA3034 /* ItemUpListViewController.m */,
+				34E041DD1850B0CC00CA3034 /* LifeUpListViewController.h */,
+				34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
 				3436369B180FDA8B005A5C01 /* FontTestViewController.m */,
 				34C16CCD181C2D9000650A40 /* TestViewController.h */,
@@ -1375,13 +1390,16 @@
 				34FA999E17FBCEF000317D83 /* ItemClass.m in Sources */,
 				342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */,
 				3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */,
+				34E041D91850A93400CA3034 /* ItemUpListViewController.m in Sources */,
 				3411FB8417FEE301001D1491 /* MyMachineClass.m in Sources */,
 				3420AB961827AA9200AB0A84 /* UIView+Animation.m in Sources */,
 				34F3006F182162660082DCBC /* KiraParticleView.m in Sources */,
 				343F802B17FF947100224839 /* ScoreBoardClass.m in Sources */,
+				34E041DC1850AEEC00CA3034 /* WeaponUpListViewController.m in Sources */,
 				3458DB251827C3E2003F1672 /* BackGroundClass.m in Sources */,
 				34C09ECE1800497900E4A4D8 /* GoldBoardClass.m in Sources */,
 				344928B218025E6100315F2D /* MenuViewController.m in Sources */,
+				34E041DF1850B0CC00CA3034 /* LifeUpListViewController.m in Sources */,
 				348AD7ED180A9159007226EC /* DBAccessClass.m in Sources */,
 				34FA1A31180BC2460011E1CA /* AttrClass.m in Sources */,
 				340C7613180D37E500169658 /* CreateComponentClass.m in Sources */,

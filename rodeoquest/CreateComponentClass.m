@@ -194,12 +194,15 @@
     
     
     if (buttonType == ButtonMenuBackTypeDefault) {
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setFrame:rect];
+        
+        NSLog(@"button pressed now! , %@, %@, %f, %f", image, selName, button.center.x, button.center.y);
         button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         button.contentMode = UIViewContentModeScaleToFill;
+        [button setBackgroundImage:[UIImage imageNamed:image]
+                          forState:UIControlStateNormal];
         [button setTitle:@""
                 forState:UIControlStateNormal];
         [button addTarget:target

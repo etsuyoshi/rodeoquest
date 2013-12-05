@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ItemListViewController : UIViewController
+@interface ItemListViewController : UIViewController{
+    
+    NSMutableArray *arrIv;
+    NSMutableArray *arrTv;
+//    NSMutableArray *arrBtn;
+}
+
 
 @end

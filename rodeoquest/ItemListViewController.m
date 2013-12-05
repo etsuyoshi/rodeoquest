@@ -20,8 +20,34 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        //UIImageView
+        arrIv = [NSMutableArray arrayWithObjects:
+                 @"close.png",
+                 @"close.png",
+                 @"close.png",
+                 @"close.png",
+                 nil];
+        //UITextView
+        arrTv = [NSMutableArray arrayWithObjects:
+                 @"close.png",
+                 @"close.png",
+                 @"close.png",
+                 @"close.png",
+                 nil];
+        //UIButton
+//        arrBtn = [NSMutableArray arrayWithObjects:
+//                 @"close.png",
+//                 @"close.png",
+//                 @"close.png",
+//                 @"close.png",
+//                 nil];
     }
     return self;
+}
+
+//ステータスバー非表示の一環
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (void)viewDidLoad
@@ -29,13 +55,28 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    
+    // ステータスバーを非表示にする:plistでの処理はiOS7以降非推奨
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        //ios7用
+        [self prefersStatusBarHidden];
+        [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+    }
+    else
+    {
+        // iOS 6=>iOS 7ではきかない
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    }
+    
     //backgroundの設定
 //    UIImageView *background = [[UIImageView alloc]initWithFrame:self.view.bounds];
-    UIImageView *background = [[UIImageView alloc]initWithFrame:CGRectMake(-100, -10, 580, 480)];
-    background.image = [UIImage imageNamed:@"chara_test2.png"];
-    background.alpha = 0.5f;
-    [self.view sendSubviewToBack:background];
-    [self.view addSubview:background];
+    [self.view setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.5f]];
+//    UIImageView *background = [[UIImageView alloc]initWithFrame:CGRectMake(-100, -10, 580, 480)];
+//    background.image = [UIImage imageNamed:@"chara01.png"];
+//    background.alpha = 0.5f;
+//    [self.view sendSubviewToBack:background];
+//    [self.view addSubview:background];
     
     //cash　frame
     int cashFrameWidth = 170;
@@ -51,7 +92,7 @@
     //cash image
     UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
                                                                        cashFrameInitY + 14, 23, 23)];
-    cashIV.image = [UIImage imageNamed:@"coin2.png"];
+    cashIV.image = [UIImage imageNamed:@"coin_yellow.png"];
     [self.view addSubview:cashIV];
     
     //cash numeric
@@ -79,7 +120,7 @@
     int imageFrameInitX = itemFrameInitX + 10;
     int imageFrameInitY = itemFrameInitY + 10;
     int imageFrameInterval = itemFrameInterval + 20;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < [arrIv count]; i++){
         //frame作成
         UIView *eachView = [CreateComponentClass createView:CGRectMake(itemFrameInitX,
                                                                 itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),
@@ -92,7 +133,7 @@
                                                                    imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
                                                                    imageFrameWidth,
                                                                    imageFrameHeight)];
-        iv.image = [UIImage imageNamed:@"close.png"];
+        iv.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
         [self.view addSubview:iv];
         
         //名称、説明文の貼付：配列等にしておく必要あり
@@ -102,9 +143,10 @@
                                                                      itemFrameHeight - 20)];
 //        tv.alpha = 0.5f;//文字色にも適用されてしまう
         tv.backgroundColor = [UIColor clearColor];
-        tv.font = [UIFont fontWithName:@"Arial" size:24.0f];
+        tv.font = [UIFont fontWithName:@"Arial" size:12.0f];
         tv.textColor = [UIColor whiteColor];
-        tv.text = @"explanation";
+//        tv.text = @"explanation";
+        tv.text = [arrTv objectAtIndex:i];
         tv.editable = NO;
         [self.view addSubview:tv];
         
@@ -133,8 +175,8 @@
                                                               image:@"close.png"
                                                              target:self
                                                            selector:@"closeBtnClicked"];
-    
     [self.view addSubview:closeBtn];
+    [self.view bringSubviewToFront:closeBtn];
 }
 
 -(void)closeBtnClicked{
