@@ -93,6 +93,7 @@
         
         self.frame = originalFrame;
         isPressed = false;
+        on_off = on_off?FALSE:TRUE;
         [self setBack];
         [self switchLight];
         
@@ -104,19 +105,19 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    if(isPressed){
-        
-        self.center = CGPointMake(self.center.x,
-                                  self.center.y - 3);
-        isPressed = false;
-        [self setBack];
-        [self switchLight];
-        NSLog(@"touchesended : %@", strMethod);
-        [target performSelector:NSSelectorFromString(strMethod)
-                     withObject:[NSNumber numberWithInt:tag_img]
-                     afterDelay:0.01f];
-        
-    }
+//    if(isPressed){
+//        
+//        self.center = CGPointMake(self.center.x,
+//                                  self.center.y - 3);
+//        isPressed = false;
+//        [self setBack];
+//        [self switchLight];
+//        NSLog(@"touchesended : %@", strMethod);
+//        [target performSelector:NSSelectorFromString(strMethod)
+//                     withObject:[NSNumber numberWithInt:tag_img]
+//                     afterDelay:0.01f];
+//        
+//    }
     
     
 }
