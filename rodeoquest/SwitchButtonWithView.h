@@ -10,9 +10,9 @@
 #import "MenuButtonWithView.h"
 
 typedef NS_ENUM(NSInteger, ButtonSwitchImageType) {
+//    ButtonSwitchImageTypeSensitivity,
     ButtonSwitchImageTypeSpeaker,
-    ButtonSwitchImageTypeBGM,
-    ButtonSwitchImageTypeSensitivity
+    ButtonSwitchImageTypeBGM
 };
 
 @interface SwitchButtonWithView : UIImageView{

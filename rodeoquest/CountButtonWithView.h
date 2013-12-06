@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, ButtonCountImageType) {
     //    selector *selector;
     NSString *strMethod;
     int tag_img;
+    
 }
 
 

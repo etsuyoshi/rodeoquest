@@ -6,6 +6,8 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
+//バグ：onの状態でドラックすると位置がおかしくなる
+
 #import "SwitchButtonWithView.h"
 
 @implementation SwitchButtonWithView
@@ -18,7 +20,25 @@
              target:(id)_target
            selector:(NSString *)_selName
                 tag:(int)_tag_img{
-    on_off = false;
+    
+    
+//    on_off = false;
+    NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
+    switch (_imageType) {
+        case ButtonSwitchImageTypeBGM:{
+            on_off = [[_myDefaults objectForKey:@"bgm"] intValue];
+            NSLog(@"init : on_off=%d", on_off);
+            break;
+        }
+        case ButtonSwitchImageTypeSpeaker:{
+            on_off = [[_myDefaults objectForKey:@"se"] intValue];
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+
     tag_img = _tag_img;
     originalFrame = frame;
     self = [super initWithFrame:frame];
@@ -27,6 +47,8 @@
     buttonSwitchType = _imageType;
     target = _target;
     strMethod = _selName;
+    [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:target
+                                                                    action:NSSelectorFromString(strMethod)]];
     NSLog(@"switch button call");
     if (self) {
         // Initialization code
@@ -43,6 +65,7 @@
                                                           frame.size.height)];
         [self setBack];
         [self setImage];
+        [self switchLight];
         [self addSubview:imgAdd];
         [self addSubview:imgLight];
         //        [self addSubview:mask];
@@ -65,7 +88,7 @@
  */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    NSLog(@"touchesended : %@", strMethod);
+    NSLog(@"touches began : %@", strMethod);
     // タッチされたときの処理
     //    touchedX = touches.x;
     UITouch *touch = [touches anyObject];
@@ -79,56 +102,52 @@
     [self setBack];
     [self switchLight];
     
-    self.center = CGPointMake(self.center.x,
-                              self.center.y + (on_off?+6:-3));
+//    self.center = CGPointMake(self.center.x,
+//                              self.center.y + (on_off?+6:-6));
     
 }
 
+//理想：タップした後、やめたい場合は別の場所までフリックして元に戻すのが通常(ここではややこしいのでやめた)
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView:self];
-    if(isPressed) {
-        
-        if(ABS(location.x - touchedX) > 100 ||
-           ABS(location.y - touchedY) > 100 ){
-            //originalization
-            
-            self.frame = originalFrame;
-            isPressed = false;
-            on_off = on_off?FALSE:TRUE;
-            [self setBack];
-            [self switchLight];
-            
-        }else{
-            
-        }
-    }
+    //endedが機能しないので、ややこしさを無くすためやめる
+//    NSLog(@"touches moved : %@", strMethod);
+//    UITouch *touch = [touches anyObject];
+//    CGPoint location = [touch locationInView:self];
+////    if(isPressed) {
+//    
+//        if(ABS(location.x - touchedX) > 100 ||
+//           ABS(location.y - touchedY) > 100 ){
+//            //originalization
+//            
+//            self.frame = originalFrame;
+//            isPressed = false;
+//            on_off = on_off?FALSE:TRUE;
+//            if(!on_off){
+//                self.frame = originalFrame;
+//            }
+////            on_off != on_off;
+//            [self setBack];
+//            [self switchLight];
+//            
+////        }else{
+////            
+////        }
+//    }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    isPressed = false;
-    if(buttonSwitchType == ButtonSwitchImageTypeBGM ||
-       buttonSwitchType == ButtonSwitchImageTypeSpeaker){
-        [target performSelector:NSSelectorFromString(strMethod)
-                     withObject:[NSNumber numberWithInt:tag_img]
-                     afterDelay:0.01f];
-    }else{//sensitive
-        [target performSelector:NSSelectorFromString(strMethod)
-                     withObject:[NSNumber numberWithInteger:countPressed]
-                     afterDelay:0.01f];
-    }
-//    if(isPressed){
-//        
-//        self.center = CGPointMake(self.center.x,
-//                                  self.center.y - 3);
-//        isPressed = false;
-//        [self setBack];
-//        [self switchLight];
-//        NSLog(@"touchesended : %@", strMethod);
+    //なぜか反応しない。。(ボタンをタップしたままフリックするとたまに反応する場合がある)
+//    isPressed = false;
+//    NSLog(@"touches ended at switch button");
+//    if(buttonSwitchType == ButtonSwitchImageTypeBGM ||
+//       buttonSwitchType == ButtonSwitchImageTypeSpeaker){
 //        [target performSelector:NSSelectorFromString(strMethod)
 //                     withObject:[NSNumber numberWithInt:tag_img]
 //                     afterDelay:0.01f];
-//        
+//    }else{//sensitive
+//        [target performSelector:NSSelectorFromString(strMethod)
+//                     withObject:[NSNumber numberWithInteger:countPressed]
+//                     afterDelay:0.01f];
 //    }
     
     
@@ -142,6 +161,17 @@
     }
 }
 -(void)setBack{
+    if(on_off){
+        self.center = CGPointMake(self.center.x,
+                                  originalFrame.origin.y+originalFrame.size.height/2 + 6);
+
+    }else{
+        self.center = CGPointMake(self.center.x,
+                                  originalFrame.origin.y+originalFrame.size.height/2);
+    }
+//    if([strMethod  isEqual: @"setBGM:"]){
+//        NSLog(@"setback on_off=%d, y=%f", on_off, self.center.y);
+//    }
     switch (buttonMenuBackType) {
         case ButtonMenuBackTypeBlue:{
 //            if(isPressed){
@@ -192,10 +222,10 @@
             imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
             break;
         }
-        case ButtonSwitchImageTypeSensitivity:{
-            imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
-            break;
-        }
+//        case ButtonSwitchImageTypeSensitivity:{
+//            imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+//            break;
+//        }
     }
 }
 @end

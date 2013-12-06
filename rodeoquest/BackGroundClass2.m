@@ -365,7 +365,7 @@ int imageMargin;
     [CATransaction commit];
 }
 -(void)animation1:(int)y0{
-    NSLog(@"animation1 start at gsecs=%f", gSecs);
+//    NSLog(@"animation1 start at gsecs=%f", gSecs);
     //一定速度に
     //cabasicanimationで中間地点を指定しない
     //recursiveに
@@ -381,7 +381,7 @@ int imageMargin;
     [CATransaction setCompletionBlock:^{//終了処理
         CAAnimation* animationKeyFrame = [iv_background1.layer animationForKey:@"position"];
         if(animationKeyFrame){
-            NSLog(@"animation1 finished at gsecs = %f", gSecs);
+//            NSLog(@"animation1 finished at gsecs = %f", gSecs);
             /*
              *以下removeによりoscillateされたときに初期化されてしまう？
              */
@@ -430,7 +430,7 @@ int imageMargin;
 }
 
 -(void)animation2:(int)y2{
-    NSLog(@"animation2 start at gsecs=%f", gSecs);
+//    NSLog(@"animation2 start at gsecs=%f", gSecs);
     CGPoint kStartPos2 = CGPointMake(iv_background2.center.x,
                                      y2);//-2 * originalFrameSize);
     CGPoint kEndPos2 = CGPointMake(iv_background2.center.x,
@@ -440,7 +440,7 @@ int imageMargin;
     [CATransaction setCompletionBlock:^{
         CAAnimation *animationKeyFrame = [iv_background2.layer animationForKey:@"position"];
         if(animationKeyFrame){
-            NSLog(@"animation2 finished at gsecs = %f", gSecs);
+//            NSLog(@"animation2 finished at gsecs = %f", gSecs);
             [iv_background2.layer removeAnimationForKey:@"position"];
             //recurrent構造にせずにrepeatCount=HUGE_VALにすれば無限ループ
 //            [self animation2:-2 * originalFrameSize];

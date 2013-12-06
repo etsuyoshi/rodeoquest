@@ -28,7 +28,18 @@
           selector:(NSString *)_selName
                tag:(int)_tag_img{
     MAXCOUNT = 3;
-    countPressed = 0;
+//    countPressed = 0;
+    NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
+    switch (_imageType) {
+        case ButtonCountImageTypeSensitivity:{
+            countPressed = [[_myDefaults objectForKey:@"sensitivity"] intValue];
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+    
     tag_img = _tag_img;
     originalFrame = frame;
     self = [super initWithFrame:frame];
@@ -37,6 +48,9 @@
     buttonCountType = _imageType;
     target = _target;
     strMethod = _selName;
+    //タップされたら反応する
+    [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:target
+                                                                    action:NSSelectorFromString(strMethod)]];
     NSLog(@"count button call");
     if (self) {
         // Initialization code
@@ -53,6 +67,7 @@
                                                           frame.size.height)];
         [self setBack];
         [self setImage];
+        [self switchLight];
         [self addSubview:imgAdd];
         [self addSubview:imgLight];
         //        [self addSubview:mask];
@@ -85,6 +100,10 @@
  */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+//    NSLog(@"began : method calling ... target=%@, method=%@, arg=%d",
+//          target,
+//          strMethod,
+//          countPressed);
     //    NSLog(@"touchesended : %@", strMethod);
     // タッチされたときの処理
     //    touchedX = touches.x;
@@ -100,40 +119,46 @@
     //    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
     [self setBack];
     [self switchLight];
+    [self setImage];
     
-    self.center = CGPointMake(self.center.x,
-                              self.center.y + countPressed * 3);
     
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView:self];
-    if(isPressed) {
-        
-        if(ABS(location.x - touchedX) > 100 ||
-           ABS(location.y - touchedY) > 100 ){
-            //originalization
-            
-            self.frame = originalFrame;
-            isPressed = false;
-//            on_off = on_off?FALSE:TRUE;
-            countPressed = (countPressed == 0)?MAXCOUNT-1:(countPressed-1);
-            [self setBack];
-            [self switchLight];
-            
-        }else{
-            
-        }
-    }
+//    NSLog(@"moved : method calling ... target=%@, method=%@, arg=%d",
+//          target,
+//          strMethod,
+//          countPressed);
+//    UITouch *touch = [touches anyObject];
+//    CGPoint location = [touch locationInView:self];
+//    if(isPressed) {
+//        
+//        if(ABS(location.x - touchedX) > 100 ||
+//           ABS(location.y - touchedY) > 100 ){
+//            //originalization
+//            
+//            self.frame = originalFrame;
+//            isPressed = false;
+////            on_off = on_off?FALSE:TRUE;
+//            countPressed = (countPressed == 0)?MAXCOUNT-1:(countPressed-1);
+//            [self setBack];
+//            [self switchLight];
+//            
+//        }else{
+//            
+//        }
+//    }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    isPressed = false;
-    
-    [target performSelector:NSSelectorFromString(strMethod)
-                 withObject:[NSNumber numberWithInteger:countPressed]
-                 afterDelay:0.01f];
+//    isPressed = false;
+//    NSLog(@"ended : method calling ... target=%@, method=%@, arg=%d",
+//          target,
+//          strMethod,
+//          countPressed);
+//    [target performSelector:NSSelectorFromString(strMethod)
+//                 withObject:[NSNumber numberWithInteger:countPressed]
+//                 afterDelay:0.01f];
 }
 -(void)switchLight{
 //    if(on_off){
@@ -145,6 +170,9 @@
     }
 }
 -(void)setBack{
+    self.center = CGPointMake(self.center.x,
+                              originalFrame.origin.y + originalFrame.size.height/2 + countPressed * 3);
+
     switch (buttonMenuBackType) {
         case ButtonMenuBackTypeBlue:{
 //            if(on_off){
@@ -187,12 +215,13 @@
     
 }
 -(void)setImage{
-    //    if(isPressed){
     switch (buttonCountType) {
         case ButtonCountImageTypeSensitivity:{
             if(countPressed > 0){
-                NSLog(@"senstivity image");
                 imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+                break;
+            }else{
+                imgAdd.image = nil;
                 break;
             }
         }

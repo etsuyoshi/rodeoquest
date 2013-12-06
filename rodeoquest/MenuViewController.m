@@ -676,15 +676,27 @@ AttrClass *attr;
                                                imageInitY + i * (imageHeight + imageMargin),
                                                imageWidth,
                                                imageHeight);
-                
+                //button
                 UIImageView *iv_item = [CreateComponentClass createSwitchButton:rect_image
                                                                        backType:ButtonMenuBackTypeGreen
                                                                       imageType:[[arrImage objectAtIndex:i] intValue]
                                                                             tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
                                                                          target:self
                                                                        selector:[arrMethod objectAtIndex:i]];
-                
                 [viewFrame addSubview:iv_item];
+                
+                UITextView *tv_setExp = [CreateComponentClass createTextView:CGRectMake(rect_image.origin.x + rect_image.size.width,
+                                                                                        rect_image.origin.y,
+                                                                                        viewFrame.bounds.size.width - rect_image.size.width,
+                                                                                        rect_image.size.height)
+                                                                        text:@"explanation."
+                                                                        font:@"AmericanTypewriter-Bold"
+                                                                        size:15
+                                                                   textColor:[UIColor whiteColor]
+                                                                   backColor:[UIColor clearColor]
+                                                                  isEditable:NO];
+//                tv_setExp.font = 
+                [viewFrame addSubview:tv_setExp];
                 
             }
             //sensitivity
@@ -699,8 +711,19 @@ AttrClass *attr;
                                                                         tag:0
                                                                      target:self
                                                                    selector:@"setSensitivity:"];
-            
             [viewFrame addSubview:iv_item];
+            
+            UITextView *tv_setExp = [CreateComponentClass createTextView:CGRectMake(rect_image.origin.x + rect_image.size.width,
+                                                                                    rect_image.origin.y,
+                                                                                    viewFrame.bounds.size.width - rect_image.size.width,
+                                                                                    rect_image.size.height)
+                                                                    text:@"explanation."
+                                                                    font:@"AmericanTypewriter-Bold"
+                                                                    size:15
+                                                               textColor:[UIColor whiteColor]
+                                                               backColor:[UIColor clearColor]
+                                                              isEditable:NO];
+            [viewFrame addSubview:tv_setExp];
             
 //            [viewSuper addSubview:viewFrame];
 //            [self.view addSubview:viewSuper];
@@ -934,32 +957,56 @@ AttrClass *attr;
     }
     return;
 }
+//引数は使用せず(bgm, se, sensitivity)
 -(void)setBGM:(NSNumber *)num{
     NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
-    NSLog(@"pressed setBGM : %d", [num intValue]);
-    //if bgm on/off then bgm off/on
     NSString *name = @"bgm";
+    NSLog(@"original-BGM : %d", [[_myDefaults objectForKey:name] intValue]);
+    //if bgm on/off then bgm off/on
     NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
     [_myDefaults setObject:value forKey:name];
-    
+    NSLog(@"set up BGM : %d", [[_myDefaults objectForKey:name] intValue]);
     
 }
 -(void)setSE:(NSNumber *)num{
     NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
-    NSLog(@"presse setSE : %d", [num intValue]);
-    //if se on/off then se off/on
     NSString *name = @"se";
+    NSLog(@"original-SE : %d", [[_myDefaults objectForKey:name] intValue]);
+    //if se on/off then se off/on
     NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
     [_myDefaults setObject:value forKey:name];
+    NSLog(@"set up se : %d", [[_myDefaults objectForKey:name] intValue]);
 }
 
 -(void)setSensitivity:(NSNumber *)num{
     NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
-    NSLog(@"presse setSENSITIVITY : %d", [num intValue]);
-    //if se on/off then se off/on
     NSString *name = @"sensitivity";
-    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
-    [_myDefaults setObject:value forKey:name];
+    NSLog(@"original-sensitivity : %d", [[_myDefaults objectForKey:name] intValue]);
+    //if se on/off then se off/on
+//    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
+    int value = [[_myDefaults objectForKey:name] intValue];
+    NSLog(@"now value = %d", value);
+    switch (value) {
+        case 0:{
+            value++;
+            break;
+        }
+        case 1:{
+            value++;
+            break;
+        }
+        case 2:{
+            value = 0;
+            break;
+        }
+        default:{
+            value = 0;
+            break;
+        }
+    }
+    [_myDefaults setObject:[NSString stringWithFormat:@"%d", value] forKey:name];
+    NSLog(@"set up sensitivity : %d", [[_myDefaults objectForKey:name] intValue]);
+    
 }
 
 
