@@ -65,7 +65,7 @@
  */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"touchesended : %@", strMethod);
+//    NSLog(@"touchesended : %@", strMethod);
     // タッチされたときの処理
     //    touchedX = touches.x;
     UITouch *touch = [touches anyObject];
@@ -75,7 +75,7 @@
     touchedY = location.y;
     isPressed = true;
     on_off = on_off?false:true;
-    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
+//    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
     [self setBack];
     [self switchLight];
     
@@ -87,24 +87,26 @@
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
-    if(ABS(location.x - touchedX) > 100 ||
-       ABS(location.y - touchedY) > 100 ){
-        //originalization
+    if(isPressed) {
         
-        self.frame = originalFrame;
-        isPressed = false;
-        on_off = on_off?FALSE:TRUE;
-        [self setBack];
-        [self switchLight];
-        
-    }else{
-        //        isPressed = true;
+        if(ABS(location.x - touchedX) > 100 ||
+           ABS(location.y - touchedY) > 100 ){
+            //originalization
+            
+            self.frame = originalFrame;
+            isPressed = false;
+            on_off = on_off?FALSE:TRUE;
+            [self setBack];
+            [self switchLight];
+            
+        }else{
+            //        isPressed = true;
+        }
     }
-    
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    
+    isPressed = false;
 //    if(isPressed){
 //        
 //        self.center = CGPointMake(self.center.x,
