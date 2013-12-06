@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BackGroundClass2.h"
 
 @interface ItemListViewController : UIViewController{
-    
+    BackGroundClass2 *background;
     NSMutableArray *arrIv;
     NSMutableArray *arrTv;
     NSMutableArray *arrCost;

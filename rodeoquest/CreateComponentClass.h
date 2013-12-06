@@ -54,7 +54,11 @@
 
 +(UIImageView *)createImageView:(CGRect)rect
                           image:(NSString *)image;
-
++(UIImageView *)createSwitchButton:(CGRect)rect
+                             image:(NSString *)image
+                               tag:(int)tag
+                            target:(id)target
+                          selector:(NSString *)selName;
 +(UIButton *)createButton:(id)target
                  selector:(NSString *)selName;
 +(UIButton *)createButtonWithType:(ButtonMenuBackType)type

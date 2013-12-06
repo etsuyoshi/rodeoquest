@@ -7,6 +7,7 @@
 //
 
 #import "MenuButtonWithView.h"
+#import "SwitchButtonWithView.h"
 #import "CreateComponentClass.h"
 #import "QBFlatButton.h"
 #import <Foundation/Foundation.h>
@@ -170,6 +171,21 @@
     return nil;
 }
 
++(UIImageView *)createSwitchButton:(CGRect)rect
+                          image:(NSString *)image
+                            tag:(int)tag
+                         target:(id)target
+                       selector:(NSString *)selName{
+    
+    UIImageView *iv = [[SwitchButtonWithView alloc]initWithFrame:rect
+                                                        backType:ButtonMenuBackTypeGreen
+                                                       imageType:ButtonSwitchImageTypeSpeaker
+                                                          target:target
+                                                        selector:selName
+                                                             tag:tag];
+    return iv;
+}
+
 
 //standard
 +(UIButton *)createButton:(id)target
@@ -326,11 +342,6 @@
         //imageViewには、タグ付けとtarget設定ができないので
         CGRect imageRect = CGRectMake(imageMarginHorizon + numImage * (imageWidth + imageMarginHorizon),
                                       -30, imageWidth, imageHeight);
-        //                UIButton *imageButton = [CreateComponentClass createButtonWithType:ButtonTypeWithImage
-        //                                                                              rect:imageRect
-        //                                                                             image:@"close.png"
-        //                                                                            target:self
-        //                                                                          selector:@"imageTapped"];
         UIView *frameView = [self createView:imageRect];//imageのframe
         [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
         [uvOnScroll addSubview:frameView];
@@ -340,7 +351,6 @@
                                                 target:target
                                               selector:selector2];
         [uvOnScroll addSubview:imageView];
-        //                _iv addTarget
         //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
         //タップリスナーを追加してタップされたらダイアログで購入確認。
         

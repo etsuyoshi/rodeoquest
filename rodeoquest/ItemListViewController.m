@@ -9,15 +9,17 @@
 #import "ItemListViewController.h"
 #import "CreateComponentClass.h"
 #import "AttrClass.h"
+//#import "BackGroundClass2.h"
 
 @interface ItemListViewController ()
 
 @end
 
 @implementation ItemListViewController
-int gold;
+
 AttrClass *attr;
 UITextView *tvGoldAmount;
+BackGroundClass2 *backGround;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -41,8 +43,13 @@ UITextView *tvGoldAmount;
                    @"100",
                    @"100",
                 nil];
+        
+//        background = [[BackGroundClass2 alloc]init:WorldTypeForest
+//                                             width:self.view.bounds.size.width
+//                                            height:self.view.bounds.size.height
+//                                              secs:5.0f];
+        
         attr = [[AttrClass alloc]init];
-        gold =[[attr getValueFromDevice:@"gold"] intValue];
         //UIButton
 //        arrBtn = [NSMutableArray arrayWithObjects:
 //                 @"close.png",
@@ -111,7 +118,7 @@ UITextView *tvGoldAmount;
     tvGoldAmount = [[UITextView alloc]initWithFrame:rectGoldAmount];
     //@"AmericanTypewriter-Bold"
     [tvGoldAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
-    tvGoldAmount.text = [NSString stringWithFormat:@"%d", gold];
+    tvGoldAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"gold"] intValue]];
     tvGoldAmount.textColor = [UIColor whiteColor];
     tvGoldAmount.backgroundColor = [UIColor clearColor];//gray?
     tvGoldAmount.editable = NO;
@@ -138,7 +145,7 @@ UITextView *tvGoldAmount;
         [self.view addSubview:eachView];
         
         //image(cash)の貼付
-        UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX,
+        UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
                                                                    imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
                                                                    imageFrameWidth,
                                                                    imageFrameHeight)];
@@ -146,9 +153,9 @@ UITextView *tvGoldAmount;
         [self.view addSubview:iv];
         
         //名称、説明文の貼付：配列等にしておく必要あり
-        UITextView *tv = [[UITextView alloc]initWithFrame:CGRectMake(imageFrameInitX + imageFrameWidth + 10,
+        UITextView *tv = [[UITextView alloc]initWithFrame:CGRectMake(imageFrameInitX + imageFrameWidth,
                                                                      itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
-                                                                     itemFrameWidth / 2,
+                                                                     itemFrameWidth * 5 / 9,
                                                                      itemFrameHeight - 20)];
 //        tv.alpha = 0.5f;//文字色にも適用されてしまう
         tv.backgroundColor = [UIColor clearColor];
@@ -187,6 +194,16 @@ UITextView *tvGoldAmount;
                                                            selector:@"closeBtnClicked"];
     [self.view addSubview:closeBtn];
     [self.view bringSubviewToFront:closeBtn];
+    
+//    [self.view addSubview:[background getImageView1]];
+//    [self.view addSubview:[background getImageView2]];
+////    [self.view sendSubviewToBack:[background getImageView1]];
+////    [self.view sendSubviewToBack:[background getImageView2]];
+//    [self.view bringSubviewToFront:[background getImageView1]];
+//    [self.view bringSubviewToFront:[background getImageView2]];
+//    NSLog(@"start animation at list view");
+//    [background startAnimation];
+//    NSLog(@"end animation at list view");
 }
 
 -(void)closeBtnClicked{
@@ -197,8 +214,31 @@ UITextView *tvGoldAmount;
 }
 
 -(void)buyBtnPressed:(id)sender{
+    if([[attr getValueFromDevice:@"gold"] intValue] >= [sender tag]){
+        NSLog(@"buy button pressed : %d", [sender tag]);
+        [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - [sender tag]];
+        [self displayCoin];
+        
+    }else{
+        //お金が足りない場合
+        [self oscillateTextViewGold:9];
+        
+    }
     
-    NSLog(@"buy button pressed : %d", [sender tag]);
+}
+
+-(void)oscillateTextViewGold:(int)count{
+    NSLog(@"%d", count);
+    [UIView animateWithDuration:0.05f
+                     animations:^{
+                         tvGoldAmount.center = CGPointMake(tvGoldAmount.center.x + ((count%2==0)?10:-10),
+                                                           tvGoldAmount.center.y);
+                     }
+                     completion:^(BOOL finished){
+                         if(count > 0){
+                             [self oscillateTextViewGold:count-1];
+                         }
+                     }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -209,7 +249,7 @@ UITextView *tvGoldAmount;
 
 -(void)displayCoin{
     NSLog(@"now coin = %d", [[attr getValueFromDevice:@"gold"] intValue]);
-    gold = [[attr getValueFromDevice:@"gold"] intValue];
+    int gold = [[attr getValueFromDevice:@"gold"] intValue];
     tvGoldAmount.text = [NSString stringWithFormat:@"%d", gold];
 }
 -(void)updateToDeviceCoin:(int)coin{

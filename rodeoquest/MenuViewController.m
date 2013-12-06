@@ -14,6 +14,7 @@
 #import "GameClassViewController.h"
 #import "BackGroundClass2.h"
 #import "ItemListViewController.h"
+#import "DefenseUpListViewController.h"
 #import "ItemUpListViewController.h"
 #import "WeaponUpListViewController.h"
 #import "LifeUpListViewController.h"
@@ -271,6 +272,8 @@ AttrClass *attr;
     [self.view addSubview:[backGround getImageView2]];
     [self.view bringSubviewToFront:[backGround getImageView1]];
     [self.view bringSubviewToFront:[backGround getImageView2]];
+    
+    
     
     [backGround startAnimation];//3sec-Round
     
@@ -592,7 +595,9 @@ AttrClass *attr;
             break;
         }
         case ButtonMenuImageTypeDefense:{
-            
+            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            DefenseUpListViewController *ilvc = [[DefenseUpListViewController alloc]init];
+            [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
         case ButtonMenuImageTypeItem:{
@@ -619,40 +624,63 @@ AttrClass *attr;
             break;
         }
         case ButtonMenuImageTypeSet:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
-            UIView *viewSuper = [CreateComponentClass createViewNoFrame:self.view.bounds
-                                                                  color:[UIColor clearColor]
-                                                                    tag:9999
-                                                                 target:self
-                                                               selector:@"closeView:"];//透明ビュー
+            //大元のビューを定義する：viewSuperを親ビューにしてボタンを押すと親ビューも押下に反応する(反応したら消去されてしまう)
+            UIView *viewSuperSuper = [CreateComponentClass createViewNoFrame:self.view.bounds
+                                                                       color:[UIColor clearColor]
+                                                                         tag:0
+                                                                      target:Nil
+                                                                    selector:nil];
+            [self.view addSubview:viewSuperSuper];
+            
+            //メインフレームを消去するための透明ビューを派生(メインフレームとは別派生にする)
+//            UIView *viewSuper = [CreateComponentClass createViewNoFrame:self.view.bounds
+//                                                                  color:[UIColor clearColor]
+//                                                                    tag:9999
+//                                                                 target:self
+//                                                               selector:@"closeSuperView:"];//透明ビュー
+            //createViewNoFrameの場合、selectorに渡す引数がaddTargetなのでUITapGestureRecognizerになってしまう(コンポーネント本体を渡したい)ので
+            //(コード的には不自然だけど何も見えない)ボタンにしてaddTargetで自身のコンポーネントを渡す
+            UIView *viewSuper = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
+                                                                      rect:self.view.bounds
+                                                                     image:nil
+                                                                    target:self
+                                                                  selector:@"closeSuperView:"];
             [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
+            [viewSuperSuper addSubview:viewSuper];
+            
+            //メインフレームの定義
             UIView *viewFrame = [CreateComponentClass createView:CGRectMake(100, 70, 210, 250)];
             [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.6f blue:0.1f alpha:0.6f]];//どちらでも良い
+            [viewSuperSuper addSubview:viewFrame];
+            
+
+            
             
             int imageInitX = 10;
             int imageInitY = 10;
             int imageWidth = 70;
             int imageHeight = 70;
             int imageMargin = 10;
-            //            NSArray *image_array = [NSArray arrayWithObjects:@"bgm.png",@"sound.png", @"difficulty.png",nil] ;
             NSArray *image_array = [NSArray arrayWithObjects:@"close.png",@"close.png", @"close.png",nil] ;
-            
+            NSArray *arrMethod = [NSArray arrayWithObjects:@"setBGM:",@"setSE:", @"close.png",nil] ;
             for (int i = 0; i < [image_array count]; i++){
                 CGRect rect_image = CGRectMake(imageInitX,
                                                imageInitY + i * (imageHeight + imageMargin),
                                                imageWidth,
                                                imageHeight);
                 
-                UIImageView *iv_item = [CreateComponentClass createImageView:rect_image
-                                                                       image:[image_array objectAtIndex:i]
-                                                                         tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
-                                                                      target:self
-                                                                    selector:@"imageTapped:"];
-                //                iv_item.tag = 1;
+                UIImageView *iv_item = [CreateComponentClass createSwitchButton:rect_image
+                                                                          image:[image_array objectAtIndex:i]
+                                                                            tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
+                                                                         target:self
+                                                                       selector:[arrMethod objectAtIndex:i]];
+                
                 [viewFrame addSubview:iv_item];
+                
             }
             
-            [viewSuper addSubview:viewFrame];
-            [self.view addSubview:viewSuper];
+//            [viewSuper addSubview:viewFrame];
+//            [self.view addSubview:viewSuper];
             
             
             break;
@@ -883,6 +911,9 @@ AttrClass *attr;
     }
     return;
 }
+-(void)setBGM:(NSNumber *)num{
+    NSLog(@"pressed setBGM : %d", [num intValue]);
+}
 
 -(void)closeView:(id)sender{
     NSLog(@"close view");
@@ -890,7 +921,7 @@ AttrClass *attr;
 }
 
 -(void)closeSuperView:(id)sender{
-    NSLog(@"close superview");
+    NSLog(@"close superview : %@", sender);
     [[sender superview]removeFromSuperview];
     
 }
