@@ -186,6 +186,20 @@
                                                              tag:tag];
     return iv;
 }
++(UIImageView *)createCountButton:(CGRect)rect
+                         backType:(ButtonMenuBackType)_backType
+                        imageType:(ButtonCountImageType)_imageType
+                              tag:(int)tag
+                           target:(id)target
+                         selector:(NSString *)selName{
+    
+    return [[CountButtonWithView alloc] initWithFrame:rect
+                                             backType:_backType
+                                            imageType:_imageType
+                                               target:target
+                                             selector:selName
+                                                  tag:tag];
+}
 
 
 //standard

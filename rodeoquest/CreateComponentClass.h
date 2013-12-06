@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MenuButtonWithView.h"
 #import "SwitchButtonWithView.h"
+#import "CountButtonWithView.h"
 
 
 @interface CreateComponentClass : NSObject{
@@ -61,6 +62,12 @@
                                tag:(int)tag
                             target:(id)target
                           selector:(NSString *)selName;
++(UIImageView *)createCountButton:(CGRect)rect
+                         backType:(ButtonMenuBackType)_backType
+                        imageType:(ButtonCountImageType)_imageType
+                              tag:(int)tag
+                           target:(id)target
+                         selector:(NSString *)selName;
 +(UIButton *)createButton:(id)target
                  selector:(NSString *)selName;
 +(UIButton *)createButtonWithType:(ButtonMenuBackType)type

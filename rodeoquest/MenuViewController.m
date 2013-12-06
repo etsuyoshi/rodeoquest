@@ -661,11 +661,16 @@ AttrClass *attr;
             int imageWidth = 70;
             int imageHeight = 70;
             int imageMargin = 10;
-            NSArray *arrMethod = [NSArray arrayWithObjects:@"setBGM:",@"setSE:", @"setSensitivity:",nil] ;
+            NSArray *arrMethod = [NSArray arrayWithObjects:
+                                  @"setBGM:",
+                                  @"setSE:",
+//                                  @"setSensitivity:",
+                                  nil] ;
             NSArray *arrImage = [NSArray arrayWithObjects:
-                                 (ButtonSwitchImageTypeSpeaker)buttonSwitchImageTypeSpeaker,
-                                 ButtonSwitchImageTypeBGM,
-                                 ButtonSwitchImageTypeSensitivity,nil];
+                                 [NSNumber numberWithInt:ButtonSwitchImageTypeSpeaker],
+                                 [NSNumber numberWithInt:ButtonSwitchImageTypeBGM],
+//                                 [NSNumber numberWithInt:ButtonSwitchImageTypeSensitivity],
+                                 nil];
             for (int i = 0; i < [arrMethod count]; i++){
                 CGRect rect_image = CGRectMake(imageInitX,
                                                imageInitY + i * (imageHeight + imageMargin),
@@ -674,7 +679,7 @@ AttrClass *attr;
                 
                 UIImageView *iv_item = [CreateComponentClass createSwitchButton:rect_image
                                                                        backType:ButtonMenuBackTypeGreen
-                                                                      imageType:(ButtonMenuImageType)a
+                                                                      imageType:[[arrImage objectAtIndex:i] intValue]
                                                                             tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
                                                                          target:self
                                                                        selector:[arrMethod objectAtIndex:i]];
@@ -682,6 +687,20 @@ AttrClass *attr;
                 [viewFrame addSubview:iv_item];
                 
             }
+            //sensitivity
+            CGRect rect_image = CGRectMake(imageInitX,
+                                           imageInitY + 2 * (imageHeight + imageMargin),
+                                           imageWidth,
+                                           imageHeight);
+            
+            UIImageView *iv_item = [CreateComponentClass createCountButton:rect_image
+                                                                   backType:ButtonMenuBackTypeGreen
+                                                                  imageType:ButtonCountImageTypeSensitivity
+                                                                        tag:0
+                                                                     target:self
+                                                                   selector:@"setSensitivity:"];
+            
+            [viewFrame addSubview:iv_item];
             
 //            [viewSuper addSubview:viewFrame];
 //            [self.view addSubview:viewSuper];

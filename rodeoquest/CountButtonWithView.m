@@ -1,33 +1,43 @@
 //
-//  SwitchButtonWithView.m
+//  CountButtonWithView.m
 //  Rodeoquest
 //
 //  Created by 遠藤 豪 on 2013/12/06.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
-#import "SwitchButtonWithView.h"
+#import "CountButtonWithView.h"
 
-@implementation SwitchButtonWithView
-@synthesize buttonSwitchType;
+@implementation CountButtonWithView
+@synthesize buttonCountType;
 @synthesize buttonMenuBackType;
 
 - (id)initWithFrame:(CGRect)frame
-           backType:(ButtonMenuBackType)_backType
-          imageType:(ButtonSwitchImageType)_imageType
-             target:(id)_target
-           selector:(NSString *)_selName
-                tag:(int)_tag_img{
-    on_off = false;
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+    }
+    return self;
+}
+
+-(id)initWithFrame:(CGRect)frame
+          backType:(ButtonMenuBackType)_backType
+         imageType:(ButtonCountImageType)_imageType
+            target:(id)_target
+          selector:(NSString *)_selName
+               tag:(int)_tag_img{
+    MAXCOUNT = 3;
+    countPressed = 0;
     tag_img = _tag_img;
     originalFrame = frame;
     self = [super initWithFrame:frame];
     isPressed = false;
     buttonMenuBackType = _backType;
-    buttonSwitchType = _imageType;
+    buttonCountType = _imageType;
     target = _target;
     strMethod = _selName;
-    NSLog(@"switch button call");
+    NSLog(@"count button call");
     if (self) {
         // Initialization code
         // タッチを有効にする
@@ -52,8 +62,18 @@
         //        [self setMultipleTouchEnabled:YES];
         
     }
+
     return self;
 }
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
 
 /*
  // Only override drawRect: if you perform custom drawing.
@@ -65,7 +85,7 @@
  */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    NSLog(@"touchesended : %@", strMethod);
+    //    NSLog(@"touchesended : %@", strMethod);
     // タッチされたときの処理
     //    touchedX = touches.x;
     UITouch *touch = [touches anyObject];
@@ -74,13 +94,15 @@
     touchedX = location.x;
     touchedY = location.y;
     isPressed = true;
-    on_off = on_off?false:true;
-//    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
+//    on_off = on_off?false:true;
+    //if countPressed=0,1 then 1,2 else 0
+    countPressed = (countPressed < MAXCOUNT-1)?(countPressed+1):0;
+    //    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
     [self setBack];
     [self switchLight];
     
     self.center = CGPointMake(self.center.x,
-                              self.center.y + (on_off?+6:-3));
+                              self.center.y + countPressed * 3);
     
 }
 
@@ -95,7 +117,8 @@
             
             self.frame = originalFrame;
             isPressed = false;
-            on_off = on_off?FALSE:TRUE;
+//            on_off = on_off?FALSE:TRUE;
+            countPressed = (countPressed == 0)?MAXCOUNT-1:(countPressed-1);
             [self setBack];
             [self switchLight];
             
@@ -107,34 +130,14 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     isPressed = false;
-    if(buttonSwitchType == ButtonSwitchImageTypeBGM ||
-       buttonSwitchType == ButtonSwitchImageTypeSpeaker){
-        [target performSelector:NSSelectorFromString(strMethod)
-                     withObject:[NSNumber numberWithInt:tag_img]
-                     afterDelay:0.01f];
-    }else{//sensitive
-        [target performSelector:NSSelectorFromString(strMethod)
-                     withObject:[NSNumber numberWithInteger:countPressed]
-                     afterDelay:0.01f];
-    }
-//    if(isPressed){
-//        
-//        self.center = CGPointMake(self.center.x,
-//                                  self.center.y - 3);
-//        isPressed = false;
-//        [self setBack];
-//        [self switchLight];
-//        NSLog(@"touchesended : %@", strMethod);
-//        [target performSelector:NSSelectorFromString(strMethod)
-//                     withObject:[NSNumber numberWithInt:tag_img]
-//                     afterDelay:0.01f];
-//        
-//    }
     
-    
+    [target performSelector:NSSelectorFromString(strMethod)
+                 withObject:[NSNumber numberWithInteger:countPressed]
+                 afterDelay:0.01f];
 }
 -(void)switchLight{
-    if(on_off){
+//    if(on_off){
+    if(countPressed > 0){
         imgLight.image = [UIImage imageNamed:@"powerGauge2.png"];
         
     }else{
@@ -144,8 +147,8 @@
 -(void)setBack{
     switch (buttonMenuBackType) {
         case ButtonMenuBackTypeBlue:{
-//            if(isPressed){
-            if(on_off){
+//            if(on_off){
+            if(countPressed > 0){
                 self.image = [UIImage imageNamed:@"btn_g_on2.png"];//blue
                 
             }else{
@@ -154,7 +157,8 @@
             break;
         }
         case ButtonMenuBackTypeGreen:{
-            if(on_off){
+//            if(on_off){
+            if(countPressed > 0){
                 self.image = [UIImage imageNamed:@"btn_g_on2.png"];
                 
             }else{
@@ -163,7 +167,8 @@
             break;
         }
         case ButtonMenuBackTypeOrange:{
-            if(on_off){
+//            if(on_off){
+            if(countPressed > 0){
                 self.image = [UIImage imageNamed:@"btn_g_on2.png"];//orange
                 
             }else{
@@ -183,18 +188,13 @@
 }
 -(void)setImage{
     //    if(isPressed){
-    switch (buttonSwitchType) {
-        case ButtonSwitchImageTypeSpeaker:{
-            imgAdd.image = [UIImage imageNamed:@"icon_INN_b.png"];
-            break;
-        }
-        case ButtonSwitchImageTypeBGM:{
-            imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
-            break;
-        }
-        case ButtonSwitchImageTypeSensitivity:{
-            imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
-            break;
+    switch (buttonCountType) {
+        case ButtonCountImageTypeSensitivity:{
+            if(countPressed > 0){
+                NSLog(@"senstivity image");
+                imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+                break;
+            }
         }
     }
 }

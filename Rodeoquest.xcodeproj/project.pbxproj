@@ -115,6 +115,7 @@
 		3467B71D17FD53AF004EEE94 /* item.png in Resources */ = {isa = PBXBuildFile; fileRef = 3467B71C17FD53AF004EEE94 /* item.png */; };
 		3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3467B72117FD5980004EEE94 /* PowerGaugeClass.m */; };
 		3476D05E180DE6B800839BD8 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3476D05C180DE6B800839BD8 /* QBFlatButton.m */; };
+		3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3477C2091851F8C60006A9BB /* CountButtonWithView.m */; };
 		347D276818167FA000498F68 /* BGMClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 347D276718167FA000498F68 /* BGMClass.m */; };
 		347D277318169B3700498F68 /* small_eight.png in Resources */ = {isa = PBXBuildFile; fileRef = 347D276918169B3700498F68 /* small_eight.png */; };
 		347D277418169B3700498F68 /* small_five.png in Resources */ = {isa = PBXBuildFile; fileRef = 347D276A18169B3700498F68 /* small_five.png */; };
@@ -387,6 +388,8 @@
 		3467B72117FD5980004EEE94 /* PowerGaugeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerGaugeClass.m; sourceTree = "<group>"; };
 		3476D05C180DE6B800839BD8 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QBFlatButton.m; path = ../../GradientButton/GradientButton/QBFlatButton.m; sourceTree = "<group>"; };
 		3476D05D180DE6B800839BD8 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBFlatButton.h; path = ../../GradientButton/GradientButton/QBFlatButton.h; sourceTree = "<group>"; };
+		3477C2081851F8C60006A9BB /* CountButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountButtonWithView.h; sourceTree = "<group>"; };
+		3477C2091851F8C60006A9BB /* CountButtonWithView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountButtonWithView.m; sourceTree = "<group>"; };
 		347D276618167FA000498F68 /* BGMClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGMClass.h; sourceTree = "<group>"; };
 		347D276718167FA000498F68 /* BGMClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGMClass.m; sourceTree = "<group>"; };
 		347D276918169B3700498F68 /* small_eight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_eight.png; sourceTree = "<group>"; };
@@ -1094,6 +1097,8 @@
 				3420AB951827AA9200AB0A84 /* UIView+Animation.m */,
 				34038C1D185181820011AE05 /* SwitchButtonWithView.h */,
 				34038C1E185181820011AE05 /* SwitchButtonWithView.m */,
+				3477C2081851F8C60006A9BB /* CountButtonWithView.h */,
+				3477C2091851F8C60006A9BB /* CountButtonWithView.m */,
 				343D9704184F3A0C000239F4 /* MenuButtonWithView.h */,
 				343D9705184F3A0C000239F4 /* MenuButtonWithView.m */,
 			);
@@ -1397,6 +1402,7 @@
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
 				34EB7ACE182F2E850079B0EB /* Effect.m in Sources */,
 				343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */,
+				3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */,
 				34043A5A17FA0FE50000E338 /* ExplodeParticleView.m in Sources */,
 				34FA999E17FBCEF000317D83 /* ItemClass.m in Sources */,
 				342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */,
