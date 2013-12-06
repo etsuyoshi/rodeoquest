@@ -172,14 +172,15 @@
 }
 
 +(UIImageView *)createSwitchButton:(CGRect)rect
-                          image:(NSString *)image
+                          backType:(ButtonMenuBackType)_backType
+                         imageType:(ButtonSwitchImageType)_imageType
                             tag:(int)tag
                          target:(id)target
                        selector:(NSString *)selName{
     
     UIImageView *iv = [[SwitchButtonWithView alloc]initWithFrame:rect
-                                                        backType:ButtonMenuBackTypeGreen
-                                                       imageType:ButtonSwitchImageTypeSpeaker
+                                                        backType:_backType
+                                                       imageType:_imageType
                                                           target:target
                                                         selector:selName
                                                              tag:tag];

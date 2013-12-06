@@ -661,16 +661,20 @@ AttrClass *attr;
             int imageWidth = 70;
             int imageHeight = 70;
             int imageMargin = 10;
-            NSArray *image_array = [NSArray arrayWithObjects:@"close.png",@"close.png", @"close.png",nil] ;
-            NSArray *arrMethod = [NSArray arrayWithObjects:@"setBGM:",@"setSE:", @"close.png",nil] ;
-            for (int i = 0; i < [image_array count]; i++){
+            NSArray *arrMethod = [NSArray arrayWithObjects:@"setBGM:",@"setSE:", @"setSensitivity:",nil] ;
+            NSArray *arrImage = [NSArray arrayWithObjects:
+                                 (ButtonSwitchImageTypeSpeaker)buttonSwitchImageTypeSpeaker,
+                                 ButtonSwitchImageTypeBGM,
+                                 ButtonSwitchImageTypeSensitivity,nil];
+            for (int i = 0; i < [arrMethod count]; i++){
                 CGRect rect_image = CGRectMake(imageInitX,
                                                imageInitY + i * (imageHeight + imageMargin),
                                                imageWidth,
                                                imageHeight);
                 
                 UIImageView *iv_item = [CreateComponentClass createSwitchButton:rect_image
-                                                                          image:[image_array objectAtIndex:i]
+                                                                       backType:ButtonMenuBackTypeGreen
+                                                                      imageType:(ButtonMenuImageType)a
                                                                             tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
                                                                          target:self
                                                                        selector:[arrMethod objectAtIndex:i]];
@@ -912,8 +916,34 @@ AttrClass *attr;
     return;
 }
 -(void)setBGM:(NSNumber *)num{
+    NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
     NSLog(@"pressed setBGM : %d", [num intValue]);
+    //if bgm on/off then bgm off/on
+    NSString *name = @"bgm";
+    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
+    [_myDefaults setObject:value forKey:name];
+    
+    
 }
+-(void)setSE:(NSNumber *)num{
+    NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"presse setSE : %d", [num intValue]);
+    //if se on/off then se off/on
+    NSString *name = @"se";
+    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
+    [_myDefaults setObject:value forKey:name];
+}
+
+-(void)setSensitivity:(NSNumber *)num{
+    NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"presse setSENSITIVITY : %d", [num intValue]);
+    //if se on/off then se off/on
+    NSString *name = @"sensitivity";
+    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
+    [_myDefaults setObject:value forKey:name];
+}
+
+
 
 -(void)closeView:(id)sender{
     NSLog(@"close view");

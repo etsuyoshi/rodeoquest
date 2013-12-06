@@ -11,7 +11,8 @@
 
 typedef NS_ENUM(NSInteger, ButtonSwitchImageType) {
     ButtonSwitchImageTypeSpeaker,
-    ButtonSwitchImageTypeBGM
+    ButtonSwitchImageTypeBGM,
+    ButtonSwitchImageTypeSensitivity
 };
 
 @interface SwitchButtonWithView : UIImageView{

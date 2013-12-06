@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MenuButtonWithView.h"
+#import "SwitchButtonWithView.h"
 
 
 @interface CreateComponentClass : NSObject{
@@ -55,7 +56,8 @@
 +(UIImageView *)createImageView:(CGRect)rect
                           image:(NSString *)image;
 +(UIImageView *)createSwitchButton:(CGRect)rect
-                             image:(NSString *)image
+                          backType:(ButtonMenuBackType)_backType
+                         imageType:(ButtonSwitchImageType)_imageType
                                tag:(int)tag
                             target:(id)target
                           selector:(NSString *)selName;

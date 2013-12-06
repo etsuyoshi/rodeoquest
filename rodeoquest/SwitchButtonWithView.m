@@ -100,13 +100,16 @@
             [self switchLight];
             
         }else{
-            //        isPressed = true;
+            
         }
     }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     isPressed = false;
+    [target performSelector:NSSelectorFromString(strMethod)
+                 withObject:[NSNumber numberWithInt:tag_img]
+                 afterDelay:0.01f];
 //    if(isPressed){
 //        
 //        self.center = CGPointMake(self.center.x,
@@ -179,6 +182,10 @@
             break;
         }
         case ButtonSwitchImageTypeBGM:{
+            imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+            break;
+        }
+        case ButtonSwitchImageTypeSensitivity:{
             imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
             break;
         }
