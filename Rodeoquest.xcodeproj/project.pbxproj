@@ -92,6 +92,8 @@
 		344BD61E1815936B00387201 /* mob_hari_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 344BD6151815936B00387201 /* mob_hari_02.png */; };
 		344BD61F1815936B00387201 /* mob_hari_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 344BD6161815936B00387201 /* mob_hari_01.png */; };
 		344BD6211815943400387201 /* mob_tanu_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 344BD6201815943400387201 /* mob_tanu_01.png */; };
+		344DA1DA185309EA00B392A7 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 344DA1D7185309EA00B392A7 /* Common.m */; };
+		344DA1DB185309EA00B392A7 /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 344DA1D9185309EA00B392A7 /* CoolButton.m */; };
 		344DA243184CB638004F71EE /* NADView_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 344DA241184CB638004F71EE /* NADView_readme.txt */; };
 		344DA245184CB646004F71EE /* libAdapterNend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 344DA244184CB646004F71EE /* libAdapterNend.a */; };
 		344DA253184CB6A6004F71EE /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 344DA251184CB6A6004F71EE /* README.txt */; };
@@ -355,6 +357,10 @@
 		344BD6151815936B00387201 /* mob_hari_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mob_hari_02.png; sourceTree = "<group>"; };
 		344BD6161815936B00387201 /* mob_hari_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mob_hari_01.png; sourceTree = "<group>"; };
 		344BD6201815943400387201 /* mob_tanu_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mob_tanu_01.png; sourceTree = "<group>"; };
+		344DA1D6185309EA00B392A7 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		344DA1D7185309EA00B392A7 /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		344DA1D8185309EA00B392A7 /* CoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolButton.h; sourceTree = "<group>"; };
+		344DA1D9185309EA00B392A7 /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolButton.m; sourceTree = "<group>"; };
 		344DA23D184CB638004F71EE /* libNendAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNendAd.a; sourceTree = "<group>"; };
 		344DA23E184CB638004F71EE /* NADIconLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADIconLoader.h; sourceTree = "<group>"; };
 		344DA23F184CB638004F71EE /* NADIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADIconView.h; sourceTree = "<group>"; };
@@ -1089,6 +1095,10 @@
 		34F3007418218CBE0082DCBC /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				344DA1D6185309EA00B392A7 /* Common.h */,
+				344DA1D7185309EA00B392A7 /* Common.m */,
+				344DA1D8185309EA00B392A7 /* CoolButton.h */,
+				344DA1D9185309EA00B392A7 /* CoolButton.m */,
 				3476D05D180DE6B800839BD8 /* QBFlatButton.h */,
 				3476D05C180DE6B800839BD8 /* QBFlatButton.m */,
 				340C7611180D37E500169658 /* CreateComponentClass.h */,
@@ -1399,6 +1409,7 @@
 				342057EE17F2B34C0084E99D /* InitViewController.m in Sources */,
 				342057FA17F2B8810084E99D /* GameClassViewController.m in Sources */,
 				3400396F17F408070093E07E /* EnemyClass.m in Sources */,
+				344DA1DB185309EA00B392A7 /* CoolButton.m in Sources */,
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
 				34EB7ACE182F2E850079B0EB /* Effect.m in Sources */,
 				343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */,
@@ -1417,6 +1428,7 @@
 				3458DB251827C3E2003F1672 /* BackGroundClass.m in Sources */,
 				34C09ECE1800497900E4A4D8 /* GoldBoardClass.m in Sources */,
 				344928B218025E6100315F2D /* MenuViewController.m in Sources */,
+				344DA1DA185309EA00B392A7 /* Common.m in Sources */,
 				34E041DF1850B0CC00CA3034 /* LifeUpListViewController.m in Sources */,
 				348AD7ED180A9159007226EC /* DBAccessClass.m in Sources */,
 				34FA1A31180BC2460011E1CA /* AttrClass.m in Sources */,
