@@ -20,9 +20,11 @@
 //#define MYMACHINE_TEST
 //#define BUTTON_TEST
 //#define BACKGROUND_TEST
-#define BTNPRESS_TEST
+//#define BTNPRESS_TEST
+#define COOLBUTTON_TEST
 
-
+#import "Common.h"
+#import "CoolButton.h"
 #import "MenuButtonWithView.h"
 #import "ExplodeParticleView.h"
 #import "EnemyClass.h"
@@ -66,6 +68,16 @@ UIImageView *ivOscillate;
 UIImageView *notif;
 CABasicAnimation * appearance;
 #endif
+
+#ifdef COOLBUTTON_TEST
+
+CoolButton *coolButton;
+UITextView *tv_hue;
+UITextView *tv_saturation;
+UITextView *tv_brightness;
+
+#endif
+
 
 int counter;
 UIView *circleView;
@@ -750,6 +762,49 @@ int tempCount = 0;
         
     }
     
+#elif defined COOLBUTTON_TEST
+    if(counter == 0){
+//        [self.view setBackgroundColor:[UIColor whiteColor]];
+        NSLog(@"coolbutton test");
+//        coolButton = [[CoolButton alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+        coolButton = [CoolButton buttonWithType:UIButtonTypeRoundedRect];
+        coolButton.frame = CGRectMake(200, 200, 100, 50);
+        [coolButton setBackgroundColor:[UIColor clearColor]];
+        [self.view addSubview:coolButton];
+        
+        tv_hue = [[UITextView alloc] initWithFrame:CGRectMake(120, 10, 200, 30)];
+        tv_saturation = [[UITextView alloc] initWithFrame:CGRectMake(120, 40, 200, 30)];
+        tv_brightness = [[UITextView alloc] initWithFrame:CGRectMake(120, 70, 200, 30)];
+        
+        tv_hue.textColor = [UIColor whiteColor];
+        tv_saturation.textColor = [UIColor whiteColor];
+        tv_brightness.textColor = [UIColor whiteColor];
+        
+        tv_hue.backgroundColor = [UIColor clearColor];
+        tv_saturation.backgroundColor = [UIColor clearColor];
+        tv_brightness.backgroundColor = [UIColor clearColor];
+        
+        [self.view addSubview:tv_hue];
+        [self.view addSubview:tv_saturation];
+        [self.view addSubview:tv_brightness];
+        
+        UISlider *sl1 = [[UISlider alloc] initWithFrame:CGRectMake(20, 200, 200, 10)];
+        UISlider *sl2 = [[UISlider alloc] initWithFrame:CGRectMake(20, 250, 200, 10)];
+        UISlider *sl3 = [[UISlider alloc] initWithFrame:CGRectMake(20, 300, 200, 10)];
+        //デフォルトでは以下のようになっているハズ
+//        sl.minimumValue = 0.0;  // 最小値を0に設定
+//        sl.maximumValue = 1.0f;  // 最大値を500に設定
+//        sl.value = 0.5f;  // 初期値を250に設定
+        // 値が変更された時にhogeメソッドを呼び出す
+        [sl1 addTarget:self action:@selector(hueValueChanged:) forControlEvents:UIControlEventValueChanged];
+        [sl2 addTarget:self action:@selector(saturationValueChanged:) forControlEvents:UIControlEventValueChanged];
+        [sl3 addTarget:self action:@selector(brightnessValueChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        
+        [self.view addSubview:sl1];
+        [self.view addSubview:sl2];
+        [self.view addSubview:sl3];
+    }
 #else
     NSLog(@"aaa");
     //nothing
@@ -801,6 +856,27 @@ int tempCount = 0;
     }else{
         imv_test.image = [UIImage imageNamed:@"btn_g_off2.png"];
     }
+}
+
+#endif
+
+#ifdef COOLBUTTON_TEST
+-(void)hueValueChanged:(id)sender{
+    UISlider *sl = (UISlider *)sender;
+    coolButton.hue = sl.value;
+    tv_hue.text = [NSString stringWithFormat:@"hue=%f", sl.value];
+}
+
+-(void)saturationValueChanged:(id)sender{
+    UISlider *sl = (UISlider *)sender;
+    coolButton.saturation = sl.value;
+    tv_saturation.text = [NSString stringWithFormat:@"saturation=%f", sl.value];
+}
+
+-(void)brightnessValueChanged:(id)sender{
+    UISlider *sl = (UISlider *)sender;
+    coolButton.brightness = sl.value;
+    tv_brightness.text = [NSString stringWithFormat:@"bright=%f", sl.value];
 }
 
 #endif

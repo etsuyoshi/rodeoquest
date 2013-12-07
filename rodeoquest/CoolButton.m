@@ -23,6 +23,10 @@
     return self;
 }
 
+-(id) initiWithFrame:(CGRect)frame{
+    [self drawRect:frame];
+    return self;
+}
 - (void)drawRect:(CGRect)rect
 {
     CGFloat actualBrightness = self.brightness;
