@@ -468,4 +468,30 @@
 }
 
 
++(UIButton *)createCoolButton:(CGRect)_rect
+                       text:(NSString *)_text
+                          hue:(float)_hue
+                   saturation:(float)_saturation
+                   brightness:(float)_brightness
+                       target:(id)_target
+                     selector:(NSString *)_selector
+                          tag:(int)_tag{
+    
+    CoolButton *coolButton = [CoolButton buttonWithType:UIButtonTypeCustom];
+    coolButton.frame = _rect;
+    [coolButton setTitle:_text forState:UIControlStateNormal]; //有効時
+    [coolButton setTitle:_text forState:UIControlStateHighlighted]; //ハイライト時
+    [coolButton setTitle:_text forState:UIControlStateDisabled]; //無効時
+    coolButton.hue = _hue;
+    coolButton.saturation = _saturation;
+    coolButton.brightness = _brightness;
+    
+    
+    [coolButton addTarget:_target
+                   action:NSSelectorFromString(_selector)
+         forControlEvents:UIControlEventTouchUpInside];
+    coolButton.tag = _tag;
+    return coolButton;
+}
+
 @end

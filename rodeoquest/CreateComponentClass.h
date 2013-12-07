@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CoolButton.h"
 #import "MenuButtonWithView.h"
 #import "SwitchButtonWithView.h"
 #import "CountButtonWithView.h"
@@ -103,4 +104,12 @@
                         selector:(NSString *)selector
                              tag:(int)_tag;
 +(UIButton *)createGradButton;
++(UIButton *)createCoolButton:(CGRect)_rect
+                       text:(NSString *)_text
+                          hue:(float)_hue
+                   saturation:(float)_saturation
+                   brightness:(float)_brightness
+                       target:(id)_target
+                     selector:(NSString *)_selector
+                          tag:(int)_tag;
 @end

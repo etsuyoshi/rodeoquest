@@ -768,7 +768,7 @@ int tempCount = 0;
         NSLog(@"coolbutton test");
 //        coolButton = [[CoolButton alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
         coolButton = [CoolButton buttonWithType:UIButtonTypeRoundedRect];
-        coolButton.frame = CGRectMake(200, 200, 100, 50);
+        coolButton.frame = CGRectMake(50, 50, 100, 70);
         [coolButton setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:coolButton];
         
