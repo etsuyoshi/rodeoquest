@@ -369,9 +369,6 @@
         //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
         //タップリスナーを追加してタップされたらダイアログで購入確認。
         
-        
-        
-        
     }
     [sv addSubview:uvOnScroll];
     [superView addSubview:sv];

@@ -1878,7 +1878,7 @@ UIView *viewMyEffect;
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", goldCnt];
                     
                 }
-                if(cnt == loopCount-1){//最後のループ近辺なら
+                if(cnt >= loopCount-1){//最後のループ近辺なら
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
                 }
                 

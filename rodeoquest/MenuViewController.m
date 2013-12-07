@@ -64,6 +64,8 @@
 
 #define ALPHA_COMPONENT 0.5
 
+#define WEAPON_BUY_COUNT 10
+
 //NSMutableArray *imageFileArray;
 //NSMutableArray *tagArray;
 //NSMutableArray *titleArray;
@@ -567,7 +569,8 @@ AttrClass *attr;
             break;
         }
         case ButtonMenuImageTypeWeapon:{
-            NSArray *imageArray = [NSArray arrayWithObjects:@"RockBow.png",
+            NSArray *imageArray = [NSArray arrayWithObjects:
+                                   @"RockBow.png",
                                    @"FireBow.png",
                                    @"WaterBow.png",
                                    @"IceBow.png",
@@ -890,18 +893,17 @@ AttrClass *attr;
 }
 
 -(void)imageTapped:(id)sender{
-    NSLog(@"imageTapped at tag = %d", [sender view].tag);
 
     UIView *tappedView = [sender view];
     NSLog(@"imageTapped at tag = %d", tappedView.tag);
-    switch(tappedView.tag){
-        case 0://slideshowでタップされた場合=>出来ればtypedef NS_ENUMでグローバルに変数宣言しておく。例：TAPPED_SLIDESHOW
-        {
-            //他のタップレコナイザをunableにするため全体のビューを作成
+    
+    for(int i = 0;i < WEAPON_BUY_COUNT;i++){
+        if(i == tappedView.tag){
             UIView *viewAll = [[UIView alloc]initWithFrame:self.view.bounds];
-            [viewAll setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.9f]];//タップイベントを受け付けないビューを画面全体に配置
-            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(10, 80, 300, 300)];
-            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:1.0f alpha:0.5f]];
+            [viewAll setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f]];//タップイベントを受け付けないビューを画面全体に配置
+            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(10, 120, 300, 300)];
+            [viewFrame setBackgroundColor:[UIColor colorWithRed:((float)i+1)/WEAPON_BUY_COUNT green:1.0f blue:1.0f alpha:0.3f]];
+            NSLog(@"%f", (float)i/WEAPON_BUY_COUNT);
             UIButton *bt = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
                                                                  rect:CGRectMake(260, 50, 25, 25)
                                                                 image:@"close.png"
@@ -909,17 +911,35 @@ AttrClass *attr;
                                                              selector:@"closeSuperSuperView:"];//親クラスを削除する
             bt.tag = 9999;
             [viewFrame addSubview:bt];
+            
+            //説明文
+            UITextView *tv_buy = [CreateComponentClass createTextView:CGRectMake(30, 30,
+                                                                                 viewFrame.bounds.size.width-60,
+                                                                                 100)
+                                                                 text:@"explanation"
+                                                                 font:@"AmericanTypewriter-Bold"
+                                                                 size:12
+                                                            textColor:[UIColor whiteColor]
+                                                            backColor:[UIColor clearColor]
+                                                           isEditable:NO];
+            [viewFrame addSubview:tv_buy];
+            
+            //購入ボタン
+            UIButton *bt_buy = [CreateComponentClass createButtonWithType:(ButtonMenuBackType)ButtonMenuBackTypeOrange
+                                                                     rect:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 100)
+                                                                    image:@"buy.png"//nothing
+                                                                   target:self
+                                                                 selector:@"buyMethod"];//nothing=>定義必要
+            [viewFrame addSubview:bt_buy];
+            
+            
             [viewAll addSubview:viewFrame];
             [self.view addSubview:viewAll];
-
-            
-            break;
-            
-        }
-        case 2:
-        {
             break;
         }
+    }
+    switch(tappedView.tag){
+        //case:0 - 9 => definite in upper for-loop
         case 100:{
             NSLog(@"invite");
             InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
@@ -951,6 +971,7 @@ AttrClass *attr;
             break;
         }
         default :{
+            NSLog(@"other tag %d", tappedView.tag);
             break;
         }
     
