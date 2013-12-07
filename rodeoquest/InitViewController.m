@@ -9,7 +9,7 @@
 //　同期通信の場合はサブスレッド立てるhttp://www.yoheim.net/blog.php?q=20130206
 
 
-#define NoConnectTEST
+//#define NoConnectTEST
 //#define TestView
 #ifdef TestView
     #import "TestViewController.h"
@@ -105,6 +105,10 @@ UIActivityIndicatorView *_indicator;
     if([dbac setIdToDB:_id]){//dbに登録(既存idならばそのまま)
         NSLog(@"データベース登録or承認完了");
         
+        
+        /*
+         *注意：loginはゲーム終了後にデバイスに格納するデータは当該日付であるが、ここではDBからネットワーク経由で引っ張ってログイン回数をカウントしている。
+         */
         //ログイン回数をupdate
         int login = [[dbac getValueFromDB:_id column:@"login"] intValue];
         login ++;

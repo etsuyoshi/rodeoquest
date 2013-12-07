@@ -2087,7 +2087,7 @@ UIView *viewMyEffect;
     NSString *weekday = arrayWeekName[comps.weekday - 1];//comps.weekday; // 曜日(1が日曜日 7が土曜日)
     NSLog(@"曜日: %@", weekday);
     strLogin = [NSString stringWithFormat:@"%@%@", strLogin, weekday];
-    [attr setValueToDevice:@"login" strValue:strLogin];
+    [attr setValueToDevice:@"login" strValue:strLogin];//最後にゲームを実施した日付を入力
     
     
     

@@ -1029,6 +1029,8 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
     
 }
 
+//ボタンの文字を「金額不足」の旨表示して、指定された回数だけ振動。
+//振動後は元の文字列に変更
 -(void)oscillate:(UIView *)view count:(int)_count{
     [UIView animateWithDuration:0.05f
                      animations:^{
