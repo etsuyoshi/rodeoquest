@@ -104,7 +104,7 @@
                         selector:(NSString *)selector
                              tag:(int)_tag;
 +(UIButton *)createGradButton;
-+(UIButton *)createCoolButton:(CGRect)_rect
++(CoolButton *)createCoolButton:(CGRect)_rect
                        text:(NSString *)_text
                           hue:(float)_hue
                    saturation:(float)_saturation

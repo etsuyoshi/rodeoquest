@@ -468,7 +468,7 @@
 }
 
 
-+(UIButton *)createCoolButton:(CGRect)_rect
++(CoolButton *)createCoolButton:(CGRect)_rect
                        text:(NSString *)_text
                           hue:(float)_hue
                    saturation:(float)_saturation
@@ -491,6 +491,7 @@
                    action:NSSelectorFromString(_selector)
          forControlEvents:UIControlEventTouchUpInside];
     coolButton.tag = _tag;
+    
     return coolButton;
 }
 

@@ -78,6 +78,8 @@ BackGroundClass2 *backGround;
 AttrClass *attr;
 
 
+UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新するのでグローバルに宣言しておく(武器やアイテムの購入等)
+
 
 //CreateComponentClass *createComponentClass;
 
@@ -428,14 +430,14 @@ AttrClass *attr;
                                         W_MOST_UPPER_COMPONENT,
                                         H_MOST_UPPER_COMPONENT);
     NSString *strGold = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"gold"] intValue]];
-    UITextView *tvGoldAmount = [CreateComponentClass createTextView:rectGoldAmount
+    tvGoldAmount_global = [CreateComponentClass createTextView:rectGoldAmount
                                                                 text:strGold
                                                                 font:@"AmericanTypewriter-Bold"
                                                                 size:10
                                                            textColor:[UIColor whiteColor]
                                                            backColor:[UIColor clearColor]
                                                           isEditable:NO];
-    [self.view addSubview:tvGoldAmount];
+    [self.view addSubview:tvGoldAmount_global];
     
     
     
@@ -925,11 +927,19 @@ AttrClass *attr;
             [viewFrame addSubview:tv_buy];
             
             //購入ボタン
-            UIButton *bt_buy = [CreateComponentClass createButtonWithType:(ButtonMenuBackType)ButtonMenuBackTypeOrange
-                                                                     rect:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 100)
-                                                                    image:@"buy.png"//nothing
-                                                                   target:self
-                                                                 selector:@"buyMethod"];//nothing=>定義必要
+//            UIButton *bt_buy = [CreateComponentClass createButtonWithType:(ButtonMenuBackType)ButtonMenuBackTypeOrange
+//                                                                     rect:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 100)
+//                                                                    image:@"buy.png"//nothing
+//                                                                   target:self
+//                                                                 selector:@"buyMethod"];//nothing=>定義必要
+            CoolButton *bt_buy = [CreateComponentClass createCoolButton:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 70)
+                                                                   text:@"buy now!"
+                                                                    hue:0.532f
+                                                             saturation:0.553f
+                                                             brightness:0.535f
+                                                                 target:self
+                                                               selector:@"buyWeapon:"
+                                                                    tag:i];
             [viewFrame addSubview:bt_buy];
             
             
@@ -978,8 +988,71 @@ AttrClass *attr;
     }
     return;
 }
+
+//武器購入時の呼出しメソッド(内部処理＝金額計算＋nsuserDefaults上書き)
+-(void)buyWeapon:(id)sender{
+    //武器ID
+    int id_weapon = ((UIImageView *)sender).tag;
+
+    NSArray *arrCostWeapon = [NSArray arrayWithObjects:
+                              @"1000",
+                              @"2000",
+                              @"3000",
+                              @"4000",
+                              @"5000",
+                              @"6000",
+                              @"7000",
+                              @"8000",
+                              @"9000",
+                              @"10000",
+                              nil];
+    
+    NSLog(@"weapon id = %d & cost is %d", id_weapon, [[arrCostWeapon objectAtIndex:id_weapon] intValue]);
+    
+    //金額の取得
+    int gold = [[attr getValueFromDevice:@"gold"] intValue];
+    if(gold < [[arrCostWeapon objectAtIndex:id_weapon] intValue]){
+        NSLog(@"need more Money!");//sender(UIImageView)を揺らす等のエフェクト？
+        [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateNormal];
+        [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateHighlighted];
+        [((UIButton *)sender) setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [self oscillate:(UIButton *)sender count:10];
+    }else{
+
+        gold -= [[arrCostWeapon objectAtIndex:id_weapon] intValue];
+        NSLog(@"set new gold = %d", gold);
+        [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", gold]];
+        
+        tvGoldAmount_global.text = [NSString stringWithFormat:@"%d", gold];
+    }
+    
+    
+}
+
+-(void)oscillate:(UIView *)view count:(int)_count{
+    [UIView animateWithDuration:0.05f
+                     animations:^{
+                         view.center = CGPointMake(view.center.x + ((_count % 2 == 0)?5:-5),
+                                                   view.center.y);
+                     }
+                     completion:^(BOOL finished){
+                         //元に戻す
+                         view.center = CGPointMake(view.center.x + ((_count % 2 == 0)?-5:5),
+                                                   view.center.y);
+                         if(_count > 0){
+                             [self oscillate:view count:_count-1];
+                         }else{
+                             [(UIButton *)view setTitle:@"buy now!" forState:UIControlStateNormal];
+                         }
+                         
+                     }];
+    
+    
+}
+
 //引数は使用せず(bgm, se, sensitivity)
 -(void)setBGM:(NSNumber *)num{
+    //以下は[[attr getValueFromDevice:@"bgm"] intValue]で済むのでは？
     NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
     NSString *name = @"bgm";
     NSLog(@"original-BGM : %d", [[_myDefaults objectForKey:name] intValue]);
