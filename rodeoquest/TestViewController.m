@@ -21,8 +21,10 @@
 //#define BUTTON_TEST
 //#define BACKGROUND_TEST
 //#define BTNPRESS_TEST
-#define COOLBUTTON_TEST
+//#define COOLBUTTON_TEST
+#define SPECIALWEAPON_TEST
 
+#import "SpecialBeamClass.h"
 #import "Common.h"
 #import "CoolButton.h"
 #import "MenuButtonWithView.h"
@@ -805,6 +807,11 @@ int tempCount = 0;
         [self.view addSubview:sl2];
         [self.view addSubview:sl3];
     }
+    
+#elif defined SPECIALWEAPON_TEST
+    BeamClass *a = [[SpecialBeamClass alloc] init:100 y_init:100 width:50 height:50 type:0];
+    [self.view addSubview:[a getImageView]];
+    
 #else
     NSLog(@"aaa");
     //nothing

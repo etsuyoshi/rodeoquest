@@ -288,7 +288,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 -(void)doNext{
 //    NSLog(@"donext at mymachine , count = %d", [beamArray count]);
     
-    for(int i = 0; i < [beamArray count];i++){
+    for(int i = 0; i < [beamArray count];i++){//ordinay & special beam
         if([[beamArray objectAtIndex:i] getIsAlive]){
             [(BeamClass *)[beamArray objectAtIndex:i] doNext];
         }else{
@@ -512,6 +512,14 @@ int healCompleteCount;//1回当たりの回復表示終了判定
          *1列の場合は０が中心位置に、２列の場合は０が左、１が右、３列の場合、０が左、１が中心、２が右
          */
         int _beamSize = 50;
+        //specialBeam
+//        if(special-beam-mode){
+        //左側
+        [beamArray insertObject:[[SpecialBeamClass alloc] init:x - _beamSize/2 y_init:y width:_beamSize height:_beamSize type:0] atIndex:0];
+        [beamArray insertObject:[[SpecialBeamClass alloc] init:x + _beamSize/2 y_init:y width:_beamSize height:_beamSize type:0] atIndex:0];
+//        }
+    
+        //ordinaryBeam
         switch (numOfBeam) {
             case 1:{
                 [beamArray insertObject:[[OrdinaryBeamClass alloc] init:x

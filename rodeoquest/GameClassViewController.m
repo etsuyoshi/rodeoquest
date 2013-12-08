@@ -553,24 +553,14 @@ UIView *viewMyEffect;
         //弾丸が画面上になければ無条件に弾丸を出す
         if([MyMachine getAliveBeamCount] == 0){
 //            NSLog(@"before yield beam");
-            [MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]];
-            //ビームはFIFOなので最初のもののみを表示
-            //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
-//            NSLog(@"after yield beam");
-            for(int i = 0; i < [MyMachine getNumOfBeam];i++){
-//                NSLog(@"%d", i);
-                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
-            }
+            
+            [self yieldBeamFromMyMachine];
+            
 //            NSLog(@"after add beam to superview");
         }else if([[MyMachine getBeam:0] getY] <
            [MyMachine getImageView].center.y - OBJECT_SIZE/2){//最後(index:i)の弾丸がキャラクターの近くになければ(近くにあると重なってしまう)
             //上のブロックと全く同じ
-            [MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]];
-            //ビームはFIFOなので最初のもののみを表示
-            //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
-            for(int i = 0; i < [MyMachine getNumOfBeam];i++){
-                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
-            }
+            [self yieldBeamFromMyMachine];
         }
     }
     
@@ -1410,24 +1400,13 @@ UIView *viewMyEffect;
     if([MyMachine getIsAlive] && isTouched){
         if([MyMachine getAliveBeamCount] == 0){
             
-            [MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]];
-            //ビームはFIFOなので最初のもののみを表示
-            //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
-//            NSLog(@"after yield beam numOfBeam = %d", [MyMachine getNumOfBeam]);
-            for(int i = 0; i < [MyMachine getNumOfBeam];i++){
-//                                NSLog(@"%d", i);
-                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
-            }
+            [self yieldBeamFromMyMachine];
 //            NSLog(@"complete add beam to supverview");
         }else if([[MyMachine getBeam:0] getY] <
                  [MyMachine getImageView].center.y - OBJECT_SIZE/2){//最後(index:i)の弾丸がキャラクターの近くになければ(近くにあると重なってしまう)
-            //上のブロックと全く同じ
-            [MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]];
-            //ビームはFIFOなので最初のもののみを表示
-            //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
-            for(int i = 0; i < [MyMachine getNumOfBeam];i++){
-                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
-            }
+            
+            [self yieldBeamFromMyMachine];
+            
         }
     }
 
@@ -2737,5 +2716,23 @@ UIView *viewMyEffect;
     [self.view sendSubviewToBack:[BackGround getImageView1]];
     [self.view sendSubviewToBack:[BackGround getImageView2]];
     [BackGround oscillateEffect:10];
+}
+
+-(void)yieldBeamFromMyMachine{
+    [MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]];
+    //ビームはFIFOなので最初のもののみを表示
+    //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
+    //            NSLog(@"after yield beam");
+    for(int i = 0; i < [MyMachine getNumOfBeam];i++){//ordinaryBeam
+        //                NSLog(@"%d", i);
+        [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
+    }
+    
+    if(true){//special-beam-mode
+        int numOfOrdinaryBullet = [MyMachine getNumOfBeam];
+        for(int i = numOfOrdinaryBullet ;i < numOfOrdinaryBullet + 2;i++){//それより前二つの弾丸はspecial弾
+            [self.view addSubview:[[MyMachine getBeam:i] getImageView]];
+        }
+    }
 }
 @end

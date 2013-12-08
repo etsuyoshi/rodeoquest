@@ -23,6 +23,6 @@ typedef NS_ENUM(NSInteger, BeamType) {
 
 
 @interface SpecialBeamClass : BeamClass
-
 @property(nonatomic) BeamType beamType;
+-(id) init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h type:(int)_type;
 @end

@@ -11,6 +11,7 @@
 #import "DamageParticleView.h"
 #import "BeamClass.h"
 #import "OrdinaryBeamClass.h"
+#import "SpecialBeamClass.h"
 #import "ItemClass.h"
 
 
