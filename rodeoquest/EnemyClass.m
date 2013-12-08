@@ -18,10 +18,16 @@ int unique_id;
 -(id) init:(int)x_init size:(int)size{
     return [self init:x_init size:size time:5.0f];//standard
 }
+
 -(id) init:(int)x_init size:(int)size time:(float)time{
+    
+    return [self init:x_init size:size time:time enemyType:(EnemyType)arc4random() % 5];
+}
+
+-(id) init:(int)x_init size:(int)size time:(float)time enemyType:(EnemyType)_enemyType{
     gTime = time;
     unique_id++;
-    hitPoint = 3;
+    
     mySize = size;
     y_loc = 0;//-mySize;//画面の外から発生させる
     x_loc = x_init;
@@ -35,31 +41,37 @@ int unique_id;
     rect = CGRectMake(x_loc, y_loc, mySize, mySize);
     iv = [[UIImageView alloc]initWithFrame:rect];
     iv.center = CGPointMake(x_loc, y_loc);//位置を修正
-    enemyType = arc4random() % 5;
+    enemyType = _enemyType;
+    
     switch(enemyType){
         case EnemyTypeZou:{
             bomb_size = 20;
             iv.image = [UIImage imageNamed:@"mob_zou_01.png"];
+            hitPoint = 3000;
             break;
         }
         case EnemyTypeTanu:{
             bomb_size = 30;
             iv.image = [UIImage imageNamed:@"mob_tanu_01.png"];
+            hitPoint = 3;
             break;
         }
         case EnemyTypePen:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_pen_01.png"];
+            hitPoint = 10;
             break;
         }
         case EnemyTypeMusa:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_musa_01.png"];
+            hitPoint = 30;
             break;
         }
         case EnemyTypeHari:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_hari_01.png"];
+            hitPoint = 2000;
             break;
         }
     }
@@ -68,6 +80,8 @@ int unique_id;
     
     return self;
 }
+
+
 -(id) init{
     NSLog(@"call enemy class initialization");
     return [self init:0 size:50];
@@ -140,7 +154,7 @@ int unique_id;
                               delay:0.0
                              options:UIViewAnimationOptionCurveLinear
                          animations:^{
-                             iv.center = CGPointMake(x_loc - mySize/2, iv.superview.bounds.size.height);
+                             iv.center = CGPointMake(x_loc, iv.superview.bounds.size.height);
                          }
                          completion:^(BOOL finished){
                              [self die];

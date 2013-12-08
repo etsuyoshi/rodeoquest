@@ -515,6 +515,7 @@ UIView *viewMyEffect;
 
 
 - (void)ordinaryAnimationStart{
+//    NSLog(@"enemy count = %d", [EnemyArray count]);
 //    NSLog(@"orinary animation start");
     //ユーザーインターフェース
     [self.view bringSubviewToFront:iv_frame];
@@ -1567,6 +1568,7 @@ UIView *viewMyEffect;
 #endif
     if(isYield){
         int occurredX = 0;
+        EnemyType _enemyType = 0;
         for(int eneCnt = 0; eneCnt < 5 ;eneCnt++){
             
             enemyCount ++;
@@ -1574,7 +1576,11 @@ UIView *viewMyEffect;
 //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
 //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * OBJECT_SIZE;
-            EnemyClass *enemy = [[EnemyClass alloc]init:occurredX size:OBJECT_SIZE time:MAX(5.0f-(float)count/50.0f, 0.25f)];
+            EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
+                                                   size:OBJECT_SIZE
+                                                   time:MAX(5.0f-(float)count/50.0f, 0.25f)
+                                              enemyType:_enemyType;
+                                 ];
             [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
                                                                      green:0
                                                                       blue:0
@@ -1829,11 +1835,12 @@ UIView *viewMyEffect;
             
             goldCnt = MIN(goldCnt += goldAdd, [GoldBoard getScore]);
             //時間のかかる処理
-            for(int i = 0; i < 1;i++){
-                NSLog(@"i = %d", i);//時間経過
-                NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
-                      cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
-            }
+//            NSLog(@"cnt = %d", cnt);
+//            for(int i = 0; i < 10;i++){
+//                NSLog(@"i = %d", i);//時間経過
+//                NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
+//                      cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
+//            }
             if(cnt < 100){
                 if(pvScoreValue + unit < expTilNextLevel){
                     pvScoreValue += (int)unit;//小数点以下の誤差は発生するが

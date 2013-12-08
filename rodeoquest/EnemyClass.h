@@ -42,6 +42,8 @@ typedef NS_ENUM(NSInteger, EnemyType) {
 -(id)init;
 -(id)init:(int)x_init size:(int)size;
 -(id)init:(int)x_init size:(int)size time:(float)time;
+-(id)init:(int)x_init size:(int)size time:(float)time enemyType:(EnemyType)_enemyType;
+
 
 -(void)setDamage:(int)damage location:(CGPoint)location;
 -(int)getHitPoint;

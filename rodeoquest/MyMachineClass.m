@@ -286,7 +286,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             [(BeamClass *)[beamArray objectAtIndex:i] doNext];
         }else{
             //これをすると点滅
-            //            [[[MyMachine getBeam:i] getImageView] removeFromSuperview];
+//            [[[MyMachine getBeam:i] getImageView] removeFromSuperview];
         }
     }
 
@@ -495,6 +495,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 }
 
 -(void)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y{
+//    NSLog(@"beam count = %d", [beamArray count]);
 //    NSLog(@"start yield beam at weapon2count : %d", weapon2Count);
     if(weapon2Count == 0){
 //        NSLog(@"start yield beam");
