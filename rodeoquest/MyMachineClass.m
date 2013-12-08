@@ -286,7 +286,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 
 -(void)doNext{
-    NSLog(@"donext at mymachine , count = %d", [beamArray count]);
+//    NSLog(@"donext at mymachine , count = %d", [beamArray count]);
     
     for(int i = 0; i < [beamArray count];i++){
         if([[beamArray objectAtIndex:i] getIsAlive]){

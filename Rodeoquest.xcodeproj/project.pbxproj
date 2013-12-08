@@ -16,6 +16,18 @@
 		340A4641181E412200D9B005 /* ClothBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A463D181E412200D9B005 /* ClothBow.png */; };
 		340A4642181E412200D9B005 /* RockBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A463E181E412200D9B005 /* RockBow.png */; };
 		340A4643181E412200D9B005 /* SpaceBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A463F181E412200D9B005 /* SpaceBow.png */; };
+		340C3B8418549AB30017BBBE /* SpecialBeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 340C3B8318549AB30017BBBE /* SpecialBeamClass.m */; };
+		340C3B9118549DDD0017BBBE /* Animal.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8618549DDD0017BBBE /* Animal.png */; };
+		340C3B9218549DDD0017BBBE /* Bug.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8718549DDD0017BBBE /* Bug.png */; };
+		340C3B9318549DDD0017BBBE /* Cloth_.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8818549DDD0017BBBE /* Cloth_.png */; };
+		340C3B9418549DDD0017BBBE /* Cloth.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8918549DDD0017BBBE /* Cloth.png */; };
+		340C3B9518549DDD0017BBBE /* Fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8A18549DDD0017BBBE /* Fire.png */; };
+		340C3B9618549DDD0017BBBE /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8B18549DDD0017BBBE /* Grass.png */; };
+		340C3B9718549DDD0017BBBE /* Ice.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8C18549DDD0017BBBE /* Ice.png */; };
+		340C3B9818549DDD0017BBBE /* Rock.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8D18549DDD0017BBBE /* Rock.png */; };
+		340C3B9918549DDD0017BBBE /* Space.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8E18549DDD0017BBBE /* Space.png */; };
+		340C3B9A18549DDD0017BBBE /* Water.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8F18549DDD0017BBBE /* Water.png */; };
+		340C3B9B18549DDD0017BBBE /* Wing.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B9018549DDD0017BBBE /* Wing.png */; };
 		340C7613180D37E500169658 /* CreateComponentClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 340C7612180D37E500169658 /* CreateComponentClass.m */; };
 		3411FB7217FED1DF001D1491 /* powerGauge_pt0.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6217FED1DF001D1491 /* powerGauge_pt0.png */; };
 		3411FB7317FED1DF001D1491 /* powerGauge_pt1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6317FED1DF001D1491 /* powerGauge_pt1.png */; };
@@ -295,6 +307,19 @@
 		340A463D181E412200D9B005 /* ClothBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClothBow.png; sourceTree = "<group>"; };
 		340A463E181E412200D9B005 /* RockBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RockBow.png; sourceTree = "<group>"; };
 		340A463F181E412200D9B005 /* SpaceBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceBow.png; sourceTree = "<group>"; };
+		340C3B8218549AB30017BBBE /* SpecialBeamClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialBeamClass.h; sourceTree = "<group>"; };
+		340C3B8318549AB30017BBBE /* SpecialBeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialBeamClass.m; sourceTree = "<group>"; };
+		340C3B8618549DDD0017BBBE /* Animal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Animal.png; sourceTree = "<group>"; };
+		340C3B8718549DDD0017BBBE /* Bug.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bug.png; sourceTree = "<group>"; };
+		340C3B8818549DDD0017BBBE /* Cloth_.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cloth_.png; sourceTree = "<group>"; };
+		340C3B8918549DDD0017BBBE /* Cloth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cloth.png; sourceTree = "<group>"; };
+		340C3B8A18549DDD0017BBBE /* Fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fire.png; sourceTree = "<group>"; };
+		340C3B8B18549DDD0017BBBE /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grass.png; sourceTree = "<group>"; };
+		340C3B8C18549DDD0017BBBE /* Ice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ice.png; sourceTree = "<group>"; };
+		340C3B8D18549DDD0017BBBE /* Rock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Rock.png; sourceTree = "<group>"; };
+		340C3B8E18549DDD0017BBBE /* Space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Space.png; sourceTree = "<group>"; };
+		340C3B8F18549DDD0017BBBE /* Water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Water.png; sourceTree = "<group>"; };
+		340C3B9018549DDD0017BBBE /* Wing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wing.png; sourceTree = "<group>"; };
 		340C7611180D37E500169658 /* CreateComponentClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateComponentClass.h; sourceTree = "<group>"; };
 		340C7612180D37E500169658 /* CreateComponentClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateComponentClass.m; sourceTree = "<group>"; };
 		3411FB6217FED1DF001D1491 /* powerGauge_pt0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt0.png; sourceTree = "<group>"; };
@@ -645,6 +670,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		340C3B8518549DCB0017BBBE /* special */ = {
+			isa = PBXGroup;
+			children = (
+				340C3B8618549DDD0017BBBE /* Animal.png */,
+				340C3B8718549DDD0017BBBE /* Bug.png */,
+				340C3B8818549DDD0017BBBE /* Cloth_.png */,
+				340C3B8918549DDD0017BBBE /* Cloth.png */,
+				340C3B8A18549DDD0017BBBE /* Fire.png */,
+				340C3B8B18549DDD0017BBBE /* Grass.png */,
+				340C3B8C18549DDD0017BBBE /* Ice.png */,
+				340C3B8D18549DDD0017BBBE /* Rock.png */,
+				340C3B8E18549DDD0017BBBE /* Space.png */,
+				340C3B8F18549DDD0017BBBE /* Water.png */,
+				340C3B9018549DDD0017BBBE /* Wing.png */,
+			);
+			name = special;
+			sourceTree = "<group>";
+		};
 		342057C517F2B34C0084E99D = {
 			isa = PBXGroup;
 			children = (
@@ -1009,6 +1052,7 @@
 		34A2B1BB181F9DEC00CB97F2 /* bullet */ = {
 			isa = PBXGroup;
 			children = (
+				340C3B8518549DCB0017BBBE /* special */,
 				3461FE6B183DDF9F00DB4546 /* laser */,
 				34A22755182A4B4A0050CFDB /* kotomi */,
 				34FA999317FBBEE500317D83 /* bullet_level1.png */,
@@ -1120,6 +1164,8 @@
 				34FA999D17FBCEEF00317D83 /* ItemClass.m */,
 				342401FF17F6E8A100E06902 /* BeamClass.h */,
 				3424020017F6E8A100E06902 /* BeamClass.m */,
+				340C3B8218549AB30017BBBE /* SpecialBeamClass.h */,
+				340C3B8318549AB30017BBBE /* SpecialBeamClass.m */,
 				34A8898518542B55005667B4 /* OrdinaryBeamClass.h */,
 				34A8898618542B55005667B4 /* OrdinaryBeamClass.m */,
 				342231A01845EDAF00055ADF /* BackGroundClass2.h */,
@@ -1285,6 +1331,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				340C3B9818549DDD0017BBBE /* Rock.png in Resources */,
 				34A8897518542ABA005667B4 /* 15.png in Resources */,
 				3440529D182BBC1A0049AE46 /* coin_blue.png in Resources */,
 				3460F94E1824FA2700951A99 /* weapon_diffuse.png in Resources */,
@@ -1294,6 +1341,7 @@
 				3460F9581824FA2700951A99 /* weapon_laser.png in Resources */,
 				342057E617F2B34C0084E99D /* Default@2x.png in Resources */,
 				34D30EC2181EDB25006D05F0 /* WingBow.png in Resources */,
+				340C3B9318549DDD0017BBBE /* Cloth_.png in Resources */,
 				34D55FD1183CA05400788533 /* bomb017.png in Resources */,
 				343D9702184F3296000239F4 /* icon_gear_b.png in Resources */,
 				342057E817F2B34C0084E99D /* Default-568h@2x.png in Resources */,
@@ -1309,6 +1357,7 @@
 				340A4640181E412200D9B005 /* AnimalBow.png in Resources */,
 				34FD28201850934200C751FC /* up_yellow.png in Resources */,
 				34FA999617FBBEE500317D83 /* bullet_level4.png in Resources */,
+				340C3B9218549DDD0017BBBE /* Bug.png in Resources */,
 				34A8897418542ABA005667B4 /* 14.png in Resources */,
 				3440529E182BBC1A0049AE46 /* coin_green.png in Resources */,
 				34FA999717FBBEE500317D83 /* bullet_level3.png in Resources */,
@@ -1350,11 +1399,14 @@
 				3411FB7417FED1DF001D1491 /* powerGauge_pt2.png in Resources */,
 				3411FB7517FED1DF001D1491 /* powerGauge_pt3.png in Resources */,
 				3411FB7617FED1DF001D1491 /* powerGauge_pt4.png in Resources */,
+				340C3B9918549DDD0017BBBE /* Space.png in Resources */,
 				3411FB7717FED1DF001D1491 /* powerGauge_pt5.png in Resources */,
 				3411FB7817FED1DF001D1491 /* powerGauge_pt6.png in Resources */,
+				340C3B9A18549DDD0017BBBE /* Water.png in Resources */,
 				3411FB7917FED1DF001D1491 /* powerGauge_pt7.png in Resources */,
 				3411FB7A17FED1DF001D1491 /* powerGauge_pt8.png in Resources */,
 				3411FB7B17FED1DF001D1491 /* powerGauge_pt9.png in Resources */,
+				340C3B9518549DDD0017BBBE /* Fire.png in Resources */,
 				34FD281E1850934200C751FC /* up_blue.png in Resources */,
 				3488ACC5183D272F00833F93 /* img04.png in Resources */,
 				3460F9501824FA2700951A99 /* tool_bomb.png in Resources */,
@@ -1403,6 +1455,7 @@
 				3488ACC7183D272F00833F93 /* img06.png in Resources */,
 				348AD7F3180ACD52007226EC /* back_desert.png in Resources */,
 				34A1ED3F181CCDF20007471C /* FireBow.png in Resources */,
+				340C3B9418549DDD0017BBBE /* Cloth.png in Resources */,
 				348AD7F5180ACD52007226EC /* back_nangoku.png in Resources */,
 				3488ACCA183D272F00833F93 /* img09.png in Resources */,
 				344DA253184CB6A6004F71EE /* README.txt in Resources */,
@@ -1426,6 +1479,7 @@
 				34F53372181BBB7700FB9470 /* hisho_hmix.mp3 in Resources */,
 				3429D90E180FBD1A005CDFCE /* close.png in Resources */,
 				34A8897A18542ABA005667B4 /* 20.png in Resources */,
+				340C3B9718549DDD0017BBBE /* Ice.png in Resources */,
 				34E216CA181BF74300B939E6 /* kinpaku_hmix.mp3 in Resources */,
 				344BD6171815936B00387201 /* mob_zou_02.png in Resources */,
 				34A1ED41181CCDF20007471C /* IceBow.png in Resources */,
@@ -1445,6 +1499,7 @@
 				344BD61D1815936B00387201 /* mob_musa_01.png in Resources */,
 				344BD61E1815936B00387201 /* mob_hari_02.png in Resources */,
 				344052A1182BBC1A0049AE46 /* tool_transparancy.png in Resources */,
+				340C3B9618549DDD0017BBBE /* Grass.png in Resources */,
 				34A8898418542ABA005667B4 /* 30.png in Resources */,
 				34A1ED40181CCDF20007471C /* GrassBow.png in Resources */,
 				3440529A182BBC1A0049AE46 /* tool_magnet.png in Resources */,
@@ -1459,6 +1514,7 @@
 				34CA558218447A9B00F9657A /* laser_g01.png in Resources */,
 				34CA558518447A9B00F9657A /* laser_r01.png in Resources */,
 				34A2275D182A4E900050CFDB /* tool_small_cookie.png in Resources */,
+				340C3B9118549DDD0017BBBE /* Animal.png in Resources */,
 				340A4643181E412200D9B005 /* SpaceBow.png in Resources */,
 				347D277518169B3700498F68 /* small_four.png in Resources */,
 				34A8897C18542ABA005667B4 /* 22.png in Resources */,
@@ -1470,6 +1526,7 @@
 				34D55FCF183CA05400788533 /* bomb010.png in Resources */,
 				347D277918169B3700498F68 /* small_six.png in Resources */,
 				344DA243184CB638004F71EE /* NADView_readme.txt in Resources */,
+				340C3B9B18549DDD0017BBBE /* Wing.png in Resources */,
 				347D277A18169B3700498F68 /* small_three.png in Resources */,
 				347D277B18169B3700498F68 /* small_two.png in Resources */,
 				34A8896A18542ABA005667B4 /* 04.png in Resources */,
@@ -1513,6 +1570,7 @@
 				342057E217F2B34C0084E99D /* AppDelegate.m in Sources */,
 				342057EE17F2B34C0084E99D /* InitViewController.m in Sources */,
 				342057FA17F2B8810084E99D /* GameClassViewController.m in Sources */,
+				340C3B8418549AB30017BBBE /* SpecialBeamClass.m in Sources */,
 				3400396F17F408070093E07E /* EnemyClass.m in Sources */,
 				344DA1DB185309EA00B392A7 /* CoolButton.m in Sources */,
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
