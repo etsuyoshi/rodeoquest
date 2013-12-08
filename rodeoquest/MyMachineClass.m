@@ -33,6 +33,12 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 
 -(id) init:(int)x_init size:(int)size{
+    return [self init:x_init size:size level:1];
+}
+-(id) init:(int)x_init size:(int)size level:(int)_level{
+    level = _level;
+    
+    
     effectDuration = 10;//10回アニメーション
     wingStatus = 0;//翼の状態
     unique_id++;
@@ -507,10 +513,11 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         int _beamSize = 50;
         switch (numOfBeam) {
             case 1:{
-                [beamArray insertObject:[[BeamClass alloc] init:x
-                                                         y_init:y
-                                                          width:_beamSize
-                                                         height:_beamSize]
+                [beamArray insertObject:[[OrdinaryBeamClass alloc] init:x
+                                                                 y_init:y
+                                                                  width:_beamSize
+                                                                 height:_beamSize
+                                                                  level:level]
                                 atIndex:0];//全て最初に格納
                 
                 break;
@@ -518,10 +525,11 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             case 2:{
                 
                 for(int i = 0; i < numOfBeam;i++){
-                    [beamArray insertObject:[[BeamClass alloc] init:x+(20*pow(-1,i+1))//(30*(-1)^i)
-                                                             y_init:y
-                                                              width:_beamSize
-                                                             height:_beamSize]
+                    [beamArray insertObject:[[OrdinaryBeamClass alloc] init:x+(20*pow(-1,i+1))//(30*(-1)^i)
+                                                                     y_init:y
+                                                                      width:_beamSize
+                                                                     height:_beamSize
+                                                                      level:level]
                                     atIndex:0];//全て最初に格納
                 }
                 break;
@@ -529,10 +537,11 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             case 3:{
                 
                 for(int i = 0; i < numOfBeam;i++){
-                    [beamArray insertObject:[[BeamClass alloc] init:x+40*(i-1)//30*(i-1)
-                                                             y_init:y
-                                                              width:_beamSize
-                                                             height:_beamSize]
+                    [beamArray insertObject:[[OrdinaryBeamClass alloc] init:x+40*(i-1)//30*(i-1)
+                                                                     y_init:y
+                                                                      width:_beamSize
+                                                                     height:_beamSize
+                                                                      level:level]
                                     atIndex:0];//全て最初に格納
                 }
                 break;

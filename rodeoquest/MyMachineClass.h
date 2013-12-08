@@ -10,10 +10,12 @@
 #import "ExplodeParticleView.h"
 #import "DamageParticleView.h"
 #import "BeamClass.h"
+#import "OrdinaryBeamClass.h"
 #import "ItemClass.h"
 
 
 @interface MyMachineClass : NSObject{
+    int level;
     
     int x_loc;
     int y_loc;
@@ -50,7 +52,7 @@
 }
 
 @property(nonatomic) ItemType itemType;
-
+-(id)init:(int)x_init size:(int)size level:(int)_level;
 -(id)init:(int)x_init size:(int)size;
 -(id)init;
 -(void)setType:(int)_type;

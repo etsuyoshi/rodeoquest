@@ -16,6 +16,7 @@
     int power;
     int width;
     int height;
+    
     Boolean isAlive;
     UIImageView *iv;
     CGRect rect;

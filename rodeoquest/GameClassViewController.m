@@ -377,7 +377,8 @@ UIView *viewMyEffect;
 //                                               option:UIViewAnimationOptionCurveLinear];//一定速度
     
     //自機定義
-    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE];
+//    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE];
+    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE level:[[attr getValueFromDevice:@"level"] intValue]];
     [self.view addSubview:[MyMachine getImageView]];
     [self.view bringSubviewToFront:[MyMachine getImageView]];
 //    [[MyMachine getImageView] startAnimating];
