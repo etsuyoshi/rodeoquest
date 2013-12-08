@@ -14,7 +14,7 @@
     level = _level;
     power = _level;//test?仮
     iv.image = [UIImage imageNamed:[NSString stringWithFormat:@"%02d", _level]];
-    NSLog(@"bullet level = %@", [NSString stringWithFormat:@"%02d", _level]);
+//    NSLog(@"bullet level = %@", [NSString stringWithFormat:@"%02d", _level]);
     return self;
 }
 
