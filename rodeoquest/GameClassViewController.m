@@ -1568,7 +1568,9 @@ UIView *viewMyEffect;
 #endif
     if(isYield){
         int occurredX = 0;
-        EnemyType _enemyType = 0;
+        EnemyType _enemyType = EnemyTypeTanu;
+        //order of easily:tanu-musa-pen-hari-zou
+        
         for(int eneCnt = 0; eneCnt < 5 ;eneCnt++){
             
             enemyCount ++;
@@ -1576,11 +1578,44 @@ UIView *viewMyEffect;
 //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
 //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * OBJECT_SIZE;
+            int prob = arc4random();
+            int intervalCount = 100;
+            
+//            if(count < 1000){
+//                _enemyType = EnemyTypeTanu;
+//            }else if(count < 2000){
+//                if(prob % 2 == 0){
+//                    _enemyType = 0;
+//                }else if(prob % 2 == 1){
+//                    _enemyType = 1;
+//                }
+////                _enemyType = eneCnt % 2;//order
+//            }else if(count < 3000){...続く
+            //以下、上記と同義
+            for(int t = 0;5;t++){
+                if(count >= t * intervalCount &&
+                   count < (t+1) * intervalCount){
+                    if(t != 0){
+                        for(int t1 = 0;t1 < t;t++){
+                            NSLog(@"t1 = %d", t1);
+                            if(prob % t == t1){
+                                _enemyType = t1;
+                                break;
+                            }
+                        }
+                    }else{//t == 0
+                        _enemyType = t;
+                        break;
+                    }
+                }
+            }
+            
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
                                                    size:OBJECT_SIZE
                                                    time:MAX(5.0f-(float)count/50.0f, 0.25f)
-                                              enemyType:_enemyType;
+                                              enemyType:_enemyType
                                  ];
+            //test用
             [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
                                                                      green:0
                                                                       blue:0

@@ -10,12 +10,12 @@
 #import "ExplodeParticleView.h"
 #import "DamageParticleView.h"
 
-typedef NS_ENUM(NSInteger, EnemyType) {
-    EnemyTypeZou,
+typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     EnemyTypeTanu,
-    EnemyTypePen,
     EnemyTypeMusa,
-    EnemyTypeHari
+    EnemyTypePen,
+    EnemyTypeHari,
+    EnemyTypeZou
 };
 
 

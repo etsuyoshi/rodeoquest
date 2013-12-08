@@ -44,34 +44,34 @@ int unique_id;
     enemyType = _enemyType;
     
     switch(enemyType){
-        case EnemyTypeZou:{
-            bomb_size = 20;
-            iv.image = [UIImage imageNamed:@"mob_zou_01.png"];
-            hitPoint = 3000;
-            break;
-        }
         case EnemyTypeTanu:{
             bomb_size = 30;
             iv.image = [UIImage imageNamed:@"mob_tanu_01.png"];
-            hitPoint = 3;
-            break;
-        }
-        case EnemyTypePen:{
-            bomb_size = 40;
-            iv.image = [UIImage imageNamed:@"mob_pen_01.png"];
-            hitPoint = 10;
+            hitPoint = 30;
             break;
         }
         case EnemyTypeMusa:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_musa_01.png"];
-            hitPoint = 30;
+            hitPoint = 100;
+            break;
+        }
+        case EnemyTypePen:{
+            bomb_size = 40;
+            iv.image = [UIImage imageNamed:@"mob_pen_01.png"];
+            hitPoint = 200;
             break;
         }
         case EnemyTypeHari:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_hari_01.png"];
             hitPoint = 2000;
+            break;
+        }
+        case EnemyTypeZou:{
+            bomb_size = 20;
+            iv.image = [UIImage imageNamed:@"mob_zou_01.png"];
+            hitPoint = 3000;
             break;
         }
     }
