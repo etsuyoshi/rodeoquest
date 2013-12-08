@@ -1569,7 +1569,7 @@ UIView *viewMyEffect;
     if(isYield){
         int occurredX = 0;
         EnemyType _enemyType = EnemyTypeTanu;
-        //order of easily:tanu-musa-pen-hari-zou
+        
         
         for(int eneCnt = 0; eneCnt < 5 ;eneCnt++){
             
@@ -1577,11 +1577,15 @@ UIView *viewMyEffect;
             //        NSLog(@"enemyCount %d", enemyCount);
 //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
 //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
-            occurredX = OBJECT_SIZE/2 + eneCnt * OBJECT_SIZE;
+            occurredX = OBJECT_SIZE/2 + eneCnt * (OBJECT_SIZE - 7);
+            
+            
+            
+            //order of easily:tanu-musa-pen-hari-zou
             int rnd = MAX(2, abs(arc4random()));//2以上の正数
-            NSLog(@"rnd = %d", rnd);
+//            NSLog(@"rnd = %d", rnd);
             if(rnd < 0)[self exitProcess];
-            int countInterval = 5;
+            int countInterval = 5;//5秒(任意)間隔でモンスターの難易度ステージを変更していく
 //            if(count * 1000 < 1){
 //                _enemyType = 0;
 //            }else if(count * 1000 < 2){
@@ -1593,10 +1597,15 @@ UIView *viewMyEffect;
 ////                _enemyType = eneCnt % 2;//order
 //            }else if(count * 1000 < 3){...続く
             //以下、上記と同義
-//            _enemyType = -1;
             for(int stageCount = 0;;stageCount++){//tanu-musa-pen-hari-zou
-                if(stageCount >= 5){
-                    _enemyType = arc4random() % 5;//5匹のうちいずれか
+                if(stageCount >= 5){//stageCountが5以上＝以下のelse if内のfor-_typeループのいずれにも該当しなかった場合
+//                    if((float)(arc4random() % stageCount) / stageCount){
+                    if(arc4random() % 3 <= 1){//75%
+                        _enemyType = EnemyTypeZou;
+                        NSLog(@"hit");
+                    }else{
+                        _enemyType = MAX(arc4random() % 5, 2);//type:5,4,3のうちいずれか
+                    }
                     break;
                 }else if(count >= stageCount * countInterval &&
                    count < (stageCount+1) * countInterval){//countInterval * stageCount[sec]台の間
@@ -1606,12 +1615,12 @@ UIView *viewMyEffect;
                         break;
                     }else{
                         //stageCount:0-4の間では以下ループの内部のif条件のいずれかに合致するはず。
-                        NSLog(@"start t=%d", stageCount);
-                        int _type = -1;
-                        for(_type = 0;_type < stageCount+1;_type++){//t1
-                            NSLog(@"rnd=%d, t1=%d, t=%d", rnd, _type, stageCount);
-                            if(rnd % (stageCount+1) == _type){//stageCount=1の時はt1=0,1のいずれかに合致
-                                NSLog(@"mod = %d", _type);
+//                        NSLog(@"start t=%d", stageCount);
+                        int _type = -1;//初期状態
+                        for(_type = 0;_type < stageCount+1;_type++){//stageCount=1の時_type=0,1の両方をループ
+//                            NSLog(@"rnd=%d, t1=%d, t=%d", rnd, _type, stageCount);
+                            if(rnd % (stageCount+1) == _type){//stageCount=1の時は_type=0,1のいずれかに合致
+//                                NSLog(@"mod = %d", _type);
                                 _enemyType = _type;
                                 break;//for-_type
                             }
@@ -1626,31 +1635,10 @@ UIView *viewMyEffect;
             }
             NSLog(@"enemyType = %d", _enemyType);
             
-                
-                
-                
-                
-//                if(t == 0){
-//                    _enemyType = 0;
-//                    break;
-//                }else if(count * intervalCount >= t &&
-//                         count * intervalCount < t+1){
-//                    
-//                    for(int t1 = 0;t1 < t;t++){//t1
-//                        NSLog(@"t1 = %d", t1);
-//                        if(prob % (t+1) == t1){
-//                            _enemyType = t1;
-//                            break;
-//                        }
-//                    }
-//                    
-//                    if(_enemyType != -1)break;
-//                }
-//            }
             
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
                                                    size:OBJECT_SIZE
-                                                   time:MAX(5.0f-(float)count/50.0f, 0.25f)
+                                                   time:MAX(5.0f-(float)count/50.0f, 0.5f)
                                               enemyType:_enemyType
                                  ];
             //test用
