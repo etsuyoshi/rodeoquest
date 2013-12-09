@@ -159,7 +159,7 @@ UIActivityIndicatorView *activityIndicator;
     {
         // Display an error here.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Purchase Unsuccessful"
-                                                        message:@"Your purchase failed. Please try again."
+                                                        message:[NSString stringWithFormat:@"Your purchase failed. reason:%@",[transaction.error description]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];

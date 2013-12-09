@@ -200,7 +200,7 @@
                 break;
             }
             case ButtonMenuImageTypeCoin:{
-                imgAdd.image = [UIImage imageNamed:@"coin_yellow.png"];
+                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];
                 break;
             }
         }

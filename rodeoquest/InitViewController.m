@@ -13,7 +13,7 @@
 #define TestView
 
 #ifdef TestView
-    #define PaymentTest//TestViewの場合にのみ有効
+    #define PaymentTest//TestViewの場合にのみPaymentテスト有効
     #import "PaymentTestViewController.h"
 #endif
 

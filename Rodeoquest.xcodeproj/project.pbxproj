@@ -82,6 +82,7 @@
 		342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342ECBC417FC5AF900123886 /* DamageParticleView.m */; };
 		3436369C180FDA8B005A5C01 /* FontTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3436369B180FDA8B005A5C01 /* FontTestViewController.m */; };
 		34390EE31855E49100D02C54 /* PaymentTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34390EE21855E49100D02C54 /* PaymentTestViewController.m */; };
+		34390EE51855EA3000D02C54 /* icon_coin_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 34390EE41855EA3000D02C54 /* icon_coin_b.png */; };
 		343D9702184F3296000239F4 /* icon_gear_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 343D9700184F3296000239F4 /* icon_gear_b.png */; };
 		343D9703184F3296000239F4 /* icon_INN_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 343D9701184F3296000239F4 /* icon_INN_b.png */; };
 		343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 343D9705184F3A0C000239F4 /* MenuButtonWithView.m */; };
@@ -385,6 +386,7 @@
 		3436369B180FDA8B005A5C01 /* FontTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontTestViewController.m; path = TestsShootingTests/FontTestViewController.m; sourceTree = SOURCE_ROOT; };
 		34390EE11855E49100D02C54 /* PaymentTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentTestViewController.h; sourceTree = "<group>"; };
 		34390EE21855E49100D02C54 /* PaymentTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentTestViewController.m; sourceTree = "<group>"; };
+		34390EE41855EA3000D02C54 /* icon_coin_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_coin_b.png; sourceTree = "<group>"; };
 		343D9700184F3296000239F4 /* icon_gear_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_gear_b.png; path = ../../../../Downloads/icon_gear_b.png; sourceTree = "<group>"; };
 		343D9701184F3296000239F4 /* icon_INN_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_INN_b.png; path = ../../../../Downloads/icon_INN_b.png; sourceTree = "<group>"; };
 		343D9704184F3A0C000239F4 /* MenuButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuButtonWithView.h; sourceTree = "<group>"; };
@@ -797,6 +799,7 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				34390EE41855EA3000D02C54 /* icon_coin_b.png */,
 				34FD2821185094B900C751FC /* up_red.png */,
 				34FD281B1850934200C751FC /* up_blue.png */,
 				34FD281C1850934200C751FC /* up_green.png */,
@@ -1199,6 +1202,8 @@
 				342057ED17F2B34C0084E99D /* InitViewController.m */,
 				34C16CCD181C2D9000650A40 /* TestViewController.h */,
 				34C16CCE181C2D9000650A40 /* TestViewController.m */,
+				34390EE11855E49100D02C54 /* PaymentTestViewController.h */,
+				34390EE21855E49100D02C54 /* PaymentTestViewController.m */,
 				342057F817F2B8810084E99D /* GameClassViewController.h */,
 				342057F917F2B8810084E99D /* GameClassViewController.m */,
 				34BD6DCA18194683006BC523 /* InviteFriendsViewController.h */,
@@ -1217,8 +1222,6 @@
 				34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
 				3436369B180FDA8B005A5C01 /* FontTestViewController.m */,
-				34390EE11855E49100D02C54 /* PaymentTestViewController.h */,
-				34390EE21855E49100D02C54 /* PaymentTestViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1484,6 +1487,7 @@
 				34F53372181BBB7700FB9470 /* hisho_hmix.mp3 in Resources */,
 				3429D90E180FBD1A005CDFCE /* close.png in Resources */,
 				34A8897A18542ABA005667B4 /* 20.png in Resources */,
+				34390EE51855EA3000D02C54 /* icon_coin_b.png in Resources */,
 				340C3B9718549DDD0017BBBE /* Ice.png in Resources */,
 				34E216CA181BF74300B939E6 /* kinpaku_hmix.mp3 in Resources */,
 				344BD6171815936B00387201 /* mob_zou_02.png in Resources */,
