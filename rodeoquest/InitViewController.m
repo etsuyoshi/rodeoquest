@@ -10,7 +10,13 @@
 
 
 #define NoConnectTEST
-//#define TestView
+#define TestView
+
+#ifdef TestView
+    #define PaymentTest//TestViewの場合にのみ有効
+    #import "PaymentTestViewController.h"
+#endif
+
 #ifdef TestView
     #import "TestViewController.h"
 #endif
@@ -83,6 +89,14 @@ UIActivityIndicatorView *_indicator;
     //サーバー通信
     [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1];
 #elif defined TestView
+    
+    #ifdef PaymentTest
+        PaymentTestViewController *ptvc = [[PaymentTestViewController alloc]init];
+        [self presentViewController: ptvc animated:YES completion: nil];
+        return;
+    #endif
+    
+    
     TestViewController *tvc = [[TestViewController alloc]init];
     [self presentViewController: tvc animated:YES completion: nil];
 #else

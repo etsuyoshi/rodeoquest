@@ -81,6 +81,7 @@
 		342ECBBC17FC570500123886 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 342ECBBB17FC570500123886 /* star.png */; };
 		342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342ECBC417FC5AF900123886 /* DamageParticleView.m */; };
 		3436369C180FDA8B005A5C01 /* FontTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3436369B180FDA8B005A5C01 /* FontTestViewController.m */; };
+		34390EE31855E49100D02C54 /* PaymentTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34390EE21855E49100D02C54 /* PaymentTestViewController.m */; };
 		343D9702184F3296000239F4 /* icon_gear_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 343D9700184F3296000239F4 /* icon_gear_b.png */; };
 		343D9703184F3296000239F4 /* icon_INN_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 343D9701184F3296000239F4 /* icon_INN_b.png */; };
 		343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 343D9705184F3A0C000239F4 /* MenuButtonWithView.m */; };
@@ -382,6 +383,8 @@
 		342ECBC417FC5AF900123886 /* DamageParticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageParticleView.m; sourceTree = "<group>"; };
 		3436369A180FDA8B005A5C01 /* FontTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontTestViewController.h; path = TestsShootingTests/FontTestViewController.h; sourceTree = SOURCE_ROOT; };
 		3436369B180FDA8B005A5C01 /* FontTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontTestViewController.m; path = TestsShootingTests/FontTestViewController.m; sourceTree = SOURCE_ROOT; };
+		34390EE11855E49100D02C54 /* PaymentTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentTestViewController.h; sourceTree = "<group>"; };
+		34390EE21855E49100D02C54 /* PaymentTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentTestViewController.m; sourceTree = "<group>"; };
 		343D9700184F3296000239F4 /* icon_gear_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_gear_b.png; path = ../../../../Downloads/icon_gear_b.png; sourceTree = "<group>"; };
 		343D9701184F3296000239F4 /* icon_INN_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_INN_b.png; path = ../../../../Downloads/icon_INN_b.png; sourceTree = "<group>"; };
 		343D9704184F3A0C000239F4 /* MenuButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuButtonWithView.h; sourceTree = "<group>"; };
@@ -1214,6 +1217,8 @@
 				34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
 				3436369B180FDA8B005A5C01 /* FontTestViewController.m */,
+				34390EE11855E49100D02C54 /* PaymentTestViewController.h */,
+				34390EE21855E49100D02C54 /* PaymentTestViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1584,6 +1589,7 @@
 				34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */,
 				34E041D91850A93400CA3034 /* ItemUpListViewController.m in Sources */,
 				3411FB8417FEE301001D1491 /* MyMachineClass.m in Sources */,
+				34390EE31855E49100D02C54 /* PaymentTestViewController.m in Sources */,
 				3420AB961827AA9200AB0A84 /* UIView+Animation.m in Sources */,
 				34F3006F182162660082DCBC /* KiraParticleView.m in Sources */,
 				343F802B17FF947100224839 /* ScoreBoardClass.m in Sources */,
