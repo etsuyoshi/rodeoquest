@@ -378,7 +378,12 @@ UIView *viewMyEffect;
     
     //自機定義
 //    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE];
-    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE level:[[attr getValueFromDevice:@"level"] intValue]];
+//    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE level:[[attr getValueFromDevice:@"level"] intValue]];
+    MyMachine = [[MyMachineClass alloc] init:x_frame/2
+                                        size:OBJECT_SIZE
+                                       level:[[attr getValueFromDevice:@"level"] intValue]
+                                    spWeapon:BeamTypeAnimal];
+    
     [self.view addSubview:[MyMachine getImageView]];
     [self.view bringSubviewToFront:[MyMachine getImageView]];
 //    [[MyMachine getImageView] startAnimating];
@@ -1613,7 +1618,7 @@ UIView *viewMyEffect;
                     }
                 }
             }
-            NSLog(@"enemyType = %d", _enemyType);
+//            NSLog(@"enemyType = %d", _enemyType);
             
             
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
@@ -2640,7 +2645,7 @@ UIView *viewMyEffect;
         }
         
 //        //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+        _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
@@ -2719,19 +2724,20 @@ UIView *viewMyEffect;
 }
 
 -(void)yieldBeamFromMyMachine{
-    [MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]];
-    //ビームはFIFOなので最初のもののみを表示
-    //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
-    //            NSLog(@"after yield beam");
-    for(int i = 0; i < [MyMachine getNumOfBeam];i++){//ordinaryBeam
-        //                NSLog(@"%d", i);
-        [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
-    }
-    
-    if(true){//special-beam-mode
-        int numOfOrdinaryBullet = [MyMachine getNumOfBeam];
-        for(int i = numOfOrdinaryBullet ;i < numOfOrdinaryBullet + 2;i++){//それより前二つの弾丸はspecial弾
-            [self.view addSubview:[[MyMachine getBeam:i] getImageView]];
+    if([MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]]){
+        //ビームはFIFOなので最初のもののみを表示
+        //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
+        //            NSLog(@"after yield beam");
+        for(int i = 0; i < [MyMachine getNumOfBeam];i++){//ordinaryBeam
+            //                NSLog(@"%d", i);
+            [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
+        }
+        
+        if([MyMachine getSpWeapon] >= 0){//if not specialWeapon :return -1
+            int numOfOrdinaryBullet = [MyMachine getNumOfBeam];
+            for(int i = numOfOrdinaryBullet ;i < numOfOrdinaryBullet + 2;i++){//それより前二つの弾丸はspecial弾
+                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];
+            }
         }
     }
 }

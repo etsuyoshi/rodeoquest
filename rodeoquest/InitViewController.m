@@ -9,7 +9,7 @@
 //　同期通信の場合はサブスレッド立てるhttp://www.yoheim.net/blog.php?q=20130206
 
 
-//#define NoConnectTEST
+#define NoConnectTEST
 //#define TestView
 #ifdef TestView
     #import "TestViewController.h"

@@ -16,6 +16,7 @@
 
 
 @interface MyMachineClass : NSObject{
+    int spWeapon;//特殊武器の判定フラグ：-1なら装備なし、0以上の整数でbeamTypeを指定する
     int level;
     
     int x_loc;
@@ -53,6 +54,8 @@
 }
 
 @property(nonatomic) ItemType itemType;
+
+-(id)init:(int)x_init size:(int)size level:(int)_level spWeapon:(int)_spWeapon;
 -(id)init:(int)x_init size:(int)size level:(int)_level;
 -(id)init:(int)x_init size:(int)size;
 -(id)init;
@@ -82,7 +85,7 @@
 -(DamageParticleView *)getDamageParticle;
 
 
--(void)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y;
+-(Boolean)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y;
 -(BeamClass *)getBeam:(int)i;
 -(int)getBeamCount;
 -(int)getAliveBeamCount;
@@ -91,4 +94,5 @@
 -(void)setDefensePow:(int)_val;
 
 -(int)getLaserPower;
+-(BeamType)getSpWeapon;
 @end

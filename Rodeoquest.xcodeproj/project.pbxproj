@@ -1192,12 +1192,14 @@
 		34F3007318218C350082DCBC /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				342057EC17F2B34C0084E99D /* InitViewController.h */,
+				342057ED17F2B34C0084E99D /* InitViewController.m */,
+				34C16CCD181C2D9000650A40 /* TestViewController.h */,
+				34C16CCE181C2D9000650A40 /* TestViewController.m */,
 				342057F817F2B8810084E99D /* GameClassViewController.h */,
 				342057F917F2B8810084E99D /* GameClassViewController.m */,
 				34BD6DCA18194683006BC523 /* InviteFriendsViewController.h */,
 				34BD6DCB18194683006BC523 /* InviteFriendsViewController.m */,
-				342057EC17F2B34C0084E99D /* InitViewController.h */,
-				342057ED17F2B34C0084E99D /* InitViewController.m */,
 				344928B018025E6100315F2D /* MenuViewController.h */,
 				344928B118025E6100315F2D /* MenuViewController.m */,
 				34A6A1A1180EF48F006F26D6 /* ItemListViewController.h */,
@@ -1212,8 +1214,6 @@
 				34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
 				3436369B180FDA8B005A5C01 /* FontTestViewController.m */,
-				34C16CCD181C2D9000650A40 /* TestViewController.h */,
-				34C16CCE181C2D9000650A40 /* TestViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";

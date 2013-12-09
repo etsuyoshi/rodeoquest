@@ -11,7 +11,7 @@
 @implementation SpecialBeamClass
 @synthesize beamType;
 -(id) init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h type:(int)_type{
-    NSLog(@"special beam occurred");
+//    NSLog(@"special beam occurred");
     NSArray *arrBeamImage = [NSArray arrayWithObjects:
                              @"Animal.png",
                              @"Bug.png",

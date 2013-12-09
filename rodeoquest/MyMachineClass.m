@@ -36,6 +36,10 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     return [self init:x_init size:size level:1];
 }
 -(id) init:(int)x_init size:(int)size level:(int)_level{
+    return [self init:x_init size:size level:_level spWeapon:-1];
+}
+-(id) init:(int)x_init size:(int)size level:(int)_level spWeapon:(int)_spWeapon{
+    spWeapon = _spWeapon;
     level = _level;
     
     
@@ -501,7 +505,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     return damageParticle;
 }
 
--(void)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y{
+-(Boolean)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y{
 //    NSLog(@"beam count = %d", [beamArray count]);
 //    NSLog(@"start yield beam at weapon2count : %d", weapon2Count);
     if(weapon2Count == 0){
@@ -513,11 +517,12 @@ int healCompleteCount;//1回当たりの回復表示終了判定
          */
         int _beamSize = 50;
         //specialBeam
-//        if(special-beam-mode){
-        //左側
-        [beamArray insertObject:[[SpecialBeamClass alloc] init:x - _beamSize/2 y_init:y width:_beamSize height:_beamSize type:0] atIndex:0];
-        [beamArray insertObject:[[SpecialBeamClass alloc] init:x + _beamSize/2 y_init:y width:_beamSize height:_beamSize type:0] atIndex:0];
-//        }
+        if(spWeapon != -1){//spWeapon = beamType
+            //左側
+            [beamArray insertObject:[[SpecialBeamClass alloc] init:x - _beamSize/2 y_init:y width:_beamSize height:_beamSize type:spWeapon] atIndex:0];
+            //右側
+            [beamArray insertObject:[[SpecialBeamClass alloc] init:x + _beamSize/2 y_init:y width:_beamSize height:_beamSize type:spWeapon] atIndex:0];
+        }
     
         //ordinaryBeam
         switch (numOfBeam) {
@@ -557,6 +562,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             }
         }
         
+        return true;
 
 //    [beamArray addObject:beam];
 //    if([beamArray count] > 10){
@@ -605,6 +611,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //        [beamArray removeAllObjects];
     }
     
+    return false;
     
 }
 
@@ -942,6 +949,10 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 -(int)getLaserPower{
     return laserPower;
+}
+
+-(BeamType)getSpWeapon{
+    return spWeapon;
 }
 
 @end
