@@ -72,6 +72,7 @@
 		342231A21845EDAF00055ADF /* BackGroundClass2.m in Sources */ = {isa = PBXBuildFile; fileRef = 342231A11845EDAF00055ADF /* BackGroundClass2.m */; };
 		3424020117F6E8A100E06902 /* BeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3424020017F6E8A100E06902 /* BeamClass.m */; };
 		3429D90E180FBD1A005CDFCE /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 3429D90D180FBD1A005CDFCE /* close.png */; };
+		342A75D61856BA3800034E97 /* PayProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342A75D51856BA3800034E97 /* PayProductViewController.m */; };
 		342C03AB17F4604E0023C11F /* nothing32.png in Resources */ = {isa = PBXBuildFile; fileRef = 342C039D17F4604E0023C11F /* nothing32.png */; };
 		342C03AD17F4604E0023C11F /* gameover.png in Resources */ = {isa = PBXBuildFile; fileRef = 342C039F17F4604E0023C11F /* gameover.png */; };
 		342DAB0C184CBD050004D3CB /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 344DA250184CB6A6004F71EE /* libGoogleAdMobAds.a */; };
@@ -377,6 +378,8 @@
 		342401FF17F6E8A100E06902 /* BeamClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamClass.h; sourceTree = "<group>"; };
 		3424020017F6E8A100E06902 /* BeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamClass.m; sourceTree = "<group>"; };
 		3429D90D180FBD1A005CDFCE /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
+		342A75D41856BA3800034E97 /* PayProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayProductViewController.h; sourceTree = "<group>"; };
+		342A75D51856BA3800034E97 /* PayProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayProductViewController.m; sourceTree = "<group>"; };
 		342C039D17F4604E0023C11F /* nothing32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nothing32.png; sourceTree = "<group>"; };
 		342C039F17F4604E0023C11F /* gameover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameover.png; sourceTree = "<group>"; };
 		342ECBBB17FC570500123886 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
@@ -1204,6 +1207,8 @@
 				34C16CCE181C2D9000650A40 /* TestViewController.m */,
 				34390EE11855E49100D02C54 /* PaymentTestViewController.h */,
 				34390EE21855E49100D02C54 /* PaymentTestViewController.m */,
+				342A75D41856BA3800034E97 /* PayProductViewController.h */,
+				342A75D51856BA3800034E97 /* PayProductViewController.m */,
 				342057F817F2B8810084E99D /* GameClassViewController.h */,
 				342057F917F2B8810084E99D /* GameClassViewController.m */,
 				34BD6DCA18194683006BC523 /* InviteFriendsViewController.h */,
@@ -1582,6 +1587,7 @@
 				340C3B8418549AB30017BBBE /* SpecialBeamClass.m in Sources */,
 				3400396F17F408070093E07E /* EnemyClass.m in Sources */,
 				344DA1DB185309EA00B392A7 /* CoolButton.m in Sources */,
+				342A75D61856BA3800034E97 /* PayProductViewController.m in Sources */,
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
 				34EB7ACE182F2E850079B0EB /* Effect.m in Sources */,
 				343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */,

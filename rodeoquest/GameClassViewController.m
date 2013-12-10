@@ -1970,7 +1970,7 @@ UIView *viewMyEffect;
 -(void)exit{
     //    [super viewWillDisappear:NO];//storyboard遷移からの場合
     [BackGround pauseAnimations];
-    [BackGround exitAnimations];
+    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
     //BGM stop
     [bgmClass stop];
     
@@ -2003,7 +2003,7 @@ UIView *viewMyEffect;
     
 
 }
-
+//displayStoppedFrameメソッド内のalertと関連づけられている
 -(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     switch (buttonIndex) {

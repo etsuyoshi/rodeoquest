@@ -1,38 +1,102 @@
 //
-//  PaymentTestViewController.m
+//  PayProductViewController.m
 //  Rodeoquest
 //
-//  Created by 遠藤 豪 on 2013/12/09.
+//  Created by 遠藤 豪 on 2013/12/10.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
-#import "PaymentTestViewController.h"
+#import "PayProductViewController.h"
+#import "BackGroundClass2.h"
+#import "CreateComponentClass.h"
 
-@interface PaymentTestViewController ()
+
+@interface PayProductViewController ()
 
 @end
 
-@implementation PaymentTestViewController
+@implementation PayProductViewController
 UIActivityIndicatorView *activityIndicator;
+BackGroundClass2 *background;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
+                                               self.view.bounds.size.height/2);
+        [self.view addSubview:activityIndicator];
+        
+        
+        //何もしないUIViewをaddする:他のコンポーネントをこの上に置く(閉じるアクションをつけたuiviewの上にaddすると他のコンポーネントに対するアクションにも閉じるアクションが適用されてしまう)
+        UIView *viewSuperInPay = [CreateComponentClass createViewNoFrame:self.view.bounds
+                                                                   color:[UIColor clearColor]
+                                                                     tag:0
+                                                                  target:Nil
+                                                                selector:nil];
+        [self.view addSubview:viewSuperInPay];
+        
+        //その上に閉じるアクションをつけたuiviewをaddする(この上に他のコンポーネントを置いてはだめ)
+        UIView *viewSuper = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
+                                                                  rect:self.view.bounds
+                                                                 image:nil
+                                                                target:self
+                                                              selector:@"closeViewCon:"];//このviewControllerだけ閉じる
+        [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
+        [viewSuperInPay addSubview:viewSuper];
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
+                                              width:self.view.bounds.size.width
+                                             height:self.view.bounds.size.height
+                                               secs:5.0f];
+        
+        [self.view addSubview:[background getImageView1]];
+        [self.view addSubview:[background getImageView2]];
+        [self.view sendSubviewToBack:[background getImageView1]];
+        [self.view sendSubviewToBack:[background getImageView2]];
+//        [self.view bringSubviewToFront:[background getImageView1]];
+//        [self.view bringSubviewToFront:[background getImageView2]];
+        
+        
+        [background startAnimation];
+        
+        
+        //backgroundの上にsubviewと、更にその上にsubViewをaddしていく
+        
+    }
+    
+    return self;
+}
+
+-(void)closeViewCon:(id)sender{
+    
+    [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    
-    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    //    activityIndicator.frame = CGRectMake(0, 0, 100, 100);
-    activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
-                                           self.view.bounds.size.height/2);
-    [self.view addSubview:activityIndicator];
-    
-    //    UIButton *btProductRequest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    UIButton *btProductRequest = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 70)];
-    btProductRequest.center = CGPointMake(self.view.bounds.size.width/2, 50);
-    [btProductRequest setBackgroundColor:[UIColor grayColor]];
-    [btProductRequest addTarget:self
-                         action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btProductRequest];
+	// Do any additional setup after loading the view.
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+
 -(void)showDialog{
     NSString *title = @"ありがとうございます。";
     NSString *msg = @"購入が完了しました。";
@@ -67,11 +131,6 @@ UIActivityIndicatorView *activityIndicator;
         [activityIndicator startAnimating];
         
     }
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response

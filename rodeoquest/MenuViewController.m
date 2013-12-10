@@ -20,6 +20,7 @@
 #import "LifeUpListViewController.h"
 #import "CreateComponentClass.h"
 #import "InviteFriendsViewController.h"
+#import "PayProductViewController.h"
 #import "TestViewController.h"
 #import "AttrClass.h"
 #import <QuartzCore/QuartzCore.h>
@@ -624,8 +625,9 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
-        case ButtonMenuImageTypeCoin:{
-            
+        case ButtonMenuImageTypeCoin:{//コイン購入画面へ
+            PayProductViewController *ppvc = [[PayProductViewController alloc]init];
+            [self presentViewController:ppvc animated:NO completion:nil];
             break;
         }
         case ButtonMenuImageTypeSet:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
