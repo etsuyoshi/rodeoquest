@@ -211,6 +211,8 @@
 		34A8898318542ABA005667B4 /* 29.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A8896518542ABA005667B4 /* 29.png */; };
 		34A8898418542ABA005667B4 /* 30.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A8896618542ABA005667B4 /* 30.png */; };
 		34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A8898618542B55005667B4 /* OrdinaryBeamClass.m */; };
+		34B5FB451857021A00F43531 /* yen_g.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB431857021A00F43531 /* yen_g.png */; };
+		34B5FB461857021A00F43531 /* yen_o.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB441857021A00F43531 /* yen_o.png */; };
 		34BD6DB018193135006BC523 /* AppSocially.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 34BD6DAE18193135006BC523 /* AppSocially.bundle */; };
 		34BD6DB118193135006BC523 /* AppSocially.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DAF18193135006BC523 /* AppSocially.framework */; };
 		34BD6DB318193180006BC523 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DB218193180006BC523 /* Accounts.framework */; };
@@ -539,6 +541,8 @@
 		34A8896618542ABA005667B4 /* 30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 30.png; sourceTree = "<group>"; };
 		34A8898518542B55005667B4 /* OrdinaryBeamClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryBeamClass.h; sourceTree = "<group>"; };
 		34A8898618542B55005667B4 /* OrdinaryBeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryBeamClass.m; sourceTree = "<group>"; };
+		34B5FB431857021A00F43531 /* yen_g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yen_g.png; sourceTree = "<group>"; };
+		34B5FB441857021A00F43531 /* yen_o.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yen_o.png; sourceTree = "<group>"; };
 		34BD6DAE18193135006BC523 /* AppSocially.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AppSocially.bundle; sourceTree = "<group>"; };
 		34BD6DAF18193135006BC523 /* AppSocially.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppSocially.framework; sourceTree = "<group>"; };
 		34BD6DB218193180006BC523 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -802,6 +806,8 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				34B5FB431857021A00F43531 /* yen_g.png */,
+				34B5FB441857021A00F43531 /* yen_o.png */,
 				34390EE41855EA3000D02C54 /* icon_coin_b.png */,
 				34FD2821185094B900C751FC /* up_red.png */,
 				34FD281B1850934200C751FC /* up_blue.png */,
@@ -1422,6 +1428,7 @@
 				340C3B9518549DDD0017BBBE /* Fire.png in Resources */,
 				34FD281E1850934200C751FC /* up_blue.png in Resources */,
 				3488ACC5183D272F00833F93 /* img04.png in Resources */,
+				34B5FB461857021A00F43531 /* yen_o.png in Resources */,
 				3460F9501824FA2700951A99 /* tool_bomb.png in Resources */,
 				34CA557F18447A9B00F9657A /* laser_b01.png in Resources */,
 				3411FB7C17FED1DF001D1491 /* powerGauge_pt10.png in Resources */,
@@ -1439,6 +1446,7 @@
 				34A8897B18542ABA005667B4 /* 21.png in Resources */,
 				34F53374181BBBD700FB9470 /* ones_hmix.mp3 in Resources */,
 				34C16CD1181C4E9400650A40 /* sabaki_hmix.mp3 in Resources */,
+				34B5FB451857021A00F43531 /* yen_g.png in Resources */,
 				3411FB8A17FF2D06001D1491 /* cosmos_star4_repair.png in Resources */,
 				34C09ED0180085DF00E4A4D8 /* blue.png in Resources */,
 				34518647183B9F5B00DDD6D2 /* bomb026.png in Resources */,

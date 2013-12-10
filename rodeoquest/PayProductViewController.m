@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
+#import "AttrClass.h"
 #import "PayProductViewController.h"
 #import "BackGroundClass2.h"
 #import "CreateComponentClass.h"
@@ -24,12 +25,32 @@
 @implementation PayProductViewController
 UIActivityIndicatorView *activityIndicator;
 BackGroundClass2 *background;
-
+NSArray *arrProductId;
+NSArray *arrAcquired;
+NSArray *arrPrice;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        arrProductId = [NSArray arrayWithObjects:
+                        @"coin1.1.1",
+                        @"coin2.1.1",
+                        @"coin3.1.1",
+                        @"coin4.1.1",
+                        @"coin5.1.1",
+                        @"coin6.1.1",
+                        nil];
+        arrAcquired = [NSArray arrayWithObjects:
+                       @"1500",//coin
+                       @"3500",
+                       @"8000",
+                       @"15000",
+                       @"27500",
+                       @"60000",
+                       nil];
+        
         activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
                                                self.view.bounds.size.height/2);
@@ -78,7 +99,7 @@ BackGroundClass2 *background;
                                                                         self.view.bounds.size.height/2 - HEIGHT_FRAME_SUPER/2,
                                                                         WIDTH_FRAME_SUPER,
                                                                         HEIGHT_FRAME_SUPER)];
-        [viewFrame setBackgroundColor:[UIColor colorWithRed:0.9f green:0.9f blue:0.9f alpha:0.6f]];//どちらでも良い
+        [viewFrame setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];//どちらでも良い
 //        [viewSuperInPay addSubview:viewFrame];//ここにviewFrameを乗っけるとボタンの反応がおかしい。
         [self.view addSubview:viewFrame];
         
@@ -86,7 +107,12 @@ BackGroundClass2 *background;
         CGRect rectFrame;
         CGRect rectButton;
         UIView *eachFrame;
-        UIImageView *payButtonView;//
+        UIImageView *payButtonView;
+        UIImageView *viewYenImage;
+        UITextView *tvPrice;
+        int widthPrice = SIZE_BUTTON_PRODUCT*1.3/2;
+        int heightPrice = HEIGHT_FRAME_PRODUCT - SIZE_BUTTON_PRODUCT;//20
+        
         //viewFrameに2x3行列のframeを置いて、更にそれぞれにbuttonを置く
         int numOfRow = 2;
         int numOfCol = 3;
@@ -102,6 +128,20 @@ BackGroundClass2 *background;
                                     [NSNumber numberWithInt:ProductTypeCoin6],
                                     nil],
                                   nil];
+        //price
+        arrPrice = [NSArray arrayWithObjects:
+                    [NSArray arrayWithObjects:
+                     @"200",//yen
+                     @"500",
+                     @"1200",
+                     nil],
+                    [NSArray arrayWithObjects:
+                     @"2500",
+                     @"4100",
+                     @"6300",
+                     nil],
+                    nil];
+        
         for(int row = 0;row < numOfRow ;row++){
             for(int col = 0;col < numOfCol ; col++){
                 rectFrame = CGRectMake(MARGIN_FRAME_PRODUCT + col * (WIDTH_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
@@ -116,8 +156,30 @@ BackGroundClass2 *background;
                                                                 target:(id)self
                                                               selector:(NSString *)@"pushedButton:"
                                                                    tag:[[[arrProductType objectAtIndex:row] objectAtIndex:col] intValue]];
-                [eachFrame addSubview:payButtonView];
-                [viewFrame addSubview:eachFrame];
+                [eachFrame addSubview:payButtonView];//各フレームに各ボタンに置く
+                
+                //yen-mark
+                viewYenImage = [CreateComponentClass createImageView:CGRectMake(MARGIN_FRAME_PRODUCT-10,
+                                                                                HEIGHT_FRAME_PRODUCT - heightPrice+5, 20, 20)
+                                                               image:@"yen_g.png"];
+//                viewYenImage.center = CGPointMake(MARGIN_FRAME_PRODUCT, SIZE_BUTTON_PRODUCT + MARGIN_FRAME_PRODUCT*2);
+                [eachFrame addSubview:viewYenImage];
+                
+                //price
+                tvPrice = [CreateComponentClass createTextView:CGRectMake(SIZE_BUTTON_PRODUCT-widthPrice,
+                                                                          HEIGHT_FRAME_PRODUCT-heightPrice,//center-adoption
+                                                                          widthPrice,heightPrice)
+                                                                          text:[[arrPrice objectAtIndex:row] objectAtIndex:col]
+                                                          font:@"AmericanTypewriter-Bold"
+                                                          size:13
+                                                     textColor:[UIColor whiteColor]
+                                                     backColor:[UIColor clearColor]//redColor]//
+                                                    isEditable:NO];
+                tvPrice.textAlignment = NSTextAlignmentRight;
+                [eachFrame addSubview:tvPrice];
+                
+                [viewFrame addSubview:eachFrame];//各フレームをviewFrameに置く
+                
             }
         }
         
@@ -170,32 +232,32 @@ BackGroundClass2 *background;
             case ProductTypeCoin1:{
                 
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: @"coin1.1.1"]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin1]]];
                 break;
             }
             case ProductTypeCoin2:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: @"coin2.1.1"]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin2]]];
                 break;
             }
             case ProductTypeCoin3:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: @"coin3.1.1"]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin3]]];
                 break;
             }
             case ProductTypeCoin4:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: @"coin4.1.1"]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin4]]];
                 break;
             }
             case ProductTypeCoin5:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: @"coin5.1.1"]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin5]]];
                 break;
             }
             case ProductTypeCoin6:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: @"coin6.1.1"]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin6]]];
                 break;
             }
         }
@@ -291,6 +353,8 @@ BackGroundClass2 *background;
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {
     NSLog(@"Transaction Completed");
+    
+    
     // You can create a method to record the transaction.
     // [self recordTransaction: transaction];
     
@@ -307,6 +371,31 @@ BackGroundClass2 *background;
                                           otherButtonTitles:nil,
                           nil];
     [alert show];
+    
+    NSString *productId = transaction.payment.productIdentifier;
+    NSLog(@"Successfully acquired product ID = %@", productId);
+
+//    for(NSString *strId in arrProductId){
+    for(int i = 0; i < [arrProductId count];i++){
+        NSString *strId = [arrProductId objectAtIndex:i];
+        if([strId isEqualToString:productId]){
+            //log
+            NSLog(@"%@を取得したのでコイン%dを追加します",
+                  strId,
+                  [[arrAcquired objectAtIndex:i] intValue]);
+            
+            AttrClass *attr = [[AttrClass alloc]init];
+            int _gold = [[attr getValueFromDevice:@"gold"] intValue] + [[arrAcquired objectAtIndex:i] intValue];
+            [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", _gold]];
+            
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"コイン%@枚を追加しました。", [arrAcquired objectAtIndex:i]]
+                                                           message:nil
+                                                          delegate:self
+                                                 cancelButtonTitle:@"OK"
+                                                 otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }
     
     
     //コインを追加する等の処理を実行
