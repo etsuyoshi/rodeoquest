@@ -11,7 +11,7 @@
 #import "CreateComponentClass.h"
 
 #define WIDTH_FRAME_SUPER 290
-#define HEIGHT_FRAME_SUPER 350
+#define HEIGHT_FRAME_SUPER 300
 #define WIDTH_FRAME_PRODUCT 80
 #define HEIGHT_FRAME_PRODUCT 100
 #define MARGIN_FRAME_PRODUCT 13
@@ -35,7 +35,7 @@ BackGroundClass2 *background;
                                                self.view.bounds.size.height/2);
         [self.view addSubview:activityIndicator];
         
-        //動画背景を
+        //動画背景
         background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
                                               width:self.view.bounds.size.width
                                              height:self.view.bounds.size.height
@@ -60,16 +60,17 @@ BackGroundClass2 *background;
                                                                      tag:0
                                                                   target:Nil
                                                                 selector:nil];
+        [viewSuperInPay setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5]];
         [self.view addSubview:viewSuperInPay];
         
         //その上に閉じるアクションをつけたuiviewをaddする(この上に他のコンポーネントを置いてはだめ)
-        UIView *viewSuper = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
-                                                                  rect:self.view.bounds
-                                                                 image:nil
-                                                                target:self
-                                                              selector:@"closeViewCon:"];//このviewControllerだけ閉じる
-        [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
-        [viewSuperInPay addSubview:viewSuper];
+//        UIView *viewSuper = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
+//                                                                  rect:self.view.bounds
+//                                                                 image:nil
+//                                                                target:self
+//                                                              selector:@"closeViewCon:"];//このviewControllerだけ閉じる
+//        [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
+//        [viewSuperInPay addSubview:viewSuper];
         
         
         //画面中心にWIDTH_FRAME_SUPER X HEIGHT_FRAME_SUPERの枠を表示
@@ -78,7 +79,8 @@ BackGroundClass2 *background;
                                                                         WIDTH_FRAME_SUPER,
                                                                         HEIGHT_FRAME_SUPER)];
         [viewFrame setBackgroundColor:[UIColor colorWithRed:0.9f green:0.9f blue:0.9f alpha:0.6f]];//どちらでも良い
-        [viewSuperInPay addSubview:viewFrame];
+//        [viewSuperInPay addSubview:viewFrame];//ここにviewFrameを乗っけるとボタンの反応がおかしい。
+        [self.view addSubview:viewFrame];
         
         
         CGRect rectFrame;
@@ -88,6 +90,18 @@ BackGroundClass2 *background;
         //viewFrameに2x3行列のframeを置いて、更にそれぞれにbuttonを置く
         int numOfRow = 2;
         int numOfCol = 3;
+        NSArray *arrProductType = [NSArray arrayWithObjects:
+                                   [NSArray arrayWithObjects:
+                                    [NSNumber numberWithInt:ProductTypeCoin1],
+                                    [NSNumber numberWithInt:ProductTypeCoin2],
+                                    [NSNumber numberWithInt:ProductTypeCoin3],
+                                    nil],
+                                   [NSArray arrayWithObjects:
+                                    [NSNumber numberWithInt:ProductTypeCoin4],
+                                    [NSNumber numberWithInt:ProductTypeCoin5],
+                                    [NSNumber numberWithInt:ProductTypeCoin6],
+                                    nil],
+                                  nil];
         for(int row = 0;row < numOfRow ;row++){
             for(int col = 0;col < numOfCol ; col++){
                 rectFrame = CGRectMake(MARGIN_FRAME_PRODUCT + col * (WIDTH_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
@@ -101,24 +115,24 @@ BackGroundClass2 *background;
                                                                   rect:(CGRect)rectButton
                                                                 target:(id)self
                                                               selector:(NSString *)@"pushedButton:"
-                                                                   tag:ButtonMenuImageTypeStart];
+                                                                   tag:[[[arrProductType objectAtIndex:row] objectAtIndex:col] intValue]];
                 [eachFrame addSubview:payButtonView];
                 [viewFrame addSubview:eachFrame];
             }
         }
         
         //確認ボタン->閉じる(viewFrameの外を押しても閉じる)
-        int btHeight = 50;
+        int btHeight = 30;
         int btWidth = 150;
         UIImageView *btnConfirm = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
                                                                imageType:(ButtonMenuImageType)ButtonMenuImageTypeCoin//test:仮
-                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER/2 - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
-                                                                                    numOfCol * HEIGHT_FRAME_PRODUCT,
+                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+                                                                                    numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
                                                                                     btWidth, btHeight)
                                                                   target:(id)self
                                                                 selector:@"closeViewCon"];
         [viewFrame addSubview:btnConfirm];
-        
+//        [self.view addSubview:btnConfirm];//位置修正が必要
         
         
     }
@@ -126,10 +140,10 @@ BackGroundClass2 *background;
     return self;
 }
 
--(void)closeViewCon:(id)sender{
-    NSLog(@"close Payment View controller");
-    [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
-}
+//-(void)closeViewCon:(id)sender{
+//    NSLog(@"close Payment View controller");
+//    [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+//}
 -(void)closeViewCon{
     
     NSLog(@"close Payment View controller");
@@ -139,6 +153,59 @@ BackGroundClass2 *background;
 
 -(void)pushedButton:(NSNumber *)num{
     NSLog(@"pushed button : tag = %d", num.integerValue);
+    
+    
+    if (![SKPaymentQueue canMakePayments]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"エラー"
+                                                        message:@"端末側でアプリ内課金が制限されています。設定を確認して下さい。"
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"閉じる", nil];
+        [alert show];
+        return;
+    }else{
+        NSLog(@"アプリ内課金制限なし：クリアー");
+        SKProductsRequest *request;
+        switch((ProductType)(num.integerValue)){
+            case ProductTypeCoin1:{
+                
+                request= [[SKProductsRequest alloc]
+                          initWithProductIdentifiers: [NSSet setWithObject: @"coin1.1.1"]];
+                break;
+            }
+            case ProductTypeCoin2:{
+                request= [[SKProductsRequest alloc]
+                          initWithProductIdentifiers: [NSSet setWithObject: @"coin2.1.1"]];
+                break;
+            }
+            case ProductTypeCoin3:{
+                request= [[SKProductsRequest alloc]
+                          initWithProductIdentifiers: [NSSet setWithObject: @"coin3.1.1"]];
+                break;
+            }
+            case ProductTypeCoin4:{
+                request= [[SKProductsRequest alloc]
+                          initWithProductIdentifiers: [NSSet setWithObject: @"coin4.1.1"]];
+                break;
+            }
+            case ProductTypeCoin5:{
+                request= [[SKProductsRequest alloc]
+                          initWithProductIdentifiers: [NSSet setWithObject: @"coin5.1.1"]];
+                break;
+            }
+            case ProductTypeCoin6:{
+                request= [[SKProductsRequest alloc]
+                          initWithProductIdentifiers: [NSSet setWithObject: @"coin6.1.1"]];
+                break;
+            }
+        }
+        request.delegate = self;
+        [request start];
+        
+        [activityIndicator startAnimating];
+        
+    }
+    
 }
 
 - (void)viewDidLoad
@@ -167,29 +234,7 @@ BackGroundClass2 *background;
     [alert show];
     
 }
--(void)buttonPressed:(id)sender{
-    UIButton *bt = (UIButton *)sender;
-    NSLog(@"bt=%@", bt);
-    
-    if (![SKPaymentQueue canMakePayments]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"エラー"
-                                                        message:@"アプリ内課金が制限されています。"
-                                                       delegate:nil
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:@"OK", nil];
-        [alert show];
-        return;
-    }else{
-        NSLog(@"アプリ内課金制限なし：クリアー");
-        SKProductsRequest *request= [[SKProductsRequest alloc]
-                                     initWithProductIdentifiers: [NSSet setWithObject: @"coin1.1.1"]];
-        request.delegate = self;
-        [request start];
-        
-        [activityIndicator startAnimating];
-        
-    }
-}
+
 
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {

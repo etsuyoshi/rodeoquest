@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
-    ButtonMenuImageTypeWeapon,
+    ButtonMenuImageTypeWeapon,//0
     ButtonMenuImageTypeDefense,
     ButtonMenuImageTypeItem,
     ButtonMenuImageTypeInn,
     ButtonMenuImageTypeSet,
     ButtonMenuImageTypeCoin,
     ButtonMenuImageTypeWpnUp,
-    ButtonMenuImageTypeStart
+    ButtonMenuImageTypeStart//7
     
     
 };

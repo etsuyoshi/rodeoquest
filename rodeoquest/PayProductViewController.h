@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <StoreKit/StoreKit.h>
 
+typedef NS_ENUM(NSInteger, ProductType) {
+    ProductTypeCoin1,
+    ProductTypeCoin2,
+    ProductTypeCoin3,
+    ProductTypeCoin4,
+    ProductTypeCoin5,
+    ProductTypeCoin6
+};
+
 @interface PayProductViewController : UIViewController<SKProductsRequestDelegate,
 SKPaymentTransactionObserver>{
     

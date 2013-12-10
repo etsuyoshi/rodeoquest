@@ -19,6 +19,7 @@
              target:(id)_target
            selector:(NSString *)_selName
                 tag:(int)_tag_img{
+//    NSLog(@"tag_img = %d", _tag_img);
     tag_img = _tag_img;
     originalFrame = frame;
     self = [super initWithFrame:frame];
@@ -64,6 +65,7 @@
 */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"touches began");
     // タッチされたときの処理
 //    touchedX = touches.x;
     UITouch *touch = [touches anyObject];
@@ -99,6 +101,7 @@
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"touches ended");
     if(isPressed){
         
         self.center = CGPointMake(self.center.x,
