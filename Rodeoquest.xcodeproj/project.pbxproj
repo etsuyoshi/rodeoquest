@@ -213,6 +213,10 @@
 		34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A8898618542B55005667B4 /* OrdinaryBeamClass.m */; };
 		34B5FB451857021A00F43531 /* yen_g.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB431857021A00F43531 /* yen_g.png */; };
 		34B5FB461857021A00F43531 /* yen_o.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB441857021A00F43531 /* yen_o.png */; };
+		34B5FB4A18570ED500F43531 /* gunshot-heavy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4718570ED500F43531 /* gunshot-heavy.mp3 */; };
+		34B5FB4B18570ED500F43531 /* gunshot3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4818570ED500F43531 /* gunshot3.mp3 */; };
+		34B5FB4C18570ED500F43531 /* synth-sweep1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4918570ED500F43531 /* synth-sweep1.mp3 */; };
+		34B5FB4E185711E100F43531 /* explosion1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4D185711E100F43531 /* explosion1.mp3 */; };
 		34BD6DB018193135006BC523 /* AppSocially.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 34BD6DAE18193135006BC523 /* AppSocially.bundle */; };
 		34BD6DB118193135006BC523 /* AppSocially.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DAF18193135006BC523 /* AppSocially.framework */; };
 		34BD6DB318193180006BC523 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DB218193180006BC523 /* Accounts.framework */; };
@@ -543,6 +547,10 @@
 		34A8898618542B55005667B4 /* OrdinaryBeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryBeamClass.m; sourceTree = "<group>"; };
 		34B5FB431857021A00F43531 /* yen_g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yen_g.png; sourceTree = "<group>"; };
 		34B5FB441857021A00F43531 /* yen_o.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yen_o.png; sourceTree = "<group>"; };
+		34B5FB4718570ED500F43531 /* gunshot-heavy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "gunshot-heavy.mp3"; sourceTree = "<group>"; };
+		34B5FB4818570ED500F43531 /* gunshot3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gunshot3.mp3; sourceTree = "<group>"; };
+		34B5FB4918570ED500F43531 /* synth-sweep1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "synth-sweep1.mp3"; sourceTree = "<group>"; };
+		34B5FB4D185711E100F43531 /* explosion1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion1.mp3; sourceTree = "<group>"; };
 		34BD6DAE18193135006BC523 /* AppSocially.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AppSocially.bundle; sourceTree = "<group>"; };
 		34BD6DAF18193135006BC523 /* AppSocially.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppSocially.framework; sourceTree = "<group>"; };
 		34BD6DB218193180006BC523 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -1093,6 +1101,10 @@
 		34E216BF181BE7F300B939E6 /* se */ = {
 			isa = PBXGroup;
 			children = (
+				34B5FB4D185711E100F43531 /* explosion1.mp3 */,
+				34B5FB4718570ED500F43531 /* gunshot-heavy.mp3 */,
+				34B5FB4818570ED500F43531 /* gunshot3.mp3 */,
+				34B5FB4918570ED500F43531 /* synth-sweep1.mp3 */,
 				34E216C0181BE80400B939E6 /* flinging.mp3 */,
 			);
 			name = se;
@@ -1483,6 +1495,7 @@
 				341D9C68182DE67E009B904E /* smoke.png in Resources */,
 				34A8896B18542ABA005667B4 /* 05.png in Resources */,
 				348AD7F6180ACD52007226EC /* back_snow.png in Resources */,
+				34B5FB4B18570ED500F43531 /* gunshot3.mp3 in Resources */,
 				34E216C1181BE80400B939E6 /* flinging.mp3 in Resources */,
 				348AD7F7180ACD52007226EC /* back_univ.png in Resources */,
 				34A8896F18542ABA005667B4 /* 09.png in Resources */,
@@ -1528,6 +1541,7 @@
 				34A22753182A39ED0050CFDB /* tool_big.png in Resources */,
 				344BD61F1815936B00387201 /* mob_hari_01.png in Resources */,
 				3440529B182BBC1A0049AE46 /* coin_red.png in Resources */,
+				34B5FB4A18570ED500F43531 /* gunshot-heavy.mp3 in Resources */,
 				344BD6211815943400387201 /* mob_tanu_01.png in Resources */,
 				347D277318169B3700498F68 /* small_eight.png in Resources */,
 				34A8897D18542ABA005667B4 /* 23.png in Resources */,
@@ -1548,11 +1562,13 @@
 				34D55FCF183CA05400788533 /* bomb010.png in Resources */,
 				347D277918169B3700498F68 /* small_six.png in Resources */,
 				344DA243184CB638004F71EE /* NADView_readme.txt in Resources */,
+				34B5FB4C18570ED500F43531 /* synth-sweep1.mp3 in Resources */,
 				340C3B9B18549DDD0017BBBE /* Wing.png in Resources */,
 				347D277A18169B3700498F68 /* small_three.png in Resources */,
 				347D277B18169B3700498F68 /* small_two.png in Resources */,
 				34A8896A18542ABA005667B4 /* 04.png in Resources */,
 				347D277C18169B3700498F68 /* small_zero.png in Resources */,
+				34B5FB4E185711E100F43531 /* explosion1.mp3 in Resources */,
 				34BD6DB018193135006BC523 /* AppSocially.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

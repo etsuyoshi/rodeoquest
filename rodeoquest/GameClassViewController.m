@@ -202,6 +202,13 @@ UIView *viewMyEffect;
 
 @synthesize sound_hit_URL;
 @synthesize sound_hit_ID;
+@synthesize sound_damage_URL;
+@synthesize sound_damage_ID;
+@synthesize sound_itemGet_URL;
+@synthesize sound_itemGet_ID;
+@synthesize sound_died_URL;
+@synthesize sound_died_ID;
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -268,6 +275,18 @@ UIView *viewMyEffect;
     sound_hit_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("flinging"),CFSTR ("mp3"),NULL);
     AudioServicesCreateSystemSoundID (sound_hit_URL, &sound_hit_ID);
     CFRelease (sound_hit_URL);
+    
+    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);
+    AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
+    CFRelease (sound_damage_URL);
+    
+    sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
+    AudioServicesCreateSystemSoundID (sound_itemGet_URL, &sound_itemGet_ID);
+    CFRelease (sound_itemGet_URL);
+    
+    sound_died_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("explosion1"),CFSTR ("mp3"),NULL);
+    AudioServicesCreateSystemSoundID (sound_died_URL, &sound_died_ID);
+    CFRelease (sound_died_URL);
     
 #ifdef COUNT_TEST
     //秒数カウンターテスト用
@@ -947,6 +966,7 @@ UIView *viewMyEffect;
                 
                 [self dispEffectItemAcq];
                 
+                
 //                NSLog(@"Item acquired");
 //                [[[ItemArray objectAtIndex:itemCount] getImageView] removeFromSuperview];
 //                [[ItemArray objectAtIndex:itemCount] die];
@@ -992,6 +1012,11 @@ UIView *viewMyEffect;
                         break;
                     }
                     case ItemTypeMagnet:{
+                        
+                        //se:他にも適用可能
+                        AudioServicesPlaySystemSound (sound_itemGet_ID);
+                        
+                        
                         //アイテムまでの距離を逐次計算(画面を分割して大体どの位置にいるかで処理を軽くしてもよいかも)
                         //射程範囲に入ったらアイテムを自分位置に向かわせる
                         //上記ItemClass:donext実行後にisMagnetModeで判定するが、
@@ -1073,6 +1098,11 @@ UIView *viewMyEffect;
                     }
                     case ItemTypeWeapon2:{//wpLaser
                         if(![MyMachine getStatus:ItemTypeWeapon2]){
+                            
+                            //se
+                            AudioServicesPlaySystemSound (sound_itemGet_ID);
+                            
+                            
                             [self oscillateBackgroundEffect];
                             
                             [MyMachine setStatus:@"1" key:ItemTypeWeapon2];
@@ -1167,6 +1197,10 @@ UIView *viewMyEffect;
                 //爆発パーティクル(ダメージ前isAliveがtrueからダメージ後falseになった場合は攻撃によって死んだものとして爆発)
                 if(![MyMachine getIsAlive]){
                     
+                    
+                    //se
+                    AudioServicesPlaySystemSound (sound_died_ID);
+                    
                     /*
                      修正点：爆発でスコアが見えなくなってしまっているので、爆発はスコアの背面にする(スコアが最前面にする？）
                      */
@@ -1227,6 +1261,9 @@ UIView *viewMyEffect;
                        _yBeam - _sBeam * 0.5 >= _yEnemy - _sEnemy * 0.5 &&
                        _yBeam + _sBeam * 0.5 <= _yEnemy + _sEnemy * 0.5 ){
                         
+                        //se
+                        AudioServicesPlaySystemSound (sound_damage_ID);
+
                         //dieと同時にremovefromSuperviewせずに集約する(画面外に出てもdieするため)
 //                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
                         [[MyMachine getBeam:j] die];//衝突したらビームは消去
