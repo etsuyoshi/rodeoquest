@@ -72,12 +72,12 @@ BackGroundClass2 *background;
         [viewSuperInPay addSubview:viewSuper];
         
         
-        
+        //画面中心にWIDTH_FRAME_SUPER X HEIGHT_FRAME_SUPERの枠を表示
         UIView *viewFrame = [CreateComponentClass createView:CGRectMake(self.view.bounds.size.width/2 - WIDTH_FRAME_SUPER/2,
                                                                         self.view.bounds.size.height/2 - HEIGHT_FRAME_SUPER/2,
                                                                         WIDTH_FRAME_SUPER,
                                                                         HEIGHT_FRAME_SUPER)];
-        [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.6f blue:0.1f alpha:0.6f]];//どちらでも良い
+        [viewFrame setBackgroundColor:[UIColor colorWithRed:0.9f green:0.9f blue:0.9f alpha:0.6f]];//どちらでも良い
         [viewSuperInPay addSubview:viewFrame];
         
         
@@ -95,7 +95,7 @@ BackGroundClass2 *background;
                                        WIDTH_FRAME_PRODUCT, HEIGHT_FRAME_PRODUCT);
                 rectButton = CGRectMake(MARGIN_FRAME_PRODUCT/2, MARGIN_FRAME_PRODUCT/2,
                                         SIZE_BUTTON_PRODUCT, SIZE_BUTTON_PRODUCT);
-                eachFrame = [CreateComponentClass createView:rectFrame];
+                eachFrame = [CreateComponentClass createView:rectFrame];//ボタン周りの小さな枠
                 payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
                                                              imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
                                                                   rect:(CGRect)rectButton
@@ -107,6 +107,19 @@ BackGroundClass2 *background;
             }
         }
         
+        //確認ボタン->閉じる(viewFrameの外を押しても閉じる)
+        int btHeight = 50;
+        int btWidth = 150;
+        UIImageView *btnConfirm = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+                                                               imageType:(ButtonMenuImageType)ButtonMenuImageTypeCoin//test:仮
+                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER/2 - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+                                                                                    numOfCol * HEIGHT_FRAME_PRODUCT,
+                                                                                    btWidth, btHeight)
+                                                                  target:(id)self
+                                                                selector:@"closeViewCon"];
+        [viewFrame addSubview:btnConfirm];
+        
+        
         
     }
     
@@ -114,8 +127,18 @@ BackGroundClass2 *background;
 }
 
 -(void)closeViewCon:(id)sender{
-    
+    NSLog(@"close Payment View controller");
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+}
+-(void)closeViewCon{
+    
+    NSLog(@"close Payment View controller");
+    [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+    
+}
+
+-(void)pushedButton:(NSNumber *)num{
+    NSLog(@"pushed button : tag = %d", num.integerValue);
 }
 
 - (void)viewDidLoad
