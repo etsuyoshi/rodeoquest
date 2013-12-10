@@ -272,14 +272,19 @@ UIView *viewMyEffect;
     //ビームヒット音
     CFBundleRef mainBundle;
     mainBundle = CFBundleGetMainBundle ();
+    
+    //敵機撃破
     sound_hit_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("flinging"),CFSTR ("mp3"),NULL);
     AudioServicesCreateSystemSoundID (sound_hit_URL, &sound_hit_ID);
     CFRelease (sound_hit_URL);
     
-    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);
+    //敵機ダメージ
+//    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);
+    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);
     AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
     CFRelease (sound_damage_URL);
     
+    //
     sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
     AudioServicesCreateSystemSoundID (sound_itemGet_URL, &sound_itemGet_ID);
     CFRelease (sound_itemGet_URL);
