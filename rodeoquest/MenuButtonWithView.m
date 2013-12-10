@@ -128,6 +128,8 @@
     if(isPressed){
         imgLight.image = [UIImage imageNamed:@"powerGauge2.png"];
         
+        
+        
     }else{
         imgLight.image = nil;//[UIImage imageNamed:@""];
     }

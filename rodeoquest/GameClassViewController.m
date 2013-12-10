@@ -208,7 +208,9 @@ UIView *viewMyEffect;
 @synthesize sound_itemGet_ID;
 @synthesize sound_died_URL;
 @synthesize sound_died_ID;
-
+Boolean isBGM;
+Boolean isSE;
+int sensitivity;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -265,6 +267,26 @@ UIView *viewMyEffect;
     //いつでもデータを取り出せるようにグローバルに保存しておく：最初の一度だけにする
     attr = [[AttrClass alloc]init];//実際に使うのは最後のデータ表示部分@sendRequest...
     
+    if([[attr getValueFromDevice:@"bgm"] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:@"bgm"] == nil ||
+       [[attr getValueFromDevice:@"bgm"] isEqual:@"1"]){
+        isBGM = YES;
+    }else{
+        isBGM = NO;
+    }
+    
+    if([[attr getValueFromDevice:@"se"] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:@"se"] == nil ||
+       [[attr getValueFromDevice:@"se"] isEqual:@"1"]){
+        isSE = YES;
+    }else{
+        isSE = NO;
+    }
+    
+    
+    
+    
+    
     flagItemTrigger = false;
     
     //sound effect
@@ -273,25 +295,27 @@ UIView *viewMyEffect;
     CFBundleRef mainBundle;
     mainBundle = CFBundleGetMainBundle ();
     
-    //敵機撃破
-    sound_hit_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("flinging"),CFSTR ("mp3"),NULL);
-    AudioServicesCreateSystemSoundID (sound_hit_URL, &sound_hit_ID);
-    CFRelease (sound_hit_URL);
-    
-    //敵機ダメージ
-//    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);
-    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);
-    AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
-    CFRelease (sound_damage_URL);
-    
-    //
-    sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
-    AudioServicesCreateSystemSoundID (sound_itemGet_URL, &sound_itemGet_ID);
-    CFRelease (sound_itemGet_URL);
-    
-    sound_died_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("explosion1"),CFSTR ("mp3"),NULL);
-    AudioServicesCreateSystemSoundID (sound_died_URL, &sound_died_ID);
-    CFRelease (sound_died_URL);
+    if(isSE){
+        //敵機撃破
+        sound_hit_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("flinging"),CFSTR ("mp3"),NULL);
+        AudioServicesCreateSystemSoundID (sound_hit_URL, &sound_hit_ID);
+        CFRelease (sound_hit_URL);
+        
+        //敵機ダメージ
+        //    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);
+        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);
+        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
+        CFRelease (sound_damage_URL);
+        
+        //
+        sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
+        AudioServicesCreateSystemSoundID (sound_itemGet_URL, &sound_itemGet_ID);
+        CFRelease (sound_itemGet_URL);
+        
+        sound_died_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("explosion1"),CFSTR ("mp3"),NULL);
+        AudioServicesCreateSystemSoundID (sound_died_URL, &sound_died_ID);
+        CFRelease (sound_died_URL);
+    }
     
 #ifdef COUNT_TEST
     //秒数カウンターテスト用
@@ -506,40 +530,45 @@ UIView *viewMyEffect;
 
 //BGM曲をかける
 -(void)playBGM{
-    bgmClass = [[BGMClass alloc]init];
-    switch (world_no) {
-        case 0:
-        {
-            [bgmClass play:@"hisho_hmix"];
-            break;
+    if([[attr getValueFromDevice:@"bgm"] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:@"bgm"] == nil ||
+       [[attr getValueFromDevice:@"bgm"] isEqual:@"1"]){
+        
+        bgmClass = [[BGMClass alloc]init];
+        switch (world_no) {
+            case 0:
+            {
+                [bgmClass play:@"hisho_hmix"];
+                break;
+            }
+            case 1:
+            {
+                [bgmClass play:@"bgm_game_687"];
+                break;
+            }
+            case 2:
+            {
+                [bgmClass play:@"ones_hmix"];
+                break;
+            }
+            case 3:
+            {
+                [bgmClass play:@"hisho_hmix"];
+                break;
+            }
+            case 4:
+            {
+                [bgmClass play:@"kinpaku_hmix"];
+                break;
+            }
+            case 5:{
+                
+                [bgmClass play:@"sabaki_hmix"];
+                break;
+            }
+            default:
+                break;
         }
-        case 1:
-        {
-            [bgmClass play:@"bgm_game_687"];
-            break;
-        }
-        case 2:
-        {
-            [bgmClass play:@"ones_hmix"];
-            break;
-        }
-        case 3:
-        {
-            [bgmClass play:@"hisho_hmix"];
-            break;
-        }
-        case 4:
-        {
-            [bgmClass play:@"kinpaku_hmix"];
-            break;
-        }
-        case 5:{
-            
-            [bgmClass play:@"sabaki_hmix"];
-            break;
-        }
-        default:
-            break;
     }
 }
 

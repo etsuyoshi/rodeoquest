@@ -1127,11 +1127,18 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
 
 //BGM曲をかける
 -(void)playBGM{
-    bgmClass = [[BGMClass alloc]init];
-    if(arc4random() %2 == 0){
-        [bgmClass play:@"bgm_menu_683"];
-    }else{
-        [bgmClass play:@"mahotoshi_hmix"];
+    NSLog(@"bgm : %@", [attr getValueFromDevice:@"bgm"]);
+    //初期状態(null)、もしくは既に設定が１となっている場合
+    if([[attr getValueFromDevice:@"bgm"] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:@"bgm"] == nil ||
+       [[attr getValueFromDevice:@"bgm"] isEqual:@"1"]){
+        
+        bgmClass = [[BGMClass alloc]init];
+        if(arc4random() %2 == 0){
+            [bgmClass play:@"bgm_menu_683"];
+        }else{
+            [bgmClass play:@"mahotoshi_hmix"];
+        }
     }
 }
 
