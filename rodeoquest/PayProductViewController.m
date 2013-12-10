@@ -10,6 +10,12 @@
 #import "BackGroundClass2.h"
 #import "CreateComponentClass.h"
 
+#define WIDTH_FRAME_SUPER 290
+#define HEIGHT_FRAME_SUPER 350
+#define WIDTH_FRAME_PRODUCT 80
+#define HEIGHT_FRAME_PRODUCT 100
+#define MARGIN_FRAME_PRODUCT 13
+#define SIZE_BUTTON_PRODUCT 70
 
 @interface PayProductViewController ()
 
@@ -28,6 +34,24 @@ BackGroundClass2 *background;
         activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
                                                self.view.bounds.size.height/2);
         [self.view addSubview:activityIndicator];
+        
+        //動画背景を
+        background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
+                                              width:self.view.bounds.size.width
+                                             height:self.view.bounds.size.height
+                                               secs:5.0f];
+        
+        [self.view addSubview:[background getImageView1]];
+        [self.view addSubview:[background getImageView2]];
+        [self.view sendSubviewToBack:[background getImageView1]];
+        [self.view sendSubviewToBack:[background getImageView2]];
+        //        [self.view bringSubviewToFront:[background getImageView1]];
+        //        [self.view bringSubviewToFront:[background getImageView2]];
+        
+        
+        [background startAnimation];
+
+        
         
         
         //何もしないUIViewをaddする:他のコンポーネントをこの上に置く(閉じるアクションをつけたuiviewの上にaddすると他のコンポーネントに対するアクションにも閉じるアクションが適用されてしまう)
@@ -49,29 +73,40 @@ BackGroundClass2 *background;
         
         
         
+        UIView *viewFrame = [CreateComponentClass createView:CGRectMake(self.view.bounds.size.width/2 - WIDTH_FRAME_SUPER/2,
+                                                                        self.view.bounds.size.height/2 - HEIGHT_FRAME_SUPER/2,
+                                                                        WIDTH_FRAME_SUPER,
+                                                                        HEIGHT_FRAME_SUPER)];
+        [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.6f blue:0.1f alpha:0.6f]];//どちらでも良い
+        [viewSuperInPay addSubview:viewFrame];
         
         
+        CGRect rectFrame;
+        CGRect rectButton;
+        UIView *eachFrame;
+        UIImageView *payButtonView;//
+        //viewFrameに2x3行列のframeを置いて、更にそれぞれにbuttonを置く
+        int numOfRow = 2;
+        int numOfCol = 3;
+        for(int row = 0;row < numOfRow ;row++){
+            for(int col = 0;col < numOfCol ; col++){
+                rectFrame = CGRectMake(MARGIN_FRAME_PRODUCT + col * (WIDTH_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
+                                       MARGIN_FRAME_PRODUCT + row * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
+                                       WIDTH_FRAME_PRODUCT, HEIGHT_FRAME_PRODUCT);
+                rectButton = CGRectMake(MARGIN_FRAME_PRODUCT/2, MARGIN_FRAME_PRODUCT/2,
+                                        SIZE_BUTTON_PRODUCT, SIZE_BUTTON_PRODUCT);
+                eachFrame = [CreateComponentClass createView:rectFrame];
+                payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
+                                                             imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
+                                                                  rect:(CGRect)rectButton
+                                                                target:(id)self
+                                                              selector:(NSString *)@"pushedButton:"
+                                                                   tag:ButtonMenuImageTypeStart];
+                [eachFrame addSubview:payButtonView];
+                [viewFrame addSubview:eachFrame];
+            }
+        }
         
-        
-        
-        
-        background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
-                                              width:self.view.bounds.size.width
-                                             height:self.view.bounds.size.height
-                                               secs:5.0f];
-        
-        [self.view addSubview:[background getImageView1]];
-        [self.view addSubview:[background getImageView2]];
-        [self.view sendSubviewToBack:[background getImageView1]];
-        [self.view sendSubviewToBack:[background getImageView2]];
-//        [self.view bringSubviewToFront:[background getImageView1]];
-//        [self.view bringSubviewToFront:[background getImageView2]];
-        
-        
-        [background startAnimation];
-        
-        
-        //backgroundの上にsubviewと、更にその上にsubViewをaddしていく
         
     }
     
