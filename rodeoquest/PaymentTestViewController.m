@@ -137,6 +137,14 @@ UIActivityIndicatorView *activityIndicator;
     
     // Finally, remove the transaction from the payment queue.
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ありがとうございます。"
+                                                    message:@"購入が完了しました"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil,
+                          nil];
+    [alert show];
 }
 
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction
@@ -157,6 +165,8 @@ UIActivityIndicatorView *activityIndicator;
     [activityIndicator stopAnimating];
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
+        NSLog(@"failed transaction");
+        
         // Display an error here.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Purchase Unsuccessful"
                                                         message:[NSString stringWithFormat:@"Your purchase failed. reason:%@",[transaction.error description]]
