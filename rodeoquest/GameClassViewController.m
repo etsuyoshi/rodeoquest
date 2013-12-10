@@ -104,6 +104,7 @@
 
 CGRect rect_frame, rect_myMachine, rect_enemyBeam, rect_beam_launch;
 UIImageView *iv_frame, *iv_myMachine, *iv_enemyBeam, *iv_beam_launch;//, *iv_background1, *iv_background2;
+UIView* viewScoreField;
 
 AttrClass *attr;
 
@@ -267,6 +268,7 @@ int sensitivity;
     //いつでもデータを取り出せるようにグローバルに保存しておく：最初の一度だけにする
     attr = [[AttrClass alloc]init];//実際に使うのは最後のデータ表示部分@sendRequest...
     
+    //bgmの有効化判定
     if([[attr getValueFromDevice:@"bgm"] isEqual:[NSNull null]] ||
        [attr getValueFromDevice:@"bgm"] == nil ||
        [[attr getValueFromDevice:@"bgm"] isEqual:@"1"]){
@@ -275,6 +277,7 @@ int sensitivity;
         isBGM = NO;
     }
     
+    //seの有効化判定
     if([[attr getValueFromDevice:@"se"] isEqual:[NSNull null]] ||
        [attr getValueFromDevice:@"se"] == nil ||
        [[attr getValueFromDevice:@"se"] isEqual:@"1"]){
@@ -289,9 +292,7 @@ int sensitivity;
     
     flagItemTrigger = false;
     
-    //sound effect
-    
-    //ビームヒット音
+    //ビームヒット音等のSound-Effect
     CFBundleRef mainBundle;
     mainBundle = CFBundleGetMainBundle ();
     
@@ -301,11 +302,11 @@ int sensitivity;
         AudioServicesCreateSystemSoundID (sound_hit_URL, &sound_hit_ID);
         CFRelease (sound_hit_URL);
         
-        //敵機ダメージ
-        //    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);
-        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);
-        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
-        CFRelease (sound_damage_URL);
+        //敵機ダメージ：耳障りの良い物を選択しなければならない
+        //    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);//耳障り
+//        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);//耳障り
+//        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
+//        CFRelease (sound_damage_URL);
         
         //
         sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
@@ -451,6 +452,10 @@ int sensitivity;
     //アイテム生成時、移動時、消滅時のパーティクル格納用配列
 //    KiraArray = [[NSMutableArray alloc]init];
     
+    //スコアボードを置くフィールド
+    viewScoreField = [CreateComponentClass createView:CGRectMake(5, 5, 140, 70)];
+    [viewScoreField setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
+    [self.view addSubview:viewScoreField];
     
     //スコアボードの初期化
     ScoreBoard = [[ScoreBoardClass alloc]init:0 x_init:0 y_init:0 ketasu:10];
@@ -583,6 +588,7 @@ int sensitivity;
 //    NSLog(@"orinary animation start");
     //ユーザーインターフェース
     [self.view bringSubviewToFront:iv_frame];
+    [self.view bringSubviewToFront:viewScoreField];//score-display
     
     //メモリ確認
 //    NSLog(@"enemyArray length = %d", [EnemyArray count]);
@@ -2115,7 +2121,10 @@ int sensitivity;
     
     //テキストビュー用
     [[_boardClass getTextView] removeFromSuperview];
-    [self.view addSubview:[_boardClass getTextView]];
+//    [self.view addSubview:[_boardClass getTextView]];
+    [viewScoreField addSubview:[_boardClass getTextView]];
+    
+    //textView.text = xxx;の方がスマート。＝＞要修正
 }
 
 //以下参考：http://www.atmarkit.co.jp/fsmart/articles/ios_sensor05/02.html
@@ -2678,7 +2687,7 @@ int sensitivity;
             
             int probabilityt = arc4random() % 100;
             //アイテム出現、アイテム生成
-            if(probabilityt > 20){//80%の確率
+            if(probabilityt > 40){//60%の確率
                 _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
@@ -2695,7 +2704,7 @@ int sensitivity;
                 
             }else{//
                 
-                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
+//                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
                     if(arc4random() % 2 == 0){
                         _item = [[ItemClass alloc] init:ItemTypeBig x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
                     }else if(arc4random() % 2 == 0){
@@ -2703,7 +2712,7 @@ int sensitivity;
                     }else{
                         _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
                     }
-                }
+//                }
             }
 //        }else if(arc4random() % 2 == 0){//0.35%
 //            _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];//bomb
