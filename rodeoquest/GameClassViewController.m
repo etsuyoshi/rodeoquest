@@ -569,6 +569,11 @@ int sensitivity;
             default:
                 break;
         }
+    }else{
+        //switch=offのときはストップ
+        if(bgmClass.getIsPlaying){
+            [bgmClass stop];
+        }
     }
 }
 

@@ -696,7 +696,7 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
                                                                                         rect_image.origin.y,
                                                                                         viewFrame.bounds.size.width - rect_image.size.width,
                                                                                         rect_image.size.height)
-                                                                        text:@"explanation."
+                                                                        text:[arrMethod objectAtIndex:i]
                                                                         font:@"AmericanTypewriter-Bold"
                                                                         size:15
                                                                    textColor:[UIColor whiteColor]
@@ -1065,6 +1065,9 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
     [_myDefaults setObject:value forKey:name];
     NSLog(@"set up BGM : %d", [[_myDefaults objectForKey:name] intValue]);
     
+    //スイッチの結果を反映する(0でも1でも反映するためにplayBGM)
+    [self playBGM];
+    
 }
 -(void)setSE:(NSNumber *)num{
     NSUserDefaults *_myDefaults = [NSUserDefaults standardUserDefaults];
@@ -1127,7 +1130,7 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
 
 //BGM曲をかける
 -(void)playBGM{
-    NSLog(@"bgm : %@", [attr getValueFromDevice:@"bgm"]);
+    NSLog(@"play bgm method : %@", [attr getValueFromDevice:@"bgm"]);
     //初期状態(null)、もしくは既に設定が１となっている場合
     if([[attr getValueFromDevice:@"bgm"] isEqual:[NSNull null]] ||
        [attr getValueFromDevice:@"bgm"] == nil ||
@@ -1138,6 +1141,11 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
             [bgmClass play:@"bgm_menu_683"];
         }else{
             [bgmClass play:@"mahotoshi_hmix"];
+        }
+    }else{
+        //switch=offのときはストップ
+        if(bgmClass.getIsPlaying){
+            [bgmClass stop];
         }
     }
 }
