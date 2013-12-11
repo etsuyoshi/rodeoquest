@@ -116,13 +116,47 @@ UIActivityIndicatorView *_indicator;
     //    [dbac setIdToDB:[dbac getIdFromDevice]];
     AttrClass *attr = [[AttrClass alloc]init];
     NSString *_id = [attr getIdFromDevice];
-    if([dbac setIdToDB:_id]){//dbに登録(既存idならばそのまま)
+    if([dbac setIdToDB:_id]){//dbに登録(既存idなら何もしないで)YES、登録に失敗すればNO
         NSLog(@"データベース登録or承認完了");
         
         
-        /*
-         *注意：loginはゲーム終了後にデバイスに格納するデータは当該日付であるが、ここではDBからネットワーク経由で引っ張ってログイン回数をカウントしている。
-         */
+        //
+        //最終ゲーム実行時間:http://www.objectivec-iphone.com/foundation/NSDate/components.html
+        NSString *strLogin = [NSString stringWithFormat:@""];
+        // 現在日付を取得
+        NSDate *now = [NSDate date];
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSUInteger flags;
+        NSDateComponents *comps;
+        
+        // 年・月・日を取得
+        flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+        comps = [calendar components:flags fromDate:now];
+        NSString *year = [NSString stringWithFormat:@"%04d", comps.year];
+        NSString *month = [NSString stringWithFormat:@"%02d", comps.month];
+        NSString *day = [NSString stringWithFormat:@"%02d", comps.day];
+        NSLog(@"%@年 %@月 %@日",year,month,day);
+        strLogin = [NSString stringWithFormat:@"%@%@%@%@", strLogin, year, month, day];
+        
+        // 時・分・秒を取得
+        flags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        comps = [calendar components:flags fromDate:now];
+        NSString *hour = [NSString stringWithFormat:@"%d", comps.hour];
+        NSString *minute = [NSString stringWithFormat:@"%d", comps.minute];
+        NSString *second = [NSString stringWithFormat:@"%d", comps.second];
+        NSLog(@"%@時 %@分 %@秒", hour, minute, second);
+        strLogin = [NSString stringWithFormat:@"%@%@%@%@", strLogin, hour, minute, second];
+        
+        // 曜日
+        comps = [calendar components:NSWeekdayCalendarUnit fromDate:now];
+        NSArray *arrayWeekName = [[NSArray alloc]initWithObjects:
+                                  @"sun", @"mon", @"tue", @"wed", @"thu", @"fri", @"sat", nil];
+        NSString *weekday = arrayWeekName[comps.weekday - 1];//comps.weekday; // 曜日(1が日曜日 7が土曜日)
+        NSLog(@"曜日: %@", weekday);
+        strLogin = [NSString stringWithFormat:@"%@%@", strLogin, weekday];
+        [attr setValueToDevice:@"lastlogin" strValue:strLogin];//最後にloginを実施した日付を入力
+        
+        
         //ログイン回数をupdate
         int login = [[dbac getValueFromDB:_id column:@"login"] intValue];
         login ++;

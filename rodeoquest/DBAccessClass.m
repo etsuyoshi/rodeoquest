@@ -29,6 +29,7 @@
         //sqlサーバーに新規登録する
         if([self initUserRegister:_registeredId]){
             NSLog(@"sqlサーバーに登録完了");
+            return true;
         }else{
             NSLog(@"サーバーに登録できませんでした。");
             return false;

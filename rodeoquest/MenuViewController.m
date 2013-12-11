@@ -87,7 +87,7 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
 UITextView* tvSubject;
 UITextView* tvDemand;
 NSString *strSubject = @"お名前は匿名です。個人が特定されることはありません。";
-NSString *strDemand = @"ご要望をお書き下さい。\n※全てのご意見を反映出来ない場合がございます。";
+NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nこちらにご要望をお書き下さい。";
 
 
 //CreateComponentClass *createComponentClass;

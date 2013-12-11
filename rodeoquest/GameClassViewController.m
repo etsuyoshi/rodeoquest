@@ -2174,7 +2174,7 @@ int sensitivity;
 -(void)sendRequestToServer{
     
     // インジケーター表示：メニューがないので意味ない？
-//    [self showActivityIndicator];
+    [self showActivityIndicator];
     
     
     DBAccessClass *dbac = [[DBAccessClass alloc]init];
@@ -2192,40 +2192,7 @@ int sensitivity;
 //    NSLog(@"gameCnt = %@ => %d, updating..", [attr getValueFromDevice:@"gameCnt"], newGameCnt);
     [attr setValueToDevice:@"gameCnt" strValue:[NSString stringWithFormat:@"%d", newGameCnt]];
     
-    //最終ゲーム実行時間:http://www.objectivec-iphone.com/foundation/NSDate/components.html
-    NSString *strLogin = [NSString stringWithFormat:@""];
-    // 現在日付を取得
-    NSDate *now = [NSDate date];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSUInteger flags;
-    NSDateComponents *comps;
     
-    // 年・月・日を取得
-    flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-    comps = [calendar components:flags fromDate:now];
-    NSString *year = [NSString stringWithFormat:@"%04d", comps.year];
-    NSString *month = [NSString stringWithFormat:@"%02d", comps.month];
-    NSString *day = [NSString stringWithFormat:@"%02d", comps.day];
-    NSLog(@"%@年 %@月 %@日",year,month,day);
-    strLogin = [NSString stringWithFormat:@"%@%@%@%@", strLogin, year, month, day];
-    
-    // 時・分・秒を取得
-    flags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    comps = [calendar components:flags fromDate:now];
-    NSString *hour = [NSString stringWithFormat:@"%d", comps.hour];
-    NSString *minute = [NSString stringWithFormat:@"%d", comps.minute];
-    NSString *second = [NSString stringWithFormat:@"%d", comps.second];
-    NSLog(@"%@時 %@分 %@秒", hour, minute, second);
-    strLogin = [NSString stringWithFormat:@"%@%@%@%@", strLogin, hour, minute, second];
-    
-    // 曜日
-    comps = [calendar components:NSWeekdayCalendarUnit fromDate:now];
-    NSArray *arrayWeekName = [[NSArray alloc]initWithObjects:
-                             @"sun", @"mon", @"tue", @"wed", @"thu", @"fri", @"sat", nil];
-    NSString *weekday = arrayWeekName[comps.weekday - 1];//comps.weekday; // 曜日(1が日曜日 7が土曜日)
-    NSLog(@"曜日: %@", weekday);
-    strLogin = [NSString stringWithFormat:@"%@%@", strLogin, weekday];
-    [attr setValueToDevice:@"lastlogin" strValue:strLogin];//最後にゲームを実施した日付を入力
     
     
     
@@ -2304,7 +2271,7 @@ int sensitivity;
     //login:更新せず
     
     //gameCntをupdate
-    int gameCnt = [[dbac getValueFromDB:_id column:@"gameCnt"] intValue];
+    int gameCnt = [[dbac getValueFromDB:_id column:@"gamecnt"] intValue];
     gameCnt ++;
     //        [dbac updateValueToDB:_id column:@"login" value:[NSString stringWithFormat:@"%d", login ]];
     [dbac updateValueToDB:_id column:@"gameCnt" newVal:[NSString stringWithFormat:@"%d", gameCnt]];
@@ -2318,7 +2285,7 @@ int sensitivity;
     
     
     //更新情報の確認id	name	score	gold	login	gamecnt	level	exp
-    NSLog(@"id = %@, name = %@, score = %@, gold = %@, login = %@, gameCnt = %@, level = %@, exp = %@",
+    NSLog(@"更新後id = %@, name = %@, score = %@, gold = %@, login = %@, gameCnt = %@, level = %@, exp = %@",
           [dbac getValueFromDB:_id column:@"id"],
           [dbac getValueFromDB:_id column:@"name"],
           [dbac getValueFromDB:_id column:@"score"],
@@ -2329,8 +2296,17 @@ int sensitivity;
           [dbac getValueFromDB:_id column:@"exp"]
           );
     
-    // インジケーター非表示(このメソッドを表示する際に表示済)：メニューがないので意味ない？
-//    [self hideActivityIndicator];
+    //無限ループを組んで値が更新されるまでhideActivityIndicatorをしない
+    for(;;){
+        NSLog(@"gameCntFromDevice= %d, gameCntFromDB=%@", gameCnt, [dbac getValueFromDB:_id column:@"gamecnt"]);
+        if(gameCnt == [[dbac getValueFromDB:_id column:@"gamecnt"] intValue]){
+            [self hideActivityIndicator];
+            break;
+        }
+    }
+    
+    // インジケーター非表示(このメソッドを表示する際に表示済)
+//    [self hideActivityIndicator];//network通信終了後までhideしないようにするためには？
     
 }
 
@@ -2339,16 +2315,21 @@ int sensitivity;
  */
 - (void)showActivityIndicator
 {
+    NSLog(@"showActivity indicator");
     // Activity Indicator 表示
-    _loadingView                 = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
-    _loadingView.backgroundColor = [UIColor blackColor];
-    _loadingView.alpha           = 0.5f;
+//    _loadingView                 = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
+    _loadingView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _loadingView.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0f];
+    _loadingView.alpha           = 0.5f;//上のビューにも反映
     _indicator                   = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [_indicator setCenter:CGPointMake(_loadingView.bounds.size.width/2, _loadingView.bounds.size.height/2)];
     [_loadingView addSubview:_indicator];
-    [self.navigationController.view addSubview:_loadingView];
+    [self.view addSubview:_loadingView];
+    [self.view bringSubviewToFront:_loadingView];
+    
+//    [self.navigationController.view addSubview:_loadingView];
     [_indicator startAnimating];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 /*
@@ -2359,7 +2340,7 @@ int sensitivity;
     // Activity Indicator 非表示
     [_indicator stopAnimating];
     [_loadingView removeFromSuperview];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 
