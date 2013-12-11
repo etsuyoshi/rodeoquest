@@ -36,6 +36,7 @@
                                  @"score",
                                  @"gold",
                                  @"login",
+                                 @"lastlogin",
                                  @"gameCnt",
                                  @"level",
                                  @"exp",
@@ -71,6 +72,7 @@
                            @"0",//score
                            @"0",//gold
                            @"0",//login
+                           @"0",//lastlogin
                            @"0",//gameCnt
                            @"1",//level
                            @"0",//exp

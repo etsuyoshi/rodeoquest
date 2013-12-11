@@ -8,6 +8,7 @@
 
 //#define TEST//TestViewController-transition
 
+#import "DBAccessClass.h"
 #import "GADBannerView.h"
 #import "BGMClass.h"
 #import "MenuViewController.h"
@@ -925,6 +926,45 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 -(void)sendDemand{
     NSLog(@"send demand button pressed!");
+    
+    
+    NSString *strTime = [NSString stringWithFormat:@""];
+    // 現在日付を取得
+    NSDate *now = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger flags;
+    NSDateComponents *comps;
+    
+    // 年・月・日を取得
+    flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+    comps = [calendar components:flags fromDate:now];
+    NSString *year = [NSString stringWithFormat:@"%04d", comps.year];
+    NSString *month = [NSString stringWithFormat:@"%02d", comps.month];
+    NSString *day = [NSString stringWithFormat:@"%02d", comps.day];
+    NSLog(@"%@年 %@月 %@日",year,month,day);
+    strTime = [NSString stringWithFormat:@"%@%@%@%@", strTime, year, month, day];
+    
+    // 時・分・秒を取得
+    flags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    comps = [calendar components:flags fromDate:now];
+    NSString *hour = [NSString stringWithFormat:@"%d", comps.hour];
+    NSString *minute = [NSString stringWithFormat:@"%d", comps.minute];
+    NSString *second = [NSString stringWithFormat:@"%d", comps.second];
+    NSLog(@"%@時 %@分 %@秒", hour, minute, second);
+    strTime = [NSString stringWithFormat:@"%@%@%@%@", strTime, hour, minute, second];
+    
+    // 曜日
+    comps = [calendar components:NSWeekdayCalendarUnit fromDate:now];
+    NSArray *arrayWeekName = [[NSArray alloc]initWithObjects:
+                              @"sun", @"mon", @"tue", @"wed", @"thu", @"fri", @"sat", nil];
+    NSString *weekday = arrayWeekName[comps.weekday - 1];//comps.weekday; // 曜日(1が日曜日 7が土曜日)
+    NSLog(@"曜日: %@", weekday);
+    strTime = [NSString stringWithFormat:@"%@%@", strTime, weekday];
+    
+    DBAccessClass *dbac = [[DBAccessClass alloc]init];
+    [dbac insertDemandToDB:(NSString *)strTime
+                   subject:(NSString *)tvSubject.text
+                    demand:(NSString *)tvDemand.text];
     
 }
 

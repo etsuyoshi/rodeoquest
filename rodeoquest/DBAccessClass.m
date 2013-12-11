@@ -47,7 +47,44 @@
     
     //    return;
 }
-
+-(Boolean)insertDemandToDB:(NSString *)_date subject:(NSString *)_subject demand:(NSString *)_demand{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
+    [dict setObject:_date forKey:@"timefromxcode"];//key corresponds to sql in php
+    [dict setObject:_subject forKey:@"subjectfromxcode"];
+    [dict setObject:_demand forKey:@"demandfromxcode"];
+    NSLog(@"date=%@, sub=%@, demand=%@",_date, _subject, _demand);
+    NSData *data = [self formEncodedDataFromDictionary:dict];
+//    NSURL *url = [NSURL URLWithString:@"http://satoshi.upper.jp/user/demand/updatevalue.php"];
+    NSURL *url = [NSURL URLWithString:@"http://satoshi.upper.jp/user/demand/insertdemand.php"];
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+    NSLog(@"request=%@", req);
+    [req setHTTPMethod:@"POST"];
+    [req setHTTPBody:data];
+    NSLog(@"request=%@", req);
+    
+    
+    NSURLResponse *response;
+    NSError *error = nil;
+    NSData *result = [NSURLConnection sendSynchronousRequest:req
+                                           returningResponse:&response
+                                                       error:&error];
+    NSLog(@"request=%@", req);
+    
+    if(error){
+        NSLog(@"同期通信失敗");
+        return false;
+    }else{
+        NSLog(@"同期通信成功");
+    }
+    
+    
+    NSString* resultString = [[NSString alloc] initWithData:result
+                                                   encoding:NSUTF8StringEncoding];//phpファイルのechoが返って来る
+    NSLog(@"demand : updated : php comment = %@", resultString);
+    
+    
+    return true;
+}
 
 -(Boolean)updateValueToDB:(NSString *)user_id column:(NSString *)column newVal:(NSString *)newValue{
     //実行sql：$sql = "update dbusermanage SET $_POST[column] = '$_POST[value]' WHERE id = '$_POST[id]'";
@@ -77,7 +114,7 @@
     
     NSString* resultString = [[NSString alloc] initWithData:result
                                                    encoding:NSUTF8StringEncoding];//phpファイルのechoが返って来る
-    NSLog(@"updated : php comment = %@", resultString);
+    NSLog(@"userDB : updated : php comment = %@", resultString);
     
     
     
@@ -186,6 +223,7 @@
     [dict setObject:[NSString stringWithFormat:@"%d", 0] forKey:@"score"];
     [dict setObject:[NSString stringWithFormat:@"%d", 0] forKey:@"gold"];
     [dict setObject:[NSString stringWithFormat:@"%d", 0] forKey:@"login"];//ログイン回数
+    [dict setObject:[NSString stringWithFormat:@"%d", 0] forKey:@"lastlogin"];//ログイン回数
     [dict setObject:[NSString stringWithFormat:@"%d", 0] forKey:@"gamecnt"];//ゲーム回数
     [dict setObject:_strId forKey:@"id"];
     

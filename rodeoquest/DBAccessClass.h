@@ -13,6 +13,7 @@
 }
 
 -(Boolean)setIdToDB:(NSString *)arg_id;
+-(Boolean)insertDemandToDB:(NSString *)_date subject:(NSString *)_subject demand:(NSString *)_demand;
 -(Boolean)updateValueToDB:(NSString *)user_id column:(NSString *)column newVal:(NSString *)newValue;
 -(NSString *)getValueFromDB:(NSString *)user_id column:(NSString *)column;
 -(Boolean)getIsRegisteredID:(NSString *)_strId;
