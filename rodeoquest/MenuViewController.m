@@ -967,7 +967,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                     demand:(NSString *)tvDemand.text
                      login:(NSString *)[attr getValueFromDevice:@"login"]
                  lastlogin:(NSString *)[attr getValueFromDevice:@"lastlogin"]
-                   gamecnt:(NSString *)[attr getValueFromDevice:@"gamecnt"]];
+                   gamecnt:(NSString *)[attr getValueFromDevice:@"gameCnt"]];
     
 }
 

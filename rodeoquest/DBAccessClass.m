@@ -57,15 +57,16 @@
     [dict setObject:_date forKey:@"timefromxcode"];//key corresponds to sql in php
     [dict setObject:_subject forKey:@"subjectfromxcode"];
     [dict setObject:_demand forKey:@"demandfromxcode"];
-    NSLog(@"date=%@, sub=%@, demand=%@",_date, _subject, _demand);
+    [dict setObject:_login forKey:@"loginfromxcode"];
+    [dict setObject:_lastlogin forKey:@"lastloginfromxcode"];
+    [dict setObject:_gamecnt forKey:@"gamecntfromxcode"];
+    
     NSData *data = [self formEncodedDataFromDictionary:dict];
 //    NSURL *url = [NSURL URLWithString:@"http://satoshi.upper.jp/user/demand/updatevalue.php"];
     NSURL *url = [NSURL URLWithString:@"http://satoshi.upper.jp/user/demand/insertdemand.php"];
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-    NSLog(@"request=%@", req);
     [req setHTTPMethod:@"POST"];
     [req setHTTPBody:data];
-    NSLog(@"request=%@", req);
     
     
     NSURLResponse *response;
@@ -73,7 +74,6 @@
     NSData *result = [NSURLConnection sendSynchronousRequest:req
                                            returningResponse:&response
                                                        error:&error];
-    NSLog(@"request=%@", req);
     
     if(error){
         NSLog(@"同期通信失敗");

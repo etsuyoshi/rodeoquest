@@ -129,7 +129,7 @@ UIActivityIndicatorView *_indicator;
 //        [dbac updateValueToDB:_id column:@"login" value:[NSString stringWithFormat:@"%d", login ]];
         [dbac updateValueToDB:_id column:@"login" newVal:[NSString stringWithFormat:@"%d", login]];
         NSLog(@"login = %@回目", [dbac getValueFromDB:_id column:@"login"]);
-        
+        [attr setValueToDevice:@"login" strValue:[NSString stringWithFormat:@"%d", login]];
         
         // インジケーター非表示
         [self hideActivityIndicator];
