@@ -1788,6 +1788,8 @@ int sensitivity;
     int beforeLevel = [[attr getValueFromDevice:@"level"] intValue];
     int beforeExp = [[attr getValueFromDevice:@"exp"] intValue];
     
+    
+    [self showActivityIndicator];
     //デバイスデータ更新＆サーバー通信＝＞exitボタン押下時に実行してしまうと、menu画面で正しい値が表示されなくなってしまう
     [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1f];
     
@@ -2174,7 +2176,7 @@ int sensitivity;
 -(void)sendRequestToServer{
     
     // インジケーター表示：メニューがないので意味ない？
-    [self showActivityIndicator];
+//    [self showActivityIndicator];
     
     
     DBAccessClass *dbac = [[DBAccessClass alloc]init];
@@ -2319,17 +2321,37 @@ int sensitivity;
     // Activity Indicator 表示
 //    _loadingView                 = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
     _loadingView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _loadingView.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0f];
-    _loadingView.alpha           = 0.5f;//上のビューにも反映
+//    _loadingView.backgroundColor = [UIColor blackColor];
+    _loadingView.backgroundColor = [UIColor clearColor];//[UIColor colorWithRed:0.2 green:0.2 blue:0.4 alpha:0.9f];
+//    _loadingView.alpha           = 0.5f;//上のビューにも反映
     _indicator                   = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [_indicator setCenter:CGPointMake(_loadingView.bounds.size.width/2, _loadingView.bounds.size.height/2)];
+    
+    
     [_loadingView addSubview:_indicator];
     [self.view addSubview:_loadingView];
+    
     [self.view bringSubviewToFront:_loadingView];
     
 //    [self.navigationController.view addSubview:_loadingView];
     [_indicator startAnimating];
 //    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
+
+    UITextView *tvWaiting = [CreateComponentClass createTextView:CGRectMake(0, 0, _loadingView.frame.size.width, 50)
+                                                            text:@"now updating..."
+                                                            font:@"AmericanTypewriter-Bold"
+                                                            size:30
+                                                       textColor:[UIColor whiteColor]
+                                                       backColor:[UIColor clearColor]
+                                                      isEditable:NO];
+    tvWaiting.center = CGPointMake(_loadingView.frame.size.width/2,
+                                   _loadingView.frame.size.height/2 + 50);//50px under center
+    tvWaiting.textAlignment = NSTextAlignmentCenter;
+    tvWaiting.text = @"data updating ...";
+    [_loadingView addSubview:tvWaiting];
+    
 }
 
 /*
@@ -2337,6 +2359,7 @@ int sensitivity;
  */
 - (void)hideActivityIndicator
 {
+    NSLog(@"hide activity");
     // Activity Indicator 非表示
     [_indicator stopAnimating];
     [_loadingView removeFromSuperview];
