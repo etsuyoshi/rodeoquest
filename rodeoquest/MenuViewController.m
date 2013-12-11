@@ -964,7 +964,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     DBAccessClass *dbac = [[DBAccessClass alloc]init];
     [dbac insertDemandToDB:(NSString *)strTime
                    subject:(NSString *)tvSubject.text
-                    demand:(NSString *)tvDemand.text];
+                    demand:(NSString *)tvDemand.text
+                     login:(NSString *)[attr getValueFromDevice:@"login"]
+                 lastlogin:(NSString *)[attr getValueFromDevice:@"lastlogin"]
+                   gamecnt:(NSString *)[attr getValueFromDevice:@"gamecnt"]];
     
 }
 

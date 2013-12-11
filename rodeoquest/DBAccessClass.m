@@ -47,7 +47,12 @@
     
     //    return;
 }
--(Boolean)insertDemandToDB:(NSString *)_date subject:(NSString *)_subject demand:(NSString *)_demand{
+-(Boolean)insertDemandToDB:(NSString *)_date
+                   subject:(NSString *)_subject
+                    demand:(NSString *)_demand
+                     login:(NSString *)_login
+                 lastlogin:(NSString *)_lastlogin
+                   gamecnt:(NSString *)_gamecnt{
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
     [dict setObject:_date forKey:@"timefromxcode"];//key corresponds to sql in php
     [dict setObject:_subject forKey:@"subjectfromxcode"];
