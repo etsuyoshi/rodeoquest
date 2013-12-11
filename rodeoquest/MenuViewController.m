@@ -78,8 +78,15 @@ BGMClass *bgmClass;
 BackGroundClass2 *backGround;
 AttrClass *attr;
 
-
 UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新するのでグローバルに宣言しておく(武器やアイテムの購入等)
+
+
+
+//ユーザー要望
+UITextView* tvSubject;
+UITextView* tvDemand;
+NSString *strSubject = @"お名前は匿名です。個人が特定されることはありません。";
+NSString *strDemand = @"ご要望をお書き下さい。\n※全てのご意見を反映出来ない場合がございます。";
 
 
 //CreateComponentClass *createComponentClass;
@@ -250,6 +257,7 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
                        [NSNumber numberWithInt:ButtonMenuImageTypeInn],
                        [NSNumber numberWithInt:ButtonMenuImageTypeCoin],
                        [NSNumber numberWithInt:ButtonMenuImageTypeSet],
+                       [NSNumber numberWithInt:ButtonMenuImageTypeDemand],
                        nil],
                       nil];
 //    NSLog(@"imageFileArray initialization complete");
@@ -656,8 +664,8 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
             [viewSuperSuper addSubview:viewSuper];
             
             //メインフレームの定義
-            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(100, 70, 210, 250)];
-            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.6f blue:0.1f alpha:0.6f]];//どちらでも良い
+            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(100, 70, 210, 250)];//340)];//in case of 4components
+            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.3f blue:0.1f alpha:0.6f]];//どちらでも良い
             [viewSuperSuper addSubview:viewFrame];
             
 
@@ -668,11 +676,16 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
             int imageWidth = 70;
             int imageHeight = 70;
             int imageMargin = 10;
+            //each name of method
             NSArray *arrMethod = [NSArray arrayWithObjects:
                                   @"setBGM:",
                                   @"setSE:",
 //                                  @"setSensitivity:",
                                   nil] ;
+            NSArray *arrDisplay = [NSArray arrayWithObjects:
+                                   @"BGM",
+                                   @"効果音",
+                                   nil];
             NSArray *arrImage = [NSArray arrayWithObjects:
                                  [NSNumber numberWithInt:ButtonSwitchImageTypeSpeaker],
                                  [NSNumber numberWithInt:ButtonSwitchImageTypeBGM],
@@ -692,17 +705,17 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
                                                                        selector:[arrMethod objectAtIndex:i]];
                 [viewFrame addSubview:iv_item];
                 
+                //explanation
                 UITextView *tv_setExp = [CreateComponentClass createTextView:CGRectMake(rect_image.origin.x + rect_image.size.width,
                                                                                         rect_image.origin.y,
                                                                                         viewFrame.bounds.size.width - rect_image.size.width,
                                                                                         rect_image.size.height)
-                                                                        text:[arrMethod objectAtIndex:i]
+                                                                        text:[arrDisplay objectAtIndex:i]
                                                                         font:@"AmericanTypewriter-Bold"
                                                                         size:15
                                                                    textColor:[UIColor whiteColor]
                                                                    backColor:[UIColor clearColor]
                                                                   isEditable:NO];
-//                tv_setExp.font = 
                 [viewFrame addSubview:tv_setExp];
                 
             }
@@ -712,19 +725,19 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
                                            imageWidth,
                                            imageHeight);
             
-            UIImageView *iv_item = [CreateComponentClass createCountButton:rect_image
+            UIImageView *iv_sense = [CreateComponentClass createCountButton:rect_image
                                                                    backType:ButtonMenuBackTypeGreen
                                                                   imageType:ButtonCountImageTypeSensitivity
                                                                         tag:0
                                                                      target:self
                                                                    selector:@"setSensitivity:"];
-            [viewFrame addSubview:iv_item];
+            [viewFrame addSubview:iv_sense];
             
             UITextView *tv_setExp = [CreateComponentClass createTextView:CGRectMake(rect_image.origin.x + rect_image.size.width,
                                                                                     rect_image.origin.y,
                                                                                     viewFrame.bounds.size.width - rect_image.size.width,
                                                                                     rect_image.size.height)
-                                                                    text:@"explanation."
+                                                                    text:@"操作感度"
                                                                     font:@"AmericanTypewriter-Bold"
                                                                     size:15
                                                                textColor:[UIColor whiteColor]
@@ -732,169 +745,256 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
                                                               isEditable:NO];
             [viewFrame addSubview:tv_setExp];
             
-//            [viewSuper addSubview:viewFrame];
-//            [self.view addSubview:viewSuper];
+            
+            //要望フォーム
+//            UIImageView *iv_demand = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+//                                                                  imageType:(ButtonMenuImageType)ButtonMenuImageTypeDemand
+//                                                                       rect:CGRectMake(imageInitX,
+//                                                                                        imageInitY + 3 * (imageHeight + imageMargin),//+ viewFrame.frame.origin.y,//because it's on self.view
+//                                                                                        imageWidth, imageHeight)
+//                                                                     target:self
+//                                                                   selector:@"setDemand"];
+//            [viewFrame addSubview:iv_demand];
+//            
+//            UITextView *tv_setDemand = [CreateComponentClass
+//                                        createTextView:CGRectMake(iv_demand.frame.origin.x + iv_demand.frame.size.width,
+//                                                                  iv_demand.frame.origin.y,
+//                                                                  viewFrame.frame.size.width - iv_demand.frame.size.width,
+//                                                                  iv_demand.frame.size.height)
+//                                                                    text:@"ご意見"
+//                                                                    font:@"AmericanTypewriter-Bold"
+//                                                                    size:15
+//                                                               textColor:[UIColor whiteColor]
+//                                                               backColor:[UIColor clearColor]
+//                                                              isEditable:NO];
+//            [viewFrame addSubview:tv_setDemand];
+            
+            break;
+        }
+        case ButtonMenuImageTypeDemand:{
+            /*
+             *ユーザーの要望を聞くフォーム (PayProductViewControlと同じ構造)
+             */
+            UIView *viewSuperAtForm = [CreateComponentClass createViewNoFrame:self.view.bounds
+                                                                       color:[UIColor clearColor]
+                                                                         tag:0
+                                                                      target:Nil
+                                                                    selector:nil];
+            [viewSuperAtForm setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.8]];
+            [self.view addSubview:viewSuperAtForm];
+            
+            
+            
+            
+            int xViewFrame = 10;
+            int yViewFrame = 100;
+            int widthViewFrame = 300;
+            int heightViewFrame = 350;
+            
+            //見た目の飾り付け
+            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(xViewFrame,yViewFrame,
+                                                                            widthViewFrame,
+                                                                            heightViewFrame)];
+            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:0.6f]];
+            [viewSuperAtForm addSubview:viewFrame];
+            
+            //TextViewから他の場所をタップした時にフォーカスを外すためのview
+            UIView *viewForResign = [CreateComponentClass createViewNoFrame:self.view.bounds
+                                                                      color:[UIColor clearColor]
+                                                                        tag:0
+                                                                     target:self
+                                                                   selector:@"setResign"];
+            [viewSuperAtForm addSubview:viewForResign];//only for action
+            
+            
+            
+            int xSubject = 10;
+            int ySubject = 10;
+            int wSubject = 60;
+            int hSubject = 40;
+            int widthForm = viewFrame.frame.size.width - wSubject - 15;
+            int heightForm = 150;
+            int heightSubjects = 40;
+            //件名
+            UILabel *lbSubject = [[UILabel alloc]initWithFrame:CGRectMake(xSubject, ySubject, wSubject, hSubject)];
+            lbSubject.text = @" 件名:";
+            lbSubject.textColor = [UIColor whiteColor];
+            [viewFrame addSubview:lbSubject];
+            
+            tvSubject = [[UITextView alloc] initWithFrame:CGRectMake(viewFrame.frame.origin.x + xSubject + wSubject,
+                                                                     viewFrame.frame.origin.y + ySubject,
+                                                                     widthForm, heightSubjects)];
+            tvSubject.text = strSubject;
+            tvSubject.textColor = [UIColor lightGrayColor];
+            tvSubject.delegate = self;
+//            [viewFrame addSubview:tvSubject];
+            [viewSuperAtForm addSubview:tvSubject];
+//            [tvSubject becomeFirstResponder];                // キーボードを表示
+            tvSubject.layer.borderWidth = 1;//add frame-line
+            tvSubject.layer.borderColor = [[UIColor blackColor] CGColor];
+            tvSubject.layer.cornerRadius = 5;//curve line
+            tvSubject.editable = YES;
+            
+            //内容
+            UILabel *lbDemand = [[UILabel alloc]initWithFrame:CGRectMake(xSubject,
+                                                                         lbSubject.frame.origin.y + heightSubjects + 3,
+                                                                         wSubject, hSubject)];
+            lbDemand.text = @"ご要望:";
+            lbDemand.textColor = [UIColor whiteColor];
+            [viewFrame addSubview:lbDemand];
+            
+            tvDemand = [[UITextView alloc] initWithFrame:CGRectMake(viewFrame.frame.origin.x + xSubject + wSubject,
+                                                                    tvSubject.frame.origin.y + heightSubjects + 3,
+                                                                                widthForm, heightForm)];
+            tvDemand.text = strDemand;
+            tvDemand.textColor = [UIColor lightGrayColor];
+            tvDemand.delegate = self;
+//            [viewFrame addSubview:tvDemand];
+            [viewSuperAtForm addSubview:tvDemand];
+//            [textView becomeFirstResponder];                // キーボードを表示
+            tvDemand.layer.borderWidth = 1;//add frame-line
+            tvDemand.layer.borderColor = [[UIColor blackColor] CGColor];
+            tvDemand.layer.cornerRadius = 5;//curve line
+            tvDemand.editable = YES;
+
+            
+            //send-button
+            int widthButton = 100;
+            int heightButton = 50;
+            CoolButton *btSend = [CreateComponentClass createCoolButton:CGRectMake(tvDemand.frame.origin.x + tvDemand.frame.size.width - widthButton,//right
+                                                                                   tvDemand.frame.origin.y + tvDemand.frame.size.height + 10,
+                                                                                   widthButton, heightButton)
+                                                                   text:@"send!"
+                                                                    hue:0.85f
+                                                             saturation:0.63f
+                                                             brightness:0.79f
+                                                                 target:self
+                                                               selector:@"confirmDemand"
+                                                                    tag:0];
+            [viewSuperAtForm addSubview:btSend];
+            
+            CoolButton *btClose = [CreateComponentClass createCoolButton:CGRectMake(viewSuperAtForm.frame.size.width - widthButton - 5,//right
+                                                                                   10,
+                                                                                   widthButton - 20, heightButton + 10)
+                                                                    text:@"close"
+                                                                     hue:0.532f
+                                                              saturation:0.553f
+                                                              brightness:0.535f
+                                                                 target:self
+                                                               selector:@"closeSuperView:"
+                                                                    tag:0];
+            [viewSuperAtForm addSubview:btClose];
+            
             
             
             break;
         }
+        default:{//Menu画面にはないButtonMenuImageTypeBuyButton(PayProduct内), ...TypeDemand(Set内)は何もしない
+            //
+            break;
+        }
             
     }
-//    switch(num.integerValue){
-//        case 0:{//start game
-//            NSLog(@"start games");
-//            
-//            if(bgmClass.getIsPlaying){
-//                [bgmClass stop];
-//            }
-//            
-//            
-//#ifdef TEST
-//            TestViewController *tvc = [[TestViewController alloc]init];
-//            [self presentViewController: tvc animated:YES completion: nil];
-//#else
-//            [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
-//
-//            //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
-//            //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-//            [self performSelector:@selector(gotoGame) withObject:nil afterDelay:0.1f];
-//#endif
-//            //参考戻る時(時間経過等ゲーム終了時で)：[self dismissModalViewControllerAnimated:YES];=>deprecated
-////            NSLog(@"return");
-////            [self dismissViewControllerAnimated:YES completion:nil];
-//            break;
-//        }
-//        //上段
-//        case 200:{//武器バージョンアップ
-//            subView = [CreateComponentClass createView];
-//            [self.view bringSubviewToFront:subView];
-//            [self.view addSubview:subView];
-//            
-//            
-//            CGRect rect_close = CGRectMake(285, 57, 20, 20);
-////            closeButton = [self createButtonWithImage:@"close.png" tag:999 frame:rect_close];
-//            closeButton = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeGreen
-//                                                                rect:rect_close
-//                                                               image:@"close.png"
-//                                                              target:self
-//                                                            selector:@"pushed_button:"];//selector記述する必要あり。
-//            closeButton.tag = 999;//
-//            [self.view addSubview:closeButton];
-//            break;
-//        }
-//        case 201:{//ドラゴン選択(フリックで選択)
-//            
-//            NSArray *imageArray = [NSArray arrayWithObjects:@"RockBow.png",
-//                                  @"FireBow.png",
-//                                  @"WaterBow.png",
-//                                  @"IceBow.png",
-//                                  @"BugBow.png",
-//                                  @"AnimalBow.png",
-//                                  @"GrassBow.png",
-//                                  @"ClothBow.png",
-//                                  @"SpaceBow.png",
-//                                  @"WingBow.png",
-//                                  nil];
-//            //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
-//            //購入した武器の分だけ右を見れる
-//            UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
-//                                                                                 50,
-//                                                                                 self.view.bounds.size.width,
-//                                                                                 self.view.bounds.size.height)
-//                                                            imageFile:imageArray
-//                                                               target:self
-//                                                            selector1:@"closeView:"
-//                                                            selector2:@"imageTapped:"];
-//            superView.tag = 0;
-//            [self.view addSubview:superView];
-//            
-//            
-//            break;
-//        }
-//        case 202:{//回復
-//            ItemListViewController *ilvc = [[ItemListViewController alloc]init];
-//            [self presentViewController: ilvc animated:YES completion: nil];
-//            break;
-//        }
-//        case 203:{//配合
-//            break;
-//        }
-//        //下段
-//        case 210:{//ドラゴン購入？＝＞ドラゴン選択と同じで良い？
-//            break;
-//        }
-//        case 211:{//アイテム
-//            ItemListViewController *ilvc = [[ItemListViewController alloc]init];
-//            [self presentViewController: ilvc animated:YES completion: nil];
-//            break;
-//        }
-//        case 212:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
-//            UIView *viewSuper = [CreateComponentClass createViewNoFrame:self.view.bounds
-//                                                                  color:[UIColor clearColor]
-//                                                                    tag:9999
-//                                                                 target:self
-//                                                               selector:@"closeView:"];//透明ビュー
-//            [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
-//            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(100, 70, 210, 250)];
-//            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.6f blue:0.1f alpha:0.6f]];//どちらでも良い
-//            
-//            int imageInitX = 10;
-//            int imageInitY = 10;
-//            int imageWidth = 70;
-//            int imageHeight = 70;
-//            int imageMargin = 10;
-////            NSArray *image_array = [NSArray arrayWithObjects:@"bgm.png",@"sound.png", @"difficulty.png",nil] ;
-//            NSArray *image_array = [NSArray arrayWithObjects:@"close.png",@"close.png", @"close.png",nil] ;
-//            
-//            for (int i = 0; i < [image_array count]; i++){
-//                CGRect rect_image = CGRectMake(imageInitX,
-//                                               imageInitY + i * (imageHeight + imageMargin),
-//                                               imageWidth,
-//                                               imageHeight);
-//                
-//                UIImageView *iv_item = [CreateComponentClass createImageView:rect_image
-//                                                                      image:[image_array objectAtIndex:i]
-//                                                                        tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
-//                                                                     target:self
-//                                                                   selector:@"imageTapped:"];
-////                iv_item.tag = 1;
-//                [viewFrame addSubview:iv_item];
-//            }
-//            
-//            [viewSuper addSubview:viewFrame];
-//            [self.view addSubview:viewSuper];
-//            
-//            break;
-//        }
-//        case 213:{//課金画面
-//            break;
-//        }
-//            /*
-//        case 220:{
-//            break;
-//        }
-//        case 221:{
-//            break;
-//        }
-//        case 222:{
-//            break;
-//        }
-//        case 223:{
-//            break;
-//        }
-//             */
-//        case 999:{
-//            [subView removeFromSuperview];
-//            [closeButton removeFromSuperview];
-//            break;
-//        }
-//        case 9999:{
-//            NSLog(@"pushed close button 9999");
-//            break;
-//        }
-//            
-//    }
 }
+
+-(void)confirmDemand{
+    NSLog(@"confirm demand button pressed!");
+    //この内容で宜しいですか？
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"ご協力ありがとうございます。" message:@"この内容でお送りしても宜しいですか？"
+                              delegate:self cancelButtonTitle:@"いいえ" otherButtonTitles:@"はい", nil];
+    [alert show];
+    
+}
+// アラートのボタンが押された時に呼ばれるデリゲート例文
+-(void)alertView:(UIAlertView*)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 0:
+            //１番目のボタンが押されたときの処理を記述する
+            //do nothing
+            break;
+        case 1:
+            //２番目のボタンが押されたときの処理を記述する
+            [self sendDemand];
+            break;
+    }
+    
+}
+
+-(void)sendDemand{
+    NSLog(@"send demand button pressed!");
+    
+}
+
+//自作
+-(void)setResign{
+    if(tvSubject.text.length == 0){
+        tvSubject.textColor = [UIColor lightGrayColor];
+        tvSubject.text = strSubject;
+        
+    }
+    [tvSubject resignFirstResponder];
+    if(tvDemand.text.length == 0){
+        tvDemand.textColor = [UIColor lightGrayColor];
+        tvDemand.text = strDemand;
+    }
+    [tvDemand resignFirstResponder];
+}
+
+//override
+- (BOOL) textViewShouldBeginEditing:(UITextView *)textView
+{
+    if(textView == tvSubject){
+        if (tvSubject.textColor == [UIColor lightGrayColor]) {
+            tvSubject.text = @"";
+            tvSubject.textColor = [UIColor blackColor];
+        }
+    }else if(textView == tvDemand){
+        if(tvDemand.textColor == [UIColor lightGrayColor]){
+            tvDemand.text = @"";
+            tvDemand.textColor = [UIColor blackColor];
+        }
+    }
+    
+    return YES;
+}
+//override
+-(void) textViewDidChange:(UITextView *)textView
+{
+    if(tvSubject.text.length == 0){
+        tvSubject.textColor = [UIColor lightGrayColor];
+        tvSubject.text = strSubject;
+        [tvSubject resignFirstResponder];
+    }
+    if(tvDemand.text.length == 0){
+        tvDemand.textColor = [UIColor lightGrayColor];
+        tvDemand.text = strDemand;
+        [tvDemand resignFirstResponder];
+    }
+}
+//override
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    //テキストを変更しても良いかの事前通知です。
+    //rangeに変更対象の位置（location）と長さ（length）、textに変更後の文字列
+    if(textView == tvSubject){//イベントの呼出し元がtvSubviewの時
+        if([text isEqualToString:@"\n"]) {
+            [tvSubject resignFirstResponder];//フォーカス外す
+            if(tvSubject.text.length == 0){
+                tvSubject.textColor = [UIColor lightGrayColor];
+                tvSubject.text = strSubject;
+                [tvSubject resignFirstResponder];//フォーカス外す
+            }
+//            [tvDemand becomeFirstResponder];
+            return YES;
+        }
+    }
+    return YES;
+}
+
+
+
 
 -(void)imageTapped:(id)sender{
 
@@ -1109,7 +1209,6 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
     NSLog(@"set up sensitivity : %d", [[_myDefaults objectForKey:name] intValue]);
     
 }
-
 
 
 -(void)closeView:(id)sender{

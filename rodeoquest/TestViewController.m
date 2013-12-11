@@ -21,8 +21,8 @@
 //#define BUTTON_TEST
 //#define BACKGROUND_TEST
 //#define BTNPRESS_TEST
-//#define COOLBUTTON_TEST
-#define SPECIALWEAPON_TEST
+#define COOLBUTTON_TEST
+//#define SPECIALWEAPON_TEST
 
 #import "SpecialBeamClass.h"
 #import "Common.h"

@@ -10,7 +10,7 @@
 //#import <AVFoundation/AVFoundation.h>
 #import "GADBannerView.h"
 
-@interface MenuViewController : UIViewController{
+@interface MenuViewController : UIViewController<UITextViewDelegate>{
     //admob
     GADBannerView *bannerView_;
 

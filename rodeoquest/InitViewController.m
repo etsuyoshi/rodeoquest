@@ -12,9 +12,9 @@
 //#define NoConnectTEST
 //#define TestView
 
-#ifdef TestView
-    #define PaymentTest//TestViewの場合にのみPaymentテスト有効
-    #import "PaymentTestViewController.h"
+#ifdef TestView//PaymentTestでテストする場合、TestViewをオンにしたまま以下をコメントイン(コメントアウトを外す)
+//    #define PaymentTest//TestViewの場合にのみPaymentテスト有効
+//    #import "PaymentTestViewController.h"
 #endif
 
 #ifdef TestView

@@ -208,6 +208,14 @@
                 imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];
                 break;
             }
+            case ButtonMenuImageTypeBuyProduct:{
+                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
+                break;
+            }
+            case ButtonMenuImageTypeDemand:{
+                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
+                break;
+            }
         }
 //    }else{
 //        switch (menuBtnType) {
