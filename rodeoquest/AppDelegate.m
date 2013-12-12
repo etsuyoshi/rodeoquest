@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <AppSocially/AppSocially.h>
+#import <GameKit/GameKit.h>
 
 @implementation AppDelegate
 
@@ -15,6 +16,63 @@
 {
     // Override point for customization after application launch.
     
+    
+    //gamecenterのプレイヤーを取得
+//    [[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:^(NSError *error){}];
+    
+    
+//    [[GKLocalPlayer localPlayer] setAuthenticateHandler:(^(UIViewController* viewcontroller, NSError *error) {
+    
+//    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+//    localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error){
+//        if (viewController != nil)
+//        {
+//            //showAuthenticationDialogWhenReasonable: is an example method name. Create your own method that displays an authentication view when appropriate for your app.
+//            [self showAuthenticationDialogWhenReasonable: viewController];
+//        }
+//        else if (localPlayer.isAuthenticated)
+//        {
+//            //authenticatedPlayer: is an example method name. Create your own method that is called after the loacal player is authenticated.
+//            [self authenticatedPlayer: localPlayer];
+//        }
+//        else
+//        {
+//            [self disableGameCenter];
+//        }
+//    }];
+    
+    __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+//    localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error){
+//        if (viewController != nil)
+//        {
+//            //showAuthenticationDialogWhenReasonable: is an example method name. Create your own method that displays an authentication view when appropriate for your app.
+//            NSLog(@"showAuthenticationDialogWhenReasonable: viewController");
+////            [self showAuthenticationDialogWhenReasonable: viewController];
+//        }
+//        else
+//            if (localPlayer.isAuthenticated)
+//        {
+//            //authenticatedPlayer: is an example method name. Create your own method that is called after the local player is authenticated.
+////            [self authenticatedPlayer: localPlayer];
+//            NSLog(@"player is authenticated");
+//        }
+//        else
+//        {
+//            NSLog(@"disable game center");
+////            [self disableGameCenter];
+//        }
+//    };
+//    [localPlayer authenticateWithCompletionHandler:^(NSError *error) {
+    localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error){
+        if (error == nil) {
+            // 認証に成功した場合の処理コードをここに挿入する
+            NSLog(@"you are authenticated");
+        } else {
+            // アプリケーションはエラーパラメータを処理してプレーヤーにエラーを報告できる
+            NSLog(@"authenticated error");
+        }
+    };
+
     [AppSocially setAPIKey:@"7774ac78f4afd9934a1483eb5485e2d5"];//38abee1be738a828fecc1a56a79d4592"];
     
 //    #warning Replace with YOUR APP's AppSociallyAPIKey and FacebookAppID

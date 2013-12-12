@@ -8,6 +8,7 @@
 
 //#define TEST//TestViewController-transition
 
+#import <GameKit/GameKit.h>
 #import "DBAccessClass.h"
 #import "GADBannerView.h"
 #import "BGMClass.h"
@@ -111,9 +112,30 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
         //back ground music
 //        audioPlayerCapture = [self getAVAudioPlayer:@"mySoundEffects.caf" ];
 //        [audioPlayerCapture prepareToPlay];
+        
+        //game centerにスコアを報告する
+        GKScore *scoreReporter = [[GKScore alloc] initWithCategory:@"comendo.rodeoquest"];
+        scoreReporter.value = rand() % 1000000;	// とりあえずランダム値をスコアに
+        [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
+            if (error != nil)
+            {
+                // 報告エラーの処理
+                NSLog(@"error leaderboard : %@", error);
+            }
+        }];
+        
+        
     }
     return self;
 }
+
+
+- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
+    
+//	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+}
+
 
 //ステータスバー非表示の一環
 - (BOOL)prefersStatusBarHidden {
@@ -1044,7 +1066,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIView *tappedView = [sender view];
     NSLog(@"imageTapped at tag = %d", tappedView.tag);
     
-    for(int i = 0;i < WEAPON_BUY_COUNT;i++){
+    for(int i = 0;i < WEAPON_BUY_COUNT;i++){//最初のタグは武器イメージタップ時のイベント
         if(i == tappedView.tag){
             UIView *viewAll = [[UIView alloc]initWithFrame:self.view.bounds];
             [viewAll setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f]];//タップイベントを受け付けないビューを画面全体に配置
@@ -1096,9 +1118,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch(tappedView.tag){
         //case:0 - 9 => definite in upper for-loop
         case 100:{
-            NSLog(@"invite");
-            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
-            [self presentViewController:inviteView animated:YES completion:nil];
+//            NSLog(@"invite");
+//            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
+//            [self presentViewController:inviteView animated:YES completion:nil];
+            
+            NSLog(@"leader board");
+            //learderboard
+            GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];
+            leaderboardController.leaderboardDelegate = self;
+            //    [self presentModalViewController:leaderboardController animated:YES];
+            [self presentViewController: leaderboardController animated:YES completion: nil];
+
             break;
         }
         case 2120://TAPPED_BGM

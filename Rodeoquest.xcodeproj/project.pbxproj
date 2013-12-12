@@ -96,6 +96,7 @@
 		3440529F182BBC1A0049AE46 /* coin_purple.png in Resources */ = {isa = PBXBuildFile; fileRef = 34405297182BBC1A0049AE46 /* coin_purple.png */; };
 		344052A0182BBC1A0049AE46 /* back_forest2.png in Resources */ = {isa = PBXBuildFile; fileRef = 34405298182BBC1A0049AE46 /* back_forest2.png */; };
 		344052A1182BBC1A0049AE46 /* tool_transparancy.png in Resources */ = {isa = PBXBuildFile; fileRef = 34405299182BBC1A0049AE46 /* tool_transparancy.png */; };
+		3448B5061858533B004EDCA2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3448B5051858533B004EDCA2 /* GameKit.framework */; };
 		344928B218025E6100315F2D /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 344928B118025E6100315F2D /* MenuViewController.m */; };
 		344BD6171815936B00387201 /* mob_zou_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 344BD60E1815936B00387201 /* mob_zou_02.png */; };
 		344BD6181815936B00387201 /* mob_zou_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 344BD60F1815936B00387201 /* mob_zou_01.png */; };
@@ -411,6 +412,7 @@
 		34405297182BBC1A0049AE46 /* coin_purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin_purple.png; sourceTree = "<group>"; };
 		34405298182BBC1A0049AE46 /* back_forest2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_forest2.png; sourceTree = "<group>"; };
 		34405299182BBC1A0049AE46 /* tool_transparancy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_transparancy.png; sourceTree = "<group>"; };
+		3448B5051858533B004EDCA2 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		344928B018025E6100315F2D /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		344928B118025E6100315F2D /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		344BD60E1815936B00387201 /* mob_zou_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mob_zou_02.png; sourceTree = "<group>"; };
@@ -645,6 +647,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3448B5061858533B004EDCA2 /* GameKit.framework in Frameworks */,
 				342DAB0F184CBDA60004D3CB /* StoreKit.framework in Frameworks */,
 				342DAB0E184CBD780004D3CB /* AdSupport.framework in Frameworks */,
 				342DAB0D184CBD270004D3CB /* libNendAd.a in Frameworks */,
@@ -731,6 +734,7 @@
 		342057D017F2B34C0084E99D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3448B5051858533B004EDCA2 /* GameKit.framework */,
 				344DA25C184CB788004F71EE /* libGoogleAdMobAds.a */,
 				344DA256184CB728004F71EE /* StoreKit.framework */,
 				344DA246184CB685004F71EE /* AdMob */,

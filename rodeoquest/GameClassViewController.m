@@ -2299,9 +2299,10 @@ int sensitivity;
           );
     
     //無限ループを組んで値が更新されるまでhideActivityIndicatorをしない
-    for(;;){
+    for(int i = 0;;i++){
         NSLog(@"gameCntFromDevice= %d, gameCntFromDB=%@", gameCnt, [dbac getValueFromDB:_id column:@"gamecnt"]);
-        if(gameCnt == [[dbac getValueFromDB:_id column:@"gamecnt"] intValue]){
+        if(gameCnt == [[dbac getValueFromDB:_id column:@"gamecnt"] intValue] ||
+           i > 10){//10回やってダメなら諦める:ネット回線が切れているか遅すぎるか
             [self hideActivityIndicator];
             break;
         }

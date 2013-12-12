@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 //#import <AVFoundation/AVFoundation.h>
 #import "GADBannerView.h"
+#import <GameKit/GameKit.h>
 
-@interface MenuViewController : UIViewController<UITextViewDelegate>{
+@interface MenuViewController : UIViewController<UITextViewDelegate,GKLeaderboardViewControllerDelegate>{
     //admob
     GADBannerView *bannerView_;
 
