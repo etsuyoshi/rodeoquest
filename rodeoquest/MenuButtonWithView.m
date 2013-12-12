@@ -201,7 +201,7 @@
                 break;
             }
             case  ButtonMenuImageTypeWpnUp:{
-                imgAdd.image = [UIImage imageNamed:@"weapon_UP.png"];
+                imgAdd.image = [UIImage imageNamed:@"weapon_UP2.png"];
                 break;
             }
             case ButtonMenuImageTypeCoin:{

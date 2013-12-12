@@ -10,7 +10,21 @@
 //#import <AVFoundation/AVFoundation.h>
 #import "GADBannerView.h"
 #import <GameKit/GameKit.h>
-
+typedef NS_ENUM(NSInteger, MenuTagType) {
+    MenuTagTypeWeapon0,
+    MenuTagTypeWeapon1,
+    MenuTagTypeWeapon2,
+    MenuTagTypeWeapon3,
+    MenuTagTypeWeapon4,
+    MenuTagTypeWeapon5,
+    MenuTagTypeWeapon6,
+    MenuTagTypeWeapon7,
+    MenuTagTypeWeapon8,
+    MenuTagTypeWeapon9,
+    MenuTagTypeLeaderBoard,
+    MenuTagTypeStartGame
+    
+};
 @interface MenuViewController : UIViewController<UITextViewDelegate,GKLeaderboardViewControllerDelegate>{
     //admob
     GADBannerView *bannerView_;

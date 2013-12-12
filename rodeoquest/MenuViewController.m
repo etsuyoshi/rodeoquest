@@ -85,10 +85,11 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
 
 
 //ユーザー要望
+UIView *viewMailSuperForm;
 UITextView* tvSubject;
 UITextView* tvDemand;
 NSString *strSubject = @"お名前は匿名です。個人が特定されることはありません。";
-NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nこちらにご要望をお書き下さい。";
+NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nご協力ありがとうございます。";
 
 
 //CreateComponentClass *createComponentClass;
@@ -700,7 +701,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
             int imageHeight = 70;
             int imageMargin = 10;
             //each name of method
-            NSArray *arrMethod = [NSArray arrayWithObjects:
+            NSArray *arrSetMethodName = [NSArray arrayWithObjects:
                                   @"setBGM:",
                                   @"setSE:",
 //                                  @"setSensitivity:",
@@ -714,7 +715,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
                                  [NSNumber numberWithInt:ButtonSwitchImageTypeBGM],
 //                                 [NSNumber numberWithInt:ButtonSwitchImageTypeSensitivity],
                                  nil];
-            for (int i = 0; i < [arrMethod count]; i++){
+            for (int i = 0; i < [arrSetMethodName count]; i++){
                 CGRect rect_image = CGRectMake(imageInitX,
                                                imageInitY + i * (imageHeight + imageMargin),
                                                imageWidth,
@@ -725,7 +726,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
                                                                       imageType:[[arrImage objectAtIndex:i] intValue]
                                                                             tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
                                                                          target:self
-                                                                       selector:[arrMethod objectAtIndex:i]];
+                                                                       selector:[arrSetMethodName objectAtIndex:i]];
                 [viewFrame addSubview:iv_item];
                 
                 //explanation
@@ -798,13 +799,13 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
             /*
              *ユーザーの要望を聞くフォーム (PayProductViewControlと同じ構造)
              */
-            UIView *viewSuperAtForm = [CreateComponentClass createViewNoFrame:self.view.bounds
+            viewMailSuperForm = [CreateComponentClass createViewNoFrame:self.view.bounds
                                                                        color:[UIColor clearColor]
                                                                          tag:0
                                                                       target:Nil
                                                                     selector:nil];
-            [viewSuperAtForm setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.8]];
-            [self.view addSubview:viewSuperAtForm];
+            [viewMailSuperForm setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.8]];
+            [self.view addSubview:viewMailSuperForm];
             
             
             
@@ -819,7 +820,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
                                                                             widthViewFrame,
                                                                             heightViewFrame)];
             [viewFrame setBackgroundColor:[UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:0.6f]];
-            [viewSuperAtForm addSubview:viewFrame];
+            [viewMailSuperForm addSubview:viewFrame];
             
             //TextViewから他の場所をタップした時にフォーカスを外すためのview
             UIView *viewForResign = [CreateComponentClass createViewNoFrame:self.view.bounds
@@ -827,7 +828,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
                                                                         tag:0
                                                                      target:self
                                                                    selector:@"setResign"];
-            [viewSuperAtForm addSubview:viewForResign];//only for action
+            [viewMailSuperForm addSubview:viewForResign];//only for action
             
             
             
@@ -851,7 +852,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
             tvSubject.textColor = [UIColor lightGrayColor];
             tvSubject.delegate = self;
 //            [viewFrame addSubview:tvSubject];
-            [viewSuperAtForm addSubview:tvSubject];
+            [viewMailSuperForm addSubview:tvSubject];
 //            [tvSubject becomeFirstResponder];                // キーボードを表示
             tvSubject.layer.borderWidth = 1;//add frame-line
             tvSubject.layer.borderColor = [[UIColor blackColor] CGColor];
@@ -873,7 +874,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
             tvDemand.textColor = [UIColor lightGrayColor];
             tvDemand.delegate = self;
 //            [viewFrame addSubview:tvDemand];
-            [viewSuperAtForm addSubview:tvDemand];
+            [viewMailSuperForm addSubview:tvDemand];
 //            [textView becomeFirstResponder];                // キーボードを表示
             tvDemand.layer.borderWidth = 1;//add frame-line
             tvDemand.layer.borderColor = [[UIColor blackColor] CGColor];
@@ -894,9 +895,9 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
                                                                  target:self
                                                                selector:@"confirmDemand"
                                                                     tag:0];
-            [viewSuperAtForm addSubview:btSend];
+            [viewMailSuperForm addSubview:btSend];
             
-            CoolButton *btClose = [CreateComponentClass createCoolButton:CGRectMake(viewSuperAtForm.frame.size.width - widthButton - 5,//right
+            CoolButton *btClose = [CreateComponentClass createCoolButton:CGRectMake(viewMailSuperForm.frame.size.width - widthButton - 5,//right
                                                                                    10,
                                                                                    widthButton - 20, heightButton + 10)
                                                                     text:@"close"
@@ -906,7 +907,7 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
                                                                  target:self
                                                                selector:@"closeSuperView:"
                                                                     tag:0];
-            [viewSuperAtForm addSubview:btClose];
+            [viewMailSuperForm addSubview:btClose];
             
             
             
@@ -932,7 +933,6 @@ NSString *strDemand = @"ご協力ありがとうございます。\n頂いたご
 // アラートのボタンが押された時に呼ばれるデリゲート例文
 -(void)alertView:(UIAlertView*)alertView
 clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
     switch (buttonIndex) {
         case 0:
             //１番目のボタンが押されたときの処理を記述する
@@ -991,6 +991,44 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                  lastlogin:(NSString *)[attr getValueFromDevice:@"lastlogin"]
                    gamecnt:(NSString *)[attr getValueFromDevice:@"gameCnt"]];
     
+    //薄いviewを貼付けてそこに「送信しました」的なメッセージを貼付して１秒後に消去(遅延実行）
+    UIView *viewNoAction = [[UIView alloc]initWithFrame:self.view.bounds];
+    [viewNoAction setBackgroundColor:[UIColor whiteColor]];
+    [viewNoAction setAlpha:0.5f];
+    [viewMailSuperForm addSubview:viewNoAction];
+    
+    //frame for message:"completed sending message"
+    UIView *viewMessageFrame = [CreateComponentClass
+                                createView:CGRectMake(0, 0,
+                                                      viewNoAction.frame.size.width*2/3,
+                                                      50)];
+    [viewMessageFrame setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.1f alpha:0.6f]];
+    viewMessageFrame.center = CGPointMake(viewNoAction.frame.size.width/2,
+                                          viewNoAction.frame.size.height/2);
+    [viewNoAction addSubview:viewMessageFrame];
+    
+    UITextView *tvSendComplete = [CreateComponentClass
+                                  createTextView:CGRectMake(0, 0, viewMessageFrame.frame.size.width,
+                                                            viewMessageFrame.frame.size.height)
+                                  text:@"送信しました"
+                                  font:@"AmericanTypewriter-Bold"
+                                  size:20
+                                  textColor:[UIColor blackColor]
+                                  backColor:[UIColor clearColor]
+                                  isEditable:NO];
+    tvSendComplete.textAlignment = NSTextAlignmentCenter;
+    tvSendComplete.center = CGPointMake(viewMessageFrame.frame.size.width/2,
+                                        viewMessageFrame.frame.size.height/2);
+    [viewMessageFrame addSubview:tvSendComplete];
+    
+    
+    
+    [self performSelector:@selector(removeMailView) withObject:nil afterDelay:3.0f];
+    
+}
+
+-(void)removeMailView{//遅延実行させる
+    [viewMailSuperForm removeFromSuperview];
 }
 
 //自作
@@ -1066,6 +1104,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIView *tappedView = [sender view];
     NSLog(@"imageTapped at tag = %d", tappedView.tag);
     
+    //武器タグの場合
     for(int i = 0;i < WEAPON_BUY_COUNT;i++){//最初のタグは武器イメージタップ時のイベント
         if(i == tappedView.tag){
             UIView *viewAll = [[UIView alloc]initWithFrame:self.view.bounds];
@@ -1115,7 +1154,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             break;
         }
     }
-    switch(tappedView.tag){
+    switch(tappedView.tag){//->MenuTagType
         //case:0 - 9 => definite in upper for-loop
         case 100:{
 //            NSLog(@"invite");
@@ -1131,30 +1170,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
             break;
         }
-        case 2120://TAPPED_BGM
-        {
-            NSLog(@"tapped image");
-//            if( !audioPlayer.playing ){
-//                [audioPlayer play];
-//            } else {
-//                [audioPlayer pause];
-//            }
-            if(![bgmClass getIsPlaying]){
-                [bgmClass play:@"bgm_menu_683"];
-            }else{
-                [bgmClass pause];
-            }
-            break;
-        }
-        case 2121://TAPPED_BGM
-        {
-            NSLog(@"tapped image");
-            break;
-        }case 2122://TAPPED_BGM
-        {
-            NSLog(@"tapped image");
-            break;
-        }
+        
         default :{
             NSLog(@"other tag %d", tappedView.tag);
             break;

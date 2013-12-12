@@ -120,7 +120,7 @@ UIActivityIndicatorView *_indicator;
         NSLog(@"データベース登録or承認完了");
         
         
-        //
+        //last login
         //最終ゲーム実行時間:http://www.objectivec-iphone.com/foundation/NSDate/components.html
         NSString *strLogin = [NSString stringWithFormat:@""];
         // 現在日付を取得
@@ -154,7 +154,8 @@ UIActivityIndicatorView *_indicator;
         NSString *weekday = arrayWeekName[comps.weekday - 1];//comps.weekday; // 曜日(1が日曜日 7が土曜日)
         NSLog(@"曜日: %@", weekday);
         strLogin = [NSString stringWithFormat:@"%@%@", strLogin, weekday];
-        [attr setValueToDevice:@"lastlogin" strValue:strLogin];//最後にloginを実施した日付を入力
+        [attr setValueToDevice:@"lastlogin" strValue:strLogin];//最後にloginを実施した日付をデバイスへ
+        [dbac updateValueToDB:_id column:@"lastlogin" newVal:strLogin];//同様にDBへ
         
         
         //ログイン回数をupdate
