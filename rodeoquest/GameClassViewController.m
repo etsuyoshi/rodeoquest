@@ -84,6 +84,7 @@
 //#define COUNT_TEST
 
 #import "GameClassViewController.h"
+#import "ViewWithEffectLevelUp.h"
 #import "BGMClass.h"
 #import "DBAccessClass.h"
 #import "AttrClass.h"
@@ -1787,15 +1788,7 @@ int sensitivity;
 //    AttrClass *attr = [[AttrClass alloc]init];
     int beforeLevel = [[attr getValueFromDevice:@"level"] intValue];
     int beforeExp = [[attr getValueFromDevice:@"exp"] intValue];
-    
-    
-    [self showActivityIndicator];
-    //デバイスデータ更新＆サーバー通信＝＞exitボタン押下時に実行してしまうと、menu画面で正しい値が表示されなくなってしまう
-    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1f];
-    
-    
     int go_component_width = 250;
-    
     //全体のフレーム
     UIView *view_go = [CreateComponentClass createView];
     [self.view addSubview:view_go];
@@ -1915,6 +1908,12 @@ int sensitivity;
                                                   selector:@"pushExit"];
     [view_go addSubview:qbBtn];
     
+    //マルチスレッド用の描画コンポーネント初期化完了
+    
+    //デバイスデータ更新＆サーバー通信＝＞時間遅れ付performSelectorを実行するとsuperView(上のコンポーネントを含めて)描画しながらsendRequest...を実行してくれる
+    //exitボタン押下時に実行してしまうと、menu画面で正しい値が表示されなくなってしまう
+    
+    
     
     
     /*
@@ -1935,7 +1934,8 @@ int sensitivity;
     //加えるべき値を別途定義してそれぞれ(pv_score等)に加えていく
     //上限まで達したら再度ゼロにして足していくが、次のレベルにおいても上限に達する場合はそこで停止しておく
     dispatch_async(globalQueue, ^{
-        //ここでは情報を取得しておくに留める(更新は別の場所で実施)
+        NSLog(@"multi-thread start");
+        //ここでは情報を取得しておくに留める(更新はdispatch_asyncで実施)
 //        AttrClass *attr = [[AttrClass alloc]init];
         int level = beforeLevel;//[[attr getValueFromDevice:@"level"] intValue];//既に更新済なので古いデータを使う
         int exp = beforeExp;//[[attr getValueFromDevice:@"exp"] intValue];//既に更新済なので古いデータを使う
@@ -1955,22 +1955,29 @@ int sensitivity;
         
         Boolean flagLevelUp = false;
         int goldCnt = 0;
-        int goldAdd = [GoldBoard getScore]/100==0?1:[GoldBoard getScore]/100;//大体100カウントで終わらせる
+        int goldAdd = 0;
+        if([GoldBoard getScore] != 0){
+            goldAdd = [GoldBoard getScore]/100==0?1:[GoldBoard getScore]/100;//大体100カウントで終わらせる
+        }
         //exp初期値
-        [pv_score setProgress:(float)pvScoreValue/100.0f
+//        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
+//                     animated:NO];
+        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
                      animated:NO];
-        for(int cnt = 0;cnt < loopCount ||
-                        goldCnt < [GoldBoard getScore]||
-                        cnt < (float)enemyDown/(float)enemyCount*100;cnt++){
+
+        for(int cnt = 0;cnt < loopCount ||//必ず100回繰り返す
+                        goldCnt < [GoldBoard getScore]||//獲得金額を100分割にして100回ループ
+                        cnt < (float)enemyDown/(float)enemyCount*100//倒した敵の数
+            ;cnt++){
             
             goldCnt = MIN(goldCnt += goldAdd, [GoldBoard getScore]);
             //時間のかかる処理
 //            NSLog(@"cnt = %d", cnt);
-//            for(int i = 0; i < 10;i++){
-//                NSLog(@"i = %d", i);//時間経過
-//                NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
-//                      cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
-//            }
+            for(int i = 0; i < 10;i++){
+//                NSLog(@"i = %d to expend time", i);//時間経過
+                NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
+                      cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
+            }
             if(cnt < 100){
                 if(pvScoreValue + unit < expTilNextLevel){
                     pvScoreValue += (int)unit;//小数点以下の誤差は発生するが
@@ -1985,6 +1992,13 @@ int sensitivity;
                         //経験値を沢山取得しても何度もレベル上昇するのは止めて次のレベルで止めておく
                         pvScoreValue = expTilNextLevel-1;
                     }
+                    
+                    
+                    //ここでレベルアップエフェクトを追加
+                    
+                    
+                    
+                    
                 }
             }
 
@@ -2015,23 +2029,39 @@ int sensitivity;
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", goldCnt];
                     
                 }
-                if(cnt >= loopCount-1){//最後のループ近辺なら
-                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
-                }
                 
                 //complete
                 if(cnt < (float)enemyDown/(float)enemyCount*100){
                     if(enemyDown != enemyCount){
                         tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", MIN(cnt, 100)];
                         pv_complete.progress = (float)cnt / 100.0f;
-                    }else{//all enemy get down!
+                    }
+                }
+                
+                
+                //最後の方で完了したらサーバーにデータ登録
+                if(cnt == loopCount-1){//cntは少なくと99は必ずカウントする(割り切れなかった場合のため)：ちなみに他の条件もあるのでcntは100を超える場合もある
+                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
+                    if(enemyDown == enemyCount){
                         tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
                         pv_complete.progress = 1.0f;
                     }
+                    
+                    NSLog(@"finished thread");
+                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け
+                    if(true){//test:levelUpEffect
+                        UIView *vwel = [[ViewWithEffectLevelUp alloc]initWithFrame:self.view.bounds];
+                        [self.view addSubview:vwel];
+                    }
+                    
+                    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.001f];
+                    
+                    
+                    
                 }
-
             });
-        }
+        }//for-cnt
+        
     });
     
     
@@ -2174,7 +2204,7 @@ int sensitivity;
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 //サーバーに登録するためにhttp通信
 -(void)sendRequestToServer{
-    
+    NSLog(@"start request server");
     // インジケーター表示：メニューがないので意味ない？
 //    [self showActivityIndicator];
     

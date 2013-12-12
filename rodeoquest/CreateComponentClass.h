@@ -12,6 +12,10 @@
 #import "SwitchButtonWithView.h"
 #import "CountButtonWithView.h"
 
+//typedef NS_ENUM(NSInteger, Type) {
+//    ProductTypeCoin6
+//};
+
 
 @interface CreateComponentClass : NSObject{
     
