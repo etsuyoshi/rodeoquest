@@ -185,7 +185,7 @@
                 break;
             }
             case ButtonMenuImageTypeWeapon:{
-                imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+                imgAdd.image = [UIImage imageNamed:@"weapon_b.png"];
                 break;
             }
             case ButtonMenuImageTypeStart: {
@@ -193,7 +193,7 @@
                 break;
             }
             case ButtonMenuImageTypeItem:{
-                imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+                imgAdd.image = [UIImage imageNamed:@"item_UP.png"];
                 break;
             }
             case ButtonMenuImageTypeDefense:{
@@ -201,7 +201,7 @@
                 break;
             }
             case  ButtonMenuImageTypeWpnUp:{
-                imgAdd.image = [UIImage imageNamed:@"up_red.png"];
+                imgAdd.image = [UIImage imageNamed:@"weapon_UP.png"];
                 break;
             }
             case ButtonMenuImageTypeCoin:{

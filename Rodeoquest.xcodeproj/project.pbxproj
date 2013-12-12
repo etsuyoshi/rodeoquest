@@ -29,6 +29,10 @@
 		340C3B9A18549DDD0017BBBE /* Water.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8F18549DDD0017BBBE /* Water.png */; };
 		340C3B9B18549DDD0017BBBE /* Wing.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B9018549DDD0017BBBE /* Wing.png */; };
 		340C7613180D37E500169658 /* CreateComponentClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 340C7612180D37E500169658 /* CreateComponentClass.m */; };
+		340D04F718597FEC001DD8EC /* item_UP.png in Resources */ = {isa = PBXBuildFile; fileRef = 340D04F318597FEC001DD8EC /* item_UP.png */; };
+		340D04F818597FEC001DD8EC /* weapon_b_g.png in Resources */ = {isa = PBXBuildFile; fileRef = 340D04F418597FEC001DD8EC /* weapon_b_g.png */; };
+		340D04F918597FEC001DD8EC /* weapon_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 340D04F518597FEC001DD8EC /* weapon_b.png */; };
+		340D04FA18597FEC001DD8EC /* weapon_UP.png in Resources */ = {isa = PBXBuildFile; fileRef = 340D04F618597FEC001DD8EC /* weapon_UP.png */; };
 		3411FB7217FED1DF001D1491 /* powerGauge_pt0.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6217FED1DF001D1491 /* powerGauge_pt0.png */; };
 		3411FB7317FED1DF001D1491 /* powerGauge_pt1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6317FED1DF001D1491 /* powerGauge_pt1.png */; };
 		3411FB7417FED1DF001D1491 /* powerGauge_pt2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6417FED1DF001D1491 /* powerGauge_pt2.png */; };
@@ -333,6 +337,10 @@
 		340C3B9018549DDD0017BBBE /* Wing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wing.png; sourceTree = "<group>"; };
 		340C7611180D37E500169658 /* CreateComponentClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateComponentClass.h; sourceTree = "<group>"; };
 		340C7612180D37E500169658 /* CreateComponentClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateComponentClass.m; sourceTree = "<group>"; };
+		340D04F318597FEC001DD8EC /* item_UP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = item_UP.png; sourceTree = "<group>"; };
+		340D04F418597FEC001DD8EC /* weapon_b_g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_b_g.png; sourceTree = "<group>"; };
+		340D04F518597FEC001DD8EC /* weapon_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_b.png; sourceTree = "<group>"; };
+		340D04F618597FEC001DD8EC /* weapon_UP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_UP.png; sourceTree = "<group>"; };
 		3411FB6217FED1DF001D1491 /* powerGauge_pt0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt0.png; sourceTree = "<group>"; };
 		3411FB6317FED1DF001D1491 /* powerGauge_pt1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt1.png; sourceTree = "<group>"; };
 		3411FB6417FED1DF001D1491 /* powerGauge_pt2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt2.png; sourceTree = "<group>"; };
@@ -713,6 +721,22 @@
 			name = special;
 			sourceTree = "<group>";
 		};
+		340D04F218597F9A001DD8EC /* button */ = {
+			isa = PBXGroup;
+			children = (
+				340D04F318597FEC001DD8EC /* item_UP.png */,
+				340D04F418597FEC001DD8EC /* weapon_b_g.png */,
+				340D04F518597FEC001DD8EC /* weapon_b.png */,
+				340D04F618597FEC001DD8EC /* weapon_UP.png */,
+				343D9701184F3296000239F4 /* icon_INN_b.png */,
+				34390EE41855EA3000D02C54 /* icon_coin_b.png */,
+				343D9700184F3296000239F4 /* icon_gear_b.png */,
+				3422319C1845B5C400055ADF /* btn_g_off2.png */,
+				3422319D1845B5C400055ADF /* btn_g_on2.png */,
+			);
+			name = button;
+			sourceTree = "<group>";
+		};
 		342057C517F2B34C0084E99D = {
 			isa = PBXGroup;
 			children = (
@@ -761,7 +785,6 @@
 				34F3007218218C2E0082DCBC /* Particle */,
 				34F3007118218C290082DCBC /* Object */,
 				34F3007018218C250082DCBC /* Board */,
-				342057E917F2B34C0084E99D /* MainStoryboard.storyboard */,
 				342057D817F2B34C0084E99D /* Supporting Files */,
 			);
 			name = rodeoquest;
@@ -820,17 +843,13 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				340D04F218597F9A001DD8EC /* button */,
 				34B5FB431857021A00F43531 /* yen_g.png */,
 				34B5FB441857021A00F43531 /* yen_o.png */,
-				34390EE41855EA3000D02C54 /* icon_coin_b.png */,
 				34FD2821185094B900C751FC /* up_red.png */,
 				34FD281B1850934200C751FC /* up_blue.png */,
 				34FD281C1850934200C751FC /* up_green.png */,
 				34FD281D1850934200C751FC /* up_yellow.png */,
-				343D9700184F3296000239F4 /* icon_gear_b.png */,
-				343D9701184F3296000239F4 /* icon_INN_b.png */,
-				3422319C1845B5C400055ADF /* btn_g_off2.png */,
-				3422319D1845B5C400055ADF /* btn_g_on2.png */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -921,6 +940,7 @@
 		3473AA07183F32EF002D94CC /* System */ = {
 			isa = PBXGroup;
 			children = (
+				342057E917F2B34C0084E99D /* MainStoryboard.storyboard */,
 				34FA1A2F180BC2460011E1CA /* AttrClass.h */,
 				34FA1A30180BC2460011E1CA /* AttrClass.m */,
 				348AD7EB180A9159007226EC /* DBAccessClass.h */,
@@ -1451,6 +1471,7 @@
 				34B5FB461857021A00F43531 /* yen_o.png in Resources */,
 				3460F9501824FA2700951A99 /* tool_bomb.png in Resources */,
 				34CA557F18447A9B00F9657A /* laser_b01.png in Resources */,
+				340D04F918597FEC001DD8EC /* weapon_b.png in Resources */,
 				3411FB7C17FED1DF001D1491 /* powerGauge_pt10.png in Resources */,
 				3460F9511824FA2700951A99 /* defense_barrier.png in Resources */,
 				3411FB7D17FED1DF001D1491 /* powerGauge_pt11.png in Resources */,
@@ -1487,6 +1508,7 @@
 				34A0874A180419CE005458EF /* white_128.png in Resources */,
 				3413B9A01804FF6400D450FF /* black_128.png in Resources */,
 				341D9C66182DDE7C009B904E /* kira_img11.png in Resources */,
+				340D04FA18597FEC001DD8EC /* weapon_UP.png in Resources */,
 				340A4641181E412200D9B005 /* ClothBow.png in Resources */,
 				34A22752182A39ED0050CFDB /* tool_heal.png in Resources */,
 				34A8897118542ABA005667B4 /* 11.png in Resources */,
@@ -1530,6 +1552,7 @@
 				34A8896718542ABA005667B4 /* 01.png in Resources */,
 				34A8897818542ABA005667B4 /* 18.png in Resources */,
 				344BD6181815936B00387201 /* mob_zou_01.png in Resources */,
+				340D04F718597FEC001DD8EC /* item_UP.png in Resources */,
 				344BD6191815936B00387201 /* mob_tanu_02.png in Resources */,
 				344BD61A1815936B00387201 /* mob_pen_02.png in Resources */,
 				344BD61B1815936B00387201 /* mob_pen_01.png in Resources */,
@@ -1544,6 +1567,7 @@
 				344052A1182BBC1A0049AE46 /* tool_transparancy.png in Resources */,
 				340C3B9618549DDD0017BBBE /* Grass.png in Resources */,
 				34A8898418542ABA005667B4 /* 30.png in Resources */,
+				340D04F818597FEC001DD8EC /* weapon_b_g.png in Resources */,
 				34A1ED40181CCDF20007471C /* GrassBow.png in Resources */,
 				3440529A182BBC1A0049AE46 /* tool_magnet.png in Resources */,
 				34A22753182A39ED0050CFDB /* tool_big.png in Resources */,
