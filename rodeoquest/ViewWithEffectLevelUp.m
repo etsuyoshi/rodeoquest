@@ -12,6 +12,9 @@
 
 @implementation ViewWithEffectLevelUp
 UIView *viewLevelUp;
+UIView *viewBeforeLevel;
+UIView *viewAfterLevel;
+UIImageView *viewPaper;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -20,6 +23,11 @@ UIView *viewLevelUp;
         
         [self setBackgroundColor:[UIColor clearColor]];
         
+        viewPaper = [[UIImageView alloc]
+                     initWithFrame:CGRectMake(0, 0,
+                                              self.frame.size.width, self.frame.size.height)];
+        viewPaper.image = [UIImage imageNamed:@"sozai_paper.png"];
+        [self addSubview:viewPaper];
         
         //right upper side : level-up label
         //表示期間中、ジャンプアニメーション
@@ -34,9 +42,9 @@ UIView *viewLevelUp;
         
         //center part : now-level => next-level
         //small-now-level, big-next-level
+        //フレームの中にビームとレベルの数字を表示
+//        view
         
-        
-        //changed Bulletが分かる様子を描画
         
         
         //effect looks like fire flower
