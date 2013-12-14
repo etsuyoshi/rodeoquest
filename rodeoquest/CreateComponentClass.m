@@ -403,6 +403,11 @@
     NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
     NSArray *arrImage = [dictWeapon allKeys];
     NSArray *arrBeamType = [dictWeapon allValues];
+    for(int i = 0 ;i  < [arrImage count]; i++){
+        NSLog(@"slideshow=%@, %@",
+              [arrImage objectAtIndex:i],
+              [arrBeamType objectAtIndex:i]);
+    }
     
     //uvにタップリスナーを付けて、画像以外がタップされたら閉じる(selfを渡してremovefromsuperview?)=>できない
     //xボタンを付けるuiviewを付けるしかないか。。
@@ -411,6 +416,7 @@
 
     
     for(int numImage = 0; numImage < amountOfImage; numImage++){
+        NSLog(@"%d", numImage);
         //imageViewには、タグ付けとtarget設定ができないので
         CGRect imageRect = CGRectMake(imageMarginHorizon + numImage * (imageWidth + imageMarginHorizon),
                                       -30, imageWidth, imageHeight);
@@ -431,6 +437,7 @@
         //タップリスナーを追加してタップされたらダイアログで購入確認。
         
     }
+    NSLog(@"complete loop");
     [sv addSubview:uvOnScroll];
     [superView addSubview:sv];
     return superView;

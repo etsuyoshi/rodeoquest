@@ -16,6 +16,7 @@
     
     
     NSDictionary *dictWeapon;
+    NSDictionary *dictBeam;
 //    NSString *name;
 //    int score;
 //    int gold;//max = 2147483647;

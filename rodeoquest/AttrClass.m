@@ -45,8 +45,9 @@
                   [NSNumber numberWithInt:BeamTypeSpace ], @"SpaceBow.png",
                   [NSNumber numberWithInt:BeamTypeWing ], @"WingBow.png",
                   nil];
-//    arrayBowAsKeys = [dictWeapon allKeys];
-//    arrayBeamAsValues = [dictWeapon allValues];
+    
+    
+//    dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
     
     
     
