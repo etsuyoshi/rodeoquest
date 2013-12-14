@@ -31,5 +31,5 @@
 -(Boolean)setValueToDevice:(NSString *)NAME strValue:(NSString *)VALUE;
 -(NSString *)getValueFromDevice:(NSString *)NAME;
 -(NSString *)getIdFromDevice;
--(NSDictionary *)getDict;
+-(NSDictionary *)getWeaponDict;
 @end

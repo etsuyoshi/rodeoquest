@@ -400,6 +400,9 @@
     
     
     AttrClass *_attr = [[AttrClass alloc] init];
+    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+    NSArray *arrImage = [dictWeapon allKeys];
+    NSArray *arrBeamType = [dictWeapon allValues];
     
     //uvにタップリスナーを付けて、画像以外がタップされたら閉じる(selfを渡してremovefromsuperview?)=>できない
     //xボタンを付けるuiviewを付けるしかないか。。
@@ -419,8 +422,8 @@
 //              [sbc getBeamAsValues:numImage],
 //              [sbc getBowAsKeys:numImage]);
         UIImageView *imageView = [self createImageView:imageRect
-                                                 image:[imageArray objectAtIndex:numImage]
-                                                   tag:0//[[[sbc getDict] objectForKey:[imageArray objectAtIndex:numImage]] intValue]
+                                                 image:[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
+                                                   tag:[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
                                                 target:target
                                               selector:selector2];
         [uvOnScroll addSubview:imageView];

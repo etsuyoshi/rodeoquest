@@ -220,7 +220,7 @@
     return _registeredId;
 }
 
--(NSDictionary *)getDict{
+-(NSDictionary *)getWeaponDict{
     return dictWeapon;
 }
 
