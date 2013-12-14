@@ -7,6 +7,7 @@
 //
 
 #import "AttrClass.h"
+#import "SpecialBeamClass.h"
 
 @implementation AttrClass{
     NSMutableArray *MaxExpArray;
@@ -30,6 +31,24 @@
         [MaxExpArray addObject:[NSNumber numberWithInt:((i+1)*100)]];//100, 200, 300, 400, 500, ・・・
     }
 //    NSLog(@"bbb");//
+    
+    //game内で逐次呼び出すよりもデータクラスを定義した方が良いかも。
+    dictWeapon = [NSDictionary dictionaryWithObjectsAndKeys:
+                  //value, keys
+                  [NSNumber numberWithInt:BeamTypeRock], @"RockBow.png",
+                  [NSNumber numberWithInt:BeamTypeFire], @"fireBow.png",
+                  [NSNumber numberWithInt:BeamTypeWater], @"IceBow.png",
+                  [NSNumber numberWithInt:BeamTypeBug], @"BugBow.png",
+                  [NSNumber numberWithInt:BeamTypeAnimal], @"AnimalBow.png",
+                  [NSNumber numberWithInt:BeamTypeGrass ], @"GrassBow.png",
+                  [NSNumber numberWithInt:BeamTypeCloth], @"ClothBow.png",
+                  [NSNumber numberWithInt:BeamTypeSpace ], @"SpaceBow.png",
+                  [NSNumber numberWithInt:BeamTypeWing ], @"WingBow.png",
+                  nil];
+//    arrayBowAsKeys = [dictWeapon allKeys];
+//    arrayBeamAsValues = [dictWeapon allValues];
+    
+    
     
     
     nameArray = [NSMutableArray arrayWithObjects:@"name",
@@ -199,5 +218,23 @@
         NSLog(@"既存idでログイン完了：user_id = %@", _registeredId);
     }
     return _registeredId;
+}
+
+-(NSDictionary *)getDict{
+    return dictWeapon;
+}
+
+-(void)setWeapon:(BeamType)beamType{
+    //ネットワークと連携して確認する必要がある！:当該メソッドを実行する時に確認
+    if([[self getValueFromDevice:@"beamtype"] isEqual:[NSNull null]] ||
+       [self getValueFromDevice:@"beamtype"] == nil ||
+       [[self getValueFromDevice:@"beamtype"] isEqual:@"0"]){
+        
+        [self setValueToDevice:@"beamtype" strValue:@"1"];
+        
+    }else{
+        NSLog(@"既にセットされています。 : beamType = %@",
+              [self getValueFromDevice:@"beamtype"]);
+    }
 }
 @end

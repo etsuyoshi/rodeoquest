@@ -10,4 +10,6 @@
 
 @interface ViewWithEffectLevelUp : UIView
 
+-(id)initWithFrame:(CGRect)frame beforeLevel:(int)blv afterLevel:(int)alv;
+
 @end

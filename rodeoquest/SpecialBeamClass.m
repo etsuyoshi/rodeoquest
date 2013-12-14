@@ -24,6 +24,8 @@
                              @"Water.png",
                              @"Wing.png",
                              nil];
+    
+    
     self = [super init:x_init y_init:y_init width:w height:h];
 //    level = _level;
     beamType = _type;
@@ -36,4 +38,22 @@
 -(void)doNext{
     [super doNext];//ordinarymode
 }
+
+//-(NSDictionary *)getDict{
+//    
+//    
+//    return dictWeapon;
+//}
+//-(id)getBowAsKeys:(int)no{
+//    return [arrayBowAsKeys objectAtIndex:no];
+//}
+//
+//-(id)getBeamAsValues:(int)no{
+//    return [arrayBeamAsValues objectAtIndex:no];
+//}
+
+
+//-(NSString *)getBowImageFromBeam:(NSString *)strBeamImage{
+//    return nil;
+//}
 @end

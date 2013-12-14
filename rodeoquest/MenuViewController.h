@@ -25,6 +25,19 @@ typedef NS_ENUM(NSInteger, MenuTagType) {
     MenuTagTypeStartGame
     
 };
+
+typedef NS_ENUM(NSInteger, WeaponType){
+    WeaponType0,
+    WeaponType1,
+    WeaponType2,
+    WeaponType3,
+    WeaponType4,
+    WeaponType5,
+    WeaponType6,
+    WeaponType7,
+    WeaponType8,
+    WeaponType9
+};
 @interface MenuViewController : UIViewController<UITextViewDelegate,GKLeaderboardViewControllerDelegate>{
     //admob
     GADBannerView *bannerView_;

@@ -92,7 +92,37 @@
         particle.emissionRange = 3.491;
         
         switch(_particleType){
+            case ParticleTypeFireflowers:{
                 
+                particle.contents = (id) [[UIImage imageNamed: @"snow.png"] CGImage];//菱形
+                particle.lifetime = 1.0f;
+                //色を残す
+                particle.redSpeed = 0.2;
+                particle.greenSpeed = 0.4;
+                particle.blueSpeed = 0.4;
+                particle.alphaSpeed = 0.5;
+                
+                particle.velocity = 0;
+                particle.velocityRange = 0;
+                //重力加速度
+                particle.yAcceleration = 30.00;
+                
+                //大きめ
+                particle.scale = 0.72;
+                particle.scaleRange = 0.14;
+                particle.scaleSpeed = -0.25;
+                
+                //拡散
+                particle.velocity = 50.00;
+                
+                //密度濃く
+                birthRate = 25;
+                particle.birthRate = birthRate;
+
+                
+                particle.spin = 0.5;
+                break;
+            }
             case ParticleTypeOccurred:{
                 
                 particle.contents = (id) [[UIImage imageNamed: @"kira2.png"] CGImage];//円形
@@ -114,6 +144,7 @@
                 //密度薄く
                 birthRate = 25;
                 particle.birthRate = birthRate;
+                ;
 
                 break;
             }
@@ -245,6 +276,10 @@
 //    }
     particleType = _type;
     switch(_type){
+        case ParticleTypeFireflowers:{
+            
+            break;
+        }
         case ParticleTypeOccurred:{
             [particleEmitter setValue:(id) [[UIImage imageNamed: @"kira2.png"] CGImage]
                            forKeyPath:@"emitterCells.snow.contents"];

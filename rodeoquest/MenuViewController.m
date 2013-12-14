@@ -18,6 +18,7 @@
 #import "ItemListViewController.h"
 #import "DefenseUpListViewController.h"
 #import "ItemUpListViewController.h"
+#import "SpecialBeamClass.h"
 #import "WeaponUpListViewController.h"
 #import "LifeUpListViewController.h"
 #import "CreateComponentClass.h"
@@ -625,7 +626,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                                             imageFile:imageArray
                                                                target:self
                                                             selector1:@"closeView:"
-                                                            selector2:@"imageTapped:"];
+                                                            selector2:@"weaponSelected:"];
+//                                                            selector2:@"imageTapped:"];
             superView.tag = 0;
             [self.view addSubview:superView];
             
@@ -1097,7 +1099,55 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 
-
+-(void)weaponSelected:(id)sender{
+    UIView *tappedView = [sender view];
+    NSLog(@"%@", tappedView);
+    switch (((BeamType)tappedView.tag)) {
+        case BeamTypeAnimal:{
+            NSLog(@"animal selected");
+            break;
+        }
+        case BeamTypeBug:{
+            
+            break;
+        }
+        case BeamTypeCloth:{
+            
+            break;
+        }
+        case BeamTypeFire:{
+            
+            break;
+        }
+        case BeamTypeGrass:{
+            
+            break;
+        }
+        case BeamTypeIce:{
+            
+            break;
+        }
+        case BeamTypeRock:{
+            NSLog(@"rock selected");
+            break;
+        }
+        case BeamTypeSpace:{
+            
+            break;
+        }
+        case BeamTypeWater:{
+            
+            break;
+        }
+        case BeamTypeWing:{
+            NSLog(@"wing selected");
+            break;
+        }
+        default:
+            break;
+    }
+    
+}
 
 -(void)imageTapped:(id)sender{
 
@@ -1180,7 +1230,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return;
 }
 
-//武器購入時の呼出しメソッド(内部処理＝金額計算＋nsuserDefaults上書き)
+/*
+ *武器購入時の呼出しメソッド(内部処理＝金額計算＋nsuserDefaults上書き)
+ *まだ購入していなければ購入メニュー、購入していれば選択メニュー
+ */
 -(void)buyWeapon:(id)sender{
     //武器ID
     int id_weapon = ((UIImageView *)sender).tag;
@@ -1199,25 +1252,30 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                               nil];
     
     NSLog(@"weapon id = %d & cost is %d", id_weapon, [[arrCostWeapon objectAtIndex:id_weapon] intValue]);
+    NSString *strWeapon = [NSString stringWithFormat:@"weaponID%d", id_weapon];
     
-    //金額の取得
-    int gold = [[attr getValueFromDevice:@"gold"] intValue];
-    if(gold < [[arrCostWeapon objectAtIndex:id_weapon] intValue]){
-        NSLog(@"need more Money!");//sender(UIImageView)を揺らす等のエフェクト？
-        [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateNormal];
-        [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateHighlighted];
-        [((UIButton *)sender) setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [self oscillate:(UIButton *)sender count:10];
-    }else{
-
-        gold -= [[arrCostWeapon objectAtIndex:id_weapon] intValue];
-        NSLog(@"set new gold = %d", gold);
-        [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", gold]];
-        
-        tvGoldAmount_global.text = [NSString stringWithFormat:@"%d", gold];
+    if([[attr getValueFromDevice:strWeapon] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:strWeapon] == nil ||
+       [[attr getValueFromDevice:strWeapon] isEqual:@"0"]){//未購入の場合
+        //金額の取得
+        int gold = [[attr getValueFromDevice:@"gold"] intValue];
+        if(gold < [[arrCostWeapon objectAtIndex:id_weapon] intValue]){
+            NSLog(@"need more Money!");//sender(UIImageView)を揺らす等のエフェクト？
+            [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateNormal];
+            [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateHighlighted];
+            [((UIButton *)sender) setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+            [self oscillate:(UIButton *)sender count:10];
+        }else{
+            
+            gold -= [[arrCostWeapon objectAtIndex:id_weapon] intValue];
+            NSLog(@"set new gold = %d", gold);
+            [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", gold]];
+            
+            tvGoldAmount_global.text = [NSString stringWithFormat:@"%d", gold];
+        }
+    }else{//購入済の場合
+        //選択画面
     }
-    
-    
 }
 
 //ボタンの文字を「金額不足」の旨表示して、指定された回数だけ振動。

@@ -21,9 +21,12 @@
 //#define BUTTON_TEST
 //#define BACKGROUND_TEST
 //#define BTNPRESS_TEST
-#define COOLBUTTON_TEST
+//#define COOLBUTTON_TEST
 //#define SPECIALWEAPON_TEST
+#define PARTICLE_TEST
 
+#import "ViewFireWorks.h"
+#import "KiraParticleView.h"
 #import "SpecialBeamClass.h"
 #import "Common.h"
 #import "CoolButton.h"
@@ -49,6 +52,12 @@ UIImageView *uiiv;
 NSString *imageName;
 NSTimer *tm;
 NSMutableArray *uiArray;
+
+#ifdef PARTICLE_TEST
+int tempInt1;
+int tempInt2;
+NSMutableArray *array;
+#endif
 
 #ifdef TRACK_TEST
     NSMutableArray *array_uiv;
@@ -86,6 +95,9 @@ UIView *circleView;
 CALayer *mylayer;
 UIView *viewLayerTest;
 ExplodeParticleView *explodeParticle;
+KiraParticleView *kiraParticle;
+KiraParticleView *kiraMovingParticle;
+
 
 BackGroundClass2 *BackGround;
 
@@ -811,6 +823,58 @@ int tempCount = 0;
 #elif defined SPECIALWEAPON_TEST
     BeamClass *a = [[SpecialBeamClass alloc] init:100 y_init:100 width:50 height:50 type:0];
     [self.view addSubview:[a getImageView]];
+    
+#elif defined PARTICLE_TEST
+    if(counter == 0){
+//        array = [[NSMutableArray alloc] init];
+        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 400, 20, 20)];
+        [self.view addSubview:v];
+    }
+    if(false){//counter % 20 != 0){//0, 1, ..., 19
+        tempInt1 = counter % 320;
+        
+        kiraParticle = [[KiraParticleView alloc] initWithFrame:CGRectMake(tempInt1, 240,
+                                                                          30, 30)
+                                                  particleType:ParticleTypeFireflowers];
+        [array insertObject:kiraParticle atIndex:0];
+        [self.view addSubview:[array objectAtIndex:0]];
+        
+        
+        
+        NSLog(@"counter=%d, %d", counter, [array count]);
+//        [UIView animateWithDuration:2.0f
+//                         animations:^{
+//                             kiraParticle.alpha = 0.0f;
+//                         }
+//                         completion:^(BOOL finished){
+//                             tempInt2 = 0;
+//                             [[array lastObject] removeFromSuperview];
+//                         }];
+        
+    }else if(false){
+        NSLog(@"remove object , num of array = %d", [array count]);
+        for(;[array count]>0;){
+            [[array lastObject] removeFromSuperview];
+            [array removeLastObject];
+        }
+        
+        kiraMovingParticle = [[KiraParticleView alloc] initWithFrame:CGRectMake((counter+80) % 320,
+                                                                                480,
+                                                                                30,30)
+                                                        particleType:ParticleTypeMoving];
+        [self.view addSubview:kiraMovingParticle];
+        [UIView animateWithDuration:1.0f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             kiraMovingParticle.center = CGPointMake((counter+80) % 320, 240);
+                             kiraMovingParticle.alpha = 0.2f;
+                         }
+                         completion:^(BOOL finished){
+                             [kiraMovingParticle removeFromSuperview];
+                         }];
+//        [array removeAllObjects];
+    }
     
 #else
     NSLog(@"aaa");

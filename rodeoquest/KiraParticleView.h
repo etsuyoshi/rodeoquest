@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 typedef NS_ENUM(NSInteger, ParticleType) {
+    ParticleTypeFireflowers,
     ParticleTypeOccurred,
     ParticleTypeMoving,
     ParticleTypeKilled
+    
 };
 
 @interface KiraParticleView : UIView{

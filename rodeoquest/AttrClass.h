@@ -13,6 +13,9 @@
     NSDictionary *attrDict;
     
     NSMutableArray *nameArray;
+    
+    
+    NSDictionary *dictWeapon;
 //    NSString *name;
 //    int score;
 //    int gold;//max = 2147483647;
@@ -28,4 +31,5 @@
 -(Boolean)setValueToDevice:(NSString *)NAME strValue:(NSString *)VALUE;
 -(NSString *)getValueFromDevice:(NSString *)NAME;
 -(NSString *)getIdFromDevice;
+-(NSDictionary *)getDict;
 @end

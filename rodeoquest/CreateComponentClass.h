@@ -18,7 +18,9 @@
 
 
 @interface CreateComponentClass : NSObject{
-    
+//    NSDictionary *dictWeapon;
+//    NSArray *arrayBowAsKeys;
+//    NSArray *arrayBeamAsValues;
 }
 
 +(UITextView *)createTextView:(CGRect)rect

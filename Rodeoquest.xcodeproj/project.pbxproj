@@ -36,7 +36,6 @@
 		340D04FD1859815D001DD8EC /* item_UP2.png in Resources */ = {isa = PBXBuildFile; fileRef = 340D04FB1859815D001DD8EC /* item_UP2.png */; };
 		340D04FE1859815D001DD8EC /* weapon_UP2.png in Resources */ = {isa = PBXBuildFile; fileRef = 340D04FC1859815D001DD8EC /* weapon_UP2.png */; };
 		340D050118599E52001DD8EC /* ViewWithEffectLevelUp.m in Sources */ = {isa = PBXBuildFile; fileRef = 340D050018599E52001DD8EC /* ViewWithEffectLevelUp.m */; };
-		340D05041859DBB4001DD8EC /* sozai_paper.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 340D05021859DBB4001DD8EC /* sozai_paper.jpg */; };
 		3411FB7217FED1DF001D1491 /* powerGauge_pt0.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6217FED1DF001D1491 /* powerGauge_pt0.png */; };
 		3411FB7317FED1DF001D1491 /* powerGauge_pt1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6317FED1DF001D1491 /* powerGauge_pt1.png */; };
 		3411FB7417FED1DF001D1491 /* powerGauge_pt2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB6417FED1DF001D1491 /* powerGauge_pt2.png */; };
@@ -129,6 +128,8 @@
 		3460F9521824FA2700951A99 /* defense_shield.png in Resources */ = {isa = PBXBuildFile; fileRef = 3460F9471824FA2700951A99 /* defense_shield.png */; };
 		3460F9541824FA2700951A99 /* weapon_bomb.png in Resources */ = {isa = PBXBuildFile; fileRef = 3460F9491824FA2700951A99 /* weapon_bomb.png */; };
 		3460F9581824FA2700951A99 /* weapon_laser.png in Resources */ = {isa = PBXBuildFile; fileRef = 3460F94D1824FA2700951A99 /* weapon_laser.png */; };
+		34616E231859DF8700DE8226 /* sozai_maki.png in Resources */ = {isa = PBXBuildFile; fileRef = 34616E211859DF8700DE8226 /* sozai_maki.png */; };
+		34616E241859DF8700DE8226 /* sozai_paper.png in Resources */ = {isa = PBXBuildFile; fileRef = 34616E221859DF8700DE8226 /* sozai_paper.png */; };
 		3467B71D17FD53AF004EEE94 /* item.png in Resources */ = {isa = PBXBuildFile; fileRef = 3467B71C17FD53AF004EEE94 /* item.png */; };
 		3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3467B72117FD5980004EEE94 /* PowerGaugeClass.m */; };
 		3476D05E180DE6B800839BD8 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3476D05C180DE6B800839BD8 /* QBFlatButton.m */; };
@@ -263,6 +264,7 @@
 		34E216C6181BF62F00B939E6 /* bgm_game_687.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C5181BF62F00B939E6 /* bgm_game_687.mp3 */; };
 		34E216C8181BF64F00B939E6 /* mahotoshi_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C7181BF64F00B939E6 /* mahotoshi_hmix.mp3 */; };
 		34E216CA181BF74300B939E6 /* kinpaku_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C9181BF74300B939E6 /* kinpaku_hmix.mp3 */; };
+		34E976A2185AC18700B666B6 /* ViewFireWorks.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E976A1185AC18700B666B6 /* ViewFireWorks.m */; };
 		34EB7ACB182F28220079B0EB /* powerGauge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 34EB7ACA182F28220079B0EB /* powerGauge2.png */; };
 		34EB7ACE182F2E850079B0EB /* Effect.m in Sources */ = {isa = PBXBuildFile; fileRef = 34EB7ACD182F2E850079B0EB /* Effect.m */; };
 		34F30067182161A30082DCBC /* kira.png in Resources */ = {isa = PBXBuildFile; fileRef = 34F30065182161A30082DCBC /* kira.png */; };
@@ -328,7 +330,6 @@
 		340D04FC1859815D001DD8EC /* weapon_UP2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_UP2.png; sourceTree = "<group>"; };
 		340D04FF18599E52001DD8EC /* ViewWithEffectLevelUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewWithEffectLevelUp.h; sourceTree = "<group>"; };
 		340D050018599E52001DD8EC /* ViewWithEffectLevelUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewWithEffectLevelUp.m; sourceTree = "<group>"; };
-		340D05021859DBB4001DD8EC /* sozai_paper.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sozai_paper.jpg; sourceTree = "<group>"; };
 		3411FB6217FED1DF001D1491 /* powerGauge_pt0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt0.png; sourceTree = "<group>"; };
 		3411FB6317FED1DF001D1491 /* powerGauge_pt1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt1.png; sourceTree = "<group>"; };
 		3411FB6417FED1DF001D1491 /* powerGauge_pt2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge_pt2.png; sourceTree = "<group>"; };
@@ -453,6 +454,8 @@
 		3460F9471824FA2700951A99 /* defense_shield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defense_shield.png; sourceTree = "<group>"; };
 		3460F9491824FA2700951A99 /* weapon_bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_bomb.png; sourceTree = "<group>"; };
 		3460F94D1824FA2700951A99 /* weapon_laser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_laser.png; sourceTree = "<group>"; };
+		34616E211859DF8700DE8226 /* sozai_maki.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sozai_maki.png; sourceTree = "<group>"; };
+		34616E221859DF8700DE8226 /* sozai_paper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sozai_paper.png; sourceTree = "<group>"; };
 		3467B71C17FD53AF004EEE94 /* item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = item.png; sourceTree = "<group>"; };
 		3467B72017FD5980004EEE94 /* PowerGaugeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerGaugeClass.h; sourceTree = "<group>"; };
 		3467B72117FD5980004EEE94 /* PowerGaugeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerGaugeClass.m; sourceTree = "<group>"; };
@@ -604,6 +607,8 @@
 		34E216C5181BF62F00B939E6 /* bgm_game_687.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_game_687.mp3; sourceTree = "<group>"; };
 		34E216C7181BF64F00B939E6 /* mahotoshi_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mahotoshi_hmix.mp3; sourceTree = "<group>"; };
 		34E216C9181BF74300B939E6 /* kinpaku_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kinpaku_hmix.mp3; sourceTree = "<group>"; };
+		34E976A0185AC18700B666B6 /* ViewFireWorks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFireWorks.h; sourceTree = "<group>"; };
+		34E976A1185AC18700B666B6 /* ViewFireWorks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFireWorks.m; sourceTree = "<group>"; };
 		34EB7ACA182F28220079B0EB /* powerGauge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge2.png; sourceTree = "<group>"; };
 		34EB7ACC182F2E850079B0EB /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; };
 		34EB7ACD182F2E850079B0EB /* Effect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Effect.m; sourceTree = "<group>"; };
@@ -814,7 +819,8 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				340D05021859DBB4001DD8EC /* sozai_paper.jpg */,
+				34616E211859DF8700DE8226 /* sozai_maki.png */,
+				34616E221859DF8700DE8226 /* sozai_paper.png */,
 				340D04F218597F9A001DD8EC /* button */,
 				34B5FB431857021A00F43531 /* yen_g.png */,
 				34B5FB441857021A00F43531 /* yen_o.png */,
@@ -1203,6 +1209,8 @@
 		34F3007218218C2E0082DCBC /* Particle */ = {
 			isa = PBXGroup;
 			children = (
+				34E976A0185AC18700B666B6 /* ViewFireWorks.h */,
+				34E976A1185AC18700B666B6 /* ViewFireWorks.m */,
 				342ECBC317FC5AF900123886 /* DamageParticleView.h */,
 				342ECBC417FC5AF900123886 /* DamageParticleView.m */,
 				34043A5817FA0FE50000E338 /* ExplodeParticleView.h */,
@@ -1386,7 +1394,6 @@
 				34D55FCB183C9DCF00788533 /* bomb016.png in Resources */,
 				34D55FC9183C939600788533 /* bomb012.png in Resources */,
 				34A8898318542ABA005667B4 /* 29.png in Resources */,
-				340D05041859DBB4001DD8EC /* sozai_paper.jpg in Resources */,
 				3488ACCC183D272F00833F93 /* img11.png in Resources */,
 				3419C41417FD27E200980E71 /* explode4.png in Resources */,
 				34A8896D18542ABA005667B4 /* 07.png in Resources */,
@@ -1505,6 +1512,7 @@
 				34E216CA181BF74300B939E6 /* kinpaku_hmix.mp3 in Resources */,
 				344BD6171815936B00387201 /* mob_zou_02.png in Resources */,
 				34A1ED41181CCDF20007471C /* IceBow.png in Resources */,
+				34616E241859DF8700DE8226 /* sozai_paper.png in Resources */,
 				34A8896818542ABA005667B4 /* 02.png in Resources */,
 				34A8896718542ABA005667B4 /* 01.png in Resources */,
 				34A8897818542ABA005667B4 /* 18.png in Resources */,
@@ -1512,6 +1520,7 @@
 				340D04F718597FEC001DD8EC /* item_UP.png in Resources */,
 				344BD6191815936B00387201 /* mob_tanu_02.png in Resources */,
 				344BD61A1815936B00387201 /* mob_pen_02.png in Resources */,
+				34616E231859DF8700DE8226 /* sozai_maki.png in Resources */,
 				344BD61B1815936B00387201 /* mob_pen_01.png in Resources */,
 				344BD61C1815936B00387201 /* mob_musa_02.png in Resources */,
 				34A8897918542ABA005667B4 /* 19.png in Resources */,
@@ -1581,6 +1590,7 @@
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
 				34EB7ACE182F2E850079B0EB /* Effect.m in Sources */,
 				343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */,
+				34E976A2185AC18700B666B6 /* ViewFireWorks.m in Sources */,
 				3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */,
 				34043A5A17FA0FE50000E338 /* ExplodeParticleView.m in Sources */,
 				34FA999E17FBCEF000317D83 /* ItemClass.m in Sources */,
