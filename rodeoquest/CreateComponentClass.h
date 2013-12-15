@@ -118,4 +118,14 @@
                        target:(id)_target
                      selector:(NSString *)_selector
                           tag:(int)_tag;
+
++(UIView *)createAlertView:(CGRect)_rectFrame
+                dialogRect:(CGRect)_rectDialog
+                     title:(NSString *)_title
+                  subtitle:(NSString *)_subtitle
+                     onYes:(void (^)(void))onYes
+                      onNo:(void (^)(void))onNo
+                    target:(id)_target
+                  selector:(NSString *)_selector
+                       tag:(int)_tag;
 @end

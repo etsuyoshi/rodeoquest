@@ -16,15 +16,15 @@
     return self;
 }
 
--(id)init:(int)_type x_init:(int)_x_init y_init:(int)_y_init ketasu:(int)_ketasu type:(NSString *)type{
-    //textViewモードの場合はGoldBoardの高さを少し上げる
-    if([type isEqualToString:@"gold"]){
-        self = [super init:_type x_init:_x_init y_init:_y_init - 20 ketasu:_ketasu];
-    }else{
-        self = [super init:_type x_init:_x_init y_init:_y_init ketasu:_ketasu];
-    }
-    return self;
-}
+//-(id)init:(int)_type x_init:(int)_x_init y_init:(int)_y_init ketasu:(int)_ketasu type:(NSString *)type{
+//    //textViewモードの場合はGoldBoardの高さを少し上げる
+//    if([type isEqualToString:@"gold"]){
+//        self = [super init:_type x_init:_x_init y_init:_y_init - 20 ketasu:_ketasu];
+//    }else{
+//        self = [super init:_type x_init:_x_init y_init:_y_init ketasu:_ketasu];
+//    }
+//    return self;
+//}
 
 
 @end

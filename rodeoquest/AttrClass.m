@@ -35,23 +35,32 @@
     //game内で逐次呼び出すよりもデータクラスを定義した方が良いかも。
     dictWeapon = [NSDictionary dictionaryWithObjectsAndKeys:
                   //value, keys
-                  [NSNumber numberWithInt:BeamTypeRock], @"RockBow.png",
-                  [NSNumber numberWithInt:BeamTypeFire], @"fireBow.png",
-                  [NSNumber numberWithInt:BeamTypeWater], @"IceBow.png",
-                  [NSNumber numberWithInt:BeamTypeBug], @"BugBow.png",
-                  [NSNumber numberWithInt:BeamTypeAnimal], @"AnimalBow.png",
-                  [NSNumber numberWithInt:BeamTypeGrass ], @"GrassBow.png",
-                  [NSNumber numberWithInt:BeamTypeCloth], @"ClothBow.png",
-                  [NSNumber numberWithInt:BeamTypeSpace ], @"SpaceBow.png",
-                  [NSNumber numberWithInt:BeamTypeWing ], @"WingBow.png",
+                  @"RockBow.png",[NSNumber numberWithInt:BowTypeRock],
+                  @"FireBow.png",[NSNumber numberWithInt:BowTypeFire],
+                  @"IceBow.png",[NSNumber numberWithInt:BowTypeWater],
+                  @"WaterBow.png",[NSNumber numberWithInt:BowTypeIce],
+                  @"BugBow.png",[NSNumber numberWithInt:BowTypeBug],
+                  @"AnimalBow.png",[NSNumber numberWithInt:BowTypeAnimal],
+                  @"GrassBow.png",[NSNumber numberWithInt:BowTypeGrass ],
+                  @"ClothBow.png",[NSNumber numberWithInt:BowTypeCloth],
+                  @"SpaceBow.png",[NSNumber numberWithInt:BowTypeSpace ],
+                  @"WingBow.png",[NSNumber numberWithInt:BowTypeWing ],
                   nil];
     
+    dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
+                @"Rock.png",[NSNumber numberWithInt:BeamTypeRock],
+                @"Fire.png",[NSNumber numberWithInt:BeamTypeFire],
+                @"Ice.png",[NSNumber numberWithInt:BeamTypeWater],
+                @"Water.png",[NSNumber numberWithInt:BeamTypeIce],
+                @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],
+                @"Animal.png",[NSNumber numberWithInt:BeamTypeAnimal],
+                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass ],
+                @"Cloth.png",[NSNumber numberWithInt:BeamTypeCloth],
+                @"Space.png",[NSNumber numberWithInt:BeamTypeSpace ],
+                @"Wing.png",[NSNumber numberWithInt:BeamTypeWing ],
+                nil];
     
-//    dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
-    
-    
-    
-    
+    //device-memory-information
     nameArray = [NSMutableArray arrayWithObjects:@"name",
                                  @"score",
                                  @"gold",
@@ -223,6 +232,9 @@
 
 -(NSDictionary *)getWeaponDict{
     return dictWeapon;
+}
+-(NSDictionary *)getBeamDict{
+    return dictBeam;
 }
 
 -(void)setWeapon:(BeamType)beamType{

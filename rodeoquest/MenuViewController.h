@@ -10,7 +10,7 @@
 //#import <AVFoundation/AVFoundation.h>
 #import "GADBannerView.h"
 #import <GameKit/GameKit.h>
-typedef NS_ENUM(NSInteger, MenuTagType) {
+typedef NS_ENUM(NSInteger, MenuTagType) {//未使用？
     MenuTagTypeWeapon0,
     MenuTagTypeWeapon1,
     MenuTagTypeWeapon2,
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, MenuTagType) {
     MenuTagTypeStartGame
     
 };
-
+//未使用？
 typedef NS_ENUM(NSInteger, WeaponType){
     WeaponType0,
     WeaponType1,

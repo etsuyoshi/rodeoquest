@@ -7,19 +7,24 @@
 //
 
 #import "BeamClass.h"
+#import "AttrClass.h"
+
 
 typedef NS_ENUM(NSInteger, BeamType) {
-    BeamTypeAnimal,
-    BeamTypeBug,
-    BeamTypeCloth,
-    BeamTypeFire,
-    BeamTypeGrass,
-    BeamTypeIce,
     BeamTypeRock,
-    BeamTypeSpace,
+    BeamTypeFire,
+    BeamTypeIce,
     BeamTypeWater,
+    BeamTypeBug,
+    BeamTypeAnimal,
+    BeamTypeCloth,
+    BeamTypeGrass,
+    BeamTypeSpace,
     BeamTypeWing
 };
+
+
+
 
 
 @interface SpecialBeamClass : BeamClass{
@@ -28,7 +33,7 @@ typedef NS_ENUM(NSInteger, BeamType) {
 //    NSArray *arrayBeamAsValues;
 }
 @property(nonatomic) BeamType beamType;
--(id) init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h type:(int)_type;
+-(id) init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h type:(BeamType)_type;
 //-(NSDictionary *)getDict;
 //-(id)getBowAsKeys:(int)no;
 //-(id)getBeamAsValues:(int)no;

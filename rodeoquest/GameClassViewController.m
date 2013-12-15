@@ -458,15 +458,48 @@ int sensitivity;
     [viewScoreField setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
     [self.view addSubview:viewScoreField];
     
-    //スコアボードの初期化
-    ScoreBoard = [[ScoreBoardClass alloc]init:0 x_init:0 y_init:0 ketasu:10];
     
+    
+    //スコアボードの初期化
+    ScoreBoard = [[ScoreBoardClass alloc]init:0 x_init:0 y_init:0 ketasu:7];
+    [ScoreBoard getTextView].center = CGPointMake(viewScoreField.frame.size.width/2,
+                                                  [ScoreBoard getTextView].frame.size.height/2);
+    [ScoreBoard getTextView].textAlignment = NSTextAlignmentRight;
     //スコアボードの表示(初期状態ではゼロ)
     [self displayScore:ScoreBoard];
     
+    //label
+    UITextView *tvScoreLabel = [CreateComponentClass
+                                createTextView:CGRectMake(0, 0,80,
+                                                          [ScoreBoard getTextView].frame.size.height)
+                                text:@"Score"
+                                font:@"AmericanTypewriter-Bold"
+                                size:15
+                                textColor:[UIColor whiteColor]
+                                backColor:[UIColor clearColor]
+                                isEditable:NO];
+    [viewScoreField addSubview:tvScoreLabel];
+    
+    
+    
     //ゴールドの初期化と表示
-    GoldBoard = [[GoldBoardClass alloc]init:0 x_init:0 y_init:50 ketasu:10 type:@"gold"];
+//    GoldBoard = [[GoldBoardClass alloc]init:0 x_init:0 y_init:50 ketasu:10 type:@"gold"];
+    GoldBoard = [[GoldBoardClass alloc] init:0 x_init:0 y_init:0 ketasu:7];
+    [GoldBoard getTextView].center = CGPointMake(viewScoreField.frame.size.width/2,
+                                                 viewScoreField.frame.size.height - [GoldBoard getTextView].frame.size.height/2);
+//    [[GoldBoard getTextView] setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];//test
+    [GoldBoard getTextView].textAlignment = NSTextAlignmentRight;
     [self displayScore:GoldBoard];
+    
+    //coin-image
+    UIImageView *ivCoinLabel = [CreateComponentClass
+                                createImageView:CGRectMake(0, 0, 20, 20)
+                                image:@"coin_yellow.png"];
+    ivCoinLabel.center = CGPointMake(viewScoreField.frame.size.width/3 - ivCoinLabel.frame.size.width/2,
+                                     [GoldBoard getTextView].frame.origin.y + [GoldBoard getTextView].frame.size.height/2);
+    [viewScoreField addSubview:ivCoinLabel];
+    
+    
     
     
     size_machine = 100;
@@ -659,7 +692,8 @@ int sensitivity;
 //            NSLog(@"mymachine : set emitting no");
             
             isGameMode = false;
-            [self exitProcess];///////////////////////
+            [self exitProcess];
+            [self showActivityIndicator];
             return;
         }
     }
@@ -1301,9 +1335,8 @@ int sensitivity;
                     //ビーム左端が敵右端より左側
                     //ビーム上端が敵上端より下側
                     //ビーム下端が敵下端より上側
-                    if(
-                       _xBeam + _sBeam * 0.5 >= _xEnemy - _sEnemy * 0.5 &&
-                       _xBeam - _sBeam * 0.5 <= _xEnemy + _sEnemy * 0.5 &&
+                    if(_xBeam + _sBeam * 0 >= _xEnemy - _sEnemy * 0.3 &&
+                       _xBeam - _sBeam * 0 <= _xEnemy + _sEnemy * 0.3 &&
                        _yBeam - _sBeam * 0.5 >= _yEnemy - _sEnemy * 0.5 &&
                        _yBeam + _sBeam * 0.5 <= _yEnemy + _sEnemy * 0.5 ){
                         
@@ -1735,8 +1768,8 @@ int sensitivity;
     }
 }
 
--(void)exitProcess{
-    
+-(void)exitProcess{//自機が撃破されたら自動的に呼び出し
+//    [self showActivityIndicator];//ボタン押下可能になってしまう
     //タイマー終了(死んだ時に周囲の敵やイフェクトが動いているようにするかどうか)
     [tm invalidate];
     
@@ -2048,7 +2081,7 @@ int sensitivity;
                     }
                     
                     NSLog(@"finished thread");
-                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け
+//                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け
                     if(true){//test:levelUpEffect
                         UIView *vwel = [[ViewWithEffectLevelUp alloc]initWithFrame:self.view.bounds];
                         [self.view addSubview:vwel];
@@ -2073,13 +2106,9 @@ int sensitivity;
 -(void)pushExit{
     //終了ボタン押下時対応=>サーバー接続してゲーム回数を更新
     
-//    // インジケーター表示
-//    [self showActivityIndicator];
-//    //サーバー通信
-//    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1];
-    
-    
+//    if(flag){//ボタンがレベルアップ表示が完了するまで反応しないようにする
     [self exit];
+//    }
 }
 -(void)exit{
     //    [super viewWillDisappear:NO];//storyboard遷移からの場合
@@ -2374,7 +2403,7 @@ int sensitivity;
                                                             text:@"now updating..."
                                                             font:@"AmericanTypewriter-Bold"
                                                             size:30
-                                                       textColor:[UIColor whiteColor]
+                                                       textColor:[UIColor lightGrayColor]
                                                        backColor:[UIColor clearColor]
                                                       isEditable:NO];
     tvWaiting.center = CGPointMake(_loadingView.frame.size.width/2,

@@ -48,7 +48,7 @@
     
     
     //テキストビュー表記用
-    CGRect rect_score = CGRectMake(xStart, yStart, 140, 50);
+    CGRect rect_score = CGRectMake(xStart, yStart, 140, 35);
     tv_score = [CreateComponentClass createTextView:rect_score
                                                text:[self get0FillString]
                                                font:@"AmericanTypewriter-Bold"
@@ -81,7 +81,7 @@
 
     if(score >= 0){
         //以下はketasu=10桁の場合=>桁数によって変える必要がある。
-        return [NSString stringWithFormat:@"%010d", score];
+        return [NSString stringWithFormat:@"%07d", score];
     }
     return nil;
 }

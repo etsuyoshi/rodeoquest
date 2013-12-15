@@ -7,6 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+//to sort in order
+typedef NS_ENUM(NSInteger, BowType) {
+    BowTypeRock,
+    BowTypeFire,
+    BowTypeIce,
+    BowTypeWater,
+    BowTypeBug,
+    BowTypeAnimal,
+    BowTypeGrass,
+    BowTypeCloth,
+    BowTypeSpace,
+    BowTypeWing
+};
+
+
 
 @interface AttrClass : NSObject{
     NSString *myId;
@@ -33,4 +48,5 @@
 -(NSString *)getValueFromDevice:(NSString *)NAME;
 -(NSString *)getIdFromDevice;
 -(NSDictionary *)getWeaponDict;
+-(NSDictionary *)getBeamDict;
 @end

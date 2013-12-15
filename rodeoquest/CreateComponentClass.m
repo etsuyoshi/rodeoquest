@@ -401,22 +401,29 @@
     
     AttrClass *_attr = [[AttrClass alloc] init];
     NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
-    NSArray *arrImage = [dictWeapon allKeys];
-    NSArray *arrBeamType = [dictWeapon allValues];
-    for(int i = 0 ;i  < [arrImage count]; i++){
-        NSLog(@"slideshow=%@, %@",
-              [arrImage objectAtIndex:i],
-              [arrBeamType objectAtIndex:i]);
-    }
+//    NSArray *arrImage = [dictWeapon allKeys];
+//    NSArray *arrBeamType = [dictWeapon allValues];
+//    
+//    for(int i = 0 ;i < [arrImage count] ;i++){
+//        NSLog(@"arrimage=%@", [arrImage objectAtIndex:i]);
+//    }
+    
+    //sort:caz,gettin like uppon description disturbs order
+//    arrImage = [arrImage sortedArrayUsingComparator:^(id a, id b) {
+//        return [a compare:b options:NSNumericSearch];
+//    }];
+//    arrBeamType = [arrBeamType sortedArrayUsingComparator:^(id a, id b){
+//        return [a compare:b options:NSNumericSearch];
+//    }];
     
     //uvにタップリスナーを付けて、画像以外がタップされたら閉じる(selfを渡してremovefromsuperview?)=>できない
     //xボタンを付けるuiviewを付けるしかないか。。
     
     //http://qiita.com/tatsuof0126/items/46a41a897df2cd2684d4
 
-    
+    NSLog(@"start loop");
     for(int numImage = 0; numImage < amountOfImage; numImage++){
-        NSLog(@"%d", numImage);
+//        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
         //imageViewには、タグ付けとtarget設定ができないので
         CGRect imageRect = CGRectMake(imageMarginHorizon + numImage * (imageWidth + imageMarginHorizon),
                                       -30, imageWidth, imageHeight);
@@ -428,8 +435,8 @@
 //              [sbc getBeamAsValues:numImage],
 //              [sbc getBowAsKeys:numImage]);
         UIImageView *imageView = [self createImageView:imageRect
-                                                 image:[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
-                                                   tag:[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
+                                                 image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
+                                                   tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
                                                 target:target
                                               selector:selector2];
         [uvOnScroll addSubview:imageView];
@@ -437,42 +444,13 @@
         //タップリスナーを追加してタップされたらダイアログで購入確認。
         
     }
-    NSLog(@"complete loop");
+//    NSLog(@"complete loop");
     [sv addSubview:uvOnScroll];
     [superView addSubview:sv];
     return superView;
 
 }
--(BeamType)getImageType:(NSString *)strImageName array:(NSArray *)array{
-    
-//    @"RockBow.png",
-//    @"FireBow.png",
-//    @"WaterBow.png",
-//    @"IceBow.png",
-//    @"BugBow.png",
-//    @"AnimalBow.png",
-//    @"GrassBow.png",
-//    @"ClothBow.png",
-//    @"SpaceBow.png",
-//    @"WingBow.png",
-    
-    
-    for(int i = 0; i < [array count];i++){
-        if([strImageName isEqualToString:@"RocketBow.png"]){
-            
-        }
-    }
-//    switch (strImageName) {
-//        case [NSString stringWithFormat:@"str"]:{
-//
-//            break;
-//        }
-//
-//        default:
-//            break;
-//    }
-    return 0;
-}
+
 +(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
                        imageType:(ButtonMenuImageType)_imageType
                             rect:(CGRect)rect
@@ -593,6 +571,88 @@
     return coolButton;
 }
 
-
++(UIView *)createAlertView:(CGRect)_rectFrame
+                dialogRect:(CGRect)_rectDialog
+                     title:(NSString *)_title
+                  subtitle:(NSString *)_subtitle
+                     onYes:(void (^)(void))onYes
+                      onNo:(void (^)(void))onNo
+                    target:(id)_target
+                  selector:(NSString *)_selector
+                       tag:(int)_tag{
+    //OKボタンとキャンセルボタン：okボタンを押したときの反応は_selector@target
+    UIView *superView = [[UIView alloc] initWithFrame:_rectFrame];
+    UIView *rectDialog = [CreateComponentClass
+                          createView:_rectDialog];
+    //test:
+//    [rectDialog setBackgroundColor:[UIColor blackColor]];
+    [superView addSubview:rectDialog];
+    
+    //title
+    UITextView *tvTitle = [CreateComponentClass
+                           createTextView:CGRectMake(0, 0, rectDialog.frame.size.width,
+                                                     rectDialog.frame.size.height)
+                           text:_title
+                           font:@"AmericanTypewriter-Bold"
+                           size:20
+                           textColor:[UIColor whiteColor]
+                           backColor:[UIColor clearColor]
+                           isEditable:NO];
+    tvTitle.textAlignment = NSTextAlignmentCenter;
+    [rectDialog addSubview:tvTitle];
+    
+    //line
+    UIView *viewLine = [CreateComponentClass
+                        createView:CGRectMake(0, tvTitle.frame.size.height,
+                                              rectDialog.frame.size.width,1)];
+    [viewLine setBackgroundColor:[UIColor blackColor]];
+    [rectDialog addSubview:viewLine];
+    
+    
+    UIButton *btn1 = [CreateComponentClass
+                      createCoolButton:CGRectMake(10, viewLine.frame.origin.y + 10,
+                                                  50, 30)
+                      text:@"yes"
+                      hue:0.3 saturation:0.3 brightness:0.3
+                      target:_target selector:onYes tag:0];
+//    btn1 addTarget:<#(id)#> action:<#(SEL)#> forControlEvents:<#(UIControlEvents)#>
+    [rectDialog addSubview:btn1];
+    
+    
+//    a = [CreateComponentClass createViewNoFrame:self.view.bounds
+//                                                          color:[UIColor clearColor]
+//                                                            tag:0
+//                                                         target:Nil
+//                                                       selector:nil];
+//    [viewMailSuperForm setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.8]];
+//    [self.view addSubview:viewMailSuperForm];
+//    
+//    
+//    
+//    
+//    int xViewFrame = 10;
+//    int yViewFrame = 100;
+//    int widthViewFrame = 300;
+//    int heightViewFrame = 350;
+//    
+//    //見た目の飾り付け
+//    UIView *viewFrame = [CreateComponentClass createView:CGRectMake(xViewFrame,yViewFrame,
+//                                                                    widthViewFrame,
+//                                                                    heightViewFrame)];
+//    [viewFrame setBackgroundColor:[UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:0.6f]];
+//    [viewMailSuperForm addSubview:viewFrame];
+//    
+//    //TextViewから他の場所をタップした時にフォーカスを外すためのview
+//    UIView *viewForResign = [CreateComponentClass createViewNoFrame:self.view.bounds
+//                                                              color:[UIColor clearColor]
+//                                                                tag:0
+//                                                             target:self
+//                                                           selector:@"setResign"];
+//    [viewMailSuperForm addSubview:viewForResign];//only for action
+    
+    
+    
+    return superView;
+}
 
 @end

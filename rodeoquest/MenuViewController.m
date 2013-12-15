@@ -1147,14 +1147,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             break;
     }
     
-}
-
--(void)imageTapped:(id)sender{
-
-    UIView *tappedView = [sender view];
-    NSLog(@"imageTapped at tag = %d", tappedView.tag);
     
-    //武器タグの場合
     for(int i = 0;i < WEAPON_BUY_COUNT;i++){//最初のタグは武器イメージタップ時のイベント
         if(i == tappedView.tag){
             UIView *viewAll = [[UIView alloc]initWithFrame:self.view.bounds];
@@ -1182,14 +1175,22 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                                                            isEditable:NO];
             [viewFrame addSubview:tv_buy];
             
-            //購入ボタン
-//            UIButton *bt_buy = [CreateComponentClass createButtonWithType:(ButtonMenuBackType)ButtonMenuBackTypeOrange
-//                                                                     rect:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 100)
-//                                                                    image:@"buy.png"//nothing
-//                                                                   target:self
-//                                                                 selector:@"buyMethod"];//nothing=>定義必要
+            NSString *strButtonText;
+            //現在の武器のフレームには枠を付ける
+            NSString *strWeaponIDX = [NSString stringWithFormat:@"weaponID%d", i];
+            if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"0"] ||
+               [[attr getValueFromDevice:strWeaponIDX] isEqual:[NSNull null]] ||
+               [attr getValueFromDevice:strWeaponIDX] == nil){
+                
+                strButtonText = @"buy now!";
+            }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"1"]){
+                //既に購入済
+                strButtonText = @"set";
+            }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"2"]){
+                strButtonText = @"now setting.";
+            }
             CoolButton *bt_buy = [CreateComponentClass createCoolButton:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 70)
-                                                                   text:@"buy now!"
+                                                                   text:strButtonText
                                                                     hue:0.532f
                                                              saturation:0.553f
                                                              brightness:0.535f
@@ -1204,6 +1205,16 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             break;
         }
     }
+    
+}
+
+-(void)imageTapped:(id)sender{
+
+    UIView *tappedView = [sender view];
+    NSLog(@"imageTapped at tag = %d", tappedView.tag);
+    
+    //武器タグの場合
+    
     switch(tappedView.tag){//->MenuTagType
         //case:0 - 9 => definite in upper for-loop
         case 100:{
@@ -1252,11 +1263,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                               nil];
     
     NSLog(@"weapon id = %d & cost is %d", id_weapon, [[arrCostWeapon objectAtIndex:id_weapon] intValue]);
-    NSString *strWeapon = [NSString stringWithFormat:@"weaponID%d", id_weapon];
+    NSString *strWeaponIDX = [NSString stringWithFormat:@"weaponID%d", id_weapon];
     
-    if([[attr getValueFromDevice:strWeapon] isEqual:[NSNull null]] ||
-       [attr getValueFromDevice:strWeapon] == nil ||
-       [[attr getValueFromDevice:strWeapon] isEqual:@"0"]){//未購入の場合
+    if([[attr getValueFromDevice:strWeaponIDX] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:strWeaponIDX] == nil ||
+       [[attr getValueFromDevice:strWeaponIDX] isEqual:@"0"]){//未購入の場合
+        
         //金額の取得
         int gold = [[attr getValueFromDevice:@"gold"] intValue];
         if(gold < [[arrCostWeapon objectAtIndex:id_weapon] intValue]){
@@ -1272,9 +1284,73 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", gold]];
             
             tvGoldAmount_global.text = [NSString stringWithFormat:@"%d", gold];
+            
+            //other weaponIDX:->0(all->0 then the weapon->1)
+            for(BeamType beamType = 0;beamType < 10;beamType++){
+                if([[attr getValueFromDevice:
+                    [NSString stringWithFormat:@"weaponID%d", beamType]
+                    ]
+                   isEqual:@"2"]){
+                    //購入済＆設定：2=>1
+                    //購入済：1=>1
+                    //非購入：0(null)=>0(null)
+                    [attr setValueToDevice:[NSString stringWithFormat:@"weaponID%d", beamType] strValue:@"1"];
+                }
+            }
+            
+            
+            
+            //if(setting to weapon ??)
+            [attr setValueToDevice:[NSString stringWithFormat:@"weaponID%d", id_weapon] strValue:@"2"];
+            [((UIButton *)sender) setTitle:@"装備しました。" forState:UIControlStateNormal];
+            [((UIButton *)sender) setTitle:@"既に装備済です。" forState:UIControlStateHighlighted];
+//          }
+        
+//            for(BeamType beamType = 0;beamType < 10;beamType++){
+//                NSLog(@"weaponID%d=%@", beamType, [attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", beamType]]);
+//            }
         }
-    }else{//購入済の場合
-        //選択画面
+    }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"1"]){//購入済の場合
+        //選択画面:この武器を選択
+        
+        //other weaponIDX:->0(all->0 then the weapon->1)
+        for(BeamType beamType = 0;beamType < 10;beamType++){
+            if([[attr getValueFromDevice:
+                 [NSString stringWithFormat:@"weaponID%d", beamType]
+                 ]
+                isEqual:@"2"]){
+                //購入済＆設定：2=>1
+                //購入済：1=>1
+                //非購入：0(null)=>0(null)
+                [attr setValueToDevice:[NSString stringWithFormat:@"weaponID%d", beamType] strValue:@"1"];
+            }
+        }
+        
+        
+        [attr setValueToDevice:strWeaponIDX strValue:@"2"];
+        [((UIButton *)sender) setTitle:@"装備しました。" forState:UIControlStateNormal];
+        [((UIButton *)sender) setTitle:@"既に装備済です。" forState:UIControlStateHighlighted];
+        
+    }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"2"]){
+        //既に購入済みなので
+        
+        //other weaponIDX:->0(all->0 then the weapon->1)
+        for(BeamType beamType = 0;beamType < 10;beamType++){
+            if([[attr getValueFromDevice:
+                 [NSString stringWithFormat:@"weaponID%d", beamType]
+                 ]
+                isEqual:@"2"]){
+                //購入済＆設定：2=>1
+                //購入済：1=>1
+                //非購入：0(null)=>0(null)
+                [attr setValueToDevice:[NSString stringWithFormat:@"weaponID%d", beamType] strValue:@"1"];
+            }
+        }
+        
+        [((UIButton *)sender) setTitle:@"現在装備中です。" forState:UIControlStateNormal];
+        [((UIButton *)sender) setTitle:@"既に装備済です。" forState:UIControlStateHighlighted];
+        [((UIButton *)sender) setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [self oscillate:(UIButton *)sender count:10];
     }
 }
 

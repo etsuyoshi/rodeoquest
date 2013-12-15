@@ -12,5 +12,5 @@
 @interface GoldBoardClass : ScoreBoardClass
 
 -(id)init:(int)type x_init:(int)x_init y_init:(int)y_init ketasu:(int)ketasu;
--(id)init:(int)type x_init:(int)x_init y_init:(int)y_init ketasu:(int)ketasu type:(NSString *)type;
+//-(id)init:(int)type x_init:(int)x_init y_init:(int)y_init ketasu:(int)ketasu type:(NSString *)type;
 @end
