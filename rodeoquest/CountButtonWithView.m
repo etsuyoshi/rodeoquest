@@ -177,30 +177,30 @@
         case ButtonMenuBackTypeBlue:{
 //            if(on_off){
             if(countPressed > 0){
-                self.image = [UIImage imageNamed:@"btn_g_on2.png"];//blue
+                self.image = [UIImage imageNamed:@"btn_b_on.png"];//blue
                 
             }else{
-                self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+                self.image = [UIImage imageNamed:@"btn_b_off.png"];
             }
             break;
         }
         case ButtonMenuBackTypeGreen:{
 //            if(on_off){
             if(countPressed > 0){
-                self.image = [UIImage imageNamed:@"btn_g_on2.png"];
+                self.image = [UIImage imageNamed:@"btn_g_on.png"];
                 
             }else{
-                self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+                self.image = [UIImage imageNamed:@"btn_g_off.png"];
             }
             break;
         }
         case ButtonMenuBackTypeOrange:{
 //            if(on_off){
             if(countPressed > 0){
-                self.image = [UIImage imageNamed:@"btn_g_on2.png"];//orange
+                self.image = [UIImage imageNamed:@"btn_r_on.png"];//orange
                 
             }else{
-                self.image = [UIImage imageNamed:@"btn_g_off2.png"];
+                self.image = [UIImage imageNamed:@"btn_r_off.png"];
             }
             break;
         }

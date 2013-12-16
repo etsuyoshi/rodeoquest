@@ -37,6 +37,13 @@
                    @"100",
                    @"100",
                    nil];
+        
+        itemList = [NSArray arrayWithObjects:
+                    @"itemlist1ItemUp",
+                    @"itemlist2ItemUp",
+                    @"itemlist3ItemUp",
+                    @"itemlist4ItemUp",
+                    nil];
     }
     return self;
 }

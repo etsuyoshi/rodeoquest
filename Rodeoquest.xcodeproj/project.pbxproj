@@ -122,6 +122,12 @@
 		344DA253184CB6A6004F71EE /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 344DA251184CB6A6004F71EE /* README.txt */; };
 		34518647183B9F5B00DDD6D2 /* bomb026.png in Resources */ = {isa = PBXBuildFile; fileRef = 34518646183B9F5B00DDD6D2 /* bomb026.png */; };
 		3458DB251827C3E2003F1672 /* BackGroundClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3458DB241827C3E2003F1672 /* BackGroundClass.m */; };
+		34595736185E9484006BB4FB /* btn_g_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34595730185E9484006BB4FB /* btn_g_on.png */; };
+		34595737185E9484006BB4FB /* btn_r_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 34595731185E9484006BB4FB /* btn_r_off.png */; };
+		34595738185E9484006BB4FB /* btn_b_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 34595732185E9484006BB4FB /* btn_b_off.png */; };
+		34595739185E9484006BB4FB /* btn_b_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34595733185E9484006BB4FB /* btn_b_on.png */; };
+		3459573A185E9484006BB4FB /* btn_g_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 34595734185E9484006BB4FB /* btn_g_off.png */; };
+		3459573B185E9484006BB4FB /* btn_r_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34595735185E9484006BB4FB /* btn_r_on.png */; };
 		3460F94E1824FA2700951A99 /* weapon_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 3460F9431824FA2700951A99 /* weapon_diffuse.png */; };
 		3460F9501824FA2700951A99 /* tool_bomb.png in Resources */ = {isa = PBXBuildFile; fileRef = 3460F9451824FA2700951A99 /* tool_bomb.png */; };
 		3460F9511824FA2700951A99 /* defense_barrier.png in Resources */ = {isa = PBXBuildFile; fileRef = 3460F9461824FA2700951A99 /* defense_barrier.png */; };
@@ -134,6 +140,7 @@
 		3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3467B72117FD5980004EEE94 /* PowerGaugeClass.m */; };
 		3476D05E180DE6B800839BD8 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3476D05C180DE6B800839BD8 /* QBFlatButton.m */; };
 		3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3477C2091851F8C60006A9BB /* CountButtonWithView.m */; };
+		34791E3E185D7A8F00440B92 /* ornament.png in Resources */ = {isa = PBXBuildFile; fileRef = 34791E3D185D7A8F00440B92 /* ornament.png */; };
 		347D276818167FA000498F68 /* BGMClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 347D276718167FA000498F68 /* BGMClass.m */; };
 		347D277318169B3700498F68 /* small_eight.png in Resources */ = {isa = PBXBuildFile; fileRef = 347D276918169B3700498F68 /* small_eight.png */; };
 		347D277418169B3700498F68 /* small_five.png in Resources */ = {isa = PBXBuildFile; fileRef = 347D276A18169B3700498F68 /* small_five.png */; };
@@ -448,6 +455,12 @@
 		34518646183B9F5B00DDD6D2 /* bomb026.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb026.png; sourceTree = "<group>"; };
 		3458DB231827C3E2003F1672 /* BackGroundClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackGroundClass.h; sourceTree = "<group>"; };
 		3458DB241827C3E2003F1672 /* BackGroundClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackGroundClass.m; sourceTree = "<group>"; };
+		34595730185E9484006BB4FB /* btn_g_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_g_on.png; sourceTree = "<group>"; };
+		34595731185E9484006BB4FB /* btn_r_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_r_off.png; sourceTree = "<group>"; };
+		34595732185E9484006BB4FB /* btn_b_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_b_off.png; sourceTree = "<group>"; };
+		34595733185E9484006BB4FB /* btn_b_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_b_on.png; sourceTree = "<group>"; };
+		34595734185E9484006BB4FB /* btn_g_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_g_off.png; sourceTree = "<group>"; };
+		34595735185E9484006BB4FB /* btn_r_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_r_on.png; sourceTree = "<group>"; };
 		3460F9431824FA2700951A99 /* weapon_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weapon_diffuse.png; sourceTree = "<group>"; };
 		3460F9451824FA2700951A99 /* tool_bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_bomb.png; sourceTree = "<group>"; };
 		3460F9461824FA2700951A99 /* defense_barrier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defense_barrier.png; sourceTree = "<group>"; };
@@ -463,6 +476,7 @@
 		3476D05D180DE6B800839BD8 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBFlatButton.h; path = ../../GradientButton/GradientButton/QBFlatButton.h; sourceTree = "<group>"; };
 		3477C2081851F8C60006A9BB /* CountButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountButtonWithView.h; sourceTree = "<group>"; };
 		3477C2091851F8C60006A9BB /* CountButtonWithView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountButtonWithView.m; sourceTree = "<group>"; };
+		34791E3D185D7A8F00440B92 /* ornament.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ornament.png; sourceTree = "<group>"; };
 		347D276618167FA000498F68 /* BGMClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGMClass.h; sourceTree = "<group>"; };
 		347D276718167FA000498F68 /* BGMClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGMClass.m; sourceTree = "<group>"; };
 		347D276918169B3700498F68 /* small_eight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_eight.png; sourceTree = "<group>"; };
@@ -699,6 +713,12 @@
 		340D04F218597F9A001DD8EC /* button */ = {
 			isa = PBXGroup;
 			children = (
+				34595730185E9484006BB4FB /* btn_g_on.png */,
+				34595731185E9484006BB4FB /* btn_r_off.png */,
+				34595732185E9484006BB4FB /* btn_b_off.png */,
+				34595733185E9484006BB4FB /* btn_b_on.png */,
+				34595734185E9484006BB4FB /* btn_g_off.png */,
+				34595735185E9484006BB4FB /* btn_r_on.png */,
 				340D04FB1859815D001DD8EC /* item_UP2.png */,
 				340D04F318597FEC001DD8EC /* item_UP.png */,
 				340D04F418597FEC001DD8EC /* weapon_b_g.png */,
@@ -819,6 +839,7 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				34791E3D185D7A8F00440B92 /* ornament.png */,
 				34616E211859DF8700DE8226 /* sozai_maki.png */,
 				34616E221859DF8700DE8226 /* sozai_paper.png */,
 				340D04F218597F9A001DD8EC /* button */,
@@ -1354,6 +1375,7 @@
 				340C3B9818549DDD0017BBBE /* Rock.png in Resources */,
 				34A8897518542ABA005667B4 /* 15.png in Resources */,
 				3440529D182BBC1A0049AE46 /* coin_blue.png in Resources */,
+				3459573A185E9484006BB4FB /* btn_g_off.png in Resources */,
 				3460F94E1824FA2700951A99 /* weapon_diffuse.png in Resources */,
 				342057DC17F2B34C0084E99D /* InfoPlist.strings in Resources */,
 				3422319E1845B5C400055ADF /* btn_g_off2.png in Resources */,
@@ -1366,6 +1388,7 @@
 				34D55FD1183CA05400788533 /* bomb017.png in Resources */,
 				343D9702184F3296000239F4 /* icon_gear_b.png in Resources */,
 				342057E817F2B34C0084E99D /* Default-568h@2x.png in Resources */,
+				34791E3E185D7A8F00440B92 /* ornament.png in Resources */,
 				342057EB17F2B34C0084E99D /* MainStoryboard.storyboard in Resources */,
 				342C03AB17F4604E0023C11F /* nothing32.png in Resources */,
 				34A8898118542ABA005667B4 /* 27.png in Resources */,
@@ -1406,6 +1429,7 @@
 				3488ACC9183D272F00833F93 /* img08.png in Resources */,
 				34A1ED42181CCDF20007471C /* WaterBow.png in Resources */,
 				34A8896E18542ABA005667B4 /* 08.png in Resources */,
+				34595739185E9484006BB4FB /* btn_b_on.png in Resources */,
 				348D635017FE11EF00A3049B /* circle_7w_128.png in Resources */,
 				34D55FD0183CA05400788533 /* bomb013.png in Resources */,
 				348D635417FE13DF00A3049B /* circle_2w_128.png in Resources */,
@@ -1431,6 +1455,7 @@
 				3411FB7B17FED1DF001D1491 /* powerGauge_pt9.png in Resources */,
 				340C3B9518549DDD0017BBBE /* Fire.png in Resources */,
 				34FD281E1850934200C751FC /* up_blue.png in Resources */,
+				34595738185E9484006BB4FB /* btn_b_off.png in Resources */,
 				3488ACC5183D272F00833F93 /* img04.png in Resources */,
 				34B5FB461857021A00F43531 /* yen_o.png in Resources */,
 				3460F9501824FA2700951A99 /* tool_bomb.png in Resources */,
@@ -1459,8 +1484,10 @@
 				34C09EDC18009C5F00E4A4D8 /* yellow_item_thunder.png in Resources */,
 				34C09EDE18009D0300E4A4D8 /* blue_item_yuri_big.png in Resources */,
 				3460F9541824FA2700951A99 /* weapon_bomb.png in Resources */,
+				3459573B185E9484006BB4FB /* btn_r_on.png in Resources */,
 				34EB7ACB182F28220079B0EB /* powerGauge2.png in Resources */,
 				3460F9521824FA2700951A99 /* defense_shield.png in Resources */,
+				34595736185E9484006BB4FB /* btn_g_on.png in Resources */,
 				34A087421803EBBD005458EF /* blue_item_yuri_big2.png in Resources */,
 				3422319F1845B5C400055ADF /* btn_g_on2.png in Resources */,
 				34CA558718447A9B00F9657A /* laser_r03.png in Resources */,
@@ -1520,6 +1547,7 @@
 				340D04F718597FEC001DD8EC /* item_UP.png in Resources */,
 				344BD6191815936B00387201 /* mob_tanu_02.png in Resources */,
 				344BD61A1815936B00387201 /* mob_pen_02.png in Resources */,
+				34595737185E9484006BB4FB /* btn_r_off.png in Resources */,
 				34616E231859DF8700DE8226 /* sozai_maki.png in Resources */,
 				344BD61B1815936B00387201 /* mob_pen_01.png in Resources */,
 				344BD61C1815936B00387201 /* mob_musa_02.png in Resources */,

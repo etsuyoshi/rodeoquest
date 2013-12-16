@@ -38,6 +38,14 @@
                    @"100",
                    @"150",
                    nil];
+        
+        itemList = [NSArray arrayWithObjects:
+                    @"itemlistWeaponUp1",
+                    @"itemlistWeaponUp2",
+                    @"itemlistWeaponUp3",
+                    @"itemlistWeaponUp4",
+                    nil];
+        
     }
     return self;
 }

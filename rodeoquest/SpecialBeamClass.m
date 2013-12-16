@@ -31,7 +31,7 @@
     //以下、イチイチ初期化していると動作が遅くなる。ー＞配列か単変数で対応予定
 //    AttrClass *attr = [[AttrClass alloc] init];
     NSString *strBeamImage = [dictBeam objectForKey:[NSNumber numberWithInt:_type]];
-    
+//    NSLog(@"beam = %@", strBeamImage);
     
     self = [super init:x_init y_init:y_init width:w height:h];
 //    level = _level;

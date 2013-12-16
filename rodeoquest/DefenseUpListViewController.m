@@ -38,6 +38,13 @@
                    @"24",
                    @"28",
                    nil];
+        
+        itemList = [NSArray arrayWithObjects:
+                    @"itemlistDefenseUp1",
+                    @"itemlistDefenseUp2",
+                    @"itemlistDefenseUp3",
+                    @"itemlistDefenseUp4",
+                    nil];
     }
     return self;
 }

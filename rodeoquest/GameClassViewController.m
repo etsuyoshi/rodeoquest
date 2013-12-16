@@ -429,10 +429,18 @@ int sensitivity;
     //自機定義
 //    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE];
 //    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE level:[[attr getValueFromDevice:@"level"] intValue]];
+    int beamType = -1;
+    for(int i = 0; i < 10; i++){//beamTypeの個数だけ
+        if([[attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", i]] isEqualToString:@"2"]){
+            beamType = i;
+           break;
+        }
+    }
+    
     MyMachine = [[MyMachineClass alloc] init:x_frame/2
                                         size:OBJECT_SIZE
                                        level:[[attr getValueFromDevice:@"level"] intValue]
-                                    spWeapon:BeamTypeAnimal];
+                                    spWeapon:beamType];
     
     [self.view addSubview:[MyMachine getImageView]];
     [self.view bringSubviewToFront:[MyMachine getImageView]];
@@ -1032,6 +1040,8 @@ int sensitivity;
 //            if(isMagnetMode){//グローバルに設定しても良い
             if([MyMachine getStatus:ItemTypeMagnet]){
                 near_coeff = 0.7f;
+            }else if([MyMachine getStatus:ItemTypeBig]){
+                near_coeff = 2.0f;
             }
             if(
                _xItem >= [MyMachine getX] - mySize * near_coeff &&
@@ -1743,10 +1753,10 @@ int sensitivity;
                                               enemyType:_enemyType
                                  ];
             //test用
-            [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
-                                                                     green:0
-                                                                      blue:0
-                                                                     alpha:0.5f]];//test:enemy
+//            [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
+//                                                                     green:0
+//                                                                      blue:0
+//                                                                     alpha:0.5f]];//test:enemy
             [EnemyArray insertObject:enemy atIndex:0];
             [self.view addSubview:[[EnemyArray objectAtIndex:0] getImageView]];
             [self.view bringSubviewToFront:[[EnemyArray objectAtIndex:0] getImageView]];

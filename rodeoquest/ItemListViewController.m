@@ -43,6 +43,12 @@ BackGroundClass2 *backGround;
                    @"100",
                    @"100",
                 nil];
+        itemList = [NSArray arrayWithObjects:
+                    @"itemlist1",
+                    @"itemlist2",
+                    @"itemlist3",
+                    @"itemlist4",
+                    nil];
         
 //        background = [[BackGroundClass2 alloc]init:WorldTypeForest
 //                                             width:self.view.bounds.size.width
@@ -177,7 +183,7 @@ BackGroundClass2 *backGround;
                                                        title:@"get"
                                                       target:self
                                                     selector:@"buyBtnPressed:"];
-        btn.tag = [[arrCost objectAtIndex:i] intValue];
+        btn.tag = i;//[[arrCost objectAtIndex:i] intValue];
         [self.view addSubview:btn];
         
     }
@@ -213,11 +219,15 @@ BackGroundClass2 *backGround;
 //    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)buyBtnPressed:(id)sender{
-    if([[attr getValueFromDevice:@"gold"] intValue] >= [sender tag]){
+-(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
+    if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
+        int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
         NSLog(@"buy button pressed : %d", [sender tag]);
-        [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - [sender tag]];
+        [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - cost];
         [self displayCoin];
+        
+        
+        [self memorizeBoughtLog:[itemList objectAtIndex:[sender tag]]];
         
     }else{
         //お金が足りない場合
@@ -225,6 +235,21 @@ BackGroundClass2 *backGround;
         
     }
     
+}
+
+-(void)memorizeBoughtLog:(NSString *)_key{
+    if([[attr getValueFromDevice:_key] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:_key] == nil){
+        
+        [attr setValueToDevice:_key strValue:@"1"];
+    }else{
+        
+        int beforeNum = [[attr getValueFromDevice:_key] intValue];
+        int afterNum = beforeNum + 1;
+        
+        
+        [attr setValueToDevice:_key strValue:[NSString stringWithFormat:@"%d", afterNum]];
+    }
 }
 
 -(void)oscillateTextViewGold:(int)count{

@@ -186,13 +186,26 @@ NSArray *arrPrice;
         //確認ボタン->閉じる(viewFrameの外を押しても閉じる)
         int btHeight = 30;
         int btWidth = 150;
-        UIImageView *btnConfirm = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
-                                                               imageType:(ButtonMenuImageType)ButtonMenuImageTypeCoin//test:仮
-                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
-                                                                                    numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
-                                                                                    btWidth, btHeight)
-                                                                  target:(id)self
-                                                                selector:@"closeViewCon"];
+//        UIImageView *btnConfirm = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+//                                                               imageType:nil//(ButtonMenuImageType)ButtonMenuImageTypeCoin//test:仮
+//                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+//                                                                                    numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
+//                                                                                    btWidth, btHeight)
+//                                                                  target:(id)self
+//                                                                selector:@"closeViewCon"];
+//        UIButton *btnConfirm = [[CoolButton alloc]initWithFrame:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+//                                                                          numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
+//                                                                           btWidth, btHeight)];
+        UIButton *btnConfirm = [CreateComponentClass createCoolButton:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+                                                                                  numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
+                                                                                  btWidth, btHeight)
+                                                                  text:@"confirm"
+                                                                   hue:0.3
+                                                            saturation:0.3
+                                                            brightness:0.3
+                                                                target:self
+                                                              selector:@"closeViewCon"
+                                                                   tag:0];
         [viewFrame addSubview:btnConfirm];
 //        [self.view addSubview:btnConfirm];//位置修正が必要
         

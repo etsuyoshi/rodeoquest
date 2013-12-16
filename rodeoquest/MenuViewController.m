@@ -74,6 +74,7 @@
 //NSMutableArray *tagArray;
 //NSMutableArray *titleArray;
 NSMutableArray *arrNoImage;
+NSMutableArray *arrBtnBack;
 
 UIView *subView;
 UIButton *closeButton;//閉じるボタン
@@ -285,6 +286,21 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                        [NSNumber numberWithInt:ButtonMenuImageTypeDemand],
                        nil],
                       nil];
+    arrBtnBack = [NSMutableArray arrayWithObjects:
+                  [NSArray arrayWithObjects:
+                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   nil],
+                  [NSArray arrayWithObjects:
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                   nil],
+                  nil];
+                   
 //    NSLog(@"imageFileArray initialization complete");
     
 //    tagArray = [NSMutableArray arrayWithObjects:
@@ -522,7 +538,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                         SIZE_FORMAL_BUTTON,
                                         SIZE_FORMAL_BUTTON);
             
-            UIImageView *bt = [CreateComponentClass createMenuButton:ButtonMenuBackTypeGreen
+            UIImageView *bt = [CreateComponentClass createMenuButton:[[[arrBtnBack objectAtIndex:row]
+                                                                       objectAtIndex:col] intValue]
                                                            imageType:[[[arrNoImage objectAtIndex:row] objectAtIndex:col] intValue]
                                                                 rect:rect_bt
                                                               target:self
@@ -542,12 +559,19 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                    W_BT_START,
                                    H_BT_START);
     
-    UIImageView *bt_start = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
-                                                         imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
-                                                              rect:(CGRect)rect_start
-                                                            target:(id)self
-                                                          selector:(NSString *)@"pushedButton:"
-                                                               tag:ButtonMenuImageTypeStart];
+//    UIImageView *bt_start = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
+//                                                         imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
+//                                                              rect:(CGRect)rect_start
+//                                                            target:(id)self
+//                                                          selector:(NSString *)@"pushedButton:"
+//                                                               tag:ButtonMenuImageTypeStart];
+    UIButton *bt_start = [CreateComponentClass
+                          createCoolButton:rect_start
+                          text:@"START"
+                          hue:0 saturation:1 brightness:1
+                          target:self
+                          selector:@"pushedStartButton:"
+                          tag:ButtonMenuImageTypeStart];
     //丸角
 //    [[bt_start layer] setCornerRadius:10.0];
 //    [bt_start setClipsToBounds:YES];
@@ -576,9 +600,10 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     [backGround exitAnimations];
 
 }
-
--(void)pushedButton:(NSNumber *)num
-{
+-(void)pushedStartButton:(id)sender{//UIButton型による定義
+    NSNumber *num = [NSNumber numberWithInt:[sender tag]];
+//-(void)pushedButton:(NSNumber *)num{//UIImageView型による定義
+    
     NSLog(@"num = %d", num.integerValue);
     switch((ButtonMenuImageType)num.integerValue){
         case ButtonMenuImageTypeStart:{
@@ -604,6 +629,13 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             
             break;
         }
+        default:{
+            break;
+        }
+    }
+}
+-(void)pushedButton:(NSNumber *)num{//UIImageView型による定義
+    switch((ButtonMenuImageType)num.integerValue){
         case ButtonMenuImageTypeWeapon:{
             NSArray *imageArray = [NSArray arrayWithObjects:
                                    @"RockBow.png",
@@ -691,7 +723,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             
             //メインフレームの定義
             UIView *viewFrame = [CreateComponentClass createView:CGRectMake(100, 70, 210, 250)];//340)];//in case of 4components
-            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.3f blue:0.1f alpha:0.6f]];//どちらでも良い
+            [viewFrame setBackgroundColor:[UIColor colorWithRed:0.1f green:0.1f blue:0.3f alpha:0.6f]];//どちらでも良い
             [viewSuperSuper addSubview:viewFrame];
             
 
@@ -724,7 +756,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                                imageHeight);
                 //button
                 UIImageView *iv_item = [CreateComponentClass createSwitchButton:rect_image
-                                                                       backType:ButtonMenuBackTypeGreen
+                                                                       backType:ButtonMenuBackTypeBlue
                                                                       imageType:[[arrImage objectAtIndex:i] intValue]
                                                                             tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
                                                                          target:self
@@ -752,7 +784,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                            imageHeight);
             
             UIImageView *iv_sense = [CreateComponentClass createCountButton:rect_image
-                                                                   backType:ButtonMenuBackTypeGreen
+                                                                   backType:ButtonMenuBackTypeBlue
                                                                   imageType:ButtonCountImageTypeSensitivity
                                                                         tag:0
                                                                      target:self
@@ -1273,8 +1305,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         int gold = [[attr getValueFromDevice:@"gold"] intValue];
         if(gold < [[arrCostWeapon objectAtIndex:id_weapon] intValue]){
             NSLog(@"need more Money!");//sender(UIImageView)を揺らす等のエフェクト？
-            [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateNormal];
-            [((UIButton *)sender) setTitle:@"お金が足りません..." forState:UIControlStateHighlighted];
+            [((UIButton *)sender) setTitle:@"コインが足りません..." forState:UIControlStateNormal];
+            [((UIButton *)sender) setTitle:@"コインが足りません..." forState:UIControlStateHighlighted];
             [((UIButton *)sender) setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
             [self oscillate:(UIButton *)sender count:10];
         }else{

@@ -423,6 +423,8 @@
 
     NSLog(@"start loop");
     for(int numImage = 0; numImage < amountOfImage; numImage++){
+        
+        
 //        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
         //imageViewには、タグ付けとtarget設定ができないので
         CGRect imageRect = CGRectMake(imageMarginHorizon + numImage * (imageWidth + imageMarginHorizon),
@@ -430,6 +432,20 @@
         UIView *frameView = [self createView:imageRect];//imageのframe
         [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
         [uvOnScroll addSubview:frameView];
+        
+        //現在装備中のアイテム：やってもいいけど、選択した後にも反映させるにはグローバルに設定する必要がある。
+//        if([[_attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", numImage]]
+//            isEqualToString:@"2"]){
+//            UIImageView *viewEquip = [CreateComponentClass
+////                                      createImageView:frameView.bounds
+//                                        createImageView:imageRect
+//                                      image:@"ornament.png"];
+//            [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
+////            [uvOnScroll addSubview:viewEquip];
+//            [frameView addSubview:viewEquip];
+//        }
+        
+        
 //        NSLog(@"dict no = %d, %@", [[[sbc getDict] objectForKey:[imageArray objectAtIndex:numImage]] intValue], [imageArray objectAtIndex:numImage]);
 //        NSLog(@"dict key=%@, value=%@",
 //              [sbc getBeamAsValues:numImage],
