@@ -54,6 +54,7 @@ int imageMargin;
             //宇宙空間の描画方法
             image1 = [UIImage imageNamed:@"cosmos_star4_repair.png"];
             image2 = [UIImage imageNamed:@"cosmos_star4_repair.png"];
+//            image2 = [UIImage imageNamed:@"back_nangoku.png"];//test:image
             [iv_background1 setBackgroundColor:[UIColor blackColor]];
             break;
         }
@@ -61,6 +62,7 @@ int imageMargin;
             //宇宙バージョン
             image1 = [UIImage imageNamed:@"back_univ.png"];
             image2 = [UIImage imageNamed:@"back_univ2.png"];//attention!
+//            image2 = [UIImage imageNamed:@"back_nangoku.png"];//test:image
             [iv_background1 setBackgroundColor:[UIColor blackColor]];
             
             break;
@@ -388,7 +390,7 @@ int imageMargin;
             [iv_background1.layer removeAnimationForKey:@"position"];
             //speedup
 //            [self setSpeed:nowSpeed+0.15f];
-            gSecs -= 0.01f;
+            gSecs -= (gSecs > 1.5f)?0.01f:0;
             //recurrent構造にせずにrepeatCount=HUGE_VALにすれば繰り返し実行できるが、最初の位置からの移動で場合分けが必要になる
             
 //            NSLog(@"recursive lay1=%f, lay2=%f",

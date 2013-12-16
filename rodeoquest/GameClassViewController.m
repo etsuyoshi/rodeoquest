@@ -164,7 +164,7 @@ int x_pg, y_pg, width_pg, height_pg;
 
 NSTimer *tm;
 BGMClass *bgmClass;
-float count = 0;//timer->0.01sec
+float gameSecond = 0;//timer->0.01sec
 int timeEnemyRowYield = 100;//100countで敵列発生
 int countEnemyRowYield = 0;//上記timeのカウンター
 int countItem = 0;//テスト用
@@ -513,7 +513,7 @@ int sensitivity;
     size_machine = 100;
     
     
-    count = 0;
+    gameSecond = 0;
     
     
     //パワーゲージの描画:新機種のframeサイズに応じて変える
@@ -655,8 +655,9 @@ int sensitivity;
     //_/_/_/_/生成_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 //    NSLog(@"yield enemy");
-    [self yieldEnemy];
-
+    if(gameSecond > 3.0f){//１秒後から敵を開始
+        [self yieldEnemy];
+    }
     
 //    NSLog(@"detection touch");
     //ビーム生成はタッチ検出場所で実行
@@ -1101,7 +1102,7 @@ int sensitivity;
                         [self displayScore:GoldBoard];
                         break;
                     }
-                    case ItemTypeMagnet:{
+                    case ItemTypeMagnet:{//元々magnetModeでも取得可能(時間延長)
                         
                         //se:他にも適用可能
                         AudioServicesPlaySystemSound (sound_itemGet_ID);
@@ -1112,14 +1113,14 @@ int sensitivity;
                         //上記ItemClass:donext実行後にisMagnetModeで判定するが、
                         //isMagnetModeはcountMagnet>0により判定する。
 //                        if(!isMagnetMode){
-                        if(![MyMachine getStatus:ItemTypeMagnet]){
+//                        if(![MyMachine getStatus:ItemTypeMagnet]){
                             [MyMachine setStatus:@"1" key:ItemTypeMagnet];//あまり意味ない？
                             
 //                            NSLog(@"get isMagnetMode :true");
-                            [MyMachine setStatus:@"1" key:ItemTypeMagnet];
+
 //                            isMagnetMode = true;
 //                            countMagnet = 500;//500カウント=5sec
-                        }
+//                        }
                         break;
                     }
                     case ItemTypeBig:{
@@ -1345,8 +1346,8 @@ int sensitivity;
                     //ビーム左端が敵右端より左側
                     //ビーム上端が敵上端より下側
                     //ビーム下端が敵下端より上側
-                    if(_xBeam + _sBeam * 0 >= _xEnemy - _sEnemy * 0.3 &&
-                       _xBeam - _sBeam * 0 <= _xEnemy + _sEnemy * 0.3 &&
+                    if(_xBeam + _sBeam * 0 >= _xEnemy - _sEnemy * 0.4 &&
+                       _xBeam - _sBeam * 0 <= _xEnemy + _sEnemy * 0.4 &&
                        _yBeam - _sBeam * 0.5 >= _yEnemy - _sEnemy * 0.5 &&
                        _yBeam + _sBeam * 0.5 <= _yEnemy + _sEnemy * 0.5 ){
                         
@@ -1440,7 +1441,7 @@ int sensitivity;
  */
 - (void)time:(NSTimer*)timer{
 //    NSLog(@"timer start");
-    if(count == 0){
+    if(gameSecond == 0){
 //        NSLog(@"start animation from game class view controller");
         [BackGround startAnimation];//3sec-Round
     }
@@ -1455,7 +1456,7 @@ int sensitivity;
 //            [self performSelector:@selector(exitProcess) withObject:nil afterDelay:0.1];//自機爆破後、即座に終了させると違和感あるため少しdelay
 //            [self exitProcess];//delayさせるとその間にprogressが進んでしまうので即座に表示
 //        }
-        count += 0.01f;
+        gameSecond += 0.01f;
         
         //終了モードは辞める(ユーザーが努力した分だけ進めるようにする)
 //        if(count >= TIMEOVER_SECOND){
@@ -1695,7 +1696,7 @@ int sensitivity;
             //order of easily:tanu-musa-pen-hari-zou
             int rnd = MAX(2, abs(arc4random()));//2以上の正数
 //            NSLog(@"rnd = %d", rnd);
-            if(rnd < 0)[self exitProcess];
+//            if(rnd < 0)[self exitProcess];//??
             int countInterval = 5;//5秒(任意)間隔でモンスターの難易度ステージを変更していく
 //            if(count * 1000 < 1){
 //                _enemyType = 0;
@@ -1718,8 +1719,8 @@ int sensitivity;
                         _enemyType = MAX(arc4random() % 5, 2);//type:5,4,3のうちいずれか
                     }
                     break;
-                }else if(count >= stageCount * countInterval &&
-                   count < (stageCount+1) * countInterval){//countInterval * stageCount[sec]台の間
+                }else if(gameSecond >= stageCount * countInterval &&
+                   gameSecond < (stageCount+1) * countInterval){//countInterval * stageCount[sec]台の間
                     
                     if(stageCount == 0){
                         _enemyType = 0;
@@ -1749,7 +1750,7 @@ int sensitivity;
             
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
                                                    size:OBJECT_SIZE
-                                                   time:MAX(5.0f-(float)count/50.0f, 0.5f)
+                                                   time:MAX(5.0f-(float)gameSecond/50.0f, 0.5f)
                                               enemyType:_enemyType
                                  ];
             //test用
@@ -2058,6 +2059,8 @@ int sensitivity;
                                      animated:NO];
                         [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
                                      animated:YES];
+                        
+                        
                     }
                     
                 }else{//unitが循環小数の場合(割り切れないので正確な値を示すために最終値をそのまま表示)
@@ -2092,8 +2095,14 @@ int sensitivity;
                     
                     NSLog(@"finished thread");
 //                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け
-                    if(true){//test:levelUpEffect
-                        UIView *vwel = [[ViewWithEffectLevelUp alloc]initWithFrame:self.view.bounds];
+//                    if(flagLevelUp){//test:levelUpEffect
+                    if(flagLevelUp){
+                        NSLog(@"flagLevelUp = %d", flagLevelUp);
+                        UIView *vwel = [[ViewWithEffectLevelUp alloc]
+                                        initWithFrame:self.view.bounds
+                                        beforeLevel:beforeLevel
+                                        afterLevel:beforeLevel+1
+                                        ];
                         [self.view addSubview:vwel];
                     }
                     
@@ -2122,13 +2131,13 @@ int sensitivity;
 }
 -(void)exit{
     //    [super viewWillDisappear:NO];//storyboard遷移からの場合
-    [BackGround pauseAnimations];
-    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
     //BGM stop
     [bgmClass stop];
     
     //ウィンドウ閉じる
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+//    [BackGround pauseAnimations];
+    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
     
 }
 

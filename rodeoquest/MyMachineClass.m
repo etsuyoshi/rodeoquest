@@ -49,7 +49,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     y_loc = 350;
     x_loc = x_init;
     maxHitPoint = 1000;
-    laserPower = 1;
+    laserPower = level;
     hitPoint = maxHitPoint;
     offensePower = 1;
     defensePower = 0;

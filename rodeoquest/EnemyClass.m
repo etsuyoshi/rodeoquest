@@ -154,7 +154,8 @@ int unique_id;
                               delay:0.0
                              options:UIViewAnimationOptionCurveLinear
                          animations:^{
-                             iv.center = CGPointMake(x_loc, iv.superview.bounds.size.height);
+                             iv.center = CGPointMake(x_loc,
+                                                     iv.superview.bounds.size.height + iv.bounds.size.height);
                          }
                          completion:^(BOOL finished){
                              [self die];

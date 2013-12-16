@@ -314,22 +314,18 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 	// Do any additional setup after loading the view.
 }
 -(void)viewDidAppear:(BOOL)animated{
+//    [self.view.subviews removeFromSuperview];
     
+    //background
+    [self setBackGroundInit];
     
-    backGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
-                                        width:self.view.bounds.size.width
-                                       height:self.view.bounds.size.height
-                                          secs:2.0f];
-    
-    
-    [self.view addSubview:[backGround getImageView1]];
-    [self.view addSubview:[backGround getImageView2]];
-    [self.view bringSubviewToFront:[backGround getImageView1]];
-    [self.view bringSubviewToFront:[backGround getImageView2]];
-    
-    
-    
-    [backGround startAnimation];//3sec-Round
+    //ホームボタン押下後の再開時に以下の登録したメソッドから開始する
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+//     selector:@selector(applicationDidBecomeActive)
+     selector:@selector(viewDidAppear:)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
     
     [self.view bringSubviewToFront:bannerView_];
     
@@ -620,10 +616,12 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             [self presentViewController: tvc animated:YES completion: nil];
 #else
 //            [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
-            [backGround stopAnimation];
+//            [backGround stopAnimation];
+//            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-            [self performSelector:@selector(gotoGame) withObject:nil afterDelay:0.1f];
+            [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
+            [backGround exitAnimations];
 #endif
 
             
@@ -1366,18 +1364,18 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"2"]){
         //既に購入済みなので
         
-        //other weaponIDX:->0(all->0 then the weapon->1)
-        for(BeamType beamType = 0;beamType < 10;beamType++){
-            if([[attr getValueFromDevice:
-                 [NSString stringWithFormat:@"weaponID%d", beamType]
-                 ]
-                isEqual:@"2"]){
-                //購入済＆設定：2=>1
-                //購入済：1=>1
-                //非購入：0(null)=>0(null)
-                [attr setValueToDevice:[NSString stringWithFormat:@"weaponID%d", beamType] strValue:@"1"];
-            }
-        }
+//        //other weaponIDX:->0(all->0 then the weapon->1)
+//        for(BeamType beamType = 0;beamType < 10;beamType++){
+//            if([[attr getValueFromDevice:
+//                 [NSString stringWithFormat:@"weaponID%d", beamType]
+//                 ]
+//                isEqual:@"2"]){
+//                //購入済＆設定：2=>1
+//                //購入済：1=>1
+//                //非購入：0(null)=>0(null)
+//                [attr setValueToDevice:[NSString stringWithFormat:@"weaponID%d", beamType] strValue:@"1"];
+//            }
+//        }
         
         [((UIButton *)sender) setTitle:@"現在装備中です。" forState:UIControlStateNormal];
         [((UIButton *)sender) setTitle:@"既に装備済です。" forState:UIControlStateHighlighted];
@@ -1589,5 +1587,22 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
     }
     [CATransaction commit];
+}
+
+-(void)setBackGroundInit{
+    NSLog(@"set background init");
+    [backGround exitAnimations];//前のアニメーションの停止
+    
+    backGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
+                                         width:self.view.bounds.size.width
+                                        height:self.view.bounds.size.height
+                                          secs:2.0f];
+    
+    
+    [self.view addSubview:[backGround getImageView1]];
+    [self.view addSubview:[backGround getImageView2]];
+    [self.view bringSubviewToFront:[backGround getImageView1]];
+    [self.view bringSubviewToFront:[backGround getImageView2]];
+    [backGround startAnimation];//3sec-Round
 }
 @end
