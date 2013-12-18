@@ -40,10 +40,10 @@
                    nil];
         
         itemList = [NSArray arrayWithObjects:
+                    @"itemlistWeaponUp0",
                     @"itemlistWeaponUp1",
                     @"itemlistWeaponUp2",
                     @"itemlistWeaponUp3",
-                    @"itemlistWeaponUp4",
                     nil];
         
     }

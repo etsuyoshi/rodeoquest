@@ -42,10 +42,10 @@ BackGroundClass2 *backGround;
                    @"100",
                 nil];
         itemList = [NSArray arrayWithObjects:
+                    @"itemlist0",
                     @"itemlist1",
                     @"itemlist2",
                     @"itemlist3",
-                    @"itemlist4",
                     nil];
         
 //        background = [[BackGroundClass2 alloc]init:WorldTypeForest

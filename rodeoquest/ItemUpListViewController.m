@@ -39,10 +39,10 @@
                    nil];
         
         itemList = [NSArray arrayWithObjects:
-                    @"itemlist1ItemUp",
-                    @"itemlist2ItemUp",
-                    @"itemlist3ItemUp",
-                    @"itemlist4ItemUp",
+                    @"itemlistItemUp0",
+                    @"itemlistItemUp1",
+                    @"itemlistItemUp2",
+                    @"itemlistItemUp3",
                     nil];
     }
     return self;

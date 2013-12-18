@@ -7,13 +7,14 @@
 //
 
 #import "WeaponBuyListViewController.h"
-
+NSArray *imageArray;
 @interface WeaponBuyListViewController ()
 
 @end
 
 @implementation WeaponBuyListViewController
 AttrClass *attr;
+UIView *superView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,7 +60,18 @@ AttrClass *attr;
                    @"70",
                    nil];
         
-        
+        itemList = [NSArray arrayWithObjects:
+                    @"itemlistWeaponBuy0",
+                    @"itemlistWeaponBuy1",
+                    @"itemlistWeaponBuy2",
+                    @"itemlistWeaponBuy3",
+                    @"itemlistWeaponBuy4",
+                    @"itemlistWeaponBuy5",
+                    @"itemlistWeaponBuy6",
+                    @"itemlistWeaponBuy7",
+                    @"itemlistWeaponBuy8",
+                    @"itemlistWeaponBuy9",
+                    nil];
         
     }
     return self;
@@ -80,9 +92,11 @@ AttrClass *attr;
     // Dispose of any resources that can be recreated.
 }
 
+//購入ボタン押下後に反応する
+//arg:[itemList objectAtIndex:[sender tag]]
 -(void)processAfterBuy:(NSString *)_key{
     NSLog(@"weapon buy list : %@", _key);
-    NSArray *imageArray = [NSArray arrayWithObjects:
+    imageArray = [NSArray arrayWithObjects:
                            @"RockBow.png",
                            @"FireBow.png",
                            @"WaterBow.png",
@@ -94,32 +108,87 @@ AttrClass *attr;
                            @"SpaceBow.png",
                            @"WingBow.png",
                            nil];
+    
+    int numSelected = 0;
+    for(int i = 0;i < [imageArray count];i++){
+        if([[itemList objectAtIndex:i] isEqualToString:_key]){
+            numSelected = i;
+            break;
+        }else if(i == [imageArray count]-1){
+            NSLog(@"processAfterBuy selection error. caz:_key");//=\n%@ and itemList0=\n%@",
+//                  _key,[itemList objectAtIndex:0]);
+        }
+    }
+    //選択された画像を中央に表示(タップしたらコレクション表示)
+    //親ビューを画面全体に配置
+    //親ビューを閉じる機能を持つ画面全体ビュー
+    //親ビューの上に中心にフレーム配置、フレーム内に武器画像表示
+    superView =
+    [[UIView alloc] initWithFrame:self.view.bounds];
+    [superView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01f]];
+    [self.view addSubview:superView];
+    
+    UIView *viewWithCloseFunc =
+    [CreateComponentClass
+     createViewNoFrame:superView.bounds
+     color:[UIColor clearColor]
+     tag:0 target:self selector:@"closeSuperView:"];
+//    [viewWithCloseFunc setBackgroundColor:[UIColor blackColor]];
+    
+    [superView addSubview:viewWithCloseFunc];
+    
+    UIView *viewFrame =
+    [CreateComponentClass
+     createView:CGRectMake(10, 100, 300, 300)];
+    [viewFrame setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01f]];
+    [superView addSubview:viewFrame];
+    
+    UIImageView *ivSelectedWeapon =
+    [CreateComponentClass
+     createImageView:viewFrame.bounds
+     image:[imageArray objectAtIndex:numSelected]
+     tag:0
+     target:self
+     selector:@"dispSlideShow"];
+    
+    [viewFrame addSubview:ivSelectedWeapon];
+    
+    
     //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
     //購入した武器の分だけ右を見れる
-    UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
-                                                                         50,
-                                                                         self.view.bounds.size.width,
-                                                                         self.view.bounds.size.height)
-                                                    imageFile:imageArray
-                                                       target:self
-                                                    selector1:@"closeView:"
-                                                    selector2:@"weaponSelected:"];
-    //                                                            selector2:@"imageTapped:"];
-    superView.tag = 0;
-    [self.view addSubview:superView];
+//    UIView *superView = [CreateComponentClass
+//                         createSlideShow:CGRectMake(0,50,
+//                                                    self.view.bounds.size.width,
+//                                                    self.view.bounds.size.height)
+//                         imageFile:imageArray
+//                         target:self
+//                         selector1:@"closeView:"
+//                         selector2:@"weaponSelected:"];
+//    superView.tag = 0;
+//    [self.view addSubview:superView];
 
 }
 
 
 -(void)weaponSelected:(id)sender{
     UIView *tappedView = [sender view];
-    NSLog(@"%@", tappedView);
+    NSLog(@"weaponSelected:%@", tappedView);
     int WEAPON_BUY_COUNT = 10;
     
+    
+    
     /*
-     購入した武器のみ表示する
+     購入したらまず武器イメージを表示＆武器閲覧用スライドショーを表示するためのボタンも表示
      */
     
+//    UIImageView *img = [CreateComponentClass
+//                        createImageView:CGRectMake(10, 100, 300, 300)
+//                        image:[imageArray objectAtIndex:number]
+//tag:<#(int)#> target:<#(id)#> selector:<#(NSString *)#>]
+    
+    
+    
+    //slideshowの上に表示するダイアログボックス
     for(int i = 0;i < WEAPON_BUY_COUNT;i++){//最初のタグは武器イメージタップ時のイベント
         if(i == tappedView.tag){
             UIView *viewAll = [[UIView alloc]initWithFrame:self.view.bounds];
@@ -184,6 +253,13 @@ AttrClass *attr;
     NSLog(@"close view");
     [[sender view]removeFromSuperview];
 }
-
+//-(void)closeSuperView:(id)sender{
+//    NSLog(@"close superview : %@", sender);
+//    [[sender superview]removeFromSuperview];
+//    
+//}
+-(void)closeSuperView:(NSNumber *)num{
+    NSLog(@"closeSuperView");
+}
 
 @end

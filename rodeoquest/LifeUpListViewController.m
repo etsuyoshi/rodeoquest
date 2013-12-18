@@ -37,6 +37,12 @@
                    @"240",
                    @"70",
                    nil];
+        itemList = [NSArray arrayWithObjects:
+                    @"itemlistLifeUp0",
+                    @"itemlistLifeUp1",
+                    @"itemlistLifeUp2",
+                    @"itemlistLifeUp3",
+                   nil];
     }
     return self;
 }
