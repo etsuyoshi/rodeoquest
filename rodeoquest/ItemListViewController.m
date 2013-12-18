@@ -257,9 +257,14 @@ BackGroundClass2 *backGround;
 -(void)closeBtnClicked{
     NSLog(@"close");
 //    [self dismissModalViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
-//    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];//menuViewConの背景がすぐに表示されない
+//    [self performSelector:@selector(closeViewCon) withObject:Nil afterDelay:0.01f];
 }
+
+//-(void)closeViewCon{
+//    
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//}
 
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
     if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
