@@ -1501,19 +1501,45 @@ int sensitivity;
     CGPoint point = [gr translationInView:[MyMachine getImageView]];
     CGPoint movedPoint = CGPointMake([MyMachine getImageView].center.x + point.x,
                                      [MyMachine getImageView].center.y + point.y);
-//    [MyMachine setX:movedPoint.x];
-//    [MyMachine setY:movedPoint.y];
+
+//この方法では画面の渕ギリギリを動くことができない。
+//    if(movedPoint.x >= 0 && movedPoint.x <= self.view.bounds.size.width &&
+//       movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
+//        
+//        [MyMachine setLocation:CGPointMake(movedPoint.x, movedPoint.y)];
+//        [MyMachine getImageView].center = movedPoint;
+//        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
+//        
+//        
+//        //エフェクト描画用frame
+//        viewMyEffect.center = movedPoint;
+//        [gr setTranslation:CGPointZero inView:viewMyEffect];
+//    }
     
-    if(movedPoint.x >= 0 && movedPoint.x <= self.view.bounds.size.width &&
-       movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
-        
-        [MyMachine setLocation:CGPointMake(movedPoint.x, movedPoint.y)];
-        [MyMachine getImageView].center = movedPoint;
+    if(movedPoint.x >= 0 && movedPoint.x <= self.view.bounds.size.width){
+        [MyMachine setLocation:CGPointMake(movedPoint.x,
+                                           [MyMachine getImageView].center.y)];
+        [MyMachine getImageView].center = CGPointMake(movedPoint.x,
+                                                      [MyMachine getImageView].center.y);
         [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
         
         
         //エフェクト描画用frame
-        viewMyEffect.center = movedPoint;
+        viewMyEffect.center = [MyMachine getImageView].center;
+        [gr setTranslation:CGPointZero inView:viewMyEffect];
+        
+    }
+    
+    if(movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
+        [MyMachine setLocation:CGPointMake([MyMachine getImageView].center.x,
+                                           movedPoint.y)];
+        [MyMachine getImageView].center = CGPointMake([MyMachine getImageView].center.x,
+                                                      movedPoint.y);
+        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
+        
+        
+        //エフェクト描画用frame
+        viewMyEffect.center = [MyMachine getImageView].center;
         [gr setTranslation:CGPointZero inView:viewMyEffect];
     }
     

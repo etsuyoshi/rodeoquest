@@ -15,6 +15,7 @@
 #import "MenuViewController.h"
 #import "GameClassViewController.h"
 #import "BackGroundClass2.h"
+#import "WeaponBuyListViewController.h"
 #import "ItemListViewController.h"
 #import "DefenseUpListViewController.h"
 #import "ItemUpListViewController.h"
@@ -58,7 +59,7 @@
 
 #define MARGIN_RANKING_TO_FORMAL_BUTTON 10
 
-#define SIZE_FORMAL_BUTTON 50
+#define SIZE_FORMAL_BUTTON 60
 #define INTERVAL_FORMAL_BUTTON 10
 
 #define MARGIN_FORMAL_TO_START 2
@@ -635,31 +636,36 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 -(void)pushedButton:(NSNumber *)num{//UIImageView型による定義
     switch((ButtonMenuImageType)num.integerValue){
         case ButtonMenuImageTypeWeapon:{
-            NSArray *imageArray = [NSArray arrayWithObjects:
-                                   @"RockBow.png",
-                                   @"FireBow.png",
-                                   @"WaterBow.png",
-                                   @"IceBow.png",
-                                   @"BugBow.png",
-                                   @"AnimalBow.png",
-                                   @"GrassBow.png",
-                                   @"ClothBow.png",
-                                   @"SpaceBow.png",
-                                   @"WingBow.png",
-                                   nil];
-            //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
-            //購入した武器の分だけ右を見れる
-            UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
-                                                                                 50,
-                                                                                 self.view.bounds.size.width,
-                                                                                 self.view.bounds.size.height)
-                                                            imageFile:imageArray
-                                                               target:self
-                                                            selector1:@"closeView:"
-                                                            selector2:@"weaponSelected:"];
-//                                                            selector2:@"imageTapped:"];
-            superView.tag = 0;
-            [self.view addSubview:superView];
+            WeaponBuyListViewController *wblvc = [[WeaponBuyListViewController alloc]init];
+            [self presentViewController: wblvc animated:YES completion: nil];
+            
+            
+            //slide-show
+//            NSArray *imageArray = [NSArray arrayWithObjects:
+//                                   @"RockBow.png",
+//                                   @"FireBow.png",
+//                                   @"WaterBow.png",
+//                                   @"IceBow.png",
+//                                   @"BugBow.png",
+//                                   @"AnimalBow.png",
+//                                   @"GrassBow.png",
+//                                   @"ClothBow.png",
+//                                   @"SpaceBow.png",
+//                                   @"WingBow.png",
+//                                   nil];
+//            //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
+//            //購入した武器の分だけ右を見れる
+//            UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
+//                                                                                 50,
+//                                                                                 self.view.bounds.size.width,
+//                                                                                 self.view.bounds.size.height)
+//                                                            imageFile:imageArray
+//                                                               target:self
+//                                                            selector1:@"closeView:"
+//                                                            selector2:@"weaponSelected:"];
+////                                                            selector2:@"imageTapped:"];
+//            superView.tag = 0;
+//            [self.view addSubview:superView];
             
             
             break;
@@ -1132,50 +1138,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 -(void)weaponSelected:(id)sender{
     UIView *tappedView = [sender view];
     NSLog(@"%@", tappedView);
-    switch (((BeamType)tappedView.tag)) {
-        case BeamTypeAnimal:{
-            NSLog(@"animal selected");
-            break;
-        }
-        case BeamTypeBug:{
-            
-            break;
-        }
-        case BeamTypeCloth:{
-            
-            break;
-        }
-        case BeamTypeFire:{
-            
-            break;
-        }
-        case BeamTypeGrass:{
-            
-            break;
-        }
-        case BeamTypeIce:{
-            
-            break;
-        }
-        case BeamTypeRock:{
-            NSLog(@"rock selected");
-            break;
-        }
-        case BeamTypeSpace:{
-            
-            break;
-        }
-        case BeamTypeWater:{
-            
-            break;
-        }
-        case BeamTypeWing:{
-            NSLog(@"wing selected");
-            break;
-        }
-        default:
-            break;
-    }
     
     
     for(int i = 0;i < WEAPON_BUY_COUNT;i++){//最初のタグは武器イメージタップ時のイベント

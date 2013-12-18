@@ -11,6 +11,8 @@
 #import "MenuButtonWithView.h"
 #import "SwitchButtonWithView.h"
 #import "CountButtonWithView.h"
+#import "ScrollViewForItemList.h"
+#import "TextViewForItemList.h"
 
 //typedef NS_ENUM(NSInteger, Type) {
 //    ProductTypeCoin6

@@ -7,8 +7,6 @@
 //
 
 #import "ItemListViewController.h"
-#import "CreateComponentClass.h"
-#import "AttrClass.h"
 //#import "BackGroundClass2.h"
 
 @interface ItemListViewController ()
@@ -130,11 +128,17 @@ BackGroundClass2 *backGround;
     tvGoldAmount.editable = NO;
     [self.view addSubview:tvGoldAmount];
     
+    
+    
+    
+    
+    
+    
     //frame
     int itemFrameWidth = 300;
     int itemFrameHeight = 75;
-    int itemFrameInitX = 10;
-    int itemFrameInitY = 100;
+    int itemFrameInitX = 5;
+    int itemFrameInitY = 5;
     int itemFrameInterval = 10;
     
     int imageFrameWidth = itemFrameWidth / 6;
@@ -142,13 +146,47 @@ BackGroundClass2 *backGround;
     int imageFrameInitX = itemFrameInitX + 10;
     int imageFrameInitY = itemFrameInitY + 10;
     int imageFrameInterval = itemFrameInterval + 20;
+    
+    
+    int init_y = 95;
+    int init_x = 5;
+    UIView *viewFrame = [CreateComponentClass
+                         createView:CGRectMake(init_x, init_y,
+                                               self.view.frame.size.width-10,
+                                               self.view.frame.size.height-10)];
+    [viewFrame setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01]];
+    [self.view addSubview:viewFrame];
+    
+//    UIScrollView *sv = [[UIScrollView alloc]
+//                        initWithFrame:viewFrame.bounds];
+    ScrollViewForItemList *sv = [[ScrollViewForItemList alloc]
+                                 initWithFrame:viewFrame.bounds];
+    sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];//こうすれば子どものalpha値は上書きされない
+    sv.bounces = NO;//バウンドさせない
+    
+    //svの上に貼られるview
+    UIView *uvOnScroll = [[UIView alloc]
+                          initWithFrame:CGRectMake(0,0,
+                                                   sv.bounds.size.width,
+                                                   itemFrameInitY + [arrIv count] * (itemFrameHeight + itemFrameInterval)
+                                                   )];
+    [uvOnScroll setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0f]];
+    sv.contentSize = uvOnScroll.bounds.size;
+    
+    
+    [sv addSubview:uvOnScroll];
+    [viewFrame addSubview:sv];
+    
+    
+    //uvOnScroll-component
     for(int i = 0; i < [arrIv count]; i++){
         //frame作成
         UIView *eachView = [CreateComponentClass createView:CGRectMake(itemFrameInitX,
                                                                 itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),
                                                                 itemFrameWidth,
                                                                 itemFrameHeight)];
-        [self.view addSubview:eachView];
+//        [self.view addSubview:eachView];
+        [uvOnScroll addSubview:eachView];
         
         //image(cash)の貼付
         UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
@@ -156,10 +194,11 @@ BackGroundClass2 *backGround;
                                                                    imageFrameWidth,
                                                                    imageFrameHeight)];
         iv.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
-        [self.view addSubview:iv];
+//        [self.view addSubview:iv];
+        [uvOnScroll addSubview:iv];
         
         //名称、説明文の貼付：配列等にしておく必要あり
-        UITextView *tv = [[UITextView alloc]initWithFrame:CGRectMake(imageFrameInitX + imageFrameWidth,
+        UITextView *tv = [[TextViewForItemList alloc]initWithFrame:CGRectMake(imageFrameInitX + imageFrameWidth,
                                                                      itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
                                                                      itemFrameWidth * 5 / 9,
                                                                      itemFrameHeight - 20)];
@@ -170,7 +209,9 @@ BackGroundClass2 *backGround;
 //        tv.text = @"explanation";
         tv.text = [arrTv objectAtIndex:i];
         tv.editable = NO;
-        [self.view addSubview:tv];
+        tv.bounces = NO;//no-bound
+//        [self.view addSubview:tv];
+        [uvOnScroll addSubview:tv];
         
         //プラスボタンの貼付
         CGRect btnRect = CGRectMake(imageFrameInitX + imageFrameWidth + 10 + itemFrameWidth / 2 + 20,
@@ -184,7 +225,8 @@ BackGroundClass2 *backGround;
                                                       target:self
                                                     selector:@"buyBtnPressed:"];
         btn.tag = i;//[[arrCost objectAtIndex:i] intValue];
-        [self.view addSubview:btn];
+//        [self.view addSubview:btn];
+        [uvOnScroll addSubview:btn];
         
     }
     
@@ -227,7 +269,7 @@ BackGroundClass2 *backGround;
         [self displayCoin];
         
         
-        [self memorizeBoughtLog:[itemList objectAtIndex:[sender tag]]];
+        [self processAfterBuy:[itemList objectAtIndex:[sender tag]]];
         
     }else{
         //お金が足りない場合
@@ -237,7 +279,7 @@ BackGroundClass2 *backGround;
     
 }
 
--(void)memorizeBoughtLog:(NSString *)_key{
+-(void)processAfterBuy:(NSString *)_key{
     if([[attr getValueFromDevice:_key] isEqual:[NSNull null]] ||
        [attr getValueFromDevice:_key] == nil){
         
@@ -250,6 +292,8 @@ BackGroundClass2 *backGround;
         
         [attr setValueToDevice:_key strValue:[NSString stringWithFormat:@"%d", afterNum]];
     }
+    
+    NSLog(@"processAfterBuy:%@", [attr getValueFromDevice:_key]);
 }
 
 -(void)oscillateTextViewGold:(int)count{
@@ -272,7 +316,7 @@ BackGroundClass2 *backGround;
     // Dispose of any resources that can be recreated.
 }
 
--(void)displayCoin{
+-(void)displayCoin{//購入後のコイン値を修正する
     NSLog(@"now coin = %d", [[attr getValueFromDevice:@"gold"] intValue]);
     int gold = [[attr getValueFromDevice:@"gold"] intValue];
     tvGoldAmount.text = [NSString stringWithFormat:@"%d", gold];

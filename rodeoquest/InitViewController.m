@@ -9,7 +9,7 @@
 //　同期通信の場合はサブスレッド立てるhttp://www.yoheim.net/blog.php?q=20130206
 
 
-//#define NoConnectTEST
+#define NoConnectTEST
 //#define TestView
 
 #ifdef TestView//PaymentTestでテストする場合、TestViewをオンにしたまま以下をコメントイン(コメントアウトを外す)
@@ -141,9 +141,9 @@ UIActivityIndicatorView *_indicator;
         // 時・分・秒を取得
         flags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
         comps = [calendar components:flags fromDate:now];
-        NSString *hour = [NSString stringWithFormat:@"%d", comps.hour];
-        NSString *minute = [NSString stringWithFormat:@"%d", comps.minute];
-        NSString *second = [NSString stringWithFormat:@"%d", comps.second];
+        NSString *hour = [NSString stringWithFormat:@"%02d", comps.hour];
+        NSString *minute = [NSString stringWithFormat:@"%02d", comps.minute];
+        NSString *second = [NSString stringWithFormat:@"%02d", comps.second];
         NSLog(@"%@時 %@分 %@秒", hour, minute, second);
         strLogin = [NSString stringWithFormat:@"%@%@%@%@", strLogin, hour, minute, second];
         

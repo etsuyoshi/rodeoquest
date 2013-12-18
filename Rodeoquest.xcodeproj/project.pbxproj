@@ -56,6 +56,9 @@
 		3411FB8617FEF392001D1491 /* mechanical_design_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB8517FEF392001D1491 /* mechanical_design_3.png */; };
 		3411FB8A17FF2D06001D1491 /* cosmos_star4_repair.png in Resources */ = {isa = PBXBuildFile; fileRef = 3411FB8917FF2D06001D1491 /* cosmos_star4_repair.png */; };
 		3413B9A01804FF6400D450FF /* black_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 3413B99F1804FF6400D450FF /* black_128.png */; };
+		3419C0781860437B009BF0D8 /* WeaponBuyListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419C0771860437B009BF0D8 /* WeaponBuyListViewController.m */; };
+		3419C07B186082A7009BF0D8 /* ScrollViewForItemList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419C07A186082A7009BF0D8 /* ScrollViewForItemList.m */; };
+		3419C07E18608B2D009BF0D8 /* TextViewForItemList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419C07D18608B2D009BF0D8 /* TextViewForItemList.m */; };
 		3419C41417FD27E200980E71 /* explode4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3419C41217FD27E200980E71 /* explode4.png */; };
 		3419C41517FD27E200980E71 /* explode3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3419C41317FD27E200980E71 /* explode3.png */; };
 		3419C41717FD2B3300980E71 /* explode5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3419C41617FD2B3300980E71 /* explode5.png */; };
@@ -358,6 +361,12 @@
 		3411FB8517FEF392001D1491 /* mechanical_design_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mechanical_design_3.png; sourceTree = "<group>"; };
 		3411FB8917FF2D06001D1491 /* cosmos_star4_repair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cosmos_star4_repair.png; sourceTree = "<group>"; };
 		3413B99F1804FF6400D450FF /* black_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_128.png; sourceTree = "<group>"; };
+		3419C0761860437B009BF0D8 /* WeaponBuyListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponBuyListViewController.h; sourceTree = "<group>"; };
+		3419C0771860437B009BF0D8 /* WeaponBuyListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeaponBuyListViewController.m; sourceTree = "<group>"; };
+		3419C079186082A7009BF0D8 /* ScrollViewForItemList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewForItemList.h; sourceTree = "<group>"; };
+		3419C07A186082A7009BF0D8 /* ScrollViewForItemList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewForItemList.m; sourceTree = "<group>"; };
+		3419C07C18608B2D009BF0D8 /* TextViewForItemList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewForItemList.h; sourceTree = "<group>"; };
+		3419C07D18608B2D009BF0D8 /* TextViewForItemList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewForItemList.m; sourceTree = "<group>"; };
 		3419C41217FD27E200980E71 /* explode4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode4.png; sourceTree = "<group>"; };
 		3419C41317FD27E200980E71 /* explode3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode3.png; sourceTree = "<group>"; };
 		3419C41617FD2B3300980E71 /* explode5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode5.png; sourceTree = "<group>"; };
@@ -732,6 +741,25 @@
 				3422319D1845B5C400055ADF /* btn_g_on2.png */,
 			);
 			name = button;
+			sourceTree = "<group>";
+		};
+		3419C07518604338009BF0D8 /* ListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				34A6A1A1180EF48F006F26D6 /* ItemListViewController.h */,
+				34A6A1A2180EF48F006F26D6 /* ItemListViewController.m */,
+				34E041E01850D81500CA3034 /* DefenseUpListViewController.h */,
+				34E041E11850D81500CA3034 /* DefenseUpListViewController.m */,
+				34E041DA1850AEEC00CA3034 /* WeaponUpListViewController.h */,
+				34E041DB1850AEEC00CA3034 /* WeaponUpListViewController.m */,
+				34E041D71850A93400CA3034 /* ItemUpListViewController.h */,
+				34E041D81850A93400CA3034 /* ItemUpListViewController.m */,
+				34E041DD1850B0CC00CA3034 /* LifeUpListViewController.h */,
+				34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */,
+				3419C0761860437B009BF0D8 /* WeaponBuyListViewController.h */,
+				3419C0771860437B009BF0D8 /* WeaponBuyListViewController.m */,
+			);
+			name = ListViewController;
 			sourceTree = "<group>";
 		};
 		342057C517F2B34C0084E99D = {
@@ -1247,6 +1275,7 @@
 		34F3007318218C350082DCBC /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3419C07518604338009BF0D8 /* ListViewController */,
 				342057EC17F2B34C0084E99D /* InitViewController.h */,
 				342057ED17F2B34C0084E99D /* InitViewController.m */,
 				34C16CCD181C2D9000650A40 /* TestViewController.h */,
@@ -1261,16 +1290,6 @@
 				34BD6DCB18194683006BC523 /* InviteFriendsViewController.m */,
 				344928B018025E6100315F2D /* MenuViewController.h */,
 				344928B118025E6100315F2D /* MenuViewController.m */,
-				34A6A1A1180EF48F006F26D6 /* ItemListViewController.h */,
-				34A6A1A2180EF48F006F26D6 /* ItemListViewController.m */,
-				34E041E01850D81500CA3034 /* DefenseUpListViewController.h */,
-				34E041E11850D81500CA3034 /* DefenseUpListViewController.m */,
-				34E041DA1850AEEC00CA3034 /* WeaponUpListViewController.h */,
-				34E041DB1850AEEC00CA3034 /* WeaponUpListViewController.m */,
-				34E041D71850A93400CA3034 /* ItemUpListViewController.h */,
-				34E041D81850A93400CA3034 /* ItemUpListViewController.m */,
-				34E041DD1850B0CC00CA3034 /* LifeUpListViewController.h */,
-				34E041DE1850B0CC00CA3034 /* LifeUpListViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
 				3436369B180FDA8B005A5C01 /* FontTestViewController.m */,
 			);
@@ -1298,6 +1317,10 @@
 				3477C2091851F8C60006A9BB /* CountButtonWithView.m */,
 				343D9704184F3A0C000239F4 /* MenuButtonWithView.h */,
 				343D9705184F3A0C000239F4 /* MenuButtonWithView.m */,
+				3419C07C18608B2D009BF0D8 /* TextViewForItemList.h */,
+				3419C07D18608B2D009BF0D8 /* TextViewForItemList.m */,
+				3419C079186082A7009BF0D8 /* ScrollViewForItemList.h */,
+				3419C07A186082A7009BF0D8 /* ScrollViewForItemList.m */,
 			);
 			name = Component;
 			sourceTree = "<group>";
@@ -1622,7 +1645,9 @@
 				3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */,
 				34043A5A17FA0FE50000E338 /* ExplodeParticleView.m in Sources */,
 				34FA999E17FBCEF000317D83 /* ItemClass.m in Sources */,
+				3419C07E18608B2D009BF0D8 /* TextViewForItemList.m in Sources */,
 				342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */,
+				3419C0781860437B009BF0D8 /* WeaponBuyListViewController.m in Sources */,
 				3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */,
 				34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */,
 				34E041D91850A93400CA3034 /* ItemUpListViewController.m in Sources */,
@@ -1638,6 +1663,7 @@
 				344928B218025E6100315F2D /* MenuViewController.m in Sources */,
 				340D050118599E52001DD8EC /* ViewWithEffectLevelUp.m in Sources */,
 				344DA1DA185309EA00B392A7 /* Common.m in Sources */,
+				3419C07B186082A7009BF0D8 /* ScrollViewForItemList.m in Sources */,
 				34E041DF1850B0CC00CA3034 /* LifeUpListViewController.m in Sources */,
 				348AD7ED180A9159007226EC /* DBAccessClass.m in Sources */,
 				34FA1A31180BC2460011E1CA /* AttrClass.m in Sources */,

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BackGroundClass2.h"
+#import "CreateComponentClass.h"
+#import "AttrClass.h"
+
 NSArray *itemList;
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;
