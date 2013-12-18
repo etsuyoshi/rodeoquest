@@ -270,11 +270,11 @@ BackGroundClass2 *backGround;
     if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
         NSLog(@"buy button pressed : %d", [sender tag]);
-        [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - cost];
-        [self displayCoin];
+        [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - cost];//[attr setValueToDev..
+        [self displayCoin];//tv.text = ...
         
         
-        [self processAfterBuy:[itemList objectAtIndex:[sender tag]]];
+        [self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
         
     }else{
         //お金が足りない場合
@@ -284,7 +284,7 @@ BackGroundClass2 *backGround;
     
 }
 
--(void)processAfterBuy:(NSString *)_key{
+-(void)processAfterBtnPressed:(NSString *)_key{
     if([[attr getValueFromDevice:_key] isEqual:[NSNull null]] ||
        [attr getValueFromDevice:_key] == nil){
         
@@ -298,7 +298,7 @@ BackGroundClass2 *backGround;
         [attr setValueToDevice:_key strValue:[NSString stringWithFormat:@"%d", afterNum]];
     }
     
-    NSLog(@"processAfterBuy:%@", [attr getValueFromDevice:_key]);
+    NSLog(@"processAfterBtnPressed:%@", [attr getValueFromDevice:_key]);
 }
 
 -(void)oscillateTextViewGold:(int)count{

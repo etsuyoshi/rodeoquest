@@ -369,11 +369,24 @@
                  selector1:(NSString *)selector1
                  selector2:(NSString *)selector2{
     
+    NSLog(@"create=slideshowにおいてattr初期化");
+    
+    AttrClass *_attr = [[AttrClass alloc] init];
+    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+    
     int imageHeight = 300;
     int imageWidth = 300;
     int imageMarginHorizon = 10;
-    int amountOfImage = [imageArray count];
-    
+//    int amountOfImage = [imageArray count];
+    int amountOfImage = 0;
+    //購入済のみ表示する
+    for( int i = 0 ;i < [imageArray count]; i++){
+        int holdWeaponID = [_attr getValueFromDevice:
+                            [NSString stringWithFormat:@"weaponID%d", i]].integerValue;
+        if(holdWeaponID > 0){//0非保有,1保有,2装備
+            amountOfImage ++;//表示イメージ数を増やす
+        }
+    }
     
     UIView *superView = [self createViewNoFrame:rect
                                           color:[UIColor clearColor]
@@ -389,7 +402,7 @@
     
     //            UIScrollView *sv = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame:uv_rect];
-    sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];//こうすれば子どものalpha値は上書きされない
+    sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
     
     UIView *uvOnScroll = [[UIView alloc] initWithFrame:CGRectMake(uv_rect.origin.x,
                                                                   uv_rect.origin.y,
@@ -399,8 +412,7 @@
     sv.contentSize = uvOnScroll.bounds.size;
     
     
-    AttrClass *_attr = [[AttrClass alloc] init];
-    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+    
 //    NSArray *arrImage = [dictWeapon allKeys];
 //    NSArray *arrBeamType = [dictWeapon allValues];
 //    
@@ -422,42 +434,49 @@
     //http://qiita.com/tatsuof0126/items/46a41a897df2cd2684d4
 
     NSLog(@"start loop");
-    for(int numImage = 0; numImage < amountOfImage; numImage++){
+    int countDisplay = 0;
+    for(int numImage = 0; numImage < [imageArray count]; numImage++){
         
-        
-//        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
-        //imageViewには、タグ付けとtarget設定ができないので
-        CGRect imageRect = CGRectMake(imageMarginHorizon + numImage * (imageWidth + imageMarginHorizon),
-                                      -30, imageWidth, imageHeight);
-        UIView *frameView = [self createView:imageRect];//imageのframe
-        [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
-        [uvOnScroll addSubview:frameView];
-        
-        //現在装備中のアイテム：やってもいいけど、選択した後にも反映させるにはグローバルに設定する必要がある。
-//        if([[_attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", numImage]]
-//            isEqualToString:@"2"]){
-//            UIImageView *viewEquip = [CreateComponentClass
-////                                      createImageView:frameView.bounds
-//                                        createImageView:imageRect
-//                                      image:@"ornament.png"];
-//            [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
-////            [uvOnScroll addSubview:viewEquip];
-//            [frameView addSubview:viewEquip];
-//        }
-        
-        
-//        NSLog(@"dict no = %d, %@", [[[sbc getDict] objectForKey:[imageArray objectAtIndex:numImage]] intValue], [imageArray objectAtIndex:numImage]);
-//        NSLog(@"dict key=%@, value=%@",
-//              [sbc getBeamAsValues:numImage],
-//              [sbc getBowAsKeys:numImage]);
-        UIImageView *imageView = [self createImageView:imageRect
-                                                 image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
-                                                   tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
-                                                target:target
-                                              selector:selector2];
-        [uvOnScroll addSubview:imageView];
-        //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
-        //タップリスナーを追加してタップされたらダイアログで購入確認。
+        int holdWeaponID = [_attr getValueFromDevice:
+                            [NSString stringWithFormat:@"weaponID%d", numImage]].integerValue;
+        if(holdWeaponID > 0){//0非保有,1保有,2装備
+            
+            //        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
+            //imageViewには、タグ付けとtarget設定ができないので
+            CGRect imageRect =
+            CGRectMake(imageMarginHorizon + countDisplay * (imageWidth + imageMarginHorizon),
+                       -30, imageWidth, imageHeight);
+            UIView *frameView = [self createView:imageRect];//imageのframe
+            [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
+            [uvOnScroll addSubview:frameView];
+            
+            //現在装備中のアイテムに背景追加：やってもいいけど、選択した後にも反映させるにはグローバルに設定する必要がある。
+            
+             if([[_attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", numImage]]
+                 isEqualToString:@"2"]){
+                 NSLog(@"equipping...");
+                 UIImageView *viewEquip = [CreateComponentClass
+                                           //                                      createImageView:frameView.bounds
+                                           createImageView:imageRect
+                                           image:@"close.png"];
+                 [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
+                 [uvOnScroll addSubview:viewEquip];
+//                 [frameView addSubview:viewEquip];
+             }
+            
+            
+            
+            UIImageView *imageView = [self createImageView:imageRect
+                                                     image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
+                                                       tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
+                                                    target:target
+                                                  selector:selector2];
+            [uvOnScroll addSubview:imageView];
+            //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
+            //タップリスナーを追加してタップされたらダイアログで購入確認。
+            
+            countDisplay++;//表示順番と位置を示す
+        }
         
     }
 //    NSLog(@"complete loop");

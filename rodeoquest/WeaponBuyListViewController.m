@@ -22,7 +22,9 @@ UIView *superViewForDispWpn;
         attr = [[AttrClass alloc]init];
         
         //test:wallet
-        [attr setValueToDevice:@"10000" strValue:@"gold"];
+//        [attr setValueToDevice:@"gold" strValue:@"10000"];
+//        NSLog(@"zeny = %@",
+//              [attr getValueFromDevice:@"gold"]);
         
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects:
@@ -95,8 +97,12 @@ UIView *superViewForDispWpn;
 }
 
 //購入ボタン押下後に反応する
+//1.デバイスに購入済み情報を書き込む
+//2.購入した武器を表示(表示された武器をタップすると今まで購入した武器一覧を見ることが出来る)
 //arg:[itemList objectAtIndex:[sender tag]]
--(void)processAfterBuy:(NSString *)_key{
+-(void)processAfterBtnPressed:(NSString *)_key{
+
+    
     NSLog(@"weapon buy list : %@", _key);
     imageArray = [NSArray arrayWithObjects:
                            @"RockBow.png",
@@ -115,13 +121,43 @@ UIView *superViewForDispWpn;
     for(int i = 0;i < [imageArray count];i++){
         if([[itemList objectAtIndex:i] isEqualToString:_key]){
             numSelected = i;
+            NSLog(@"selected item is %@", [imageArray objectAtIndex:numSelected]);
             break;
         }else if(i == [imageArray count]-1){
             NSLog(@"processAfterBuy selection error. caz:_key");//=\n%@ and itemList0=\n%@",
 //                  _key,[itemList objectAtIndex:0]);
         }
     }
-    //選択された画像を中央に表示(タップしたらコレクション表示)
+    
+    //1.デバイスに購入済み情報(装備済)を書き込む
+    [attr setValueToDevice:
+     [NSString stringWithFormat:@"weaponID%d", numSelected] strValue:@"2"];
+    //既に装備済のデバイスがあればvalue=1:購入済に設定
+    for(int i = 0 ; i < [imageArray count];i++){
+        if(i != numSelected){
+            //null時判定注意！:なくてもうまくいくっぽい(null.integerValue=0?)
+            if([[attr getValueFromDevice:
+                [NSString stringWithFormat:@"weaponID%d", i]]
+               isEqual:[NSNull null]]
+               ||
+               [attr getValueFromDevice:
+                [NSString stringWithFormat:@"weaponID%d", i]] == nil){
+                   //nullのまま
+               }else{//他のアイテムで２になっているものは全て１に。
+            
+                   if([attr getValueFromDevice:
+                       [NSString stringWithFormat:@"weaponID%d", i]].integerValue == 2){
+                       
+                       [attr setValueToDevice:
+                        [NSString stringWithFormat:@"weaponID%d", i]
+                                     strValue:@"1"];
+                   }
+               }
+        }
+    }
+
+    
+    //2.購入した武器を中央に表示(タップしたらコレクション表示)
     //親ビューを画面全体に配置
     //親ビューを閉じる機能を持つ画面全体ビュー
     //親ビューの上に中心にフレーム配置、フレーム内に武器画像表示

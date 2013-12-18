@@ -41,10 +41,10 @@
                   @"WaterBow.png",[NSNumber numberWithInt:BowTypeIce],
                   @"BugBow.png",[NSNumber numberWithInt:BowTypeBug],
                   @"AnimalBow.png",[NSNumber numberWithInt:BowTypeAnimal],
-                  @"GrassBow.png",[NSNumber numberWithInt:BowTypeGrass ],
+                  @"GrassBow.png",[NSNumber numberWithInt:BowTypeGrass],
                   @"ClothBow.png",[NSNumber numberWithInt:BowTypeCloth],
-                  @"SpaceBow.png",[NSNumber numberWithInt:BowTypeSpace ],
-                  @"WingBow.png",[NSNumber numberWithInt:BowTypeWing ],
+                  @"SpaceBow.png",[NSNumber numberWithInt:BowTypeSpace],
+                  @"WingBow.png",[NSNumber numberWithInt:BowTypeWing],
                   nil];
     
     dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -54,10 +54,10 @@
                 @"Water.png",[NSNumber numberWithInt:BeamTypeIce],
                 @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],
                 @"Animal.png",[NSNumber numberWithInt:BeamTypeAnimal],
-                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass ],
+                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass],
                 @"Cloth.png",[NSNumber numberWithInt:BeamTypeCloth],
-                @"Space.png",[NSNumber numberWithInt:BeamTypeSpace ],
-                @"Wing.png",[NSNumber numberWithInt:BeamTypeWing ],
+                @"Space.png",[NSNumber numberWithInt:BeamTypeSpace],
+                @"Wing.png",[NSNumber numberWithInt:BeamTypeWing],
                 nil];
     
     //device-memory-information

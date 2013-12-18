@@ -2057,7 +2057,8 @@ int sensitivity;
                     level++;
                     flagLevelUp = true;
                     expTilNextLevel = [attr getMaxExpAtTheLevel:level];
-                    pvScoreValue = unit-pvScoreValue;
+//                    pvScoreValue = unit-pvScoreValue;//?
+                    pvScoreValue = 0;//(float)[ScoreBoard getScore] - pvScoreValue;//残り：今回取得したスコアから今まで足し上げた値を控除
                     if(pvScoreValue > expTilNextLevel){//次のレベルのMAXよりも残り経験値が大きい場合
                         //経験値を沢山取得しても何度もレベル上昇するのは止めて次のレベルで止めておく
                         pvScoreValue = expTilNextLevel-1;
@@ -2074,32 +2075,38 @@ int sensitivity;
 
             dispatch_async(mainQueue, ^{
                 //経験値
-                if(cnt < loopCount-1){//最後のループのみ別処理(誤差修正のため)
+                if(cnt < loopCount-1){//通常ループ
                     tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
                                      ABS(pvScoreValue) , level];
                     if(!flagLevelUp){
                         [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
                                      animated:NO];
                     }else{//レベルアップ時には一度ゼロに戻してから値を変更
-                        [pv_score setProgress:0//levelが上がったら一旦初期化
-                                     animated:NO];
-                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+                        [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
                                      animated:YES];
+                        //level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
+//                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+//                                     animated:YES];
                         
                         
                     }
                     
-                }else{//unitが循環小数の場合(割り切れないので正確な値を示すために最終値をそのまま表示)
-                    //初期値＋今回獲得スコア
+                }else{////最後のループのみ別処理(誤差：unitが無理数の場合、割り切れないので正確な値を示すために最終値をそのまま表示)
+                    //最終状態：初期値＋今回獲得スコア
                     tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-                                         ABS(exp) + [ScoreBoard getScore], level];
+                                         ABS(pvScoreValue), level];
+                    [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+                                 animated:YES];
                 }
                 
                 //gold
-                if(goldCnt < [GoldBoard getScore]){
+                if([GoldBoard getScore] > 0 &&
+                   goldCnt < [GoldBoard getScore]-1){//少なくとも一枚以上獲得した場合の通常ループ
 //                    goldCnt = (goldCnt + goldAdd > [GoldBoard getScore])?[GoldBoard getScore]:(goldCnt + goldAdd);
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", goldCnt];
                     
+                }else{//最終状態
+                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
                 }
                 
                 //complete
@@ -2108,16 +2115,25 @@ int sensitivity;
                         tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", MIN(cnt, 100)];
                         pv_complete.progress = (float)cnt / 100.0f;
                     }
+                }else{//最終状態：
+                    if(enemyDown == enemyCount){
+                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
+                        pv_complete.progress = 1.0f;
+                    }
                 }
                 
                 
                 //最後の方で完了したらサーバーにデータ登録
                 if(cnt == loopCount-1){//cntは少なくと99は必ずカウントする(割り切れなかった場合のため)：ちなみに他の条件もあるのでcntは100を超える場合もある
-                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
-                    if(enemyDown == enemyCount){
-                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
-                        pv_complete.progress = 1.0f;
-                    }
+//                    //最終状態
+//                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
+//                    tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
+//                                     [ScoreBoard getScore] , level];
+//                    
+//                    if(enemyDown == enemyCount){
+//                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
+//                        pv_complete.progress = 1.0f;
+//                    }
                     
                     NSLog(@"finished thread");
 //                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け

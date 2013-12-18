@@ -447,7 +447,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                        W_MOST_UPPER_COMPONENT,
                                        H_MOST_UPPER_COMPONENT);
     UITextView *tvGoldLabel2 = [CreateComponentClass createTextView:rectGoldLabel2
-                                                               text:@"Gold."
+                                                               text:@"Zeny"
                                                                font:@"AmericanTypewriter-Bold"
                                                                size:15
                                                           textColor:[UIColor blackColor]
@@ -460,7 +460,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                        W_MOST_UPPER_COMPONENT,
                                        H_MOST_UPPER_COMPONENT);
     UITextView *tvGoldLabel = [CreateComponentClass createTextView:rectGoldLabel
-                                                               text:@"Gold."
+                                                               text:@"Zeny"
                                                                font:@"AmericanTypewriter-Bold"
                                                                size:15
                                                           textColor:[UIColor whiteColor]
@@ -1558,7 +1558,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     backGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
                                          width:self.view.bounds.size.width
                                         height:self.view.bounds.size.height
-                                          secs:2.0f];
+                                          secs:5.0f];
     
     
     [self.view addSubview:[backGround getImageView1]];
