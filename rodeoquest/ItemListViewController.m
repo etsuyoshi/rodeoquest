@@ -138,7 +138,7 @@ BackGroundClass2 *backGround;
     int itemFrameWidth = 300;
     int itemFrameHeight = 75;
     int itemFrameInitX = 5;
-    int itemFrameInitY = 5;
+    int itemFrameInitY = 10;
     int itemFrameInterval = 10;
     
     int imageFrameWidth = itemFrameWidth / 6;
@@ -150,10 +150,14 @@ BackGroundClass2 *backGround;
     
     int init_y = 95;
     int init_x = 5;
+    //フレームの枠の長さはアイテムの表示が画面サイズ内に収まればアイテム個数まで。
+    //収まらなければ画面サイズ一杯にする
     UIView *viewFrame = [CreateComponentClass
                          createView:CGRectMake(init_x, init_y,
-                                               self.view.frame.size.width-10,
-                                               self.view.frame.size.height-10)];
+                                               self.view.frame.size.width-init_x * 2,
+                                               MIN(self.view.frame.size.height-init_y-10,
+                                                   itemFrameInitY + (itemFrameHeight + itemFrameInterval) * [arrIv count]))];
+//                                               self.view.frame.size.height-init_y-10)];
     [viewFrame setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01]];
     [self.view addSubview:viewFrame];
     

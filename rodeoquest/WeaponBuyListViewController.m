@@ -28,16 +28,16 @@ UIView *superViewForDispWpn;
         
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects:
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
-                 @"close.png",
+                 @"close.png",//0
+                 @"close.png",//1
+                 @"close.png",//2
+                 @"close.png",//3
+                 @"close.png",//4
+                 @"close.png",//5
+                 @"close.png",//6
+                 @"close.png",//7
+                 @"close.png",//8
+                 @"close.png",//9
                  nil];
         arrTv = [NSMutableArray arrayWithObjects:
                  @"いわ",//1rep=100coin
@@ -84,6 +84,7 @@ UIView *superViewForDispWpn;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
 	// Do any additional setup after loading the view.
     

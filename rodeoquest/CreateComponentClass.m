@@ -690,9 +690,8 @@
     //http://qiita.com/tatsuof0126/items/46a41a897df2cd2684d4
     
     NSLog(@"start loop");
-    int countDisplay = 0;
     for(int numImage = 0; numImage < [imageArray count]; numImage++){
-        
+        NSLog(@"numImage=%d", numImage);
         int holdWeaponID = [_attr getValueFromDevice:
                             [NSString stringWithFormat:@"weaponID%d", numImage]].integerValue;
         
@@ -702,44 +701,42 @@
         //imageViewには、タグ付けとtarget設定ができないので
         
         CGRect rectFrame =
-        CGRectMake(5,imageMarginVertical + countDisplay * (frameHeight + imageMarginVertical),
+        CGRectMake(5,imageMarginVertical + numImage * (frameHeight + imageMarginVertical),
                    imageWidth, frameHeight);
         
         CGRect rectImage =
-        CGRectMake(5,imageMarginVertical + countDisplay * (imageHeight + imageMarginVertical),
+        CGRectMake(5,imageMarginVertical + numImage * (imageHeight + imageMarginVertical),
                    imageWidth, imageHeight);
         //            CGRectMake(imageMarginHorizon + countDisplay * (imageWidth + imageMarginHorizon),
         //                       -30, imageWidth, imageHeight);
         UIView *frameView = [self createView:rectFrame];//imageのframe
-        [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
+        [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0.05 blue:0.1 alpha:0.5f]];
         [uvOnScroll addSubview:frameView];
         
-        //装備中の武器
+        //未購入武器は別画像
         if(holdWeaponID == 0){
-            NSLog(@"equipping...");
+//            NSLog(@"%d is nil",numImage);
             UIImageView *viewEquip = [CreateComponentClass
                                       createImageView:rectFrame
                                       image:@"close.png"];
             [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
             viewEquip.center = frameView.center;
             [uvOnScroll addSubview:viewEquip];
-            //                 [frameView addSubview:viewEquip];
-        }else{
-        
-        
+        }else{//購入済み武器については画像表示
+//            NSLog(@"%d is %@", numImage,
+//                  [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
             
             UIImageView *imageView = [self createImageView:rectImage
                                                      image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
                                                        tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
-                                                    target:target
-                                                  selector:selector2];
+                                                    target:nil
+                                                  selector:nil];
             imageView.center = frameView.center;
             [uvOnScroll addSubview:imageView];
         }
         //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
         //タップリスナーを追加してタップされたらダイアログで購入確認。
         
-        countDisplay++;//表示順番と位置を示す
         
     }//for:numImage
     //    NSLog(@"complete loop");
