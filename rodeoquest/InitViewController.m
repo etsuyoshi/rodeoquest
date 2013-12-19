@@ -9,7 +9,7 @@
 //　同期通信の場合はサブスレッド立てるhttp://www.yoheim.net/blog.php?q=20130206
 
 
-#define NoConnectTEST
+//#define NoConnectTEST
 //#define TestView
 
 #ifdef TestView//PaymentTestでテストする場合、TestViewをオンにしたまま以下をコメントイン(コメントアウトを外す)
@@ -42,6 +42,8 @@
 UIView *_loadingView;
 UIActivityIndicatorView *_indicator;
 
+
+
 //ステータスバー非表示の一環
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -52,7 +54,32 @@ UIActivityIndicatorView *_indicator;
     [super viewDidLoad];
     
     
-    // ステータスバーを非表示にする:plistでも可
+    //gamecenterログイン
+    __weak GKLocalPlayer *localPlayer;
+    localPlayer = [GKLocalPlayer localPlayer];
+    [localPlayer setAuthenticateHandler:(^(UIViewController* viewcontroller, NSError *error) {
+        NSLog(@"%@", localPlayer);
+        //[localPlayer authenticateWithCompletionHandler:^(NSError *error) { OLD CODE!
+        if (localPlayer.isAuthenticated)
+        {
+            //do some stuff
+            NSLog(@" autherize complete" );
+        }
+        else {
+            NSLog(@"authenticating-error = %@", error);
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"iPhoneのGameCenter登録が確認できませんでした。"
+                                      message:@"他のプレーヤーと競うためには「設定」の中の「Game Center」の設定を確認して下さい。"
+                                      delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+            
+        }
+    })];
+
+    
+    // ステータスバーを非表示にする:plistでも可？
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
     {
         //ios7用

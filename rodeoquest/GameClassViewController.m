@@ -99,6 +99,7 @@
 #import "UIView+Animation.h"
 #import "Effect.h"
 #import <QuartzCore/QuartzCore.h>
+#import <GameKit/GameKit.h>
 #define TIMEOVER_SECOND 1000
 #define OBJECT_SIZE 70//自機と敵機のサイズ
 #define ITEM_SIZE 50
@@ -2180,6 +2181,16 @@ int sensitivity;
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
 //    [BackGround pauseAnimations];
     [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
+    
+    GKScore *scoreReporter = [[GKScore alloc] initWithCategory:@"comendo.rodeoquest"];
+    scoreReporter.value = [ScoreBoard getScore];	// とりあえずランダム値をスコアに
+    [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
+        if (error != nil)
+        {
+            // 報告エラーの処理
+        }
+    }];
+    
     
 }
 

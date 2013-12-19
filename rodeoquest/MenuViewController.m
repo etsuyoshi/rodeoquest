@@ -117,18 +117,6 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //        audioPlayerCapture = [self getAVAudioPlayer:@"mySoundEffects.caf" ];
 //        [audioPlayerCapture prepareToPlay];
         
-        //game centerにスコアを報告する
-        GKScore *scoreReporter = [[GKScore alloc] initWithCategory:@"comendo.rodeoquest"];
-        scoreReporter.value = rand() % 1000000;	// とりあえずランダム値をスコアに
-        [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
-            if (error != nil)
-            {
-                // 報告エラーの処理
-                NSLog(@"error leaderboard : %@", error);
-            }
-        }];
-        
-        
     }
     return self;
 }
