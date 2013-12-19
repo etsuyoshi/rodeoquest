@@ -558,7 +558,7 @@ int sensitivity;
     [iv_frame addSubview:iv_pause];
 
     
-    //以下実行後、0.1秒間隔でtimerメソッドが呼び出されるが、それと並行してこのメソッド(viewDidLoad)も実行される(マルチスレッドのような感じ)
+    //以下実行後、0.01秒間隔でtimerメソッドが呼び出されるが、それと並行してこのメソッド(viewDidLoad)も実行される(マルチスレッドのような感じ)
     tm = [NSTimer scheduledTimerWithTimeInterval:0.01f
                                           target:self
                                         selector:@selector(time:)//タイマー呼び出し

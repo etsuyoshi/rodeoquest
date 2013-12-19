@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import <AppSocially/AppSocially.h>
-#import <GameKit/GameKit.h>
 
 @implementation AppDelegate
 

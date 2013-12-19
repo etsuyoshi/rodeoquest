@@ -71,6 +71,8 @@
 
 #define WEAPON_BUY_COUNT 10
 
+NSTimer *tm;
+int secondForLife;
 //NSMutableArray *imageFileArray;
 //NSMutableArray *tagArray;
 //NSMutableArray *titleArray;
@@ -563,12 +565,40 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     [self.view addSubview:bt_start];
     
     
+    CGRect rect_timer =
+    CGRectMake(x_frame_center - W_BT_START/2 - MARGIN_UPPER_COMPONENT - H_BT_START,
+               Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
+               H_RANKING_COMPONENT + MARGIN_RANKING_TO_FORMAL_BUTTON +
+               (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count] + MARGIN_FORMAL_TO_START,
+               H_BT_START, H_BT_START);
+    //startボタンの横にtimer
+    UIView *viewForTimer =
+    [CreateComponentClass
+     createView:rect_timer];
+    
+    [self.view addSubview:viewForTimer];
+    
     //キャラ変更部分(購入部分)
     
     
     //機体数増加部分(購入ページ)
     
+    //timer起動部分
+    tm = [NSTimer scheduledTimerWithTimeInterval:0.01f
+                                          target:self
+                                        selector:@selector(time:)//タイマー呼び出し
+                                        userInfo:nil
+                                         repeats:YES];
+    secondForLife = 0;
+    
     NSLog(@"ItemViewController start");
+}
+
+- (void)time:(NSTimer*)timer{
+    
+    
+    secondForLife ++;//every1second
+    
 }
 
 - (void)didReceiveMemoryWarning
