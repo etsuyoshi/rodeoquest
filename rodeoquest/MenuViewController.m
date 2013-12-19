@@ -65,14 +65,19 @@
 #define MARGIN_FORMAL_TO_START 2
 
 #define W_BT_START 150
-#define H_BT_START 50
+#define H_BT_START 60
 
 #define ALPHA_COMPONENT 0.5
 
 #define WEAPON_BUY_COUNT 10
 
 NSTimer *tm;
+UITextView *tv_timer;
+UITextView *tv_gameLife;
 int secondForLife;
+int maxSecondForLife;
+int lifeGame;
+int maxLifeGame;
 //NSMutableArray *imageFileArray;
 //NSMutableArray *tagArray;
 //NSMutableArray *titleArray;
@@ -564,6 +569,29 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //    [bt_start setClipsToBounds:YES];
     [self.view addSubview:bt_start];
     
+    //gameLife-display
+    //本来ならattr."lifeGame"キーを用いて読み込み。
+    maxLifeGame = 6;//const要修正
+    NSString *strLifeGame = [attr getValueFromDevice:@"lifeGame"];
+    if([strLifeGame isEqual:[NSNull null]] ||
+       strLifeGame == nil){
+        lifeGame = maxLifeGame;
+    }else{
+        lifeGame = strLifeGame.integerValue;
+    }
+    
+    
+    tv_gameLife =
+    [CreateComponentClass
+     createTextView:CGRectMake(0, 0, rect_start.size.width,
+                               rect_start.size.height/2)
+     text:strLifeGame
+     font:@"AmericanTypewriter-Bold"
+     size:15
+     textColor:[UIColor purpleColor]
+     backColor:[UIColor clearColor]
+     isEditable:NO];
+    [bt_start addSubview:tv_gameLife];
     
     CGRect rect_timer =
     CGRectMake(x_frame_center - W_BT_START/2 - MARGIN_UPPER_COMPONENT - H_BT_START,
@@ -578,27 +606,82 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     
     [self.view addSubview:viewForTimer];
     
+    tv_timer =
+    [CreateComponentClass
+     createTextView:viewForTimer.bounds
+     text:@"MAX"
+     font:@"AmericanTypewriter-Bold"
+     size:15
+     textColor:[UIColor whiteColor]
+     backColor:[UIColor clearColor]
+     isEditable:NO];
+    tv_timer.textAlignment = NSTextAlignmentCenter;
+//    [tv_timer setContentVerticalAlignment:UIControlContentHorizontalAlignmentCenter];
+    [viewForTimer addSubview:tv_timer];
+    
     //キャラ変更部分(購入部分)
     
     
     //機体数増加部分(購入ページ)
     
     //timer起動部分
-    tm = [NSTimer scheduledTimerWithTimeInterval:0.01f
+    tm = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                           target:self
                                         selector:@selector(time:)//タイマー呼び出し
                                         userInfo:nil
                                          repeats:YES];
-    secondForLife = 0;
+    //本来ならシステム時計を読み込んで次のlifeUpまでの時間を計測
+    maxSecondForLife = 360;//const要修正
+    secondForLife = maxSecondForLife;//equal to 6minutes
+    
     
     NSLog(@"ItemViewController start");
 }
 
-- (void)time:(NSTimer*)timer{
+- (void)time:(NSTimer*)timer{//every-1sec
     
+    //DFの場合、次のlifeUpまでの時間は12分
+//    NSLog(@"secondForLife = %d" , secondForLife);
+//    if(lifeGame <= maxLifeGame){
+    if(secondForLife > 0 && lifeGame != maxLifeGame){
+        secondForLife --;//every1second
+        //attrに書き込む必要あり
+//        NSLog(@"secondForLife decrease to = %d" , secondForLife);
+        tv_timer.text =
+        [self getTimeForNext:secondForLife];
+        if(secondForLife == 0){
+            secondForLife = maxSecondForLife;
+            if(lifeGame < maxLifeGame){
+                lifeGame++;
+                [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
+                tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
+                if(lifeGame == maxLifeGame){
+                    tv_timer.text = @"MAX";
+                }
+            }
+        }
+    }
     
-    secondForLife ++;//every1second
+}
+/*
+ *与えられた秒数から次のlifeUpまでの分秒数を返す
+ *dfの場合、X:00で返される(minutesのフォーマットは00ではない)
+ */
+-(NSString *)getTimeForNext:(int)_second{
+    NSString *minuteForReturn = 0;
+    NSString *secondForReturn = 0;
+    if(_second > 0){
+        minuteForReturn = [NSString stringWithFormat:@"%d",_second/60];
+        secondForReturn = [NSString stringWithFormat:@"%02d",
+                           _second - minuteForReturn.integerValue * 60];
+        return [NSString stringWithFormat:@"%@:%@",
+                minuteForReturn,
+                secondForReturn];
+    }else {
+        return @"0:00";
+    }
     
+    return nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -639,8 +722,15 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-            [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
-            [backGround exitAnimations];
+            if(lifeGame > 0){
+                lifeGame--;
+                [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
+                
+                [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
+                [backGround exitAnimations];
+            }else{
+                NSLog(@"%d" , lifeGame);
+            }
 #endif
 
             
