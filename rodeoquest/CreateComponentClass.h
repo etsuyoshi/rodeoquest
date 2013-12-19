@@ -93,12 +93,24 @@
                  selector:(NSString *)selName;
 
 
-+(UIView *)createSlideShow:(CGRect)rect
+//horizon
++(UIView *)createSlideShowHorizon:(CGRect)rect
                  imageFile:(NSArray *)fileArray
                     target:(id)target
                  selector1:(NSString *)selector1
                  selector2:(NSString *)selector2;
-
+//vertical
++(UIView *)createSlideShowVertical:(CGRect)rect
+                         imageFile:(NSArray *)imageArray
+                            target:(id)target
+                         selector1:(NSString *)selector1
+                         selector2:(NSString *)selector2;
+//vertical for all display
++(UIView *)createSlideShowVerticalAll:(CGRect)rect
+                         imageFile:(NSArray *)imageArray
+                            target:(id)target
+                         selector1:(NSString *)selector1
+                         selector2:(NSString *)selector2;
 
 +(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
                        imageType:(ButtonMenuImageType)_imageType

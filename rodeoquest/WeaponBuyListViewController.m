@@ -22,9 +22,9 @@ UIView *superViewForDispWpn;
         attr = [[AttrClass alloc]init];
         
         //test:wallet
-//        [attr setValueToDevice:@"gold" strValue:@"10000"];
-//        NSLog(@"zeny = %@",
-//              [attr getValueFromDevice:@"gold"]);
+        [attr setValueToDevice:@"gold" strValue:@"10000"];
+        NSLog(@"zeny = %@",
+              [attr getValueFromDevice:@"gold"]);
         
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects:
@@ -216,9 +216,9 @@ UIView *superViewForDispWpn;
     //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
     //購入した武器の分だけ右を見れる
     UIView *viewSlide = [CreateComponentClass
-                         createSlideShow:CGRectMake(0,50,
-                                                    self.view.bounds.size.width,
-                                                    self.view.bounds.size.height)
+                         createSlideShowVerticalAll:CGRectMake(0,50,
+                                                            self.view.bounds.size.width,
+                                                            self.view.bounds.size.height)
                          imageFile:imageArray
                          target:self
                          selector1:@"closeSuperViewForDispWpn:"

@@ -284,16 +284,16 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                       nil];
     arrBtnBack = [NSMutableArray arrayWithObjects:
                   [NSArray arrayWithObjects:
-                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    nil],
                   [NSArray arrayWithObjects:
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
                    nil],
                   nil];
                    

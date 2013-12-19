@@ -363,7 +363,7 @@
     return nil;
 }
 
-+(UIView *)createSlideShow:(CGRect)rect
++(UIView *)createSlideShowHorizon:(CGRect)rect
                  imageFile:(NSArray *)imageArray
                     target:(id)target
                  selector1:(NSString *)selector1
@@ -485,6 +485,270 @@
     return superView;
 
 }
+
+//垂直表示：購入済のみ表示
++(UIView *)createSlideShowVertical:(CGRect)rect
+                 imageFile:(NSArray *)imageArray
+                    target:(id)target
+                 selector1:(NSString *)selector1
+                 selector2:(NSString *)selector2{
+    
+    NSLog(@"create=slideshowにおいてattr初期化");
+    
+    AttrClass *_attr = [[AttrClass alloc] init];
+    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+    
+    int imageHeight = 300;
+    int imageWidth = 300;
+    int frameHeight = 200;
+    int imageMarginVertical = 15;
+    //    int amountOfImage = [imageArray count];
+    int amountOfImage = 0;
+    //購入済のみ表示する
+    for( int i = 0 ;i < [imageArray count]; i++){
+        int holdWeaponID = [_attr getValueFromDevice:
+                            [NSString stringWithFormat:@"weaponID%d", i]].integerValue;
+        if(holdWeaponID > 0){//0非保有,1保有,2装備
+            amountOfImage ++;//表示イメージ数を増やす
+        }
+    }
+    
+    UIView *superView = [self createViewNoFrame:rect
+                                          color:[UIColor clearColor]
+                                            tag:9999//closeScrollに渡しているので不要
+                                         target:target
+                                       selector:selector1 ];//NSSelectorFromString(selector1)];//@"closeView:"];
+    //            UIView *superView = [[UIView alloc]initWithFrame:self.view.bounds];
+    
+    CGRect uv_rect = CGRectMake(rect.origin.x,
+                                rect.origin.y,
+                                rect.size.width,
+                                rect.size.height - 80);
+    
+    //            UIScrollView *sv = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    UIScrollView *sv = [[UIScrollView alloc] initWithFrame:uv_rect];
+    sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
+    
+    UIView *uvOnScroll = [[UIView alloc]
+                          initWithFrame:CGRectMake(uv_rect.origin.x,
+                                                   uv_rect.origin.y,
+                                                   uv_rect.size.width,
+                                                   imageMarginVertical + amountOfImage * (frameHeight + imageMarginVertical))];
+//                                                 imageMarginHorizon + amountOfImage * (imageWidth + imageMarginHorizon),
+//                                                 uv_rect.size.height)];
+    [uvOnScroll setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0f]];
+    sv.contentSize = uvOnScroll.bounds.size;
+    
+    
+    
+    //    NSArray *arrImage = [dictWeapon allKeys];
+    //    NSArray *arrBeamType = [dictWeapon allValues];
+    //
+    //    for(int i = 0 ;i < [arrImage count] ;i++){
+    //        NSLog(@"arrimage=%@", [arrImage objectAtIndex:i]);
+    //    }
+    
+    //sort:caz,gettin like uppon description disturbs order
+    //    arrImage = [arrImage sortedArrayUsingComparator:^(id a, id b) {
+    //        return [a compare:b options:NSNumericSearch];
+    //    }];
+    //    arrBeamType = [arrBeamType sortedArrayUsingComparator:^(id a, id b){
+    //        return [a compare:b options:NSNumericSearch];
+    //    }];
+    
+    //uvにタップリスナーを付けて、画像以外がタップされたら閉じる(selfを渡してremovefromsuperview?)=>できない
+    //xボタンを付けるuiviewを付けるしかないか。。
+    
+    //http://qiita.com/tatsuof0126/items/46a41a897df2cd2684d4
+    
+    NSLog(@"start loop");
+    int countDisplay = 0;
+    for(int numImage = 0; numImage < [imageArray count]; numImage++){
+        
+        int holdWeaponID = [_attr getValueFromDevice:
+                            [NSString stringWithFormat:@"weaponID%d", numImage]].integerValue;
+        if(holdWeaponID > 0){//0非保有,1保有,2装備
+            
+            //        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
+            //imageViewには、タグ付けとtarget設定ができないので
+            
+            CGRect rectFrame =
+            CGRectMake(5,imageMarginVertical + countDisplay * (frameHeight + imageMarginVertical),
+                       imageWidth, frameHeight);
+            
+            CGRect rectImage =
+            CGRectMake(5,imageMarginVertical + countDisplay * (imageHeight + imageMarginVertical),
+                       imageWidth, imageHeight);
+//            CGRectMake(imageMarginHorizon + countDisplay * (imageWidth + imageMarginHorizon),
+//                       -30, imageWidth, imageHeight);
+            UIView *frameView = [self createView:rectFrame];//imageのframe
+            [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
+            [uvOnScroll addSubview:frameView];
+            
+            //装備中の武器
+            if([[_attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", numImage]]
+                isEqualToString:@"2"]){
+                NSLog(@"equipping...");
+                UIImageView *viewEquip = [CreateComponentClass
+                                          createImageView:rectFrame
+                                          image:@"close.png"];
+                [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
+                viewEquip.center = frameView.center;
+                [uvOnScroll addSubview:viewEquip];
+                //                 [frameView addSubview:viewEquip];
+            }
+            
+            
+            
+            UIImageView *imageView = [self createImageView:rectImage
+                                                     image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
+                                                       tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
+                                                    target:target
+                                                  selector:selector2];
+            imageView.center = frameView.center;
+            [uvOnScroll addSubview:imageView];
+            //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
+            //タップリスナーを追加してタップされたらダイアログで購入確認。
+            
+            countDisplay++;//表示順番と位置を示す
+        }
+        
+    }//for:numImage
+    //    NSLog(@"complete loop");
+    [sv addSubview:uvOnScroll];
+    [superView addSubview:sv];
+    return superView;
+    
+}
+
+
+//垂直表示：購入済のみカラー表示
++(UIView *)createSlideShowVerticalAll:(CGRect)rect
+                         imageFile:(NSArray *)imageArray
+                            target:(id)target
+                         selector1:(NSString *)selector1
+                         selector2:(NSString *)selector2{
+    
+    NSLog(@"create=slideshowにおいてattr初期化");
+    
+    AttrClass *_attr = [[AttrClass alloc] init];
+    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+    
+    int imageHeight = 300;
+    int imageWidth = 300;
+    int frameHeight = 200;
+    int imageMarginVertical = 15;
+    //    int amountOfImage = [imageArray count];
+    int amountOfImage = [imageArray count];
+    
+    UIView *superView = [self createViewNoFrame:rect
+                                          color:[UIColor clearColor]
+                                            tag:9999//closeScrollに渡しているので不要
+                                         target:target
+                                       selector:selector1 ];//NSSelectorFromString(selector1)];//@"closeView:"];
+    //            UIView *superView = [[UIView alloc]initWithFrame:self.view.bounds];
+    
+    CGRect uv_rect = CGRectMake(rect.origin.x,
+                                rect.origin.y,
+                                rect.size.width,
+                                rect.size.height - 80);
+    
+    //            UIScrollView *sv = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    UIScrollView *sv = [[UIScrollView alloc] initWithFrame:uv_rect];
+    sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
+    
+    UIView *uvOnScroll = [[UIView alloc]
+                          initWithFrame:CGRectMake(uv_rect.origin.x,
+                                                   uv_rect.origin.y,
+                                                   uv_rect.size.width,
+                                                   imageMarginVertical + amountOfImage * (frameHeight + imageMarginVertical))];
+    //                                                 imageMarginHorizon + amountOfImage * (imageWidth + imageMarginHorizon),
+    //                                                 uv_rect.size.height)];
+    [uvOnScroll setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0f]];
+    sv.contentSize = uvOnScroll.bounds.size;
+    
+    
+    
+    //    NSArray *arrImage = [dictWeapon allKeys];
+    //    NSArray *arrBeamType = [dictWeapon allValues];
+    //
+    //    for(int i = 0 ;i < [arrImage count] ;i++){
+    //        NSLog(@"arrimage=%@", [arrImage objectAtIndex:i]);
+    //    }
+    
+    //sort:caz,gettin like uppon description disturbs order
+    //    arrImage = [arrImage sortedArrayUsingComparator:^(id a, id b) {
+    //        return [a compare:b options:NSNumericSearch];
+    //    }];
+    //    arrBeamType = [arrBeamType sortedArrayUsingComparator:^(id a, id b){
+    //        return [a compare:b options:NSNumericSearch];
+    //    }];
+    
+    //uvにタップリスナーを付けて、画像以外がタップされたら閉じる(selfを渡してremovefromsuperview?)=>できない
+    //xボタンを付けるuiviewを付けるしかないか。。
+    
+    //http://qiita.com/tatsuof0126/items/46a41a897df2cd2684d4
+    
+    NSLog(@"start loop");
+    int countDisplay = 0;
+    for(int numImage = 0; numImage < [imageArray count]; numImage++){
+        
+        int holdWeaponID = [_attr getValueFromDevice:
+                            [NSString stringWithFormat:@"weaponID%d", numImage]].integerValue;
+        
+//        if(holdWeaponID > 0){//0非保有,1保有,2装備
+        
+        //        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
+        //imageViewには、タグ付けとtarget設定ができないので
+        
+        CGRect rectFrame =
+        CGRectMake(5,imageMarginVertical + countDisplay * (frameHeight + imageMarginVertical),
+                   imageWidth, frameHeight);
+        
+        CGRect rectImage =
+        CGRectMake(5,imageMarginVertical + countDisplay * (imageHeight + imageMarginVertical),
+                   imageWidth, imageHeight);
+        //            CGRectMake(imageMarginHorizon + countDisplay * (imageWidth + imageMarginHorizon),
+        //                       -30, imageWidth, imageHeight);
+        UIView *frameView = [self createView:rectFrame];//imageのframe
+        [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
+        [uvOnScroll addSubview:frameView];
+        
+        //装備中の武器
+        if(holdWeaponID == 0){
+            NSLog(@"equipping...");
+            UIImageView *viewEquip = [CreateComponentClass
+                                      createImageView:rectFrame
+                                      image:@"close.png"];
+            [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
+            viewEquip.center = frameView.center;
+            [uvOnScroll addSubview:viewEquip];
+            //                 [frameView addSubview:viewEquip];
+        }else{
+        
+        
+            
+            UIImageView *imageView = [self createImageView:rectImage
+                                                     image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
+                                                       tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
+                                                    target:target
+                                                  selector:selector2];
+            imageView.center = frameView.center;
+            [uvOnScroll addSubview:imageView];
+        }
+        //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
+        //タップリスナーを追加してタップされたらダイアログで購入確認。
+        
+        countDisplay++;//表示順番と位置を示す
+        
+    }//for:numImage
+    //    NSLog(@"complete loop");
+    [sv addSubview:uvOnScroll];
+    [superView addSubview:sv];
+    return superView;
+    
+}
+
 
 +(UIImageView *)createMenuButton:(ButtonMenuBackType)_backType
                        imageType:(ButtonMenuImageType)_imageType
