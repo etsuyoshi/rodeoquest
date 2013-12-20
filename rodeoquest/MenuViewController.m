@@ -442,7 +442,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                        W_MOST_UPPER_COMPONENT,
                                        H_MOST_UPPER_COMPONENT);
     UITextView *tvGoldLabel2 = [CreateComponentClass createTextView:rectGoldLabel2
-                                                               text:@"Zeny"
+                                                               text:@"Zeny."
                                                                font:@"AmericanTypewriter-Bold"
                                                                size:15
                                                           textColor:[UIColor blackColor]
@@ -455,7 +455,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                        W_MOST_UPPER_COMPONENT,
                                        H_MOST_UPPER_COMPONENT);
     UITextView *tvGoldLabel = [CreateComponentClass createTextView:rectGoldLabel
-                                                               text:@"Zeny"
+                                                               text:@"Zeny."
                                                                font:@"AmericanTypewriter-Bold"
                                                                size:15
                                                           textColor:[UIColor whiteColor]
@@ -569,14 +569,47 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //    [bt_start setClipsToBounds:YES];
     [self.view addSubview:bt_start];
     
+    //game開始以外でも、ホームボタン押下時、アイテムリストViewCon起動時等、様々なイベント(MenuViewConが消えるイベント)毎にsetValueToDeviceをする。
+    //null判定等の例外(アプリ初期起動時対応等も)
+    //secondForLifeが１秒に何度も引かれる自体(複数のスレッドによるバグ？)を控除or,secondForLife--ではなく、hmsMenuLastOpenからの経過時間を逐次計算する至要にするなど。
     //gameLife-display
-    //本来ならattr."lifeGame"キーを用いて読み込み。
     maxLifeGame = 6;//const要修正
+    //本来ならシステム時計を読み込んで次のlifeUpまでの時間を計測
+    maxSecondForLife = 360;//6minutes:const要修正
+    secondForLife = maxSecondForLife;//equal to 6minutes
+    
     NSString *strLifeGame = [attr getValueFromDevice:@"lifeGame"];
     if([strLifeGame isEqual:[NSNull null]] ||
        strLifeGame == nil){
         lifeGame = maxLifeGame;
     }else{
+        //前回のsecondForLifeがカウントされていた最後の時間を取得して、そこからの経過時間を計測
+        NSString *ymdMenuLastOpen =
+        [attr getValueFromDevice:@"ymdMenuLastOpen"];
+        NSString *hmsMenuLastOpenTime =
+        [attr getValueFromDevice:@"hmsMenuLastOpen"];
+        if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){
+            //getPassSecond;
+            int passedSecond = [self getPassTime:hmsMenuLastOpenTime
+                                            hms2:[self getYYYYMMDD]];
+            if(passedSecond > maxSecondForLife * maxLifeGame){//36分以上経過
+                lifeGame = maxLifeGame;
+            }else if(passedSecond > maxSecondForLife * (maxLifeGame-1)){//30分以上経過
+                lifeGame = MIN(lifeGame + 5, maxLifeGame);
+            }else if(passedSecond > maxSecondForLife * (maxLifeGame-2)){//24分以上経過
+                lifeGame = MIN(lifeGame + 4, maxLifeGame);
+            }else if(passedSecond > maxSecondForLife * (maxLifeGame-3)){//18分以上経過
+                lifeGame = MIN(lifeGame + 3, maxLifeGame);
+            }else if(passedSecond > maxSecondForLife * (maxLifeGame-4)){//12分以上経過
+                lifeGame = MIN(lifeGame + 2, maxLifeGame);
+            }else if(passedSecond > maxSecondForLife * (maxLifeGame-5)){//6分以上経過
+                lifeGame = MIN(lifeGame + 1, maxLifeGame);
+            }else{//6分未満の経過
+                lifeGame = lifeGame;
+            }
+        }else{//日付が違えば全回復
+            lifeGame = maxLifeGame;
+        }
         lifeGame = strLifeGame.integerValue;
     }
     
@@ -630,13 +663,13 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                         selector:@selector(time:)//タイマー呼び出し
                                         userInfo:nil
                                          repeats:YES];
-    //本来ならシステム時計を読み込んで次のlifeUpまでの時間を計測
-    maxSecondForLife = 360;//const要修正
-    secondForLife = maxSecondForLife;//equal to 6minutes
     
+    NSLog(@"now = %@ : %@",
+          [self getYYYYMMDD],
+          [self getHHMMSS]);
     
     NSLog(@"ItemViewController start");
-}
+}//viewDidLoad
 
 - (void)time:(NSTimer*)timer{//every-1sec
     
@@ -648,7 +681,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
         //attrに書き込む必要あり
 //        NSLog(@"secondForLife decrease to = %d" , secondForLife);
         tv_timer.text =
-        [self getTimeForNext:secondForLife];
+        [self transformSecToMMSS:secondForLife];
         if(secondForLife == 0){
             secondForLife = maxSecondForLife;
             if(lifeGame < maxLifeGame){
@@ -667,7 +700,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
  *与えられた秒数から次のlifeUpまでの分秒数を返す
  *dfの場合、X:00で返される(minutesのフォーマットは00ではない)
  */
--(NSString *)getTimeForNext:(int)_second{
+-(NSString *)transformSecToMMSS:(int)_second{
     NSString *minuteForReturn = 0;
     NSString *secondForReturn = 0;
     if(_second > 0){
@@ -725,6 +758,12 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             if(lifeGame > 0){
                 lifeGame--;
                 [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
+                
+                //時間を記憶
+                [attr setValueToDevice:@"ymdMenuLastOpen"
+                              strValue:[self getYYYYMMDD]];
+                [attr setValueToDevice:@"hmsMenuLastOpen"
+                              strValue:[self getHHMMSS]];
                 
                 [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
                 [backGround exitAnimations];
@@ -1674,5 +1713,48 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.view bringSubviewToFront:[backGround getImageView1]];
     [self.view bringSubviewToFront:[backGround getImageView2]];
     [backGround startAnimation];//3sec-Round
+}
+
+//現在日時
+-(NSString *)getYYYYMMDD{
+    NSDateFormatter *_dateformat = [[NSDateFormatter alloc] init];
+    [_dateformat setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"]];
+    [_dateformat setDateFormat:@"yyyyMMdd"];
+    NSString *_now = [_dateformat stringFromDate:[NSDate date]];
+    return _now;
+}
+
+//現在時刻
+-(NSString *)getHHMMSS{
+    NSDateFormatter *_dateformat = [[NSDateFormatter alloc] init];
+    [_dateformat setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"]];
+    [_dateformat setDateFormat:@"HHmmss"];
+    NSString *_now = [_dateformat stringFromDate:[NSDate date]];
+    return _now;
+}
+
+//二つのhhmmssから経過時間(秒)を返す
+-(int)getPassTime:(NSString *)hms1 hms2:(NSString *)hms2{
+    NSString* after = 0;
+    NSString* before = 0;
+    if(hms1.integerValue > hms2.integerValue){
+        after = hms1;
+        before = hms2;
+    }else{
+        after = hms2;
+        before = hms1;
+    }
+    
+    int afterH =[after substringToIndex:2].integerValue;
+    int afterM = [after substringWithRange:NSMakeRange(2, 2)].integerValue;
+    int afterS = [after substringFromIndex:4].integerValue;
+    
+    int beforeH =[before substringToIndex:2].integerValue;
+    int beforeM = [before substringWithRange:NSMakeRange(2, 2)].integerValue;
+    int beforeS = [before substringFromIndex:4].integerValue;
+    
+    return afterH * 3600 + afterM * 60 + afterS -
+            beforeH * 3600 + beforeM * 60 + beforeS;
+    
 }
 @end

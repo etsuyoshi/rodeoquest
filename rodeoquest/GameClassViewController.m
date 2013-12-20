@@ -2028,7 +2028,7 @@ int sensitivity;
         int goldCnt = 0;
         int goldAdd = 0;
         if([GoldBoard getScore] != 0){
-            goldAdd = [GoldBoard getScore]/100==0?1:[GoldBoard getScore]/100;//大体100カウントで終わらせる
+            goldAdd = ([GoldBoard getScore]/100==0)?1:([GoldBoard getScore]/100);//大体100カウントで終わらせる
         }
         //exp初期値
 //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????

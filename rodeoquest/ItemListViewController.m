@@ -156,8 +156,8 @@ BackGroundClass2 *backGround;
                          createView:CGRectMake(init_x, init_y,
                                                self.view.frame.size.width-init_x * 2,
                                                MIN(self.view.frame.size.height-init_y-10,
-                                                   itemFrameInitY + (itemFrameHeight + itemFrameInterval) * [arrIv count]))];
-//                                               self.view.frame.size.height-init_y-10)];
+                                                   itemFrameInitY + (itemFrameHeight + itemFrameInterval) * [arrIv count])
+                                               )];
     [viewFrame setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01]];
     [self.view addSubview:viewFrame];
     
