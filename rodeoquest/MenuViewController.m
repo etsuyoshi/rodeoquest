@@ -578,19 +578,27 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     maxSecondForLife = 360;//6minutes:const要修正
     secondForLife = maxSecondForLife;//equal to 6minutes
     
-    NSString *strLifeGame = [attr getValueFromDevice:@"lifeGame"];
+    NSString *strLifeGame =
+    [attr getValueFromDevice:@"lifeGame"];
+    NSString *ymdMenuLastOpen =
+    [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
+    NSString *hmsMenuLastOpen =
+    [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
+    
     if([strLifeGame isEqual:[NSNull null]] ||
-       strLifeGame == nil){
+       strLifeGame == nil ||
+       ymdMenuLastOpen == nil ||
+       [ymdMenuLastOpen isEqual:[NSNull null]] ||
+       hmsMenuLastOpen == nil ||
+       [hmsMenuLastOpen isEqual:[NSNull null]]){
         lifeGame = maxLifeGame;
     }else{
         //前回のsecondForLifeがカウントされていた最後の時間を取得して、そこからの経過時間を計測
-        NSString *ymdMenuLastOpen =
-        [attr getValueFromDevice:@"ymdMenuLastOpen"];
-        NSString *hmsMenuLastOpenTime =
-        [attr getValueFromDevice:@"hmsMenuLastOpen"];
+        
+
         if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){
-            //getPassSecond;
-            int passedSecond = [self getPassTime:hmsMenuLastOpenTime
+            //getPassSecond:二つの時間からint型差額秒数を返す
+            int passedSecond = [self getPassTime:hmsMenuLastOpen
                                             hms2:[self getYYYYMMDD]];
             if(passedSecond > maxSecondForLife * maxLifeGame){//36分以上経過
                 lifeGame = maxLifeGame;
@@ -605,7 +613,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             }else if(passedSecond > maxSecondForLife * (maxLifeGame-5)){//6分以上経過
                 lifeGame = MIN(lifeGame + 1, maxLifeGame);
             }else{//6分未満の経過
-                lifeGame = lifeGame;
+                //nothing...
+//                lifeGame = lifeGame;
             }
         }else{//日付が違えば全回復
             lifeGame = maxLifeGame;
