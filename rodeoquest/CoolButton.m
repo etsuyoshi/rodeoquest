@@ -161,4 +161,19 @@
     [self performSelector:@selector(hesitateUpdate) withObject:nil afterDelay:0.1];
 }
 
+
+//アクションブロックを与えてイベント駆動させる
+-(void) handleControlEvent:(UIControlEvents)event
+                 withBlock:(ActionBlock) action
+{
+    _actionBlock = action;//Block_copy(action);
+    [self addTarget:self action:@selector(callActionBlock:) forControlEvents:event];
+}
+
+-(void) callActionBlock:(id)sender{
+    _actionBlock();
+    //自動的に閉じる
+//    [self.superview.superview ]
+}
+
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "ItemListViewController.h"
-//#import "BackGroundClass2.h"
+#import "PayProductViewController.h"
 
 @interface ItemListViewController ()
 
@@ -18,10 +18,36 @@
 AttrClass *attr;
 UITextView *tvGoldAmount;
 //UIButton *btnBuy;
+UIView *viewForCoinShort;
 BackGroundClass2 *backGround;
+id _self;
+
+void (^actYesForCoinShort)(void) = ^(void) {
+    
+    NSLog(@"link to buy money");
+    [viewForCoinShort removeFromSuperview];
+    
+    
+    //             [self closeBtnClicked];
+    PayProductViewController *payView = [[PayProductViewController alloc] init];
+    [_self presentViewController: payView animated:NO completion: nil];
+    
+    
+};
+
+void (^actNoForCoinShort)(void) = ^(void) {
+    NSLog(@"automatically remove this alert");
+    
+    [viewForCoinShort removeFromSuperview];
+    
+    
+};
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    _self = self;
     if (self) {
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects:
@@ -288,20 +314,21 @@ BackGroundClass2 *backGround;
         [self oscillateTextViewGold:9];
         
         //コインはゲームで取得するか購入することができますメッセージダイアログボックス
-        UIView *alertView =
+        
+        viewForCoinShort =
         [CreateComponentClass
          createAlertView:CGRectMake(10, 10, 300, 300)
-         dialogRect:CGRectMake(10, 10, 250, 200)
+         dialogRect:CGRectMake(10, 10, 280, 200)
          title:@"cash short!"
          subtitle:@"buy coin!"
-         onYes:^{
-             NSLog(@"link to buy money");
-         }
-         onNo:^{
-             NSLog(@"remove this alert");
-         }];
+         onYes:actYesForCoinShort
+         onNo:actNoForCoinShort
+         ];
         
-        [self.view addSubview:alertView];
+        viewForCoinShort.center =
+        CGPointMake(self.view.bounds.size.width/2,
+                    self.view.bounds.size.height/2);
+        [self.view addSubview:viewForCoinShort];
         
     }
     

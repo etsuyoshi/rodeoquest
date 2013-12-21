@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CoolButton : UIButton
+typedef void (^ActionBlock)();
+
+@interface CoolButton : UIButton{
+    ActionBlock _actionBlock;
+}
 
 @property  (nonatomic, assign) CGFloat hue;
 @property  (nonatomic, assign) CGFloat saturation;
 @property  (nonatomic, assign) CGFloat brightness;
+
+
+-(void) handleControlEvent:(UIControlEvents)event
+                 withBlock:(ActionBlock) action;
 
 @end

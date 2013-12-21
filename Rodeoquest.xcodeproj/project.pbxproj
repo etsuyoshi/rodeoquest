@@ -274,7 +274,6 @@
 		34E216C6181BF62F00B939E6 /* bgm_game_687.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C5181BF62F00B939E6 /* bgm_game_687.mp3 */; };
 		34E216C8181BF64F00B939E6 /* mahotoshi_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C7181BF64F00B939E6 /* mahotoshi_hmix.mp3 */; };
 		34E216CA181BF74300B939E6 /* kinpaku_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34E216C9181BF74300B939E6 /* kinpaku_hmix.mp3 */; };
-		34E85E5D186560050026B566 /* UIBlockButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E85E5C186560050026B566 /* UIBlockButton.m */; };
 		34E976A2185AC18700B666B6 /* ViewFireWorks.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E976A1185AC18700B666B6 /* ViewFireWorks.m */; };
 		34EB7ACB182F28220079B0EB /* powerGauge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 34EB7ACA182F28220079B0EB /* powerGauge2.png */; };
 		34EB7ACE182F2E850079B0EB /* Effect.m in Sources */ = {isa = PBXBuildFile; fileRef = 34EB7ACD182F2E850079B0EB /* Effect.m */; };
@@ -631,8 +630,6 @@
 		34E216C5181BF62F00B939E6 /* bgm_game_687.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_game_687.mp3; sourceTree = "<group>"; };
 		34E216C7181BF64F00B939E6 /* mahotoshi_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mahotoshi_hmix.mp3; sourceTree = "<group>"; };
 		34E216C9181BF74300B939E6 /* kinpaku_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kinpaku_hmix.mp3; sourceTree = "<group>"; };
-		34E85E5B186560050026B566 /* UIBlockButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBlockButton.h; sourceTree = "<group>"; };
-		34E85E5C186560050026B566 /* UIBlockButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBlockButton.m; sourceTree = "<group>"; };
 		34E976A0185AC18700B666B6 /* ViewFireWorks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFireWorks.h; sourceTree = "<group>"; };
 		34E976A1185AC18700B666B6 /* ViewFireWorks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFireWorks.m; sourceTree = "<group>"; };
 		34EB7ACA182F28220079B0EB /* powerGauge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge2.png; sourceTree = "<group>"; };
@@ -1304,8 +1301,6 @@
 			children = (
 				344DA1D6185309EA00B392A7 /* Common.h */,
 				344DA1D7185309EA00B392A7 /* Common.m */,
-				34E85E5B186560050026B566 /* UIBlockButton.h */,
-				34E85E5C186560050026B566 /* UIBlockButton.m */,
 				344DA1D8185309EA00B392A7 /* CoolButton.h */,
 				344DA1D9185309EA00B392A7 /* CoolButton.m */,
 				3476D05D180DE6B800839BD8 /* QBFlatButton.h */,
@@ -1657,7 +1652,6 @@
 				34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */,
 				34E041D91850A93400CA3034 /* ItemUpListViewController.m in Sources */,
 				3411FB8417FEE301001D1491 /* MyMachineClass.m in Sources */,
-				34E85E5D186560050026B566 /* UIBlockButton.m in Sources */,
 				34390EE31855E49100D02C54 /* PaymentTestViewController.m in Sources */,
 				3420AB961827AA9200AB0A84 /* UIView+Animation.m in Sources */,
 				34F3006F182162660082DCBC /* KiraParticleView.m in Sources */,

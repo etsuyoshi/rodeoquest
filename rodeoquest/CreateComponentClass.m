@@ -7,7 +7,6 @@
 //
 
 #import "AttrClass.h"
-#import "UIBlockButton.h"
 #import "MenuButtonWithView.h"
 #import "SwitchButtonWithView.h"
 #import "CreateComponentClass.h"
@@ -903,61 +902,64 @@
     [rectDialog addSubview:viewLine];
     
     
-//    UIButton *btn1 = [CreateComponentClass
-//                      createCoolButton:CGRectMake(10, viewLine.frame.origin.y + 10,
-//                                                  50, 30)
-//                      text:@"yes"
-//                      hue:0.3 saturation:0.3 brightness:0.3
-//                      target:_target selector:onYes tag:0];
-    UIBlockButton *btn1 =
-    [[UIBlockButton alloc]initWithFrame:
-     CGRectMake(10, viewLine.frame.origin.y + 10, 50, 30)];
-    [btn1 setBackgroundColor:[UIColor redColor]];
+
+    int intervalBtn = 10;
+    int widthBtn = rectDialog.bounds.size.width/2 - intervalBtn/2;
+//    MAX(rectDialog.bounds.size.width/2 - intervalBtn/2,
+//                       100);
+    int heightBtn = 60;
+    CoolButton *btnYes =
+    [[CoolButton alloc] initWithFrame:
+    CGRectMake(10, 10, widthBtn, heightBtn)];
+//    CoolButton *btnYes =
+//    [CreateComponentClass
+//     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
+//     text:@"YES" hue:0.532 saturation:0.553 brightness:0.535
+//     target:self selector:@"removeAlertView:" tag:0];
+//    CoolButton *btClose = [CreateComponentClass createCoolButton:CGRectMake(viewMailSuperForm.frame.size.width - widthButton - 5,//right
+//                                                                            10,
+//                                                                            widthButton - 20, heightButton + 10)
+//                                                            text:@"close"
+//                                                             hue:0.532f
+//                                                      saturation:0.553f
+//                                                      brightness:0.535f
+//                                                          target:self
+//                                                        selector:@"closeSuperView:"
+//                                                             tag:0];
+    CoolButton *btnNo =
+    [[CoolButton alloc] initWithFrame:
+     CGRectMake(10, 10, widthBtn, heightBtn)];
 
 //    [UIBlockButton buttonWithType:UIButtonTypeRoundedRect];
 //    btn1.frame = CGRectMake(0, 0, 30, 30);
-    btn1.center = CGPointMake(rectDialog.bounds.size.width/2,
-                              rectDialog.bounds.size.height/2);
-    [btn1 handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
+    //left
+    btnYes.center = CGPointMake(rectDialog.bounds.size.width/2 - intervalBtn/2 - btnYes.bounds.size.width/2,
+                              rectDialog.bounds.size.height - intervalBtn/2 - btnYes.bounds.size.height/2);
+    //right
+    btnNo.center = CGPointMake(rectDialog.bounds.size.width/2 + intervalBtn/2 + btnNo.bounds.size.width/2,
+                               rectDialog.bounds.size.height - intervalBtn/2 - btnNo.bounds.size.height/2);
+    
+    //独自メソッド
+    [btnYes handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
                    withBlock:(ActionBlock) onYes];
-//    btn1 addTarget:<#(id)#> action:<#(SEL)#> forControlEvents:<#(UIControlEvents)#>
-    [rectDialog addSubview:btn1];
-    
-    
-//    a = [CreateComponentClass createViewNoFrame:self.view.bounds
-//                                                          color:[UIColor clearColor]
-//                                                            tag:0
-//                                                         target:Nil
-//                                                       selector:nil];
-//    [viewMailSuperForm setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.8]];
-//    [self.view addSubview:viewMailSuperForm];
-//    
-//    
-//    
-//    
-//    int xViewFrame = 10;
-//    int yViewFrame = 100;
-//    int widthViewFrame = 300;
-//    int heightViewFrame = 350;
-//    
-//    //見た目の飾り付け
-//    UIView *viewFrame = [CreateComponentClass createView:CGRectMake(xViewFrame,yViewFrame,
-//                                                                    widthViewFrame,
-//                                                                    heightViewFrame)];
-//    [viewFrame setBackgroundColor:[UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:0.6f]];
-//    [viewMailSuperForm addSubview:viewFrame];
-//    
-//    //TextViewから他の場所をタップした時にフォーカスを外すためのview
-//    UIView *viewForResign = [CreateComponentClass createViewNoFrame:self.view.bounds
-//                                                              color:[UIColor clearColor]
-//                                                                tag:0
-//                                                             target:self
-//                                                           selector:@"setResign"];
-//    [viewMailSuperForm addSubview:viewForResign];//only for action
-    
-    
-    
+    [btnNo handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
+                    withBlock:(ActionBlock) onNo];
+    NSLog(@"self = %@", self);
+//    [btnYes addTarget:self
+//               action:@selector(removeAlertView:)
+//     forControlEvents:UIControlEventTouchUpInside];
+//    [btnNo addTarget:self
+//              action:@selector(removeAlertView:)
+//    forControlEvents:UIControlEventTouchUpInside];
+    [rectDialog addSubview:btnYes];
+    [rectDialog addSubview:btnNo];
     return superView;
+}
+//上記アラートビュー専用
+-(void)removeAlertView:(id)sender{
+    NSLog(@"removeAlertView");
+//    [((UIView *)sender).superview.superview removeFromSuperview];
+    [[[sender superview] superview ]removeFromSuperview];
 }
 
 @end
