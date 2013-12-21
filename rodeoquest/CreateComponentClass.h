@@ -138,8 +138,5 @@
                      title:(NSString *)_title
                   subtitle:(NSString *)_subtitle
                      onYes:(void (^)(void))onYes
-                      onNo:(void (^)(void))onNo
-                    target:(id)_target
-                  selector:(NSString *)_selector
-                       tag:(int)_tag;
+                      onNo:(void (^)(void))onNo;
 @end

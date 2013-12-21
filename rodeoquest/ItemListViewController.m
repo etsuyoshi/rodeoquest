@@ -287,6 +287,22 @@ BackGroundClass2 *backGround;
         //お金が足りない場合
         [self oscillateTextViewGold:9];
         
+        //コインはゲームで取得するか購入することができますメッセージダイアログボックス
+        UIView *alertView =
+        [CreateComponentClass
+         createAlertView:CGRectMake(10, 10, 300, 300)
+         dialogRect:CGRectMake(10, 10, 250, 200)
+         title:@"cash short!"
+         subtitle:@"buy coin!"
+         onYes:^{
+             NSLog(@"link to buy money");
+         }
+         onNo:^{
+             NSLog(@"remove this alert");
+         }];
+        
+        [self.view addSubview:alertView];
+        
     }
     
 }

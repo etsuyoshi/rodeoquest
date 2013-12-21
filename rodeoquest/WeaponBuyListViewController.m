@@ -24,7 +24,7 @@ UIView *superViewForDispWpn;
         attr = [[AttrClass alloc]init];
         
         //test:wallet
-        [attr setValueToDevice:@"gold" strValue:@"10000"];
+        [attr setValueToDevice:@"gold" strValue:@"10"];
         NSLog(@"zeny = %@",
               [attr getValueFromDevice:@"gold"]);
         
@@ -79,47 +79,25 @@ UIView *superViewForDispWpn;
                     @"itemlistWeaponBuy9",
                     nil];
         
-        arrTitle = [NSMutableArray array];
-        for(int i = 0 ;i < [itemList count];i++){
-            //nsdefaultに書き込まれていないキーはint型に変換すると0になる:string型ではnil
-            int stateHoldWpn =
-            [attr getValueFromDevice:
-             [NSString stringWithFormat:@"weaponID%d", i]].integerValue;
-            
-            NSLog(@"id%dはstatus%dです", i, stateHoldWpn);
-            
-            if(stateHoldWpn == 0){
-                [arrTitle addObject:@"Buy"];
-            }else if(stateHoldWpn == 1){
-                [arrTitle addObject:@"Hold"];
-            }else if(stateHoldWpn == 2){
-                [arrTitle addObject:@"Equip"];
-            }else {
-                NSLog(@"error id %d of status is %d",
-                      i, stateHoldWpn);
-            }
-            
-            NSLog(@"ID%dのボタンのタイトルを%@に変更します",
-                  i, [arrTitle lastObject]);
-        }
-//        arrTitle = [NSMutableArray arrayWithObjects:
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    @"buy",
-//                    nil];
+//        arrTitle = [NSMutableArray array];
+        
+        arrTitle = [NSMutableArray arrayWithObjects:
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    @"buy",
+                    nil];
         
         
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -127,6 +105,24 @@ UIView *superViewForDispWpn;
     
 	// Do any additional setup after loading the view.
     
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    for(int i = 0 ;i < [itemList count];i++){
+        //nsdefaultに書き込まれていないキーはint型に変換すると0になる:string型ではnil
+        int stateHoldWpn =
+        [attr getValueFromDevice:
+         [NSString stringWithFormat:@"weaponID%d", i]].integerValue;
+        
+        NSLog(@"id%dはstatus%dです", i, stateHoldWpn);
+        [self
+         setStateButtonSelected:[arrBtnBuy objectAtIndex:i]
+         status:stateHoldWpn];
+    }
     
 }
 
@@ -182,10 +178,13 @@ UIView *superViewForDispWpn;
             [attr setValueToDevice:
              [NSString stringWithFormat:@"weaponID%d", numSelected] strValue:@"2"];
             
-            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setSelected:YES];//押された状態に
-            ((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]).titleLabel.font = [UIFont boldSystemFontOfSize:30];
-            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitle:@"E." forState:UIControlStateNormal];
+            [self setStateButtonSelected:((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected])
+                              status:2];
+//            
+//            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setSelected:YES];//押された状態に
+//            ((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]).titleLabel.font = [UIFont boldSystemFontOfSize:30];
+//            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+//            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitle:@"E." forState:UIControlStateNormal];
             
         }else {
             //null時判定注意！:なくてもうまくいくっぽい(null.integerValue=0?)
@@ -207,20 +206,21 @@ UIView *superViewForDispWpn;
                         [NSString stringWithFormat:@"weaponID%d", i]
                                      strValue:@"1"];
                        
-                       NSLog(@"%dは装備中なので%@に変更変更",
-                             i, [attr getValueFromDevice:
+                       NSLog(@"%dは装備中なので%@に変更変更",i,
+                             [attr getValueFromDevice:
                                  [NSString stringWithFormat:@"weaponID%d", i]]);
                        
                        
                        
                        //ボタンの状態も変更
+                       [self setStateButtonSelected:((QBFlatButton *)[arrBtnBuy objectAtIndex:i])
+                                         status:1];
                        
-                       
-                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setSelected:NO];//選択された状態を解除
-                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setHighlighted:NO];//押された状態を解除
-                       ((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]).titleLabel.font = [UIFont boldSystemFontOfSize:13];
-                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitle:@"装備する" forState:UIControlStateNormal];
+//                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setSelected:NO];//選択された状態を解除
+////                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setHighlighted:NO];//押された状態を解除
+//                       ((QBFlatButton *)[arrBtnBuy objectAtIndex:i]).titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setTitle:@"Equip" forState:UIControlStateNormal];
                        
                        
                        
@@ -377,5 +377,38 @@ UIView *superViewForDispWpn;
 }
 
 
+-(void)setStateButtonSelected:(UIButton *)btn status:(int)status{
+    
+    if(status == 2){
+        [btn setSelected:YES];//押された状態に
+        btn.titleLabel.font = [UIFont boldSystemFontOfSize:30];
+        [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [btn setTitle:@"E." forState:UIControlStateNormal];
+//        [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setSelected:YES];//押された状態に
+//        ((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]).titleLabel.font = [UIFont boldSystemFontOfSize:30];
+//        [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+//        [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitle:@"E." forState:UIControlStateNormal];
+    }else if(status == 1){
+        
+//        [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setSelected:NO];//選択された状態を解除
+//        //                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setHighlighted:NO];//押された状態を解除
+//        ((QBFlatButton *)[arrBtnBuy objectAtIndex:i]).titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//        [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        [((QBFlatButton *)[arrBtnBuy objectAtIndex:i]) setTitle:@"Equip" forState:UIControlStateNormal];
+        
+        [btn setSelected:NO];//選択された状態を解除
+        btn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btn setTitle:@"Equip" forState:UIControlStateNormal];
+
+        
+    }else if(status == 0){
+        [btn setSelected:NO];//選択された状態を解除
+        btn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btn setTitle:@"Buy" forState:UIControlStateNormal];
+
+    }
+}
 
 @end

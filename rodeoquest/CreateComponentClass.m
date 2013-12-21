@@ -7,6 +7,7 @@
 //
 
 #import "AttrClass.h"
+#import "UIBlockButton.h"
 #import "MenuButtonWithView.h"
 #import "SwitchButtonWithView.h"
 #import "CreateComponentClass.h"
@@ -872,10 +873,7 @@
                      title:(NSString *)_title
                   subtitle:(NSString *)_subtitle
                      onYes:(void (^)(void))onYes
-                      onNo:(void (^)(void))onNo
-                    target:(id)_target
-                  selector:(NSString *)_selector
-                       tag:(int)_tag{
+                      onNo:(void (^)(void))onNo{
     //OKボタンとキャンセルボタン：okボタンを押したときの反応は_selector@target
     UIView *superView = [[UIView alloc] initWithFrame:_rectFrame];
     UIView *rectDialog = [CreateComponentClass
@@ -905,12 +903,23 @@
     [rectDialog addSubview:viewLine];
     
     
-    UIButton *btn1 = [CreateComponentClass
-                      createCoolButton:CGRectMake(10, viewLine.frame.origin.y + 10,
-                                                  50, 30)
-                      text:@"yes"
-                      hue:0.3 saturation:0.3 brightness:0.3
-                      target:_target selector:onYes tag:0];
+//    UIButton *btn1 = [CreateComponentClass
+//                      createCoolButton:CGRectMake(10, viewLine.frame.origin.y + 10,
+//                                                  50, 30)
+//                      text:@"yes"
+//                      hue:0.3 saturation:0.3 brightness:0.3
+//                      target:_target selector:onYes tag:0];
+    UIBlockButton *btn1 =
+    [[UIBlockButton alloc]initWithFrame:
+     CGRectMake(10, viewLine.frame.origin.y + 10, 50, 30)];
+    [btn1 setBackgroundColor:[UIColor redColor]];
+
+//    [UIBlockButton buttonWithType:UIButtonTypeRoundedRect];
+//    btn1.frame = CGRectMake(0, 0, 30, 30);
+    btn1.center = CGPointMake(rectDialog.bounds.size.width/2,
+                              rectDialog.bounds.size.height/2);
+    [btn1 handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
+                   withBlock:(ActionBlock) onYes];
 //    btn1 addTarget:<#(id)#> action:<#(SEL)#> forControlEvents:<#(UIControlEvents)#>
     [rectDialog addSubview:btn1];
     
