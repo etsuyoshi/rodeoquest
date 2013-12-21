@@ -25,8 +25,8 @@ UIView *superViewForEquipWpn;
         attr = [[AttrClass alloc]init];
         
         //test:wallet
-        [attr setValueToDevice:@"gold" strValue:@"10"];
-        NSLog(@"zeny = %@",
+        [attr setValueToDevice:@"gold" strValue:@"1000"];
+        NSLog(@"test:zeny = %@",
               [attr getValueFromDevice:@"gold"]);
         
         // Custom initialization
@@ -163,16 +163,24 @@ UIView *superViewForEquipWpn;
              createAlertView:self.view.bounds
              dialogRect:CGRectMake(0, 0,
                                    self.view.bounds.size.width-20,
-                                   self.view.bounds.size.height)
-             title:@"現在装備中です"
+                                   self.view.bounds.size.width-20)
+             title:@"現在装備可能です。"
              message:@"装備しますか？"
              titleYes:@"装備" titleNo:@"いいえ"
              onYes:^{
-                 [attr setValueToDevice:strIDWpn strValue:@"2"];
+                 //ID設定：他のアイテム含めて設定
+                 [self processAfterBtnPressed:[itemList objectAtIndex:numSelected]];
+                 NSLog(@"%@ is set to %@ from %d",
+                       strIDWpn, [attr getValueFromDevice:strIDWpn], statusWpn);
+                 [superViewForEquipWpn removeFromSuperview];
+                 
+                 
              }
              onNo:blockCloseEquipView];
-            
-            [superViewForEquipWpn removeFromSuperview];
+            superViewForEquipWpn.center =
+            CGPointMake(self.view.bounds.size.width/2,
+                        self.view.bounds.size.height/2);
+            [self.view addSubview:superViewForEquipWpn];
             break;
         }
         case 2:{
@@ -188,6 +196,11 @@ UIView *superViewForEquipWpn;
     
 
 }
+
+/*
+ *購入処理(@superclass)が完了した後に呼ばれる：
+ *ID設定を行う
+ */
 -(void)processAfterBtnPressed:(NSString *)_key{
 
     
@@ -258,7 +271,7 @@ UIView *superViewForEquipWpn;
                         [NSString stringWithFormat:@"weaponID%d", i]
                                      strValue:@"1"];
                        
-                       NSLog(@"%dは装備中なので%@に変更変更",i,
+                       NSLog(@"%dは装備中なので%@に変更",i,
                              [attr getValueFromDevice:
                                  [NSString stringWithFormat:@"weaponID%d", i]]);
                        
@@ -428,6 +441,13 @@ UIView *superViewForEquipWpn;
     [superViewForDispWpn removeFromSuperview];
 }
 
+-(void)setStateAllButton{
+    for(int i = 0 ; i < [arrBtnBuy count] ;i++){
+        NSString *_strIdWpn = [NSString stringWithFormat:@"weaponID%d", i];
+        int _state = [attr getValueFromDevice:_strIdWpn].integerValue;
+        [self setStateButtonSelected:[arrBtnBuy objectAtIndex:i] status:_state];
+    }
+}
 
 -(void)setStateButtonSelected:(UIButton *)btn status:(int)status{
     
