@@ -927,12 +927,6 @@
 //    MAX(rectDialog.bounds.size.width/2 - intervalBtn/2,
 //                       100);
     int heightBtn = 60;
-//    CoolButton *btnYes =
-//    [[CoolButton alloc] initWithFrame:
-//    CGRectMake(10, 10, widthBtn, heightBtn)];
-//    CoolButton *btnNo =
-//    [[CoolButton alloc] initWithFrame:
-//     CGRectMake(10, 10, widthBtn, heightBtn)];
     CoolButton *btnYes =
     [self
      createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
@@ -959,7 +953,6 @@
                    withBlock:(ActionBlock) onYes];
     [btnNo handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
                     withBlock:(ActionBlock) onNo];
-    NSLog(@"self = %@", self);
     [rectDialog addSubview:btnYes];
     [rectDialog addSubview:btnNo];
     return superView;
@@ -980,6 +973,7 @@
                            onYes:onYes
                             onNo:onNo];
 }
+
 
 
 

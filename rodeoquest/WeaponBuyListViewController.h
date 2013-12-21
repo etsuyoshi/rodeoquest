@@ -8,6 +8,9 @@
 
 #import "ItemListViewController.h"
 
-@interface WeaponBuyListViewController : ItemListViewController
+@interface WeaponBuyListViewController : ItemListViewController{
+    UIView *viewForCoinShort;
+}
+
 
 @end

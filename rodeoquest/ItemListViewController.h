@@ -11,16 +11,23 @@
 #import "CreateComponentClass.h"
 #import "AttrClass.h"
 
-NSArray *itemList;
+
+
+
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;
     NSMutableArray *arrIv;
     NSMutableArray *arrTv;
     NSMutableArray *arrCost;
     NSMutableArray *arrTitle;
+    NSMutableArray *itemList;
     NSMutableArray *arrBtnBuy;//list of UIButton
+    
+    
+//    void (^actYesForCoinShort)(void);
+//    void (^actNoForCoinShort)(void);
 //    NSMutableArray *arrBtn;
 }
 
-
+-(void)buyBtnPressed:(id)sender;
 @end

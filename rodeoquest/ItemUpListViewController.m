@@ -38,7 +38,7 @@
                    @"100",
                    nil];
         
-        itemList = [NSArray arrayWithObjects:
+        itemList = [NSMutableArray arrayWithObjects:
                     @"itemlistItemUp0",
                     @"itemlistItemUp1",
                     @"itemlistItemUp2",

@@ -17,6 +17,7 @@ NSArray *imageArray;
 @implementation WeaponBuyListViewController
 AttrClass *attr;
 UIView *superViewForDispWpn;
+UIView *superViewForEquipWpn;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -132,10 +133,61 @@ UIView *superViewForDispWpn;
     // Dispose of any resources that can be recreated.
 }
 
+
 //購入ボタン押下後に反応する
+//0.既に装備しているアイテムかどうか判定する
 //1.デバイスに購入済み情報を書き込む
 //2.購入した武器を表示(表示された武器をタップすると今まで購入した武器一覧を見ることが出来る)
 //arg:[itemList objectAtIndex:[sender tag]]
+-(void)onSelectButton:(id)sender{
+    int numSelected = [sender tag];
+    NSString *strIDWpn = [NSString stringWithFormat:@"weaponID%d", numSelected];
+    int statusWpn = [attr getValueFromDevice:strIDWpn].integerValue;
+    
+    NSLog(@"%d button pressed. %@ is %d now",
+          numSelected,strIDWpn,statusWpn);
+    
+    switch (statusWpn) {
+        case 0:{
+            [super buyBtnPressed:sender];
+            break;
+        }
+        case 1: {
+            //装備しますか？メッセージ
+            
+            void (^blockCloseEquipView)(void) = ^(void){
+                [superViewForEquipWpn removeFromSuperview];
+            };
+            superViewForEquipWpn =
+            [CreateComponentClass
+             createAlertView:self.view.bounds
+             dialogRect:CGRectMake(0, 0,
+                                   self.view.bounds.size.width-20,
+                                   self.view.bounds.size.height)
+             title:@"現在装備中です"
+             message:@"装備しますか？"
+             titleYes:@"装備" titleNo:@"いいえ"
+             onYes:^{
+                 [attr setValueToDevice:strIDWpn strValue:@"2"];
+             }
+             onNo:blockCloseEquipView];
+            
+            [superViewForEquipWpn removeFromSuperview];
+            break;
+        }
+        case 2:{
+            //装備中ですメッセージor何もしない
+            break;
+        }
+    
+        default:{
+            NSLog(@"ERROR : status of WeaponID%d is out of exception", numSelected);
+            break;
+        }
+    }
+    
+
+}
 -(void)processAfterBtnPressed:(NSString *)_key{
 
     

@@ -254,7 +254,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                        image:@"bullet_level6.png"
                                                        title:[arrTitle objectAtIndex:i]
                                                       target:self
-                                                    selector:@"buyBtnPressed:"];
+                                                       selector:@"onSelectButton:"];
+//                                                    selector:@"buyBtnPressed:"];
         btnBuy.tag = i;//[[arrCost objectAtIndex:i] intValue];
 //        [uvOnScroll addSubview:btnBuy];
         
@@ -294,11 +295,20 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //    [self performSelector:@selector(closeViewCon) withObject:Nil afterDelay:0.01f];
 }
 
-//-(void)closeViewCon{
-//    
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
 
+/*
+ *購入だけでなく、(サブクラスで)装備品もあることを勘案して
+ *購入だけでなく、装備中ですメッセージを表示するパターンも考慮した。
+ *つまりサブクラスで装備中アイテムボタンが押下された場合、onSelectButtonが呼ばれるので、このボタンをオーバーライドしておけば
+ *オーバーライドクラス内で装備品、購入品かを判定し、購入品ならばbuyBtnPressedを呼べば良い
+ *ちなみにbuyBtnPressedメソッドをサブクラスでオーバーライドする方法は非推奨：当該クラス内でグローバルなブロック変数(actYesFor...)を用いて、その修正が多岐に渡るため。
+ *具体的にはサブクラス内でグローバルブロック変数を定義等。
+ */
+
+-(void)onSelectButton:(id)sender{
+    
+    [self buyBtnPressed:sender];
+}
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
     if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
@@ -310,17 +320,21 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
         
     }else{
-        //お金が足りない場合
+        //コインが足りない場合
         [self oscillateTextViewGold:9];
         
         //コインはゲームで取得するか購入することができますメッセージダイアログボックス
         
         viewForCoinShort =
         [CreateComponentClass
-         createAlertView:CGRectMake(10, 10, 300, 300)
-         dialogRect:CGRectMake(10, 10, 280, 200)
-         title:@"コインが足りません。"
-         message:@"コインを購入して下さい。"
+         createAlertView:CGRectMake(10, 10,
+                                    self.view.bounds.size.width-10,
+                                    self.view.bounds.size.height)
+         dialogRect:CGRectMake(10, 10,
+                               self.view.bounds.size.width-30,
+                               self.view.bounds.size.width-30)//正方形：縦＝横
+         title:@"コインが不足しています。"
+         message:@"コインを購入しますか？"
          titleYes:@"購入"
          titleNo:@"戻る"
          onYes:actYesForCoinShort

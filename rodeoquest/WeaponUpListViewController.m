@@ -39,7 +39,7 @@
                    @"150",
                    nil];
         
-        itemList = [NSArray arrayWithObjects:
+        itemList = [NSMutableArray arrayWithObjects:
                     @"itemlistWeaponUp0",
                     @"itemlistWeaponUp1",
                     @"itemlistWeaponUp2",

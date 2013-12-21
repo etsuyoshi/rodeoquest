@@ -37,7 +37,7 @@
                    @"240",
                    @"70",
                    nil];
-        itemList = [NSArray arrayWithObjects:
+        itemList = [NSMutableArray arrayWithObjects:
                     @"itemlistLifeUp0",
                     @"itemlistLifeUp1",
                     @"itemlistLifeUp2",
