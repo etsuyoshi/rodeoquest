@@ -75,13 +75,13 @@
  ・自機の移動はpanGesture:済
  */
 
-#define STATUSBAR_MODE
+//#define STATUSBAR_MODE
 //#define ENEMY_TEST
 #define FREQ_ENEMY 10//Freq_Enemyカウントに一回発生
 
 #define MAX_ENEMY_NUM 50
 
-//#define COUNT_TEST
+#define COUNT_TEST
 
 #import "GameClassViewController.h"
 #import "ViewWithEffectLevelUp.h"
@@ -354,7 +354,7 @@ int sensitivity;
     
 #ifdef COUNT_TEST
     //秒数カウンターテスト用
-    tvCount = [CreateComponentClass createTextView:CGRectMake(0, 100, 100, 50)
+    tvCount = [CreateComponentClass createTextView:CGRectMake(self.view.bounds.size.width-100, 100, 100, 50)
                                               text:@"count:0"];
     
     [tvCount setBackgroundColor:[UIColor blackColor]];
@@ -624,6 +624,10 @@ int sensitivity;
  *一定間隔呼び出しは[tm invalidate];によって停止される
  */
 - (void)time:(NSTimer*)timer{
+#ifdef COUNT_TEST
+    tvCount.text = [NSString stringWithFormat:@"counter:%f", gameSecond];
+#endif
+    
 //    NSLog(@"timer : %f", gameSecond);
     //    if(gameSecond == 0){
     //        //        NSLog(@"start animation from game class view controller");
@@ -809,9 +813,7 @@ int sensitivity;
             if([(EnemyClass *)[EnemyArray objectAtIndex: i] getDeadTime] >= explosionCycle ||
                [[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height + OBJECT_SIZE){
                 //爆発パーティクルの消去
-#ifdef COUNT_TEST
-                NSLog(@"enemy remove at at %d", i);
-#endif
+
                 //explodeした場合は既に画面から消去されている
                 [EnemyArray removeObjectAtIndex:i];
             }
@@ -1512,6 +1514,7 @@ int sensitivity;
 
 -(void)pressedHomeButton{
     //homeボタンが押された時
+    NSLog(@"pressedHomeButton");
     //以下応急処置：ユーザー表示画面(UIView)は作成必要
     [self onClickedStopButton];//isGameMode = false;も実行
     //    [self exitProcess];
@@ -1720,9 +1723,10 @@ int sensitivity;
     //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
     //5秒間隔で非表示
     if(gameSecond < 20){//20秒未満なら
-        if(arc4random() % 500 == 0){//平均5秒に1回=100px程度の間隔
+        if(arc4random() % 200 == 0){//平均2秒に1回=100px程度の間隔
             difficulty = 0;
             isYield = true;
+            NSLog(@"isyield");//interval-check!
         }
     }else if(gameSecond < 25){//5秒間隔で非表示
         //nothing : isYield = false;

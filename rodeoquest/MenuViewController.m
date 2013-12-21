@@ -186,10 +186,18 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                      }];
 }
 
-
+//viewDidLoad:viewが初めて呼び出される時に一度だけ実行される(その後にviewWillAppear,viewDidAppear実行：表示の度)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    //ホームボタンが押されたらonPressedHomeButtonを実行
+    UIApplication *app = [UIApplication sharedApplication];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onPressedHomeButton:)
+                                                 name:UIApplicationWillResignActiveNotification//UIApplicationWillTerminateNotification
+                                               object:app];
     
     
     //admob
@@ -628,11 +636,14 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 
 //画面が表示される度に起動
 -(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
     //background
 //    NSLog(@"background=%@", backGround);
 //    NSLog(@"background=%d", backGround == nil);//1
 //    NSLog(@"background=%d", [backGround isEqual:[NSNull null]]);//0
+    [self setBackGroundInit];
+    
     
     //前回最後に取得した時刻からの差額を算出
     
@@ -656,7 +667,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
      name:UIApplicationDidBecomeActiveNotification
      object:nil];
     
-    //ホームボタンが押されたらsetBackGroundInitとviewWillAppearを実行
+    //アプリが表示されたらsetBackGroundInitとviewWillAppearを実行
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(viewWillAppear:)
@@ -743,6 +754,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     //上記により更新されたlifeGameとsecondForLifeを用いて、timeメソッド内でtv_timer, tv_lifegameに動的に反映
     
 }
+
+//実行されない？
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     
@@ -750,18 +763,6 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
      removeObserver:self
      name:UIApplicationDidBecomeActiveNotification
      object:nil];
-    
-    
-    //ホームボタンが押された時の対応：カウンターのため
-    //時間を記憶
-    NSLog(@"viewDidDisappear");
-    [attr setValueToDevice:@"ymdMenuLastOpen"
-                  strValue:[self getYYYYMMDD]];
-    [attr setValueToDevice:@"hmsMenuLastOpen"
-                  strValue:[self getHHMMSS]];
-    [attr setValueToDevice:@"secondForLife"
-                  strValue:[NSString stringWithFormat:@"%d", secondForLife]];
-    
     
 
 }
@@ -884,7 +885,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-//            lifeGame = 6;//test
+//            lifeGame = 6;//test:life
             if(lifeGame > 0){
             
                 lifeGame--;
@@ -1931,5 +1932,22 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return afterH * 3600 + afterM * 60 + afterS -
             (beforeH * 3600 + beforeM * 60 + beforeS);
     
+}
+
+-(void)onPressedHomeButton:(NSNotification *)notification{
+    
+    //ホームボタンが押された時の対応：カウンターのため
+    //時間を記憶
+    NSLog(@"view becomes inActive, memorize timer and tm invalidate");
+    [attr setValueToDevice:@"ymdMenuLastOpen"
+                  strValue:[self getYYYYMMDD]];
+    [attr setValueToDevice:@"hmsMenuLastOpen"
+                  strValue:[self getHHMMSS]];
+    [attr setValueToDevice:@"secondForLife"
+                  strValue:[NSString stringWithFormat:@"%d", secondForLife]];
+    [attr setValueToDevice:@"lifeGame"
+                  strValue:[NSString stringWithFormat:@"%d", lifeGame]];
+    
+    [tm invalidate];
 }
 @end
