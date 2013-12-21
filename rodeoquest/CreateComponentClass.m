@@ -870,7 +870,9 @@
 +(UIView *)createAlertView:(CGRect)_rectFrame
                 dialogRect:(CGRect)_rectDialog
                      title:(NSString *)_title
-                  subtitle:(NSString *)_subtitle
+                   message:(NSString *)_message
+                  titleYes:(NSString *)_titleYes
+                   titleNo:(NSString *)_titleNo
                      onYes:(void (^)(void))onYes
                       onNo:(void (^)(void))onNo{
     //OKボタンとキャンセルボタン：okボタンを押したときの反応は_selector@target
@@ -878,13 +880,15 @@
     UIView *rectDialog = [CreateComponentClass
                           createView:_rectDialog];
     //test:
-//    [rectDialog setBackgroundColor:[UIColor blackColor]];
+    [rectDialog
+     setBackgroundColor:
+     [UIColor colorWithRed:0 green:0 blue:0 alpha:0.9]];
     [superView addSubview:rectDialog];
     
     //title
     UITextView *tvTitle = [CreateComponentClass
                            createTextView:CGRectMake(0, 0, rectDialog.frame.size.width,
-                                                     rectDialog.frame.size.height)
+                                                     80)
                            text:_title
                            font:@"AmericanTypewriter-Bold"
                            size:20
@@ -896,11 +900,26 @@
     
     //line
     UIView *viewLine = [CreateComponentClass
-                        createView:CGRectMake(0, tvTitle.frame.size.height,
-                                              rectDialog.frame.size.width,1)];
-    [viewLine setBackgroundColor:[UIColor blackColor]];
+                        createView:CGRectMake(0, tvTitle.frame.size.height + 5,
+                                              rectDialog.frame.size.width,3)];
+    [viewLine setBackgroundColor:[UIColor whiteColor]];
     [rectDialog addSubview:viewLine];
     
+    
+    //message
+    UITextView *tvMessage = [CreateComponentClass
+                           createTextView:CGRectMake(0,
+                                                     viewLine.frame.origin.y + 5,
+                                                     rectDialog.frame.size.width,
+                                                     rectDialog.frame.size.height)
+                           text:_message
+                           font:@"AmericanTypewriter-Bold"
+                           size:17
+                           textColor:[UIColor whiteColor]
+                           backColor:[UIColor clearColor]
+                           isEditable:NO];
+    tvMessage.textAlignment = NSTextAlignmentCenter;
+    [rectDialog addSubview:tvMessage];
     
 
     int intervalBtn = 10;
@@ -908,30 +927,26 @@
 //    MAX(rectDialog.bounds.size.width/2 - intervalBtn/2,
 //                       100);
     int heightBtn = 60;
-    CoolButton *btnYes =
-    [[CoolButton alloc] initWithFrame:
-    CGRectMake(10, 10, widthBtn, heightBtn)];
 //    CoolButton *btnYes =
-//    [CreateComponentClass
-//     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
-//     text:@"YES" hue:0.532 saturation:0.553 brightness:0.535
-//     target:self selector:@"removeAlertView:" tag:0];
-//    CoolButton *btClose = [CreateComponentClass createCoolButton:CGRectMake(viewMailSuperForm.frame.size.width - widthButton - 5,//right
-//                                                                            10,
-//                                                                            widthButton - 20, heightButton + 10)
-//                                                            text:@"close"
-//                                                             hue:0.532f
-//                                                      saturation:0.553f
-//                                                      brightness:0.535f
-//                                                          target:self
-//                                                        selector:@"closeSuperView:"
-//                                                             tag:0];
+//    [[CoolButton alloc] initWithFrame:
+//    CGRectMake(10, 10, widthBtn, heightBtn)];
+//    CoolButton *btnNo =
+//    [[CoolButton alloc] initWithFrame:
+//     CGRectMake(10, 10, widthBtn, heightBtn)];
+    CoolButton *btnYes =
+    [self
+     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
+     text:_titleYes
+     hue:0.85f saturation:0.63f brightness:0.79f
+     target:nil selector:nil tag:0];
+    
     CoolButton *btnNo =
-    [[CoolButton alloc] initWithFrame:
-     CGRectMake(10, 10, widthBtn, heightBtn)];
-
-//    [UIBlockButton buttonWithType:UIButtonTypeRoundedRect];
-//    btn1.frame = CGRectMake(0, 0, 30, 30);
+    [self
+     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
+     text:_titleNo
+     hue:0.535f saturation:0.553 brightness:0.535
+     target:nil selector:nil tag:0];
+    
     //left
     btnYes.center = CGPointMake(rectDialog.bounds.size.width/2 - intervalBtn/2 - btnYes.bounds.size.width/2,
                               rectDialog.bounds.size.height - intervalBtn/2 - btnYes.bounds.size.height/2);
@@ -945,21 +960,27 @@
     [btnNo handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
                     withBlock:(ActionBlock) onNo];
     NSLog(@"self = %@", self);
-//    [btnYes addTarget:self
-//               action:@selector(removeAlertView:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    [btnNo addTarget:self
-//              action:@selector(removeAlertView:)
-//    forControlEvents:UIControlEventTouchUpInside];
     [rectDialog addSubview:btnYes];
     [rectDialog addSubview:btnNo];
     return superView;
 }
-//上記アラートビュー専用
--(void)removeAlertView:(id)sender{
-    NSLog(@"removeAlertView");
-//    [((UIView *)sender).superview.superview removeFromSuperview];
-    [[[sender superview] superview ]removeFromSuperview];
+
++(UIView *)createAlertView:(CGRect)_rectFrame
+                dialogRect:(CGRect)_rectDialog
+                     title:(NSString *)_title
+                   message:(NSString *)_message
+                     onYes:(void (^)(void))onYes
+                      onNo:(void (^)(void))onNo{
+    return [self createAlertView:_rectFrame
+                      dialogRect:_rectDialog
+                           title:_title
+                         message:_message
+                        titleYes:@"YES"
+                         titleNo:@"NO"
+                           onYes:onYes
+                            onNo:onNo];
 }
+
+
 
 @end

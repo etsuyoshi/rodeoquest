@@ -136,7 +136,16 @@
 +(UIView *)createAlertView:(CGRect)_rectFrame
                 dialogRect:(CGRect)_rectDialog
                      title:(NSString *)_title
-                  subtitle:(NSString *)_subtitle
+                   message:(NSString *)_message
+                     onYes:(void (^)(void))onYes
+                      onNo:(void (^)(void))onNo;
+
++(UIView *)createAlertView:(CGRect)_rectFrame
+                dialogRect:(CGRect)_rectDialog
+                     title:(NSString *)_title
+                   message:(NSString *)_message
+                  titleYes:(NSString *)_titleYes
+                   titleNo:(NSString *)_titleNo
                      onYes:(void (^)(void))onYes
                       onNo:(void (^)(void))onNo;
 @end

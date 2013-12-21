@@ -319,8 +319,10 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [CreateComponentClass
          createAlertView:CGRectMake(10, 10, 300, 300)
          dialogRect:CGRectMake(10, 10, 280, 200)
-         title:@"cash short!"
-         subtitle:@"buy coin!"
+         title:@"コインが足りません。"
+         message:@"コインを購入して下さい。"
+         titleYes:@"購入"
+         titleNo:@"戻る"
          onYes:actYesForCoinShort
          onNo:actNoForCoinShort
          ];
