@@ -17,6 +17,7 @@
 
 AttrClass *attr;
 UITextView *tvGoldAmount;
+//UIButton *btnBuy;
 BackGroundClass2 *backGround;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,12 +42,19 @@ BackGroundClass2 *backGround;
                    @"100",
                    @"100",
                 nil];
-        itemList = [NSArray arrayWithObjects:
+        itemList = [NSMutableArray arrayWithObjects:
                     @"itemlist0",
                     @"itemlist1",
                     @"itemlist2",
                     @"itemlist3",
                     nil];
+        arrTitle = [NSMutableArray arrayWithObjects:
+                        @"buy",
+                        @"buy",
+                        @"buy",
+                        @"buy",
+                        nil];
+        arrBtnBuy = [NSMutableArray array];
         
 //        background = [[BackGroundClass2 alloc]init:WorldTypeForest
 //                                             width:self.view.bounds.size.width
@@ -54,13 +62,6 @@ BackGroundClass2 *backGround;
 //                                              secs:5.0f];
         
         attr = [[AttrClass alloc]init];
-        //UIButton
-//        arrBtn = [NSMutableArray arrayWithObjects:
-//                 @"close.png",
-//                 @"close.png",
-//                 @"close.png",
-//                 @"close.png",
-//                 nil];
     }
     return self;
 }
@@ -222,15 +223,17 @@ BackGroundClass2 *backGround;
                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
                                     imageFrameWidth,
                                     imageFrameHeight);
-        UIButton *btn = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
+        UIButton *btnBuy = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
                                                         rect:btnRect
                                                        image:@"bullet_level6.png"
-                                                       title:@"get"
+                                                       title:[arrTitle objectAtIndex:i]
                                                       target:self
                                                     selector:@"buyBtnPressed:"];
-        btn.tag = i;//[[arrCost objectAtIndex:i] intValue];
-//        [self.view addSubview:btn];
-        [uvOnScroll addSubview:btn];
+        btnBuy.tag = i;//[[arrCost objectAtIndex:i] intValue];
+//        [uvOnScroll addSubview:btnBuy];
+        
+        [arrBtnBuy addObject:btnBuy];
+        [uvOnScroll addSubview:[arrBtnBuy objectAtIndex:i]];
         
     }
     

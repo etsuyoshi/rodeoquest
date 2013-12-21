@@ -17,6 +17,8 @@ NSArray *itemList;
     NSMutableArray *arrIv;
     NSMutableArray *arrTv;
     NSMutableArray *arrCost;
+    NSMutableArray *arrTitle;
+    NSMutableArray *arrBtnBuy;//list of UIButton
 //    NSMutableArray *arrBtn;
 }
 

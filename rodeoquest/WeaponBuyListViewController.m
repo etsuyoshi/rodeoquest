@@ -7,6 +7,8 @@
 //
 
 #import "WeaponBuyListViewController.h"
+#import "QBFlatButton.h"
+
 NSArray *imageArray;
 @interface WeaponBuyListViewController ()
 
@@ -64,7 +66,7 @@ UIView *superViewForDispWpn;
                    @"70",
                    nil];
         
-        itemList = [NSArray arrayWithObjects:
+        itemList = [NSMutableArray arrayWithObjects:
                     @"itemlistWeaponBuy0",
                     @"itemlistWeaponBuy1",
                     @"itemlistWeaponBuy2",
@@ -76,6 +78,43 @@ UIView *superViewForDispWpn;
                     @"itemlistWeaponBuy8",
                     @"itemlistWeaponBuy9",
                     nil];
+        
+        arrTitle = [NSMutableArray array];
+        for(int i = 0 ;i < [itemList count];i++){
+            //nsdefaultに書き込まれていないキーはint型に変換すると0になる:string型ではnil
+            int stateHoldWpn =
+            [attr getValueFromDevice:
+             [NSString stringWithFormat:@"weaponID%d", i]].integerValue;
+            
+            NSLog(@"id%dはstatus%dです", i, stateHoldWpn);
+            
+            if(stateHoldWpn == 0){
+                [arrTitle addObject:@"Buy"];
+            }else if(stateHoldWpn == 1){
+                [arrTitle addObject:@"Hold"];
+            }else if(stateHoldWpn == 2){
+                [arrTitle addObject:@"Equip"];
+            }else {
+                NSLog(@"error id %d of status is %d",
+                      i, stateHoldWpn);
+            }
+            
+            NSLog(@"ID%dのボタンのタイトルを%@に変更します",
+                  i, [arrTitle lastObject]);
+        }
+//        arrTitle = [NSMutableArray arrayWithObjects:
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    @"buy",
+//                    nil];
+        
         
     }
     return self;
@@ -118,24 +157,37 @@ UIView *superViewForDispWpn;
                            @"WingBow.png",
                            nil];
     
-    int numSelected = 0;
+    //numSelectedに選択されたボタン番号を格納
+    int numSelected = -1;
     for(int i = 0;i < [imageArray count];i++){
         if([[itemList objectAtIndex:i] isEqualToString:_key]){
             numSelected = i;
             NSLog(@"selected item is %@", [imageArray objectAtIndex:numSelected]);
             break;
         }else if(i == [imageArray count]-1){
-            NSLog(@"processAfterBuy selection error. caz:_key");//=\n%@ and itemList0=\n%@",
+            NSLog(@"ERROR : processAfterBuy selection error. caz:_key is no correspondings.");//=\n%@ and itemList0=\n%@",
 //                  _key,[itemList objectAtIndex:0]);
+
         }
     }
     
-    //1.デバイスに購入済み情報(装備済)を書き込む
-    [attr setValueToDevice:
-     [NSString stringWithFormat:@"weaponID%d", numSelected] strValue:@"2"];
-    //既に装備済のデバイスがあればvalue=1:購入済に設定
+    
+    
+
+    
+    //1.デバイスに購入済み情報(装備済)を書き込む&ボタンの状態を装備中に変更
+    //2.既に装備済のデバイスがあればvalue=1:購入済に設定＆ボタンの状態を装備可能に変更
     for(int i = 0 ; i < [imageArray count];i++){
-        if(i != numSelected){
+        if(i == numSelected){
+            [attr setValueToDevice:
+             [NSString stringWithFormat:@"weaponID%d", numSelected] strValue:@"2"];
+            
+            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setSelected:YES];//押された状態に
+            ((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]).titleLabel.font = [UIFont boldSystemFontOfSize:30];
+            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitle:@"E." forState:UIControlStateNormal];
+            
+        }else {
             //null時判定注意！:なくてもうまくいくっぽい(null.integerValue=0?)
             if([[attr getValueFromDevice:
                 [NSString stringWithFormat:@"weaponID%d", i]]
@@ -144,14 +196,34 @@ UIView *superViewForDispWpn;
                [attr getValueFromDevice:
                 [NSString stringWithFormat:@"weaponID%d", i]] == nil){
                    //nullのまま
+                   NSLog(@"ID%dはnil", i);
                }else{//他のアイテムで２になっているものは全て１に。
-            
+                   NSLog(@"ID%dの状態は%d",
+                         i, [attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d",i]].integerValue);
                    if([attr getValueFromDevice:
                        [NSString stringWithFormat:@"weaponID%d", i]].integerValue == 2){
                        
                        [attr setValueToDevice:
                         [NSString stringWithFormat:@"weaponID%d", i]
                                      strValue:@"1"];
+                       
+                       NSLog(@"%dは装備中なので%@に変更変更",
+                             i, [attr getValueFromDevice:
+                                 [NSString stringWithFormat:@"weaponID%d", i]]);
+                       
+                       
+                       
+                       //ボタンの状態も変更
+                       
+                       
+                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setSelected:NO];//選択された状態を解除
+                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setHighlighted:NO];//押された状態を解除
+                       ((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]).titleLabel.font = [UIFont boldSystemFontOfSize:13];
+                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+                       [((QBFlatButton *)[arrBtnBuy objectAtIndex:numSelected]) setTitle:@"装備する" forState:UIControlStateNormal];
+                       
+                       
+                       
                    }
                }
         }
