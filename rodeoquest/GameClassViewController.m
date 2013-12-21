@@ -36,8 +36,8 @@
  ->本来はm系だがアクセス時間節約のためGameClassに実装して判定：マグネットフラグisMagnetMode
  
  m武器、防具取得：powerGauge2(色はわけた方が良い)
-    武器：beamのiv.imageフィールド変更
-    防具：viewMyEffectにanimated-Viewを追加
+ 武器：beamのiv.imageフィールド変更
+ 防具：viewMyEffectにanimated-Viewを追加
  mコイン取得時：kira.png->小さいものを4つ
  o爆発時対応:for([EnemyArray count])die
  m回復；kiraを複数animate
@@ -69,14 +69,14 @@
  ・敵機の描画を精密に？！→クラウドワークス
  ・画面タッチ時にビーム発射：済
  ・ビームは単体で削除表示を繰り返す：対象物への接触判定がサンプリング間隔以内で行えないので、単体で進ませていく
-
+ 
  ・敵機をもっと頑丈に(typeによって爆発hit数を変更する):済
  ・自機からのビームはタップ時常時発射:済
  ・自機の移動はpanGesture:済
  */
 
 #define STATUSBAR_MODE
-#define ENEMY_TEST
+//#define ENEMY_TEST
 #define FREQ_ENEMY 10//Freq_Enemyカウントに一回発生
 
 #define MAX_ENEMY_NUM 50
@@ -163,7 +163,7 @@ UIImageView *iv_pg_cross;
 int x_pg, y_pg, width_pg, height_pg;
 
 
-NSTimer *tm;
+NSTimer *timer;
 BGMClass *bgmClass;
 float gameSecond = 0;//timer->0.01sec
 int timeEnemyRowYield = 100;//100countで敵列発生
@@ -263,8 +263,40 @@ int sensitivity;
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
-- (void)viewDidLoad
-{
+
+//viewDidLoadの次に呼ばれる
+-(void)viewWillAppear:(BOOL)animated{
+    
+    
+    [super viewWillAppear:animated];
+    //background
+//    NSLog(@"background=%@", BackGround);
+//    NSLog(@"background=%d", BackGround == nil);//1
+//    NSLog(@"background=%d", [BackGround isEqual:[NSNull null]]);//0
+    
+//    [self setBackGroundInit];//defined at viewDidLoad called before viewwillappear
+    
+    //次に描画するため
+    //http://stackoverflow.com/questions/4175729/run-animation-every-time-app-is-opened
+    //In iOS 4, pressing the home button doesn't terminate the app, it suspends it. When the app is made active again, a UIApplicationDidBecomeActiveNotification is posted. Register for that notification and initiate the animation in you
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(setBackGroundInit)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
+    
+}
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
+}
+
+
+- (void)viewDidLoad{
     [super viewDidLoad];
     
     //いつでもデータを取り出せるようにグローバルに保存しておく：最初の一度だけにする
@@ -306,9 +338,9 @@ int sensitivity;
         
         //敵機ダメージ：耳障りの良い物を選択しなければならない
         //    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);//耳障り
-//        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);//耳障り
-//        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
-//        CFRelease (sound_damage_URL);
+        //        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);//耳障り
+        //        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
+        //        CFRelease (sound_damage_URL);
         
         //
         sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
@@ -324,7 +356,7 @@ int sensitivity;
     //秒数カウンターテスト用
     tvCount = [CreateComponentClass createTextView:CGRectMake(0, 100, 100, 50)
                                               text:@"count:0"];
-
+    
     [tvCount setBackgroundColor:[UIColor blackColor]];
     tvCount.textColor = [UIColor whiteColor];
     [self.view addSubview:tvCount];
@@ -343,22 +375,22 @@ int sensitivity;
         // iOS 6=>iOS 7ではきかない
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     }
-
-	// Do any additional setup after loading the view.
+    
+    // Do any additional setup after loading the view.
     
     //ステージ選択
     world_no = arc4random() % 6;
     
     //BGM START=0.1second-delay
     [self performSelector:@selector(playBGM) withObject:nil afterDelay:0.1];
-
+    
     
     //UI編集：ナビゲーションボタンの追加＝一時停止
     
     UIBarButtonItem* right_button_stop = [[UIBarButtonItem alloc] initWithTitle:@"stop"
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
-//                                                                         action:@selector(alertView:clickedButtonAtIndex:)];
+                                          //                                                                         action:@selector(alertView:clickedButtonAtIndex:)];
                                                                          action:@selector(onClickedStopButton)];
     UIBarButtonItem* right_button_setting = [[UIBarButtonItem alloc]
                                              initWithTitle:@"set"
@@ -368,8 +400,8 @@ int sensitivity;
     
     isGameMode = true;
     isTouched = false;
-//    isMagnetMode = false;
-//    isBigMode = false;
+    //    isMagnetMode = false;
+    //    isBigMode = false;
     diameterMagnet = 200;//引力有効範囲：アイテム購入により変更可能
     self.navigationItem.rightBarButtonItems = @[right_button_stop, right_button_setting];
     self.navigationItem.leftItemsSupplementBackButton = YES; //戻るボタンを有効にする
@@ -383,25 +415,27 @@ int sensitivity;
     y_frame = rect_frame.size.height;
     NSLog(@"frame-size : %d, %d", x_frame, y_frame);
     iv_frame = [[UIImageView alloc]initWithFrame:rect_frame];
-//    iv_frame.image =[UIImage imageNamed:@"gameover.png"];
+    iv_frame.center = CGPointMake(self.view.frame.size.width/2,
+                                  self.view.frame.size.height/2);
+    //    iv_frame.image =[UIImage imageNamed:@"gameover.png"];
     iv_frame.userInteractionEnabled = YES;
     panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                          action:@selector(onFlickedFrame:)];
     //LongPressGestureRecogを付けてしまうとtouchesEnded:メソッドが実行されないかも？
     //もしやるとしたら→http://teru2-bo2.blogspot.jp/2012/04/uilongpressgesturerecognizer.html
-//    longPress_frame=
-//        [[UILongPressGestureRecognizer alloc]initWithTarget:self
-//                                                     action:@selector(onLongPressedFrame:)];
-//    UITapGestureRecognizer *tap_frame = [[UITapGestureRecognizer alloc] initWithTarget:self
-//                                                                                action:@selector(onTappedFrame:)];
+    //    longPress_frame=
+    //        [[UILongPressGestureRecognizer alloc]initWithTarget:self
+    //                                                     action:@selector(onLongPressedFrame:)];
+    //    UITapGestureRecognizer *tap_frame = [[UITapGestureRecognizer alloc] initWithTarget:self
+    //                                                                                action:@selector(onTappedFrame:)];
     [iv_frame addGestureRecognizer:panGesture];
-//    [iv_frame addGestureRecognizer:longPress_frame];
+    //    [iv_frame addGestureRecognizer:longPress_frame];
     
-//    [iv_frame addGestureRecognizer:tap_frame];
-    [self.view bringSubviewToFront: iv_frame];//最前面に
-    //ビューにメインイメージを貼り付ける
+    //    [iv_frame addGestureRecognizer:tap_frame];
+    
+    //ビューにメインイメージを貼り付ける：最前面に貼付けるためこのメソッドの最後ら辺でbringFrontする
     [self.view addSubview:iv_frame];
-
+    
     
     length_beam = 20;
     thick_beam = 5;
@@ -411,30 +445,31 @@ int sensitivity;
     
     //背景インスタンス定義
     NSLog(@"init background instance from game view controller");
-    BackGround = [[BackGroundClass2 alloc]init:worldType
-                                        width:self.view.bounds.size.width
-                                       height:self.view.bounds.size.height
-                                          secs:5.0f];
+    [self setBackGroundInit];//set equals to func below
+//    BackGround = [[BackGroundClass2 alloc]init:worldType
+//                                         width:self.view.bounds.size.width
+//                                        height:self.view.bounds.size.height
+//                                          secs:5.0f];
+//    
+//    
+//    [self.view addSubview:[BackGround getImageView1]];
+//    [self.view addSubview:[BackGround getImageView2]];
+//    [self.view bringSubviewToFront:[BackGround getImageView1]];
+//    [self.view bringSubviewToFront:[BackGround getImageView2]];
     
     
-    [self.view addSubview:[BackGround getImageView1]];
-    [self.view addSubview:[BackGround getImageView2]];
-    [self.view bringSubviewToFront:[BackGround getImageView1]];
-    [self.view bringSubviewToFront:[BackGround getImageView2]];
-    
-    
-//    [(UIImageView *)[BackGround getImageView1] moveTo:CGPointMake(0, 400)
-//                                             duration:200.0f
-//                                               option:UIViewAnimationOptionCurveLinear];//一定速度
+    //    [(UIImageView *)[BackGround getImageView1] moveTo:CGPointMake(0, 400)
+    //                                             duration:200.0f
+    //                                               option:UIViewAnimationOptionCurveLinear];//一定速度
     
     //自機定義
-//    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE];
-//    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE level:[[attr getValueFromDevice:@"level"] intValue]];
+    //    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE];
+    //    MyMachine = [[MyMachineClass alloc] init:x_frame/2 size:OBJECT_SIZE level:[[attr getValueFromDevice:@"level"] intValue]];
     int beamType = -1;
     for(int i = 0; i < 10; i++){//beamTypeの個数だけ
         if([[attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", i]] isEqualToString:@"2"]){
             beamType = i;
-           break;
+            break;
         }
     }
     
@@ -445,22 +480,23 @@ int sensitivity;
     
     [self.view addSubview:[MyMachine getImageView]];
     [self.view bringSubviewToFront:[MyMachine getImageView]];
-//    [[MyMachine getImageView] startAnimating];
+    NSLog(@"mymachine bring front");
+    //    [[MyMachine getImageView] startAnimating];
     
     //自機エフェクトを描画するビュー
     viewMyEffect = [[UIView alloc] initWithFrame:[MyMachine getImageView].frame];
-//    [viewMyEffect setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.2f]];
+    //    [viewMyEffect setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.2f]];
     [self.view addSubview:viewMyEffect];
     [self.view bringSubviewToFront:viewMyEffect];
     
     //自機が発射したビームを格納する配列初期化=>MyMachineクラス内に実装
-//    BeamArray = [[NSMutableArray alloc] init];
+    //    BeamArray = [[NSMutableArray alloc] init];
     
     //敵機を破壊した際のアイテム
     ItemArray = [[NSMutableArray alloc] init];
     
     //アイテム生成時、移動時、消滅時のパーティクル格納用配列
-//    KiraArray = [[NSMutableArray alloc]init];
+    //    KiraArray = [[NSMutableArray alloc]init];
     
     //スコアボードを置くフィールド
     viewScoreField = [CreateComponentClass createView:CGRectMake(5, 5, 140, 70)];
@@ -492,11 +528,11 @@ int sensitivity;
     
     
     //ゴールドの初期化と表示
-//    GoldBoard = [[GoldBoardClass alloc]init:0 x_init:0 y_init:50 ketasu:10 type:@"gold"];
+    //    GoldBoard = [[GoldBoardClass alloc]init:0 x_init:0 y_init:50 ketasu:10 type:@"gold"];
     GoldBoard = [[GoldBoardClass alloc] init:0 x_init:0 y_init:0 ketasu:7];
     [GoldBoard getTextView].center = CGPointMake(viewScoreField.frame.size.width/2,
                                                  viewScoreField.frame.size.height - [GoldBoard getTextView].frame.size.height/2);
-//    [[GoldBoard getTextView] setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];//test
+    //    [[GoldBoard getTextView] setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];//test
     [GoldBoard getTextView].textAlignment = NSTextAlignmentRight;
     [self displayScore:GoldBoard];
     
@@ -525,7 +561,7 @@ int sensitivity;
     height_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
     
     powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:x_pg y_init:y_pg width:width_pg height:height_pg];
-//    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
+    //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
     [self.view addSubview:[powerGauge getImageView]];
     
     //背景
@@ -533,8 +569,8 @@ int sensitivity;
     iv_powerGauge.image = [UIImage imageNamed:@"powerGauge2.png"];
     iv_powerGauge.alpha = 0.1;
     [self.view addSubview:iv_powerGauge];
-
-
+    
+    
     iv_pg_ribrary = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];
     iv_pg_ribrary.image = [UIImage imageNamed:@"ribrary.png"];
     [self.view addSubview:iv_pg_ribrary];
@@ -542,7 +578,7 @@ int sensitivity;
     iv_pg_circle = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];
     iv_pg_circle.image = [UIImage imageNamed:@"circle_2w_rSmall_128.png"];
     [self.view addSubview:iv_pg_circle];
-
+    
     
     iv_pg_cross = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];
     iv_pg_cross.image = [UIImage imageNamed:@"cross.png"];
@@ -552,18 +588,12 @@ int sensitivity;
     //一時停止ボタン
     int size_pause = 20;
     CGRect rect_pause = CGRectMake(rect_frame.size.width - size_pause,30 , size_pause, size_pause);
-//    UIImageView *iv_pause = [[UIImageView alloc]initWithFrame:CGRectMake(rect_frame.size.width / 2 - size_pause / 2,0 , size_pause, size_pause)];
+    //    UIImageView *iv_pause = [[UIImageView alloc]initWithFrame:CGRectMake(rect_frame.size.width / 2 - size_pause / 2,0 , size_pause, size_pause)];
     UIImageView *iv_pause = [CreateComponentClass createImageView:rect_pause image:@"close.png" tag:0 target:self selector:@"onClickedStopButton"];
     [iv_frame bringSubviewToFront:iv_pause];//iv_frameの上にボタン配置
     [iv_frame addSubview:iv_pause];
-
     
-    //以下実行後、0.01秒間隔でtimerメソッドが呼び出されるが、それと並行してこのメソッド(viewDidLoad)も実行される(マルチスレッドのような感じ)
-    tm = [NSTimer scheduledTimerWithTimeInterval:0.01f
-                                          target:self
-                                        selector:@selector(time:)//タイマー呼び出し
-                                        userInfo:nil
-                                         repeats:YES];
+    
     
 #ifdef STATUSBAR_MODE
     label_test = [[UILabel alloc]initWithFrame:CGRectMake(100, 0, 100, 50)];
@@ -572,9 +602,60 @@ int sensitivity;
     [self.view addSubview:label_test];
     [self.view bringSubviewToFront:label_test];
 #endif
+    
+    [self.view bringSubviewToFront: iv_frame];//最前面に
+    
+    //以下実行後、0.01秒間隔でtimerメソッドが呼び出されるが、それと並行してこのメソッド(viewDidLoad)も実行される(マルチスレッドのような感じ)
+    if(timer != nil){
+        timer = nil;
+        [timer invalidate];
+    }
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.01f
+                                          target:self
+                                        selector:@selector(time:)//タイマー呼び出し
+                                        userInfo:nil
+                                         repeats:YES];
+    
+    
+}//viewDidLoad
 
+/**
+ *tmインスタンスによって一定時間呼び出されるメソッド
+ *一定間隔呼び出しは[tm invalidate];によって停止される
+ */
+- (void)time:(NSTimer*)timer{
+//    NSLog(@"timer : %f", gameSecond);
+    //    if(gameSecond == 0){
+    //        //        NSLog(@"start animation from game class view controller");
+    //        [BackGround startAnimation];//3sec-Round
+    //    }
+    if(isGameMode){
+        //        NSLog(@"count = %f from timer", count);
+        [self ordinaryAnimationStart];
+        //        NSLog(@"complete ordinaryAnimation from timer");
+        //一定時間経過するとゲームオーバー
+        //        if(count >= TIMEOVER_SECOND || ![MyMachine getIsAlive]){
+        //            NSLog(@"gameover");
+        //経過したらタイマー終了
+        //            [self performSelector:@selector(exitProcess) withObject:nil afterDelay:0.1];//自機爆破後、即座に終了させると違和感あるため少しdelay
+        //            [self exitProcess];//delayさせるとその間にprogressが進んでしまうので即座に表示
+        //        }
+        gameSecond += 0.01f;
+        
+        //終了モードは辞める(ユーザーが努力した分だけ進めるようにする)
+        //        if(count >= TIMEOVER_SECOND){
+        //            isGameMode = false;
+        //            [self exitProcess];//delayさせるとその間にprogressが進んでしまうので即座に表示
+        //        }
+        
+    }else{
+        
+        //[tm invalidate]をしないでisGameMode=falseとなった時 ＝ 一時停止ボタンが押された時もしくはプレイヤー撃破時
+        //停止中画面に移行(一時停止用UIImageViewの表示)
+        
+    }
+    //    NSLog(@"timer complete");
 }
-
 
 //BGM曲をかける
 -(void)playBGM{
@@ -627,15 +708,15 @@ int sensitivity;
 
 
 - (void)ordinaryAnimationStart{
-//    NSLog(@"enemy count = %d", [EnemyArray count]);
-//    NSLog(@"orinary animation start");
+    //    NSLog(@"enemy count = %d", [EnemyArray count]);
+    //    NSLog(@"orinary animation start");
     //ユーザーインターフェース
     [self.view bringSubviewToFront:iv_frame];
     [self.view bringSubviewToFront:viewScoreField];//score-display
     
     //メモリ確認
-//    NSLog(@"enemyArray length = %d", [EnemyArray count]);
-//    NSLog(@"particleArray length = %d", [KiraArray count]);
+    //    NSLog(@"enemyArray length = %d", [EnemyArray count]);
+    //    NSLog(@"particleArray length = %d", [KiraArray count]);
     
     
     //消去、生成、更新、表示
@@ -646,32 +727,32 @@ int sensitivity;
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
     /*旧形式の方法
-    for(int i = 0; i < [MyMachine getBeamCount]; i++){
-        [[[MyMachine getBeam:i] getImageView] removeFromSuperview];
-    }
+     for(int i = 0; i < [MyMachine getBeamCount]; i++){
+     [[[MyMachine getBeam:i] getImageView] removeFromSuperview];
+     }
      */
     
     
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/生成_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-//    NSLog(@"yield enemy");
+    //    NSLog(@"yield enemy");
     if(gameSecond > 3.0f){//１秒後から敵を開始
         [self yieldEnemy];
     }
     
-//    NSLog(@"detection touch");
+    //    NSLog(@"detection touch");
     //ビーム生成はタッチ検出場所で実行
     if([MyMachine getIsAlive] && isTouched){
         //弾丸が画面上になければ無条件に弾丸を出す
         if([MyMachine getAliveBeamCount] == 0){
-//            NSLog(@"before yield beam");
+            //            NSLog(@"before yield beam");
             
             [self yieldBeamFromMyMachine];
             
-//            NSLog(@"after add beam to superview");
+            //            NSLog(@"after add beam to superview");
         }else if([[MyMachine getBeam:0] getY] <
-           [MyMachine getImageView].center.y - OBJECT_SIZE/2){//最後(index:i)の弾丸がキャラクターの近くになければ(近くにあると重なってしまう)
+                 [MyMachine getImageView].center.y - OBJECT_SIZE/2){//最後(index:i)の弾丸がキャラクターの近くになければ(近くにあると重なってしまう)
             //上のブロックと全く同じ
             [self yieldBeamFromMyMachine];
         }
@@ -688,7 +769,7 @@ int sensitivity;
     //_/_/_/_/進行:各オブジェクトのdoNext_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
-//    NSLog(@"mymachine donext");
+    //    NSLog(@"mymachine donext");
     
     if([MyMachine getIsAlive] ||
        [MyMachine getDeadTime] < explosionCycle){
@@ -699,7 +780,7 @@ int sensitivity;
         
         //爆発から所定時間が経過しているか判定＝＞爆発パーティクルの消去
         if([MyMachine getDeadTime] >= explosionCycle){
-//            NSLog(@"mymachine : set emitting no");
+            //            NSLog(@"mymachine : set emitting no");
             
             isGameMode = false;
             [self exitProcess];
@@ -708,11 +789,11 @@ int sensitivity;
         }
     }
     
-//    NSLog(@"enemy donext");
+    //    NSLog(@"enemy donext");
     
     //敵機進行or爆発後のカウント
     for(int i = 0; i < [EnemyArray count] ; i++){
-//        NSLog(@"do next at enemy:No %d", i);
+        //        NSLog(@"do next at enemy:No %d", i);
         //既存敵機の距離進行！
         //dead状態になってからも、dead_timeが10未満の時までは更新doNextする(爆発パーティクル表示のため)
         if([(EnemyClass *)[EnemyArray objectAtIndex:i] getIsAlive] ||
@@ -722,7 +803,7 @@ int sensitivity;
             [(EnemyClass *)[EnemyArray objectAtIndex:i] doNext];
             
             
-//            NSLog(@"%d番目敵：y=%d", i, [(EnemyClass *)[EnemyArray objectAtIndex:i] getY]);
+            //            NSLog(@"%d番目敵：y=%d", i, [(EnemyClass *)[EnemyArray objectAtIndex:i] getY]);
             
             //爆発してから時間が所定時間が経過してる場合 or 画面外に移動した場合、削除
             if([(EnemyClass *)[EnemyArray objectAtIndex: i] getDeadTime] >= explosionCycle ||
@@ -739,66 +820,66 @@ int sensitivity;
     
     //自機ビームの進行->mymachine donextで実行
     //旧形式
-//    for(int i = 0; i < [MyMachine getBeamCount];i++){
-//        if([[MyMachine getBeam:i] getIsAlive]){
-//            [[MyMachine getBeam:i] doNext];
-//        }else{
-//            //これをすると点滅
-////            [[[MyMachine getBeam:i] getImageView] removeFromSuperview];
-//        }
-//    }
+    //    for(int i = 0; i < [MyMachine getBeamCount];i++){
+    //        if([[MyMachine getBeam:i] getIsAlive]){
+    //            [[MyMachine getBeam:i] doNext];
+    //        }else{
+    //            //これをすると点滅
+    ////            [[[MyMachine getBeam:i] getImageView] removeFromSuperview];
+    //        }
+    //    }
     
-//    NSLog(@"item judgement start");
+    //    NSLog(@"item judgement start");
     
     //アイテムの進行=[アイテム自体の移動 & 生成したパーティクルの時間経過:寿命判定は別途]
     for(int i = 0 ; i< [ItemArray count]; i ++){
         if([[ItemArray objectAtIndex:i] getIsAlive]){
             if([(ItemClass *)[ItemArray objectAtIndex:i] doNext]){//移動とパーティクル発生判定：同時実行
-//                NSLog(@"create particle");
+                //                NSLog(@"create particle");
                 //動線上パーティクルの格納と表示
-//                [self.view addSubview:[[ItemArray objectAtIndex:i] getMovingParticle:0]] ;//生成したparticleは自動消滅
-//                [KiraArray insertObject:[((ItemClass*)[ItemArray objectAtIndex:i]) getMovingParticle:0] atIndex:0];
-//                [self.view addSubview:[KiraArray objectAtIndex:0]];
+                //                [self.view addSubview:[[ItemArray objectAtIndex:i] getMovingParticle:0]] ;//生成したparticleは自動消滅
+                //                [KiraArray insertObject:[((ItemClass*)[ItemArray objectAtIndex:i]) getMovingParticle:0] atIndex:0];
+                //                [self.view addSubview:[KiraArray objectAtIndex:0]];
             }
-//            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
-
-            //確認用
-//            CALayer *_itemLayer1 = [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer];
-//            NSLog(@"i=%d, x=%f, y=%f, dist = %f",i,  _itemLayer1.position.x, _itemLayer1.position.y, [self getDistance:_itemLayer1.position.x y:_itemLayer1.position.y]);
+            //            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
             
-//            if(true){//常にマグネットモード
+            //確認用
+            //            CALayer *_itemLayer1 = [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer];
+            //            NSLog(@"i=%d, x=%f, y=%f, dist = %f",i,  _itemLayer1.position.x, _itemLayer1.position.y, [self getDistance:_itemLayer1.position.x y:_itemLayer1.position.y]);
+            
+            //            if(true){//常にマグネットモード
             //自機位置が変更された場合に対応するため常に監視しておく必要がある。
-//            if(isMagnetMode){// && !([[ItemArray objectAtIndex:i] getIsMagnetMode])){//ゲーム自体のmagnetModeかアイテム個体のmagnetModeか
+            //            if(isMagnetMode){// && !([[ItemArray objectAtIndex:i] getIsMagnetMode])){//ゲーム自体のmagnetModeかアイテム個体のmagnetModeか
             if([MyMachine getStatus:ItemTypeMagnet]){
                 [[ItemArray objectAtIndex:i] setIsMagnetMode:YES];
-//                NSLog(@"マグネットモード");
-//                CGPoint _itemLoc = [[ItemArray objectAtIndex:i] getImageView].center;
-//                CALayer *_itemLayer = [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer];
+                //                NSLog(@"マグネットモード");
+                //                CGPoint _itemLoc = [[ItemArray objectAtIndex:i] getImageView].center;
+                //                CALayer *_itemLayer = [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer];
                 UIView *_itemView = (UIView *)[[ItemArray objectAtIndex:i] getImageView];
-//                NSLog(@"xItem:%f, yItem:%f,", _itemLoc.x, _itemLoc.y);
+                //                NSLog(@"xItem:%f, yItem:%f,", _itemLoc.x, _itemLoc.y);
                 //myMachine and item are neighbor
                 
-//                if([self getDistance:_itemLoc.x y:_itemLoc.y] < diameterMagnet){
-//                if([self getDistance:_itemLayer.position.x y:_itemLayer.position.y] < diameterMagnet){
+                //                if([self getDistance:_itemLoc.x y:_itemLoc.y] < diameterMagnet){
+                //                if([self getDistance:_itemLayer.position.x y:_itemLayer.position.y] < diameterMagnet){
                 if(ABS(((CALayer *)[_itemView.layer presentationLayer]).position.x - [MyMachine getImageView].center.x) < diameterMagnet &&
                    ABS(((CALayer *)[_itemView.layer presentationLayer]).position.y - [MyMachine getImageView].center.y) < diameterMagnet){
-//                    CGPoint kStartPos = ((CALayer *)[[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer]).position;//viewInArray.center;//((CALayer *)[iv.layer presentationLayer]).position;
+                    //                    CGPoint kStartPos = ((CALayer *)[[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer]).position;//viewInArray.center;//((CALayer *)[iv.layer presentationLayer]).position;
                     CGPoint kStartPos = ((CALayer *)[_itemView.layer presentationLayer]).position;
                     CGPoint kEndPos = [MyMachine getImageView].center;//CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
                     //                                          500);//iv.superview.bounds.size.height);//480);//
-//                    NSLog(@"start[x,y]=%f, %f, end[x,y]=%f, %f",kStartPos.x,kStartPos.y,kEndPos.x,kEndPos.y);
+                    //                    NSLog(@"start[x,y]=%f, %f, end[x,y]=%f, %f",kStartPos.x,kStartPos.y,kEndPos.x,kEndPos.y);
                     [CATransaction begin];
                     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
                     [CATransaction setCompletionBlock:^{//終了処理
-//                        CAAnimation* animationKeyFrame = [((UIView *)[[ItemArray objectAtIndex:i] getImageView]).layer animationForKey:@"position"];
+                        //                        CAAnimation* animationKeyFrame = [((UIView *)[[ItemArray objectAtIndex:i] getImageView]).layer animationForKey:@"position"];
                         CAAnimation *animationKeyFrame = [_itemView.layer animationForKey:@"position"];
                         if(animationKeyFrame){
                             //途中で終わらずにアニメーションが全て完了して
                             //            [self die];
-//                            NSLog(@"animation key frame already exit & die");
+                            //                            NSLog(@"animation key frame already exit & die");
                         }else{
                             //途中で何らかの理由で遮られた場合
-//                            NSLog(@"animation key frame not exit");
+                            //                            NSLog(@"animation key frame not exit");
                         }
                         
                     }];
@@ -814,7 +895,7 @@ int sensitivity;
                         
                         // 放物線のパスを生成
                         //    CGFloat jumpHeight = kStartPos.y * 0.2;
-//                        CGPoint peakPos = CGPointMake((kStartPos.x + kEndPos.x)/2, (kStartPos.y * kEndPos.y)/2);//test
+                        //                        CGPoint peakPos = CGPointMake((kStartPos.x + kEndPos.x)/2, (kStartPos.y * kEndPos.y)/2);//test
                         CGPoint peakPos = CGPointMake((kStartPos.x + kEndPos.x)/2, (kStartPos.y + kEndPos.y) / 2);//test
                         CGMutablePathRef curvedPath = CGPathCreateMutable();
                         CGPathMoveToPoint(curvedPath, NULL, kStartPos.x, kStartPos.y);//始点に移動
@@ -830,216 +911,216 @@ int sensitivity;
                         CGPathRelease(curvedPath);
                         
                         // レイヤーにアニメーションを追加
-//                        [[[ItemArray objectAtIndex:i] getImageView].layer addAnimation:animation forKey:@"position"];
+                        //                        [[[ItemArray objectAtIndex:i] getImageView].layer addAnimation:animation forKey:@"position"];
                         [_itemView.layer addAnimation:animation forKey:@"position"];
                         
                     }
                     [CATransaction commit];
-//                    [CATransaction begin];
-//                    //        [CATransaction setAnimationDuration:0.5f];
-//                    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-//                    {
-//                        [CATransaction setAnimationDuration:2.0f];//時間
-//                        //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-//                        
-//                        //        viewLayerTest.layer.position=CGPointMake(200, 200);
-//                        //        viewLayerTest.layer.opacity=0.5;
-////                        
-//                        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
-////                        CABasicAnimation *anim = (CABasicAnimation *)[[[ItemArray objectAtIndex:i] getImageView].layer animationForKey:@"position"];
-//                        [anim setDuration:1.5f];
-////                        anim.fromValue = [NSValue valueWithCGPoint:((CALayer *)[[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer]).position];//現在位置
-//                        //            anim.toValue = [NSValue valueWithCGPoint:CGPointMake(self.view.bounds.size.width,
-//                        //                                                                 self.view.bounds.size.height)];
-//                        
-//                        anim.toValue = [NSValue valueWithCGPoint:[MyMachine getImageView].center];
-//                        
-//                        
-//                        anim.removedOnCompletion = NO;
-//                        anim.fillMode = kCAFillModeForwards;
-//                        [[[ItemArray objectAtIndex:i] getImageView].layer addAnimation:anim forKey:@"position"];
-//                        
-//                        //        mylayer.position=CGPointMake(200, 200);
-//                        //        mylayer.opacity=0.5;
-//                    } [CATransaction commit];
+                    //                    [CATransaction begin];
+                    //                    //        [CATransaction setAnimationDuration:0.5f];
+                    //                    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+                    //                    {
+                    //                        [CATransaction setAnimationDuration:2.0f];//時間
+                    //                        //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+                    //
+                    //                        //        viewLayerTest.layer.position=CGPointMake(200, 200);
+                    //                        //        viewLayerTest.layer.opacity=0.5;
+                    ////
+                    //                        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+                    ////                        CABasicAnimation *anim = (CABasicAnimation *)[[[ItemArray objectAtIndex:i] getImageView].layer animationForKey:@"position"];
+                    //                        [anim setDuration:1.5f];
+                    ////                        anim.fromValue = [NSValue valueWithCGPoint:((CALayer *)[[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer]).position];//現在位置
+                    //                        //            anim.toValue = [NSValue valueWithCGPoint:CGPointMake(self.view.bounds.size.width,
+                    //                        //                                                                 self.view.bounds.size.height)];
+                    //
+                    //                        anim.toValue = [NSValue valueWithCGPoint:[MyMachine getImageView].center];
+                    //
+                    //
+                    //                        anim.removedOnCompletion = NO;
+                    //                        anim.fillMode = kCAFillModeForwards;
+                    //                        [[[ItemArray objectAtIndex:i] getImageView].layer addAnimation:anim forKey:@"position"];
+                    //
+                    //                        //        mylayer.position=CGPointMake(200, 200);
+                    //                        //        mylayer.opacity=0.5;
+                    //                    } [CATransaction commit];
                     
                     
                     
-//                    [CATransaction begin];
-//                    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-//                    [CATransaction setCompletionBlock:^{//終了処理
-////                        CAAnimation* animationMag = [[[ItemArray objectAtIndex:i] getImageView].layer animationForKey:@"sweep"];
-//                        if(i < [ItemArray count]){
-////                            CAAnimation *animSwp = [_itemLayer animationForKey:@"freeDown"];//終了判定用
-//                            
-//                            //if collide
-//                            if(CGRectIntersectsRect(((CALayer*)[MyMachine getImageView].layer.presentationLayer).frame,
-//                                                    ((CALayer*)[_item getImageView].layer.presentationLayer).frame)) {
-//                                
-//                                NSLog(@"collision");
-//                                //handle the collision
-//                            }else{//if no collide
-//                                //down animation
-//                                [CATransaction begin];
-//                                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-//                                [CATransaction setCompletionBlock:^{//終了判定
-//                                    
-//                                }];//終了判定時処理終了
-//                                
-//                                
-//                                {
-//                                    CABasicAnimation *animSweep = [CABasicAnimation animationWithKeyPath:@"position"];
-//                                    [animSweep setDuration:0.4f];
-//                                    //最初はアニメーションが始まっていないので中心位置はUIView.centerで取得
-//                                    //[ItemArray objectAtIndex:i] getImageView]
-//                                    
-//                                    //                        animSweep.fromValue = [NSValue valueWithCGPoint:_itemLayer.position];
-//                                    //                        animSweep.fromValue = [NSValue valueWithCGPoint:CGPointMake(
-//                                    //                                               [[ItemArray objectAtIndex:i] getX], [[ItemArray objectAtIndex:i] getY]
-//                                    //                                               )];
-//                                    //                        animSweep.fromValue = [NSValue valueWithCGPoint:[[ItemArray objectAtIndex:i] getImageView].layer.position];
-//                                    animSweep.toValue = [NSValue valueWithCGPoint:
-//                                                         CGPointMake(_itemLayer.position.x,
-//                                                                     self.view.bounds.size.height)];
-//                                    // completion処理用に、アニメーションが終了しても登録を残しておく
-//                                    animSweep.removedOnCompletion = NO;
-//                                    animSweep.fillMode = kCAFillModeForwards;
-//                                    [[[ItemArray objectAtIndex:i] getImageView].layer.presentationLayer addAnimation:animSweep forKey:@"sweep"];//uiviewから生成したlayerをanimation
-//                                    
-//                                }
-//                                [CATransaction commit];
-//                                
-//
-//                                
-//                            }
-////                            if([[ItemArray objectAtIndex:i] getIsAlive]){
-////                            ItemClass *_item = [ItemArray objectAtIndex:i];
-////                            CGPoint pos = [[ItemArray objectAtIndex:i] getImageView].center;
-////                            pos = [[_item getImageView].layer convertPoint:pos toLayer:[_item getImageView].layer.superlayer];
-//                            
-////                            NSLog(@"sweep-completion-block at i=%d, %d, x = %d, y = %d, x=%f, y=%f, newX=%f, newY=%f, %f, %f", i,
-////                                  [[ItemArray objectAtIndex:i] getIsAlive],
-////                                  [[ItemArray objectAtIndex:i] getX],
-////                                  [[ItemArray objectAtIndex:i] getY],
-////                                  [[ItemArray objectAtIndex:i] getImageView].center.x,
-////                                  [[ItemArray objectAtIndex:i] getImageView].center.y,
-////                                  pos.x, pos.y,
-////                                  ((CALayer *)[[_item getImageView].layer presentationLayer]).position.x,
-////                                  ((CALayer *)[[_item getImageView].layer presentationLayer]).position.y);
-//                            
-//                            
-////                            [[[ItemArray objectAtIndex:i]getImageView].layer.presentationLayer removeAnimationForKey:@"sweep"];   // 後始末:元の状態に戻す？removeすると"sweep"開始位置に戻ってしまう
-//                            
-//                            //自機位置の距離判定して取得判定をしてしまう？
-////                            [self getDistance:0 y:0];
-//                        }
-//                        //        NSLog(@"item : x = %f, y = %f",
-//                        //              ((CALayer *)[iv.layer presentationLayer]).position.x,
-//                        //              ((CALayer *)[iv.layer presentationLayer]).position.y);
-//                    }];//終了判定終了
-//                    
-//                    
-//                    //    [CATransaction setAnimationDuration:0.5f];
-//                    
-//                    {
-//                        CABasicAnimation *animSweep = [CABasicAnimation animationWithKeyPath:@"position"];
-//                        [animSweep setDuration:0.4f];
-//                        //最初はアニメーションが始まっていないので中心位置はUIView.centerで取得
-//                        //[ItemArray objectAtIndex:i] getImageView]
-//                        
-////                        animSweep.fromValue = [NSValue valueWithCGPoint:_itemLayer.position];
-////                        animSweep.fromValue = [NSValue valueWithCGPoint:CGPointMake(
-////                                               [[ItemArray objectAtIndex:i] getX], [[ItemArray objectAtIndex:i] getY]
-////                                               )];
-////                        animSweep.fromValue = [NSValue valueWithCGPoint:[[ItemArray objectAtIndex:i] getImageView].layer.position];
-//                        animSweep.toValue = [NSValue valueWithCGPoint:[MyMachine getImageView].center];//myview.superview.bounds.size.height)];
-////                        animSweep.toValue = [NSValue valueWithCGPoint:CGPointZero];//test
-//                        // completion処理用に、アニメーションが終了しても登録を残しておく
-//                        animSweep.removedOnCompletion = NO;
-//                        animSweep.fillMode = kCAFillModeForwards;
-//                        [[[ItemArray objectAtIndex:i] getImageView].layer.presentationLayer addAnimation:animSweep forKey:@"sweep"];//uiviewから生成したlayerをanimation
-//                        
-//                    }
-//                    [CATransaction commit];
-//                    
-
+                    //                    [CATransaction begin];
+                    //                    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+                    //                    [CATransaction setCompletionBlock:^{//終了処理
+                    ////                        CAAnimation* animationMag = [[[ItemArray objectAtIndex:i] getImageView].layer animationForKey:@"sweep"];
+                    //                        if(i < [ItemArray count]){
+                    ////                            CAAnimation *animSwp = [_itemLayer animationForKey:@"freeDown"];//終了判定用
+                    //
+                    //                            //if collide
+                    //                            if(CGRectIntersectsRect(((CALayer*)[MyMachine getImageView].layer.presentationLayer).frame,
+                    //                                                    ((CALayer*)[_item getImageView].layer.presentationLayer).frame)) {
+                    //
+                    //                                NSLog(@"collision");
+                    //                                //handle the collision
+                    //                            }else{//if no collide
+                    //                                //down animation
+                    //                                [CATransaction begin];
+                    //                                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+                    //                                [CATransaction setCompletionBlock:^{//終了判定
+                    //
+                    //                                }];//終了判定時処理終了
+                    //
+                    //
+                    //                                {
+                    //                                    CABasicAnimation *animSweep = [CABasicAnimation animationWithKeyPath:@"position"];
+                    //                                    [animSweep setDuration:0.4f];
+                    //                                    //最初はアニメーションが始まっていないので中心位置はUIView.centerで取得
+                    //                                    //[ItemArray objectAtIndex:i] getImageView]
+                    //
+                    //                                    //                        animSweep.fromValue = [NSValue valueWithCGPoint:_itemLayer.position];
+                    //                                    //                        animSweep.fromValue = [NSValue valueWithCGPoint:CGPointMake(
+                    //                                    //                                               [[ItemArray objectAtIndex:i] getX], [[ItemArray objectAtIndex:i] getY]
+                    //                                    //                                               )];
+                    //                                    //                        animSweep.fromValue = [NSValue valueWithCGPoint:[[ItemArray objectAtIndex:i] getImageView].layer.position];
+                    //                                    animSweep.toValue = [NSValue valueWithCGPoint:
+                    //                                                         CGPointMake(_itemLayer.position.x,
+                    //                                                                     self.view.bounds.size.height)];
+                    //                                    // completion処理用に、アニメーションが終了しても登録を残しておく
+                    //                                    animSweep.removedOnCompletion = NO;
+                    //                                    animSweep.fillMode = kCAFillModeForwards;
+                    //                                    [[[ItemArray objectAtIndex:i] getImageView].layer.presentationLayer addAnimation:animSweep forKey:@"sweep"];//uiviewから生成したlayerをanimation
+                    //
+                    //                                }
+                    //                                [CATransaction commit];
+                    //
+                    //
+                    //
+                    //                            }
+                    ////                            if([[ItemArray objectAtIndex:i] getIsAlive]){
+                    ////                            ItemClass *_item = [ItemArray objectAtIndex:i];
+                    ////                            CGPoint pos = [[ItemArray objectAtIndex:i] getImageView].center;
+                    ////                            pos = [[_item getImageView].layer convertPoint:pos toLayer:[_item getImageView].layer.superlayer];
+                    //
+                    ////                            NSLog(@"sweep-completion-block at i=%d, %d, x = %d, y = %d, x=%f, y=%f, newX=%f, newY=%f, %f, %f", i,
+                    ////                                  [[ItemArray objectAtIndex:i] getIsAlive],
+                    ////                                  [[ItemArray objectAtIndex:i] getX],
+                    ////                                  [[ItemArray objectAtIndex:i] getY],
+                    ////                                  [[ItemArray objectAtIndex:i] getImageView].center.x,
+                    ////                                  [[ItemArray objectAtIndex:i] getImageView].center.y,
+                    ////                                  pos.x, pos.y,
+                    ////                                  ((CALayer *)[[_item getImageView].layer presentationLayer]).position.x,
+                    ////                                  ((CALayer *)[[_item getImageView].layer presentationLayer]).position.y);
+                    //
+                    //
+                    ////                            [[[ItemArray objectAtIndex:i]getImageView].layer.presentationLayer removeAnimationForKey:@"sweep"];   // 後始末:元の状態に戻す？removeすると"sweep"開始位置に戻ってしまう
+                    //
+                    //                            //自機位置の距離判定して取得判定をしてしまう？
+                    ////                            [self getDistance:0 y:0];
+                    //                        }
+                    //                        //        NSLog(@"item : x = %f, y = %f",
+                    //                        //              ((CALayer *)[iv.layer presentationLayer]).position.x,
+                    //                        //              ((CALayer *)[iv.layer presentationLayer]).position.y);
+                    //                    }];//終了判定終了
+                    //
+                    //
+                    //                    //    [CATransaction setAnimationDuration:0.5f];
+                    //
+                    //                    {
+                    //                        CABasicAnimation *animSweep = [CABasicAnimation animationWithKeyPath:@"position"];
+                    //                        [animSweep setDuration:0.4f];
+                    //                        //最初はアニメーションが始まっていないので中心位置はUIView.centerで取得
+                    //                        //[ItemArray objectAtIndex:i] getImageView]
+                    //
+                    ////                        animSweep.fromValue = [NSValue valueWithCGPoint:_itemLayer.position];
+                    ////                        animSweep.fromValue = [NSValue valueWithCGPoint:CGPointMake(
+                    ////                                               [[ItemArray objectAtIndex:i] getX], [[ItemArray objectAtIndex:i] getY]
+                    ////                                               )];
+                    ////                        animSweep.fromValue = [NSValue valueWithCGPoint:[[ItemArray objectAtIndex:i] getImageView].layer.position];
+                    //                        animSweep.toValue = [NSValue valueWithCGPoint:[MyMachine getImageView].center];//myview.superview.bounds.size.height)];
+                    ////                        animSweep.toValue = [NSValue valueWithCGPoint:CGPointZero];//test
+                    //                        // completion処理用に、アニメーションが終了しても登録を残しておく
+                    //                        animSweep.removedOnCompletion = NO;
+                    //                        animSweep.fillMode = kCAFillModeForwards;
+                    //                        [[[ItemArray objectAtIndex:i] getImageView].layer.presentationLayer addAnimation:animSweep forKey:@"sweep"];//uiviewから生成したlayerをanimation
+                    //
+                    //                    }
+                    //                    [CATransaction commit];
+                    //
                     
                     
                     
                     
                     
-//                    NSLog(@"magnet射程範囲->count:%d, i=%d, item:%@",
-//                          [ItemArray count], i,
-//                          [ItemArray objectAtIndex:i]);
-//                    [UIView setAnimationBeginsFromCurrentState:YES];
-//                    NSLog(@"aaa");
-//                    [[ItemArray objectAtIndex:i] getImageView].center =
-////                        CGPointMake([[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer].position.x,
-////                                    [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer].position.y);
-//                        [[ItemArray objectAtIndex:i]getImageView].center;
-//                    [CATransaction begin];
-//                    [[[ItemArray objectAtIndex:i] getImageView].layer removeAllAnimations];//使えない?：変な所(画面上部)で停止する->上下にCATransaction begin&commitを実装しないから？？(未検証)
-//                    [CATransaction commit];
-//                    [UIView animateWithDuration:1.0f
-//                                     animations:^{
-//                                         [[ItemArray objectAtIndex:i] getImageView].center =
-//                                            [MyMachine getImageView].center;
-//                                     }
-//                                     completion:^(BOOL finished){
-//                                         if(i < [ItemArray count]){
-//                                             
-//                                             if([[ItemArray objectAtIndex:i] getImageView] != nil){
-//                                                 [UIView setAnimationBeginsFromCurrentState:YES];
-//                                                 if([[ItemArray objectAtIndex:i] getIsAlive]){
-//                                                     int x = [[ItemArray objectAtIndex:i] getImageView].center.x;
-//                                                     [[ItemArray objectAtIndex:i] getImageView].center = CGPointMake(x, self.view.bounds.size.height);
-//                                                 }
-//                                             }
-//                                         }
-//                                     }];
+                    
+                    //                    NSLog(@"magnet射程範囲->count:%d, i=%d, item:%@",
+                    //                          [ItemArray count], i,
+                    //                          [ItemArray objectAtIndex:i]);
+                    //                    [UIView setAnimationBeginsFromCurrentState:YES];
+                    //                    NSLog(@"aaa");
+                    //                    [[ItemArray objectAtIndex:i] getImageView].center =
+                    ////                        CGPointMake([[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer].position.x,
+                    ////                                    [[[ItemArray objectAtIndex:i] getImageView].layer presentationLayer].position.y);
+                    //                        [[ItemArray objectAtIndex:i]getImageView].center;
+                    //                    [CATransaction begin];
+                    //                    [[[ItemArray objectAtIndex:i] getImageView].layer removeAllAnimations];//使えない?：変な所(画面上部)で停止する->上下にCATransaction begin&commitを実装しないから？？(未検証)
+                    //                    [CATransaction commit];
+                    //                    [UIView animateWithDuration:1.0f
+                    //                                     animations:^{
+                    //                                         [[ItemArray objectAtIndex:i] getImageView].center =
+                    //                                            [MyMachine getImageView].center;
+                    //                                     }
+                    //                                     completion:^(BOOL finished){
+                    //                                         if(i < [ItemArray count]){
+                    //
+                    //                                             if([[ItemArray objectAtIndex:i] getImageView] != nil){
+                    //                                                 [UIView setAnimationBeginsFromCurrentState:YES];
+                    //                                                 if([[ItemArray objectAtIndex:i] getIsAlive]){
+                    //                                                     int x = [[ItemArray objectAtIndex:i] getImageView].center.x;
+                    //                                                     [[ItemArray objectAtIndex:i] getImageView].center = CGPointMake(x, self.view.bounds.size.height);
+                    //                                                 }
+                    //                                             }
+                    //                                         }
+                    //                                     }];
                     
                     
                     
                 }
             }
             
-//            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
+            //            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
             
             //test
             _item = [ItemArray objectAtIndex:i];
-//        }//if([[ItemArray objectAtIndex:i] getIsAlive]){
-//    }//for(int i = 0 ; i< [ItemArray count]; i ++){
-//
-////    NSLog(@"敵機配列");
-//    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-//    //_/_/_/_/表示_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-//    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-//    
-//    
-//    //アイテム取得判定：前倒しに取得させる
-//    for(int itemCount = 0; itemCount < [ItemArray count] ; itemCount++){
-//        _item = [ItemArray objectAtIndex:itemCount];
+            //        }//if([[ItemArray objectAtIndex:i] getIsAlive]){
+            //    }//for(int i = 0 ; i< [ItemArray count]; i ++){
+            //
+            ////    NSLog(@"敵機配列");
+            //    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+            //    //_/_/_/_/表示_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+            //    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+            //
+            //
+            //    //アイテム取得判定：前倒しに取得させる
+            //    for(int itemCount = 0; itemCount < [ItemArray count] ; itemCount++){
+            //        _item = [ItemArray objectAtIndex:itemCount];
             
-//        if([_item getIsAlive]){//アイテムの獲得判定
+            //        if([_item getIsAlive]){//アイテムの獲得判定
             
             _xItem = [_item getX];
             _yItem = [_item getY];
-//            NSLog(@"y=%d", _yItem);
+            //            NSLog(@"y=%d", _yItem);
             
-//            NSLog(@"xI = %d, xM = %d, yI = %d, yM = %d",
-//                  _xItem, [MyMachine getX],
-//                  _yItem, [MyMachine getY]);
+            //            NSLog(@"xI = %d, xM = %d, yI = %d, yM = %d",
+            //                  _xItem, [MyMachine getX],
+            //                  _yItem, [MyMachine getY]);
             
             //アイテム検出テスト
-//            int xi = ((CALayer *)[_item getImageView].layer).position.x;//[_item getImageView].center.x;
-//            int yi = ((CALayer *)[_item getImageView].layer).position.y;//[_item getImageView].center.y;
-//            int xm = [MyMachine getImageView].center.x;
-//            int ym = [MyMachine getImageView].center.y;
-//            if(itemCount == 0){
-//                NSLog(@"xi=%d, yi=%d, xm=%d, ym=%d", xi, yi, xm, ym);
-//            }
+            //            int xi = ((CALayer *)[_item getImageView].layer).position.x;//[_item getImageView].center.x;
+            //            int yi = ((CALayer *)[_item getImageView].layer).position.y;//[_item getImageView].center.y;
+            //            int xm = [MyMachine getImageView].center.x;
+            //            int ym = [MyMachine getImageView].center.y;
+            //            if(itemCount == 0){
+            //                NSLog(@"xi=%d, yi=%d, xm=%d, ym=%d", xi, yi, xm, ym);
+            //            }
             float near_coeff = 0.5;
-//            if(isMagnetMode){//グローバルに設定しても良い
+            //            if(isMagnetMode){//グローバルに設定しても良い
             if([MyMachine getStatus:ItemTypeMagnet]){
                 near_coeff = 0.7f;
             }else if([MyMachine getStatus:ItemTypeBig]){
@@ -1051,32 +1132,32 @@ int sensitivity;
                _yItem >= [MyMachine getY] - mySize * near_coeff &&
                _yItem <= [MyMachine getY] + mySize * near_coeff){
                 
-//                if(itemCount == 0){
-//                NSLog(@"collision detect at %d", itemCount);
-//                }
+                //                if(itemCount == 0){
+                //                NSLog(@"collision detect at %d", itemCount);
+                //                }
                 flagItemTrigger = true;
                 
                 [self dispEffectItemAcq];
                 
                 
-//                NSLog(@"Item acquired");
-//                [[[ItemArray objectAtIndex:itemCount] getImageView] removeFromSuperview];
-//                [[ItemArray objectAtIndex:itemCount] die];
+                //                NSLog(@"Item acquired");
+                //                [[[ItemArray objectAtIndex:itemCount] getImageView] removeFromSuperview];
+                //                [[ItemArray objectAtIndex:itemCount] die];
                 [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
                 [[ItemArray objectAtIndex:i] die];
-
-//                NSLog(@"num item = %d", [ItemArray count]);
-                //アイテム取得時のパーティクル表示
-//                [self.view addSubview:[[ItemArray objectAtIndex:itemCount] getKilledParticle]];
                 
-//                Effect *effect = [[Effect alloc]initWithFrame:[MyMachine getImageView].frame];
-//                UIView *viewMagnetEffect = [effect getEffectView:EffectTypeStandard];
-////                [viewMyEffect addSubview:viewMagnetEffect];
-//                [self.view addSubview:viewMagnetEffect];
+                //                NSLog(@"num item = %d", [ItemArray count]);
+                //アイテム取得時のパーティクル表示
+                //                [self.view addSubview:[[ItemArray objectAtIndex:itemCount] getKilledParticle]];
+                
+                //                Effect *effect = [[Effect alloc]initWithFrame:[MyMachine getImageView].frame];
+                //                UIView *viewMagnetEffect = [effect getEffectView:EffectTypeStandard];
+                ////                [viewMyEffect addSubview:viewMagnetEffect];
+                //                [self.view addSubview:viewMagnetEffect];
                 
                 //取得したアイテムを判定
                 itemType = [_item getType];
-//                NSLog(@"%d", itemType);
+                //                NSLog(@"%d", itemType);
                 switch ((ItemType)itemType) {
                     case ItemTypeYellowGold:{
                         [GoldBoard setScore:[GoldBoard getScore] + 1];
@@ -1113,38 +1194,38 @@ int sensitivity;
                         //射程範囲に入ったらアイテムを自分位置に向かわせる
                         //上記ItemClass:donext実行後にisMagnetModeで判定するが、
                         //isMagnetModeはcountMagnet>0により判定する。
-//                        if(!isMagnetMode){
-//                        if(![MyMachine getStatus:ItemTypeMagnet]){
-                            [MyMachine setStatus:@"1" key:ItemTypeMagnet];//あまり意味ない？
-                            
-//                            NSLog(@"get isMagnetMode :true");
-
-//                            isMagnetMode = true;
-//                            countMagnet = 500;//500カウント=5sec
-//                        }
+                        //                        if(!isMagnetMode){
+                        //                        if(![MyMachine getStatus:ItemTypeMagnet]){
+                        [MyMachine setStatus:@"1" key:ItemTypeMagnet];//あまり意味ない？
+                        
+                        //                            NSLog(@"get isMagnetMode :true");
+                        
+                        //                            isMagnetMode = true;
+                        //                            countMagnet = 500;//500カウント=5sec
+                        //                        }
                         break;
                     }
                     case ItemTypeBig:{
                         //bigger
-//                        if(!isBigMode){
+                        //                        if(!isBigMode){
                         if(![MyMachine getStatus:ItemTypeBig]){
                             [MyMachine setStatus:@"1" key:ItemTypeBig];
-//                            countBig = 500;
-//                            isBigMode = true;
-//                            mySize = [MyMachine getSize];
+                            //                            countBig = 500;
+                            //                            isBigMode = true;
+                            //                            mySize = [MyMachine getSize];
                         }
                         break;
                     }
                     case ItemTypeBomb:{
-//                        [MyMachine setStatus:@"1" key:ItemTypeBomb];
+                        //                        [MyMachine setStatus:@"1" key:ItemTypeBomb];
                         
                         if(![MyMachine getStatus:ItemTypeBomb]){
                             [MyMachine setStatus:@"1" key:ItemTypeBomb];
                             [self ItemBombEffect:self.view.center];
                         }
-//                        for(int i = 0; i < [EnemyArray count] ;i++){//画面内全敵対象
-//                            [self enemyDieEffect:i];
-//                        }
+                        //                        for(int i = 0; i < [EnemyArray count] ;i++){//画面内全敵対象
+                        //                            [self enemyDieEffect:i];
+                        //                        }
                         break;
                     }
                     case ItemTypeDeffense0:{
@@ -1180,7 +1261,7 @@ int sensitivity;
                         if(![MyMachine getStatus:ItemTypeWeapon0]){
                             [MyMachine setStatus:@"1" key:ItemTypeWeapon0];
                         }
-//                        [self throwBombEffect];
+                        //                        [self throwBombEffect];
                         break;
                     }
                     case ItemTypeWeapon1:{//wpDiffuse
@@ -1207,7 +1288,7 @@ int sensitivity;
                     default:
                         break;
                 }
-
+                
                 /*
                  _/_/_/_/_/_/_/_/_/_/_/_/
                  得点を加算
@@ -1223,11 +1304,11 @@ int sensitivity;
         }
     }
     
-//    NSLog(@"敵機衝突判定");
+    //    NSLog(@"敵機衝突判定");
     
     //敵機の衝突判定:against自機＆ビーム
     for(int i = [EnemyArray count] - 1; i >= 0 ;i-- ) {//全ての生存している敵に対して発生した順番に衝突判定
-//        NSLog(@"敵衝突判定:%d", i);
+        //        NSLog(@"敵衝突判定:%d", i);
         
         if([(EnemyClass *)[EnemyArray objectAtIndex:i] getIsAlive]){//計算時間節約
             
@@ -1235,7 +1316,7 @@ int sensitivity;
                 [[EnemyArray objectAtIndex:i] die];
                 continue;
             }
-//            NSLog(@"敵衝突生存確認完了");
+            //            NSLog(@"敵衝突生存確認完了");
             
             _enemy = [EnemyArray objectAtIndex:i];
             _xEnemy = [_enemy getX];
@@ -1246,34 +1327,34 @@ int sensitivity;
             _sMine = [MyMachine getSize];
             
             //自機と敵機の衝突判定
-//            if(isBigMode){
+            //            if(isBigMode){
             if([MyMachine getStatus:ItemTypeBig]){//in case of : bigMode
                 if(
-                    _xMine + _sMine * 0.4 >= _xEnemy - _sEnemy * 0.4 &&
-                    _xMine - _sMine * 0.4 <= _xEnemy + _sEnemy * 0.4 &&
-                    _yMine + _sMine * 0.4 >= _yEnemy - _sEnemy * 0.4 &&
-                    _yMine - _sMine * 0.4 <= _yEnemy + _sEnemy * 0.4 ){
-//                    NSLog(@"size=%d", _sMine);
-//                    NSLog(@"die effect");
+                   _xMine + _sMine * 0.4 >= _xEnemy - _sEnemy * 0.4 &&
+                   _xMine - _sMine * 0.4 <= _xEnemy + _sEnemy * 0.4 &&
+                   _yMine + _sMine * 0.4 >= _yEnemy - _sEnemy * 0.4 &&
+                   _yMine - _sMine * 0.4 <= _yEnemy + _sEnemy * 0.4 ){
+                    //                    NSLog(@"size=%d", _sMine);
+                    //                    NSLog(@"die effect");
                     //敵機撃墜時のエフェクト
-//                    [self enemyDieEffect:i];
+                    //                    [self enemyDieEffect:i];
                     [self giveDamageToEnemy:i damage:5 x:_xEnemy y:_yEnemy];
                     
                 }
             }else if([MyMachine getStatus:ItemTypeTransparency]){
                 //do nothing...
             }else if(
-               _xMine >= _xEnemy - _sEnemy * 0.4 &&
-               _xMine <= _xEnemy + _sEnemy * 0.4 &&
-               _yEnemy - _sEnemy * 0.4 <= _yMine &&
-               _yEnemy + _sEnemy * 0.4 >= _yMine)
-                     {
+                     _xMine >= _xEnemy - _sEnemy * 0.4 &&
+                     _xMine <= _xEnemy + _sEnemy * 0.4 &&
+                     _yEnemy - _sEnemy * 0.4 <= _yMine &&
+                     _yEnemy + _sEnemy * 0.4 >= _yMine)
+            {
                 
-//                NSLog(@"自機と敵機との衝突");
+                //                NSLog(@"自機と敵機との衝突");
                 //ダメージの設定
                 [MyMachine setDamage:10 location:CGPointMake([MyMachine getX],[MyMachine getY])];
                 //ヒットポイントのセット
-//                [powerGauge setValue:[MyMachine getHitPoint]];
+                //                [powerGauge setValue:[MyMachine getHitPoint]];
                 //パワーゲージの減少
                 [self.view addSubview:[powerGauge getImageView]];
                 
@@ -1297,15 +1378,15 @@ int sensitivity;
                      修正点：爆発でスコアが見えなくなってしまっているので、爆発はスコアの背面にする(スコアが最前面にする？）
                      */
                     
-//                    NSLog(@"パーティクル = %@", [MyMachine getExplodeParticle]);
+                    //                    NSLog(@"パーティクル = %@", [MyMachine getExplodeParticle]);
                     [[MyMachine getExplodeParticle] setUserInteractionEnabled: NO];//インタラクション拒否
                     [[MyMachine getExplodeParticle] setIsEmitting:YES];//消去するには数秒後にNOに
                     [self.view bringSubviewToFront: [MyMachine getExplodeParticle]];//最前面に
                     [self.view addSubview: [MyMachine getExplodeParticle]];//表示する
                 }
             }
-        
-//            NSLog(@"laser judgement");
+            
+            //            NSLog(@"laser judgement");
             
             //レーザーモードの場合：レーザーと敵機の衝突判定
             if([MyMachine getStatus:ItemTypeWeapon2]){//レーザーモードの場合
@@ -1316,19 +1397,19 @@ int sensitivity;
                     
                     
                     //攻撃によって敵が死んだらYES:生きてればNO
-//                    if([self giveDamageToEnemy:i damagae:(int)[_beam getPower] x:_xBeam y:_yBeam]){
+                    //                    if([self giveDamageToEnemy:i damagae:(int)[_beam getPower] x:_xBeam y:_yBeam]){
                     if([self giveDamageToEnemy:(int)i damage:[MyMachine getLaserPower] x:(int)_xEnemy y:(int)_yEnemy]){
-//                        continue;//弾丸モード(非レーザーモード)とは異なり、ビームループはないのでそのまま。
+                        //                        continue;//弾丸モード(非レーザーモード)とは異なり、ビームループはないのでそのまま。
                     }
                 }
                 
             }
             
-//            NSLog(@"beam judgement");
+            //            NSLog(@"beam judgement");
             
             //敵機とビームの衝突判定
             for(int j = 0 ; j < [MyMachine getBeamCount];j++){
-//                NSLog(@"beam%d judgement against enemy%d",j, i);
+                //                NSLog(@"beam%d judgement against enemy%d",j, i);
                 _beam = [MyMachine getBeam:j];
                 
                 if([_beam getIsAlive]){
@@ -1354,14 +1435,14 @@ int sensitivity;
                         
                         //se
                         AudioServicesPlaySystemSound (sound_damage_ID);
-
+                        
                         //dieと同時にremovefromSuperviewせずに集約する(画面外に出てもdieするため)
-//                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
+                        //                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
                         [[MyMachine getBeam:j] die];//衝突したらビームは消去
-//                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
-//                        NSLog(@"%d is die according to hit enemy at x=%d, y=%d",
-//                              j,_xEnemy, _yEnemy);
-//                        [[[MyMachine getBeam:j] getImageView] removeFromSuperview];//画面削除
+                        //                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
+                        //                        NSLog(@"%d is die according to hit enemy at x=%d, y=%d",
+                        //                              j,_xEnemy, _yEnemy);
+                        //                        [[[MyMachine getBeam:j] getImageView] removeFromSuperview];//画面削除
                         
                         //攻撃によって敵が死んだらYES:生きてればNO
                         if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy]){
@@ -1369,56 +1450,56 @@ int sensitivity;
                         }else{
                             continue;//no need?:同じ敵iに対して次の弾丸の衝突判定を行う
                         }
-
                         
-//                        break;//何の判定もせずににビーム[j]ループ脱出すると次以降のビームが敵に当たっている位置にいるのに衝突しないでスルーしてしまう
+                        
+                        //                        break;//何の判定もせずににビーム[j]ループ脱出すると次以降のビームが敵に当たっている位置にいるのに衝突しないでスルーしてしまう
                         
                     }//ビーム衝突判定(位置判定)
                 }//if(_beam isAlive)
             }//for(int j = 0 ; j < [MyMachine getBeamCount];j++)：ビームループ
-//            NSLog(@"complete beam loop");
+            //            NSLog(@"complete beam loop");
         }else{//if([(EnemyClass *)[EnemyArray objectAtIndex:i] getIsAlive])
             [EnemyArray removeObjectAtIndex:i];
         }
     }//for(int i = 0; i < [EnemyArray count] ;i++ )：敵ループ
-//    NSLog(@"complete enemy-loop");
+    //    NSLog(@"complete enemy-loop");
     
     
     //powergaugeを回転させる
-//    [powerGauge setAngle:2*M_PI * count * 2/60.0f];
-//    
-//    //pg背景をアニメ
-//    [iv_powerGauge removeFromSuperview];
-//    int temp = count * 10  + 1;
-//    
-//    //透過度を0.1, 0.2, ・・, 1.0, 0.9, 0.8, ・・循環する。
-//    iv_powerGauge.alpha = 0.1 * MAX((temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2) +//二桁目が偶数の場合
-//                                    ((((int)(temp/10)+1)*10-temp) *(((int)(temp/10)) % 2)//二桁目が奇数のとき
-//                                     ), 0.1);//0.1以上にする
-////    NSLog(@"%f", 0.1 * (temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2) +//二桁目が偶数の場合
-////          ((((int)(temp/10)+1)*10-temp) *((int)(temp/10) % 2)));//二桁目が奇数の場合
-//    [self.view addSubview:iv_powerGauge];
-//    
-//    iv_pg_ribrary.transform = CGAffineTransformMakeRotation(-2*M_PI * count * 2/60.0f);
+    //    [powerGauge setAngle:2*M_PI * count * 2/60.0f];
+    //
+    //    //pg背景をアニメ
+    //    [iv_powerGauge removeFromSuperview];
+    //    int temp = count * 10  + 1;
+    //
+    //    //透過度を0.1, 0.2, ・・, 1.0, 0.9, 0.8, ・・循環する。
+    //    iv_powerGauge.alpha = 0.1 * MAX((temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2) +//二桁目が偶数の場合
+    //                                    ((((int)(temp/10)+1)*10-temp) *(((int)(temp/10)) % 2)//二桁目が奇数のとき
+    //                                     ), 0.1);//0.1以上にする
+    ////    NSLog(@"%f", 0.1 * (temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2) +//二桁目が偶数の場合
+    ////          ((((int)(temp/10)+1)*10-temp) *((int)(temp/10) % 2)));//二桁目が奇数の場合
+    //    [self.view addSubview:iv_powerGauge];
+    //
+    //    iv_pg_ribrary.transform = CGAffineTransformMakeRotation(-2*M_PI * count * 2/60.0f);
     
     
     
-//    NSLog(@"%d, %d, 偶数 = %d, 奇数 = %d, 10の位 = %d", temp, (temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2) +
-//          ((((int)(temp/10)+1)*10-temp) *(((int)(temp/10)) % 2)),
-//          (temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2),
-//          (((((int)(temp/10)+1)+1)*10-temp) *((int)(temp/10) % 2)),
-//          (int)(temp/10));
+    //    NSLog(@"%d, %d, 偶数 = %d, 奇数 = %d, 10の位 = %d", temp, (temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2) +
+    //          ((((int)(temp/10)+1)*10-temp) *(((int)(temp/10)) % 2)),
+    //          (temp - (int)(temp/10)*10)*((((int)(temp/10)) + 1) % 2),
+    //          (((((int)(temp/10)+1)+1)*10-temp) *((int)(temp/10) % 2)),
+    //          (int)(temp/10));
     
     
-//    if((int)count % 10 == 0){
-        [self garvageCollection];
-//    NSLog(@"complete garvageCollection");
-//    }
+    //    if((int)count % 10 == 0){
+    [self garvageCollection];
+    //    NSLog(@"complete garvageCollection");
+    //    }
     
     
     //ユーザーインターフェース
-//    [self.view bringSubviewToFront:iv_frame];
-
+    //    [self.view bringSubviewToFront:iv_frame];
+    
 }
 
 
@@ -1433,46 +1514,9 @@ int sensitivity;
     //homeボタンが押された時
     //以下応急処置：ユーザー表示画面(UIView)は作成必要
     [self onClickedStopButton];//isGameMode = false;も実行
-//    [self exitProcess];
+    //    [self exitProcess];
 }
 
-/**
- *tmインスタンスによって一定時間呼び出されるメソッド
- *一定間隔呼び出しは[tm invalidate];によって停止される
- */
-- (void)time:(NSTimer*)timer{
-//    NSLog(@"timer start");
-    if(gameSecond == 0){
-//        NSLog(@"start animation from game class view controller");
-        [BackGround startAnimation];//3sec-Round
-    }
-    if(isGameMode){
-//        NSLog(@"count = %f from timer", count);
-        [self ordinaryAnimationStart];
-//        NSLog(@"complete ordinaryAnimation from timer");
-        //一定時間経過するとゲームオーバー
-//        if(count >= TIMEOVER_SECOND || ![MyMachine getIsAlive]){
-//            NSLog(@"gameover");
-            //経過したらタイマー終了
-//            [self performSelector:@selector(exitProcess) withObject:nil afterDelay:0.1];//自機爆破後、即座に終了させると違和感あるため少しdelay
-//            [self exitProcess];//delayさせるとその間にprogressが進んでしまうので即座に表示
-//        }
-        gameSecond += 0.01f;
-        
-        //終了モードは辞める(ユーザーが努力した分だけ進めるようにする)
-//        if(count >= TIMEOVER_SECOND){
-//            isGameMode = false;
-//            [self exitProcess];//delayさせるとその間にprogressが進んでしまうので即座に表示
-//        }
-        
-    }else{
-        
-        //[tm invalid]をしないでisGameMode=falseとなった時 ＝ 一時停止ボタンが押された時もしくはプレイヤー撃破時
-        //停止中画面に移行(一時停止用UIImageViewの表示)
-        
-    }
-//    NSLog(@"timer complete");
-}
 //- (void)onLongPressedFrame:(UILongPressGestureRecognizer *)gr {
 ////    [self yieldBeam:0 init_x:(x_myMachine + size_machine/2) init_y:(y_myMachine - length_beam)];
 //    NSLog(@"長押しがされました．");
@@ -1481,10 +1525,10 @@ int sensitivity;
 
 -(void)garvageCollection{
     for(int i = 0; i < [EnemyArray count]; i++){
-//        NSLog(@"i = %d at Y = %d", i, [[EnemyArray objectAtIndex:i]getY]);
+        //        NSLog(@"i = %d at Y = %d", i, [[EnemyArray objectAtIndex:i]getY]);
         if([[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height ||
            ![[EnemyArray objectAtIndex:i] getIsAlive]){
-//            NSLog(@"remove at %d, %d", i, [[EnemyArray objectAtIndex:i] getY]);
+            //            NSLog(@"remove at %d, %d", i, [[EnemyArray objectAtIndex:i] getY]);
             [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];
             [EnemyArray removeObjectAtIndex:i];
         }
@@ -1492,7 +1536,7 @@ int sensitivity;
     for(int i = 0; i < [ItemArray count]; i++){
         if([[ItemArray objectAtIndex:i] getY] >= self.view.bounds.size.height ||
            ![[ItemArray objectAtIndex:i] getIsAlive]){
-//            NSLog(@"item %d remove , isAlive=%d", i, [[ItemArray objectAtIndex:i] getIsAlive]);
+            //            NSLog(@"item %d remove , isAlive=%d", i, [[ItemArray objectAtIndex:i] getIsAlive]);
             [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
             [ItemArray removeObjectAtIndex:i];
         }
@@ -1502,20 +1546,20 @@ int sensitivity;
     CGPoint point = [gr translationInView:[MyMachine getImageView]];
     CGPoint movedPoint = CGPointMake([MyMachine getImageView].center.x + point.x,
                                      [MyMachine getImageView].center.y + point.y);
-
-//この方法では画面の渕ギリギリを動くことができない。
-//    if(movedPoint.x >= 0 && movedPoint.x <= self.view.bounds.size.width &&
-//       movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
-//        
-//        [MyMachine setLocation:CGPointMake(movedPoint.x, movedPoint.y)];
-//        [MyMachine getImageView].center = movedPoint;
-//        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
-//        
-//        
-//        //エフェクト描画用frame
-//        viewMyEffect.center = movedPoint;
-//        [gr setTranslation:CGPointZero inView:viewMyEffect];
-//    }
+    
+    //この方法では画面の渕ギリギリを動くことができない。
+    //    if(movedPoint.x >= 0 && movedPoint.x <= self.view.bounds.size.width &&
+    //       movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
+    //
+    //        [MyMachine setLocation:CGPointMake(movedPoint.x, movedPoint.y)];
+    //        [MyMachine getImageView].center = movedPoint;
+    //        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
+    //
+    //
+    //        //エフェクト描画用frame
+    //        viewMyEffect.center = movedPoint;
+    //        [gr setTranslation:CGPointZero inView:viewMyEffect];
+    //    }
     
     if(movedPoint.x >= 0 && movedPoint.x <= self.view.bounds.size.width){
         [MyMachine setLocation:CGPointMake(movedPoint.x,
@@ -1560,7 +1604,7 @@ int sensitivity;
         if([MyMachine getAliveBeamCount] == 0){
             
             [self yieldBeamFromMyMachine];
-//            NSLog(@"complete add beam to supverview");
+            //            NSLog(@"complete add beam to supverview");
         }else if([[MyMachine getBeam:0] getY] <
                  [MyMachine getImageView].center.y - OBJECT_SIZE/2){//最後(index:i)の弾丸がキャラクターの近くになければ(近くにあると重なってしまう)
             
@@ -1568,9 +1612,9 @@ int sensitivity;
             
         }
     }
-
-    if([MyMachine getStatus:ItemTypeMagnet]){
     
+    if([MyMachine getStatus:ItemTypeMagnet]){
+        
         
         if(flagItemTrigger && !isEffectDisplaying){//他のエフェクトが表示中でなければ
             flagItemTrigger = false;
@@ -1636,13 +1680,13 @@ int sensitivity;
             
             [viewMyEffect addSubview:circle];
         }//if(flagItemTrigger && !isEffectDisplaying){//他のエフェクトが表示中でなければ
-
+        
     }//if(isMagnetMode)
     
     
     
-//    NSLog(@"touched");
-
+    //    NSLog(@"touched");
+    
     
 }
 
@@ -1651,9 +1695,10 @@ int sensitivity;
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // back button was pressed.  We know this is true because self is no longer
         // in the navigation stack.
-//        NSLog(@"pressed back button");
-        [tm invalidate];
+        //        NSLog(@"pressed back button");
+        
     }
+    [timer invalidate];
     [super viewWillDisappear:animated];
 }
 
@@ -1668,26 +1713,53 @@ int sensitivity;
  */
 -(void)yieldEnemy{
     Boolean isYield = false;
+    int difficulty = 0;//easy:0, 1, ... difficult
     
 #ifndef ENEMY_TEST//本番
-    if(count < 5){
-        if(arc4random() % 20 == 0){//20分の1
+    //最初の30秒？(総ゲーム時間の5分の4)は一定間隔：例えば10秒目から１５秒目は表示しない等の小休憩が必要
+    //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
+    //5秒間隔で非表示
+    if(gameSecond < 20){//20秒未満なら
+        if(arc4random() % 500 == 0){//平均5秒に1回=100px程度の間隔
+            difficulty = 0;
             isYield = true;
         }
-    }else if(count < 20){
-        if(arc4random() % 10 == 0){//10分の1
+    }else if(gameSecond < 25){//5秒間隔で非表示
+        //nothing : isYield = false;
+    }else if(gameSecond < 40){//40秒未満
+        if(arc4random() % 100 == 0){//平均１秒に1回
+            difficulty = 0;
             isYield = true;
         }
-    }else if(count < 30){
-        if(arc4random() % 5 == 0){//5分の1
+    }else if(gameSecond < 45){//5秒間隔で非表示
+        //nothing : isYield = false;
+    }else if(gameSecond < 60){
+        if(arc4random() % 50 == 0){//平均0.5秒に1回出現
+            difficulty = 1;
             isYield = true;
         }
-    }else if(count < 40){
-        if(arc4random() % 3 == 0){//2.5分の1=3分の1
+    }else if(gameSecond < 65){
+        //nothing : isYield = false;
+    }else if(gameSecond < 80){//初級殺し
+        if(arc4random() % 30 == 0){//平均0.3秒に1回出現
+            difficulty = 0;
             isYield = true;
         }
-    }else if(count < 50){
-        if(arc4random() % 2 == 0){//2分の1
+    }else if(gameSecond < 85){
+        //nothing : is...
+    }else if(gameSecond < 100){
+        if(arc4random() % 30 == 0){
+            difficulty = 1;
+            isYield = true;
+        }
+    }else if(gameSecond < 140){
+        if(arc4random() % 30 == 0){
+            difficulty = 0;
+            isYield = true;
+        }
+    }else if(gameSecond < 200){
+        if(arc4random() % 30 == 0){
+            difficulty = 2;
             isYield = true;
         }
     }else{
@@ -1696,7 +1768,7 @@ int sensitivity;
         }
     }
 #else
-
+    
     if(countEnemyRowYield == 0){
         countEnemyRowYield = timeEnemyRowYield;//100count(1count=0.01sec)で一列生成する
         isYield = true;
@@ -1714,52 +1786,60 @@ int sensitivity;
             
             enemyCount ++;
             //        NSLog(@"enemyCount %d", enemyCount);
-//            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
-//            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
+            //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
+            //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * (OBJECT_SIZE - 7);
             
             
             
             //order of easily:tanu-musa-pen-hari-zou
             int rnd = MAX(2, abs(arc4random()));//2以上の正数
-//            NSLog(@"rnd = %d", rnd);
-//            if(rnd < 0)[self exitProcess];//??
+            //            NSLog(@"rnd = %d", rnd);
+            //            if(rnd < 0)[self exitProcess];//??
             int countInterval = 5;//5秒(任意)間隔でモンスターの難易度ステージを変更していく
-//            if(count * 1000 < 1){
-//                _enemyType = 0;
-//            }else if(count * 1000 < 2){
-//                if(prob % 2 == 0){
-//                    _enemyType = 0;
-//                }else if(prob % 2 == 1){
-//                    _enemyType = 1;
-//                }
-////                _enemyType = eneCnt % 2;//order
-//            }else if(count * 1000 < 3){...続く
+            //            if(count * 1000 < 1){
+            //                _enemyType = 0;
+            //            }else if(count * 1000 < 2){
+            //                if(prob % 2 == 0){
+            //                    _enemyType = 0;
+            //                }else if(prob % 2 == 1){
+            //                    _enemyType = 1;
+            //                }
+            ////                _enemyType = eneCnt % 2;//order
+            //            }else if(count * 1000 < 3){...続く
             //以下、上記と同義
             for(int stageCount = 0;;stageCount++){//tanu-musa-pen-hari-zou
                 if(stageCount >= 5){//stageCountが5以上＝以下のelse if内のfor-_typeループのいずれにも該当しなかった場合
-//                    if((float)(arc4random() % stageCount) / stageCount){
+                    //                    if((float)(arc4random() % stageCount) / stageCount){
                     if(arc4random() % 3 <= 1){//75%
-                        _enemyType = EnemyTypeZou;
-                        NSLog(@"hit");
+                        if(difficulty < 2){
+                            _enemyType = EnemyTypeHari;
+                        }else{
+                            _enemyType = EnemyTypeZou;
+                        }
+                        
                     }else{
-                        _enemyType = MAX(arc4random() % 5, 2);//type:5,4,3のうちいずれか
+                        if(difficulty < 2){
+                            _enemyType = MAX(arc4random() % 5, 2)-2;//type:4,3,2のうちいずれか(針と象以外の上位敵)
+                        }else{
+                            _enemyType = MAX(arc4random() % 5, 2)-1;//type:4,3,2のうちいずれか(象以外の上位敵)
+                        }
                     }
                     break;
                 }else if(gameSecond >= stageCount * countInterval &&
-                   gameSecond < (stageCount+1) * countInterval){//countInterval * stageCount[sec]台の間
+                         gameSecond < (stageCount+1) * countInterval){//countInterval * stageCount[sec]台の間
                     
                     if(stageCount == 0){
                         _enemyType = 0;
                         break;
                     }else{
                         //stageCount:0-4の間では以下ループの内部のif条件のいずれかに合致するはず。
-//                        NSLog(@"start t=%d", stageCount);
+                        //                        NSLog(@"start t=%d", stageCount);
                         int _type = -1;//初期状態
                         for(_type = 0;_type < stageCount+1;_type++){//stageCount=1の時_type=0,1の両方をループ
-//                            NSLog(@"rnd=%d, t1=%d, t=%d", rnd, _type, stageCount);
+                            //                            NSLog(@"rnd=%d, t1=%d, t=%d", rnd, _type, stageCount);
                             if(rnd % (stageCount+1) == _type){//stageCount=1の時は_type=0,1のいずれかに合致
-//                                NSLog(@"mod = %d", _type);
+                                //                                NSLog(@"mod = %d", _type);
                                 _enemyType = _type;
                                 break;//for-_type
                             }
@@ -1772,7 +1852,7 @@ int sensitivity;
                     }
                 }
             }
-//            NSLog(@"enemyType = %d", _enemyType);
+            //            NSLog(@"enemyType = %d", _enemyType);
             
             
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
@@ -1781,10 +1861,10 @@ int sensitivity;
                                               enemyType:_enemyType
                                  ];
             //test用
-//            [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
-//                                                                     green:0
-//                                                                      blue:0
-//                                                                     alpha:0.5f]];//test:enemy
+            //            [[enemy getImageView] setBackgroundColor:[UIColor colorWithRed:((float)(occurredX%255))/255.0f
+            //                                                                     green:0
+            //                                                                      blue:0
+            //                                                                     alpha:0.5f]];//test:enemy
             [EnemyArray insertObject:enemy atIndex:0];
             [self.view addSubview:[[EnemyArray objectAtIndex:0] getImageView]];
             [self.view bringSubviewToFront:[[EnemyArray objectAtIndex:0] getImageView]];
@@ -1792,14 +1872,14 @@ int sensitivity;
             
             
             if([EnemyArray count] > MAX_ENEMY_NUM) {
-//                for(int i = 0; i < 10;i++){//
-                    [[[EnemyArray lastObject] getImageView] removeFromSuperview];
-                    //(パーティクルを生成していたら)パーティクルを消去
-                    [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
-                    [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
-                    //配列から削除してメモリを解放
-                    [EnemyArray removeLastObject];
-//                }
+                //                for(int i = 0; i < 10;i++){//
+                [[[EnemyArray lastObject] getImageView] removeFromSuperview];
+                //(パーティクルを生成していたら)パーティクルを消去
+                [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
+                [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
+                //配列から削除してメモリを解放
+                [EnemyArray removeLastObject];
+                //                }
                 
             }
         }
@@ -1807,10 +1887,10 @@ int sensitivity;
 }
 
 -(void)exitProcess{//自機が撃破されたら自動的に呼び出し
-//    [self showActivityIndicator];//ボタン押下可能になってしまう
+    //    [self showActivityIndicator];//ボタン押下可能になってしまう
     //タイマー終了(死んだ時に周囲の敵やイフェクトが動いているようにするかどうか)
-    [tm invalidate];
-    
+    [timer invalidate];
+    timer = nil;
     //
     UIView *superView = [CreateComponentClass createViewNoFrame:self.view.bounds
                                                           color:[UIColor clearColor]
@@ -1825,7 +1905,7 @@ int sensitivity;
     for(int i = 0; i < [EnemyArray count] ;i++){
         if([[EnemyArray objectAtIndex:i] getIsAlive]){
             //ゲーム終了後に生存している敵の処理：消去？=>メモリ解放に役立たないのでやらない。
-//            [[[EnemyArray objectAtIndex:i] getImageView]removeFromSuperview];
+            //            [[[EnemyArray objectAtIndex:i] getImageView]removeFromSuperview];
             
         }else{//死亡した敵の処理：爆発パーティクルは消去：メモリ消去
             [[[EnemyArray objectAtIndex:i] getExplodeParticle] removeFromSuperview];
@@ -1839,9 +1919,9 @@ int sensitivity;
     }
     
     //ItemClassのパーティクルは最後に生成された物(index:0)以外すべて消去
-//    for(int i = 1; i < [KiraArray count];i++){
-//        [[KiraArray objectAtIndex:i] removeFromSuperview];
-//    }
+    //    for(int i = 1; i < [KiraArray count];i++){
+    //        [[KiraArray objectAtIndex:i] removeFromSuperview];
+    //    }
     
     //ゲーム終了時に呼び出されるメソッド
     //終了報告イメージ？ダイアログ？表示
@@ -1856,7 +1936,7 @@ int sensitivity;
     
     
     //描画用に使うため、更新前データを保存しておく
-//    AttrClass *attr = [[AttrClass alloc]init];
+    //    AttrClass *attr = [[AttrClass alloc]init];
     int beforeLevel = [[attr getValueFromDevice:@"level"] intValue];
     int beforeExp = [[attr getValueFromDevice:@"exp"] intValue];
     int go_component_width = 250;
@@ -1874,20 +1954,20 @@ int sensitivity;
     //pv_complete
     
     //ゲームオーバー(go)表示
-//    int go_width = 250;
+    //    int go_width = 250;
     int go_height = 50;
     int go_y = 10;//view_go上での相対位置
-//    CGRect rect_gameover = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-//                                      go_y,
-//                                      go_component_width,
-//                                      go_height);
-//    [view_go addSubview:[CreateComponentClass createImageView:rect_gameover
-//                                                        image:@"gameover.png"]];
+    //    CGRect rect_gameover = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+    //                                      go_y,
+    //                                      go_component_width,
+    //                                      go_height);
+    //    [view_go addSubview:[CreateComponentClass createImageView:rect_gameover
+    //                                                        image:@"gameover.png"]];
     
     UILabel *label = [[UILabel alloc] init];
     label.text = @"game over!";
     label.backgroundColor = [UIColor clearColor];
-//    label.font = [UIFont fontWithName:@"Chalkduster" size:40];
+    //    label.font = [UIFont fontWithName:@"Chalkduster" size:40];
     label.font = [UIFont fontWithName:@"Noteworthy-Light" size:40];
     [label sizeToFit];
     //最後にview_goに貼付けているのでview_go上での位置
@@ -1897,7 +1977,7 @@ int sensitivity;
     
     
     //[UIFont fontWithName:@"Noteworthy-Light" size:15];
-
+    
     
     //ScoreBoard
     int score_y = go_y + go_height + 5;
@@ -1905,72 +1985,72 @@ int sensitivity;
                                    score_y,
                                    go_component_width,
                                    go_height);
-//    [view_go addSubview:[CreateComponentClass createImageView:rect_score image:@"close"]];
+    //    [view_go addSubview:[CreateComponentClass createImageView:rect_score image:@"close"]];
     UITextView *tv_score = [CreateComponentClass createTextView:rect_score
                                                            text:[NSString stringWithFormat:@"score : %d", beforeExp]];
     [tv_score setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_score];
     
     UIProgressView *pv_score = [[UIProgressView alloc]
-                               initWithProgressViewStyle:UIProgressViewStyleBar];
+                                initWithProgressViewStyle:UIProgressViewStyleBar];
     pv_score.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                               score_y + go_height,
-                               go_component_width,
-                               10);
+                                score_y + go_height,
+                                go_component_width,
+                                10);
     pv_score.progressTintColor = [UIColor greenColor];
     [view_go addSubview:pv_score];
     
     //GoldBoard
     int gold_y = score_y + go_height + 5;
     CGRect rect_gold = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                                   gold_y,
-                                   go_component_width,
-                                   go_height);
-//    [view_go addSubview:[CreateComponentClass createImageView:rect_gold image:@"close"]];
+                                  gold_y,
+                                  go_component_width,
+                                  go_height);
+    //    [view_go addSubview:[CreateComponentClass createImageView:rect_gold image:@"close"]];
     UITextView *tv_gold = [CreateComponentClass createTextView:rect_gold text:@"gold : 0"];
     [tv_gold setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_gold];
     
     //goldのprogressviewは不要
-//    UIProgressView *pv_gold = [[UIProgressView alloc]
-//                           initWithProgressViewStyle:UIProgressViewStyleBar];
-//    pv_gold.progressTintColor = [UIColor redColor];
-//    pv_gold.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-//                          gold_y + go_height,
-//                          go_component_width,
-//                          10);
-//    [view_go addSubview:pv_gold];
+    //    UIProgressView *pv_gold = [[UIProgressView alloc]
+    //                           initWithProgressViewStyle:UIProgressViewStyleBar];
+    //    pv_gold.progressTintColor = [UIColor redColor];
+    //    pv_gold.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+    //                          gold_y + go_height,
+    //                          go_component_width,
+    //                          10);
+    //    [view_go addSubview:pv_gold];
     
     
     //撃破率
     int complete_y = gold_y + go_height + 5;
     CGRect rect_complete = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                                  complete_y,
-                                  go_component_width,
-                                  go_height);
-//    [view_go addSubview:[CreateComponentClass createImageView:rect_complete image:@"close"]];
+                                      complete_y,
+                                      go_component_width,
+                                      go_height);
+    //    [view_go addSubview:[CreateComponentClass createImageView:rect_complete image:@"close"]];
     UITextView *tv_complete = [CreateComponentClass createTextView:rect_complete text:@"complete : 0"];
     [tv_complete setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_complete];
     UIProgressView *pv_complete = [[UIProgressView alloc]
-                               initWithProgressViewStyle:UIProgressViewStyleBar];
+                                   initWithProgressViewStyle:UIProgressViewStyleBar];
     pv_complete.progressTintColor = [UIColor blueColor];
     pv_complete.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                               complete_y + go_height,
-                               go_component_width,
-                               10);
+                                   complete_y + go_height,
+                                   go_component_width,
+                                   10);
     
     [view_go addSubview:pv_complete];
     
     //ダイアログで成績を表示(未)してからゲーム画面閉じる
-//    CreateComponentClass *createComponentClass = [[CreateComponentClass alloc]init];
-
+    //    CreateComponentClass *createComponentClass = [[CreateComponentClass alloc]init];
+    
     
     //ボタン配置=>下から算出
     CGRect rect_btn = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                                    view_go.bounds.size.height - go_height - 10,
-                                    go_component_width,
-                                    go_height);
+                                 view_go.bounds.size.height - go_height - 10,
+                                 go_component_width,
+                                 go_height);
     UIButton *qbBtn = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
                                                       rect:rect_btn
                                                      image:@"blue_item_yuri_big2.png"
@@ -1990,8 +2070,8 @@ int sensitivity;
     /*
      テスト
      */
-//    [GoldBoard setScore:100];
-//    [ScoreBoard setScore:10000];
+    //    [GoldBoard setScore:100];
+    //    [ScoreBoard setScore:10000];
     
     
     //マルチスレッド
@@ -2007,22 +2087,22 @@ int sensitivity;
     dispatch_async(globalQueue, ^{
         NSLog(@"multi-thread start");
         //ここでは情報を取得しておくに留める(更新はdispatch_asyncで実施)
-//        AttrClass *attr = [[AttrClass alloc]init];
+        //        AttrClass *attr = [[AttrClass alloc]init];
         int level = beforeLevel;//[[attr getValueFromDevice:@"level"] intValue];//既に更新済なので古いデータを使う
         int exp = beforeExp;//[[attr getValueFromDevice:@"exp"] intValue];//既に更新済なので古いデータを使う
         int expTilNextLevel = [attr getMaxExpAtTheLevel:beforeLevel];//非更新データなのでアクセス
         
         
-//        float unit = (float)expTilNextLevel / 100.0f;//progressViewの100分割ユニット＝最初のレベルで固定
+        //        float unit = (float)expTilNextLevel / 100.0f;//progressViewの100分割ユニット＝最初のレベルで固定
         float unit = (float)[ScoreBoard getScore]/100.0f;
         
         
         //unitは取得スコア[ScoreBoard getScore]の100分割の方がすっきりする(最初のレベルにおけるレベルアップのための必要経験値の100分割にしてしまうと次のレベルに上がった時に１カウント当たりの上昇速度が低下してしまい時間がかかる)
         int loopCount = 100;//(float)(exp + [ScoreBoard getScore])/unit;
-//        int loopCount = (float)(exp + 1000)/unit;//テスト用
-//        int cntInit = 0;//(float)exp / unit;//最初のcntInitの表示はanimateしないようにしたい(現状x)
+        //        int loopCount = (float)(exp + 1000)/unit;//テスト用
+        //        int cntInit = 0;//(float)exp / unit;//最初のcntInitの表示はanimateしないようにしたい(現状x)
         int pvScoreValue = exp;
-//        int goldCnt = 0;
+        //        int goldCnt = 0;
         
         Boolean flagLevelUp = false;
         int goldCnt = 0;
@@ -2031,21 +2111,21 @@ int sensitivity;
             goldAdd = ([GoldBoard getScore]/100==0)?1:([GoldBoard getScore]/100);//大体100カウントで終わらせる
         }
         //exp初期値
-//        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
-//                     animated:NO];
+        //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
+        //                     animated:NO];
         [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
                      animated:NO];
-
+        
         for(int cnt = 0;cnt < loopCount ||//必ず100回繰り返す
-                        goldCnt < [GoldBoard getScore]||//獲得金額を100分割にして100回ループ
-                        cnt < (float)enemyDown/(float)enemyCount*100//倒した敵の数
+            goldCnt < [GoldBoard getScore]||//獲得金額を100分割にして100回ループ
+            cnt < (float)enemyDown/(float)enemyCount*100//倒した敵の数
             ;cnt++){
             
             goldCnt = MIN(goldCnt += goldAdd, [GoldBoard getScore]);
             //時間のかかる処理
-//            NSLog(@"cnt = %d", cnt);
+            //            NSLog(@"cnt = %d", cnt);
             for(int i = 0; i < 10;i++){
-//                NSLog(@"i = %d to expend time", i);//時間経過
+                //                NSLog(@"i = %d to expend time", i);//時間経過
                 NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
                       cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
             }
@@ -2053,12 +2133,12 @@ int sensitivity;
                 if(pvScoreValue + unit < expTilNextLevel){
                     pvScoreValue += (int)unit;//小数点以下の誤差は発生するが
                 }else{
-//                    pvScoreValue = expTilNextLevel;
+                    //                    pvScoreValue = expTilNextLevel;
                     //次のレベルに進行
                     level++;
                     flagLevelUp = true;
                     expTilNextLevel = [attr getMaxExpAtTheLevel:level];
-//                    pvScoreValue = unit-pvScoreValue;//?
+                    //                    pvScoreValue = unit-pvScoreValue;//?
                     pvScoreValue = 0;//(float)[ScoreBoard getScore] - pvScoreValue;//残り：今回取得したスコアから今まで足し上げた値を控除
                     if(pvScoreValue > expTilNextLevel){//次のレベルのMAXよりも残り経験値が大きい場合
                         //経験値を沢山取得しても何度もレベル上昇するのは止めて次のレベルで止めておく
@@ -2073,7 +2153,7 @@ int sensitivity;
                     
                 }
             }
-
+            
             dispatch_async(mainQueue, ^{
                 //経験値
                 if(cnt < loopCount-1){//通常ループ
@@ -2086,8 +2166,8 @@ int sensitivity;
                         [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
                                      animated:YES];
                         //level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
-//                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-//                                     animated:YES];
+                        //                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+                        //                                     animated:YES];
                         
                         
                     }
@@ -2095,7 +2175,7 @@ int sensitivity;
                 }else{////最後のループのみ別処理(誤差：unitが無理数の場合、割り切れないので正確な値を示すために最終値をそのまま表示)
                     //最終状態：初期値＋今回獲得スコア
                     tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-                                         ABS(pvScoreValue), level];
+                                     ABS(pvScoreValue), level];
                     [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
                                  animated:YES];
                 }
@@ -2103,7 +2183,7 @@ int sensitivity;
                 //gold
                 if([GoldBoard getScore] > 0 &&
                    goldCnt < [GoldBoard getScore]-1){//少なくとも一枚以上獲得した場合の通常ループ
-//                    goldCnt = (goldCnt + goldAdd > [GoldBoard getScore])?[GoldBoard getScore]:(goldCnt + goldAdd);
+                    //                    goldCnt = (goldCnt + goldAdd > [GoldBoard getScore])?[GoldBoard getScore]:(goldCnt + goldAdd);
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", goldCnt];
                     
                 }else{//最終状態
@@ -2126,19 +2206,19 @@ int sensitivity;
                 
                 //最後の方で完了したらサーバーにデータ登録
                 if(cnt == loopCount-1){//cntは少なくと99は必ずカウントする(割り切れなかった場合のため)：ちなみに他の条件もあるのでcntは100を超える場合もある
-//                    //最終状態
-//                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
-//                    tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-//                                     [ScoreBoard getScore] , level];
-//                    
-//                    if(enemyDown == enemyCount){
-//                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
-//                        pv_complete.progress = 1.0f;
-//                    }
+                    //                    //最終状態
+                    //                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
+                    //                    tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
+                    //                                     [ScoreBoard getScore] , level];
+                    //
+                    //                    if(enemyDown == enemyCount){
+                    //                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
+                    //                        pv_complete.progress = 1.0f;
+                    //                    }
                     
                     NSLog(@"finished thread");
-//                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け
-//                    if(flagLevelUp){//test:levelUpEffect
+                    //                    [self showActivityIndicator];//activityIndicatorが表示されている間は画面タッチできないようにnoActionframeを張り付け
+                    //                    if(flagLevelUp){//test:levelUpEffect
                     if(flagLevelUp){
                         NSLog(@"flagLevelUp = %d", flagLevelUp);
                         UIView *vwel = [[ViewWithEffectLevelUp alloc]
@@ -2168,9 +2248,9 @@ int sensitivity;
 -(void)pushExit{
     //終了ボタン押下時対応=>サーバー接続してゲーム回数を更新
     
-//    if(flag){//ボタンがレベルアップ表示が完了するまで反応しないようにする
+    //    if(flag){//ボタンがレベルアップ表示が完了するまで反応しないようにする
     [self exit];
-//    }
+    //    }
 }
 -(void)exit{
     //    [super viewWillDisappear:NO];//storyboard遷移からの場合
@@ -2179,11 +2259,11 @@ int sensitivity;
     
     //ウィンドウ閉じる
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
-//    [BackGround pauseAnimations];
-    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
+    //    [BackGround pauseAnimations];
+//    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
     
     GKScore *scoreReporter = [[GKScore alloc] initWithCategory:@"comendo.rodeoquest"];
-    scoreReporter.value = [ScoreBoard getScore];	// とりあえずランダム値をスコアに
+    scoreReporter.value = [ScoreBoard getScore];        // とりあえずランダム値をスコアに
     [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
         if (error != nil)
         {
@@ -2213,10 +2293,10 @@ int sensitivity;
                                                    delegate:self//デリゲートによりボタン反応はalertViewメソッドに委ねられる
                                           cancelButtonTitle:@"ゲームに戻る"
                                           otherButtonTitles:@"quit"
-                            ,nil];
+                          ,nil];
     [alert show];
     
-
+    
 }
 //displayStoppedFrameメソッド内のalertと関連づけられている
 -(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -2244,17 +2324,17 @@ int sensitivity;
     
     //デジタル表示用
     /*
-    for(int i = 0; i < [[_boardClass getDigitalArray] count]; i++){
-        //removeはなくても新しいbackgroundframeの上に表示されるので見た目上は必要ない
-        //が、ないとメモリがどんどん増えていくと思う。
-        [(UIImageView*)[[_boardClass getDigitalArray] objectAtIndex:i] removeFromSuperview];
-        [self.view addSubview:[[_boardClass getDigitalArray] objectAtIndex:i]];
-    }
-    */
+     for(int i = 0; i < [[_boardClass getDigitalArray] count]; i++){
+     //removeはなくても新しいbackgroundframeの上に表示されるので見た目上は必要ない
+     //が、ないとメモリがどんどん増えていくと思う。
+     [(UIImageView*)[[_boardClass getDigitalArray] objectAtIndex:i] removeFromSuperview];
+     [self.view addSubview:[[_boardClass getDigitalArray] objectAtIndex:i]];
+     }
+     */
     
     //テキストビュー用
     [[_boardClass getTextView] removeFromSuperview];
-//    [self.view addSubview:[_boardClass getTextView]];
+    //    [self.view addSubview:[_boardClass getTextView]];
     [viewScoreField addSubview:[_boardClass getTextView]];
     
     //textView.text = xxx;の方がスマート。＝＞要修正
@@ -2266,36 +2346,36 @@ int sensitivity;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouched = true;
-//    NSLog(@"touches count : %d (touchesBegan:withEvent:)", [touches count]);
+    //    NSLog(@"touches count : %d (touchesBegan:withEvent:)", [touches count]);
 }
 
 // 画面に触れている指が一本以上移動したときに実行されるメソッド
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouched = true;
-
+    
     //以下の方法ではズレる：onFlickedFrame内で実装
-//    UITouch *touch = [[event allTouches] anyObject];
-//    CGPoint point = [touch locationInView:self.view];
-//    [MyMachine setX:point.x];
-//    [MyMachine setY:point.y];
+    //    UITouch *touch = [[event allTouches] anyObject];
+    //    CGPoint point = [touch locationInView:self.view];
+    //    [MyMachine setX:point.x];
+    //    [MyMachine setY:point.y];
     
     
-//    NSLog(@"touches count : %d (touchesMoved:withEvent:)", [touches count]);
+    //    NSLog(@"touches count : %d (touchesMoved:withEvent:)", [touches count]);
 }
 
 // 指を一本以上画面から離したときに実行されるメソッド
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouched = false;
-//    NSLog(@"touches count : %d (touchesEnded:withEvent:)", [touches count]);
+    //    NSLog(@"touches count : %d (touchesEnded:withEvent:)", [touches count]);
 }
 
 // システムイベントがタッチイベントをキャンセルしたときに実行されるメソッド
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouched = false;
-//    NSLog(@"touches count : %d (touchesCancelled:withEvent:)", [touches count]);
+    //    NSLog(@"touches count : %d (touchesCancelled:withEvent:)", [touches count]);
 }
 
 
@@ -2307,11 +2387,11 @@ int sensitivity;
 -(void)sendRequestToServer{
     NSLog(@"start request server");
     // インジケーター表示：メニューがないので意味ない？
-//    [self showActivityIndicator];
+    //    [self showActivityIndicator];
     
     
     DBAccessClass *dbac = [[DBAccessClass alloc]init];
-//    AttrClass *attr = [[AttrClass alloc]init];
+    //    AttrClass *attr = [[AttrClass alloc]init];
     NSString *_id = [attr getIdFromDevice];
     
     
@@ -2322,7 +2402,7 @@ int sensitivity;
     
     //ゲーム回数
     int newGameCnt = [[attr getValueFromDevice:@"gameCnt"] intValue] + 1;
-//    NSLog(@"gameCnt = %@ => %d, updating..", [attr getValueFromDevice:@"gameCnt"], newGameCnt);
+    //    NSLog(@"gameCnt = %@ => %d, updating..", [attr getValueFromDevice:@"gameCnt"], newGameCnt);
     [attr setValueToDevice:@"gameCnt" strValue:[NSString stringWithFormat:@"%d", newGameCnt]];
     
     
@@ -2330,27 +2410,27 @@ int sensitivity;
     
     
     //前回最高得点を取得する
-//    NSUserDefaults* score_defaults =
-//    [NSUserDefaults standardUserDefaults];
+    //    NSUserDefaults* score_defaults =
+    //    [NSUserDefaults standardUserDefaults];
     //    [id_defaults removeObjectForKey:@"user_id"];//値を削除：テスト用
-//    int max_score = [score_defaults integerForKey:@"max_score"];
+    //    int max_score = [score_defaults integerForKey:@"max_score"];
     int max_score = [[attr getValueFromDevice:@"score"] intValue];
     NSLog(@"now score = %d, max_score = %d", [ScoreBoard getScore], max_score);
     //今回取得したスコアが前回までの最高得点を上回れば更新
     if([ScoreBoard getScore] > max_score){
         //update
         max_score = [ScoreBoard getScore];
-//        [score_defaults setInteger:max_score forKey:@"max_score"];
+        //        [score_defaults setInteger:max_score forKey:@"max_score"];
         [attr setValueToDevice:@"score" strValue:[NSString stringWithFormat:@"%d", [ScoreBoard getScore]]];
-//        NSLog(@"score update! => %d", [score_defaults integerForKey:@"max_score"]);
+        //        NSLog(@"score update! => %d", [score_defaults integerForKey:@"max_score"]);
         NSLog(@"score update! => %d", [[attr getValueFromDevice:@"score"] intValue]);
         
         //congrat!! view appear!effect!!
         
         //世界の10位を上回ったら更新
-//        if( [ScoreBoard getScore] > tenth_world_record){
-//            fill_out_your_name!
-//        }
+        //        if( [ScoreBoard getScore] > tenth_world_record){
+        //            fill_out_your_name!
+        //        }
         
         
         
@@ -2359,15 +2439,15 @@ int sensitivity;
     }
     
     //累積ゴールドを取得して累積計算
-//    NSUserDefaults* gold_defaults = [NSUserDefaults standardUserDefaults];
-//    int before_gold = [gold_defaults integerForKey:@"gold_score"];
+    //    NSUserDefaults* gold_defaults = [NSUserDefaults standardUserDefaults];
+    //    int before_gold = [gold_defaults integerForKey:@"gold_score"];
     int before_gold = [[attr getValueFromDevice:@"gold"] intValue];
     int after_gold = before_gold + [GoldBoard getScore];
     NSLog(@"now gold = %d, before_gold = %d, so after_gold = %d", [GoldBoard getScore], before_gold, after_gold);
     //    if([GoldBoard getScore] < before_gold){
-//    [gold_defaults setInteger:after_gold forKey:@"gold_score"];
+    //    [gold_defaults setInteger:after_gold forKey:@"gold_score"];
     [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", after_gold]];
-//    NSLog(@"gold update! => %d ... this comment is annouced regardless updating!", [score_defaults integerForKey:@"gold_score"]);
+    //    NSLog(@"gold update! => %d ... this comment is annouced regardless updating!", [score_defaults integerForKey:@"gold_score"]);
     NSLog(@"gold update! => %d ... this comment is annouced regardless updating!", [[attr getValueFromDevice:@"gold"] intValue]);
     //    }else{
     //        NSLog(@"be going ...");
@@ -2380,9 +2460,9 @@ int sensitivity;
     //経験値とレベルの両方を更新
     [attr addExp:[ScoreBoard getScore]];
     //上記addExpにより下記setValutToDevice@exp & setValueToDevice@levelを両方同時に実行
-//    [attr setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
-//    [attr setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
-
+    //    [attr setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
+    //    [attr setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
+    
     int afterExp = [[attr getValueFromDevice:@"exp"] intValue];
     int afterLevel = [[attr getValueFromDevice:@"level"] intValue];
     NSLog(@"ゲーム前経験値%d, 今回獲得スコア%d => ゲーム後経験値%d", beforeExp, [ScoreBoard getScore], afterExp);
@@ -2392,10 +2472,10 @@ int sensitivity;
     //_/_/_/_/_/_/端末情報更新完了_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
     
-    //_/_/_/_/サーバ情報更新：id	name	score	gold	login	gamecnt	level	exp_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+    //_/_/_/_/サーバ情報更新：id        name        score        gold        login        gamecnt        level        exp_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
     //score(最高得点)更新：既に比較されて端末情報max_scoreに格納されている。
-//  after_score = [[dbac getValueFromDB:_id column:@"score"] intValue];
+    //  after_score = [[dbac getValueFromDB:_id column:@"score"] intValue];
     [dbac updateValueToDB:_id column:@"score" newVal:[NSString stringWithFormat:@"%d", max_score]];
     
     //gold更新：既に累積されて端末情報gold_scoreに格納されている。
@@ -2417,7 +2497,7 @@ int sensitivity;
     [dbac updateValueToDB:_id column:@"exp" newVal:[NSString stringWithFormat:@"%d", afterExp]];
     
     
-    //更新情報の確認id	name	score	gold	login	gamecnt	level	exp
+    //更新情報の確認id        name        score        gold        login        gamecnt        level        exp
     NSLog(@"更新後id = %@, name = %@, score = %@, gold = %@, login = %@, gameCnt = %@, level = %@, exp = %@",
           [dbac getValueFromDB:_id column:@"id"],
           [dbac getValueFromDB:_id column:@"name"],
@@ -2440,7 +2520,7 @@ int sensitivity;
     }
     
     // インジケーター非表示(このメソッドを表示する際に表示済)
-//    [self hideActivityIndicator];//network通信終了後までhideしないようにするためには？
+    //    [self hideActivityIndicator];//network通信終了後までhideしないようにするためには？
     
 }
 
@@ -2451,11 +2531,11 @@ int sensitivity;
 {
     NSLog(@"showActivity indicator");
     // Activity Indicator 表示
-//    _loadingView                 = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
+    //    _loadingView                 = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
     _loadingView = [[UIView alloc] initWithFrame:self.view.bounds];
-//    _loadingView.backgroundColor = [UIColor blackColor];
+    //    _loadingView.backgroundColor = [UIColor blackColor];
     _loadingView.backgroundColor = [UIColor clearColor];//[UIColor colorWithRed:0.2 green:0.2 blue:0.4 alpha:0.9f];
-//    _loadingView.alpha           = 0.5f;//上のビューにも反映
+    //    _loadingView.alpha           = 0.5f;//上のビューにも反映
     _indicator                   = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [_indicator setCenter:CGPointMake(_loadingView.bounds.size.width/2, _loadingView.bounds.size.height/2)];
     
@@ -2465,12 +2545,12 @@ int sensitivity;
     
     [self.view bringSubviewToFront:_loadingView];
     
-//    [self.navigationController.view addSubview:_loadingView];
+    //    [self.navigationController.view addSubview:_loadingView];
     [_indicator startAnimating];
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    //    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     
-
+    
     UITextView *tvWaiting = [CreateComponentClass createTextView:CGRectMake(0, 0, _loadingView.frame.size.width, 50)
                                                             text:@"now updating..."
                                                             font:@"AmericanTypewriter-Bold"
@@ -2495,7 +2575,7 @@ int sensitivity;
     // Activity Indicator 非表示
     [_indicator stopAnimating];
     [_loadingView removeFromSuperview];
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    //    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 
@@ -2505,7 +2585,7 @@ int sensitivity;
 -(float)getDistance:(int)x y:(int)y{
     int x0 = [MyMachine getImageView].center.x;
     int y0 = [MyMachine getImageView].center.y;
-//    NSLog(@"distance = %f", sqrtf((x - x0) * (x - x0) + (y - y0) * (y - y0)));
+    //    NSLog(@"distance = %f", sqrtf((x - x0) * (x - x0) + (y - y0) * (y - y0)));
     return sqrtf((x - x0) * (x - x0) + (y - y0) * (y - y0));
 }
 
@@ -2565,26 +2645,26 @@ int sensitivity;
                                   bombView.center.y * 0.5f);
     [CATransaction begin];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-//    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-//    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    //    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    //    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [CATransaction setCompletionBlock:^{//終了処理
         //        [self animAirView:view];
         CAAnimation *animationKeyFrame = [bombView.layer animationForKey:@"position"];
         if(animationKeyFrame){
             //途中で終わらずにアニメーションが全て完了した場合
-//            NSLog(@"bomb throwed!!");
+            //            NSLog(@"bomb throwed!!");
             
             //爆発エフェクト
-//            float x = ((CALayer *)[bombView.layer presentationLayer]).position.x;
-//            float y = ((CALayer *)[bombView.layer presentationLayer]).position.y;
-//            NSLog(@"x = %f, y = %f", x, y);
+            //            float x = ((CALayer *)[bombView.layer presentationLayer]).position.x;
+            //            float y = ((CALayer *)[bombView.layer presentationLayer]).position.y;
+            //            NSLog(@"x = %f, y = %f", x, y);
             [self ExplodeBombEffect:kEndPos];//CGPointMake(x, y)];//bombView.center];//((CALayer *)[bombView.layer presentationLayer]).position];
             
             [bombView removeFromSuperview];
             
         }else{
             //途中で何らかの理由で遮られた場合
-//            NSLog(@"animation key frame not exit");
+            //            NSLog(@"animation key frame not exit");
         }
         
     }];
@@ -2621,14 +2701,14 @@ int sensitivity;
         // レイヤーにアニメーションを追加
         //                        [[[ItemArray objectAtIndex:i] getImageView].layer addAnimation:animation forKey:@"position"];
         [bombView.layer addAnimation:animation forKey:@"position"];
-
+        
     }
     [CATransaction commit];
     
-//    [UIView animateWithDuration:3.0f
-//                     animations:^{
-//                         bombView.center = self.view.center;
-//                     }];
+    //    [UIView animateWithDuration:3.0f
+    //                     animations:^{
+    //                         bombView.center = self.view.center;
+    //                     }];
     
     [self.view bringSubviewToFront:bombView];
     [self.view addSubview:bombView];
@@ -2644,14 +2724,14 @@ int sensitivity;
     [UIView animateWithDuration:0.1f
                           delay:0.0
                         options:UIViewAnimationOptionCurveLinear
-//     |UIViewAnimationOptionRepeat//リピートさせる場合
+     //     |UIViewAnimationOptionRepeat//リピートさせる場合
                      animations:^{
-                            uivBomb.transform = transform;
-                            uivBomb.frame = CGRectMake(point.x - bombSize/2,
-                                                       point.y - bombSize/2,
-                                                       bombSize, 758.0f/598*bombSize);
-                            uivBomb.center = point;
-                        }
+                         uivBomb.transform = transform;
+                         uivBomb.frame = CGRectMake(point.x - bombSize/2,
+                                                    point.y - bombSize/2,
+                                                    bombSize, 758.0f/598*bombSize);
+                         uivBomb.center = point;
+                     }
                      completion:^(BOOL finished){
                          [uivBomb removeFromSuperview];
                          
@@ -2666,8 +2746,8 @@ int sensitivity;
                                     point.x - bombSize * 0.4 <= _xEnemy + _sEnemy * 0.4 &&
                                     point.y + bombSize * 0.4 >= _yEnemy - _sEnemy * 0.4 &&
                                     point.y - bombSize * 0.4 <= _yEnemy + _sEnemy * 0.4 ){
-
-//                                     [self enemyDieEffect:i];//殲滅？
+                                     
+                                     //                                     [self enemyDieEffect:i];//殲滅？
                                      [self giveDamageToEnemy:i damage:3 x:_xEnemy y:_yEnemy];
                                      
                                      
@@ -2677,20 +2757,20 @@ int sensitivity;
                      }];
     [self.view addSubview:uivBomb];
     
-//    ExplodeParticleView *explode = [[ExplodeParticleView alloc]initWithFrame:CGRectMake(point.x - bombSize/2
-//                                                                                        , point.y - bombSize/2,
-//                                                                                        bombSize, bombSize)];
-//    
-//    [UIView animateWithDuration:0.9f
-//                     animations:^{
-//                         explode.alpha = 0.0f;
-//                     }
-//                     completion:^(BOOL finished){
-//                         [explode setIsEmitting:NO];
-//                         [explode removeFromSuperview];
-//                     }];
-////    ExplodeParticleView.center = point;
-//    [self.view addSubview:explode];
+    //    ExplodeParticleView *explode = [[ExplodeParticleView alloc]initWithFrame:CGRectMake(point.x - bombSize/2
+    //                                                                                        , point.y - bombSize/2,
+    //                                                                                        bombSize, bombSize)];
+    //
+    //    [UIView animateWithDuration:0.9f
+    //                     animations:^{
+    //                         explode.alpha = 0.0f;
+    //                     }
+    //                     completion:^(BOOL finished){
+    //                         [explode setIsEmitting:NO];
+    //                         [explode removeFromSuperview];
+    //                     }];
+    ////    ExplodeParticleView.center = point;
+    //    [self.view addSubview:explode];
     
 }
 
@@ -2741,7 +2821,7 @@ int sensitivity;
         default:
             break;
     }
-//    uivBomb.image = [UIImage imageNamed:@"bomb016.png"];//original:758x598
+    //    uivBomb.image = [UIImage imageNamed:@"bomb016.png"];//original:758x598
     uivBomb.center = point;
     CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/10.0f);
     [UIView animateWithDuration:0.2f
@@ -2769,7 +2849,7 @@ int sensitivity;
                                     point.y + bombSize * 0.4 >= _yEnemy - _sEnemy * 0.4 &&
                                     point.y - bombSize * 0.4 <= _yEnemy + _sEnemy * 0.4 ){
                                      
-//                                     [self enemyDieEffect:i];//殲滅？orダメージ
+                                     //                                     [self enemyDieEffect:i];//殲滅？orダメージ
                                      [self giveDamageToEnemy:i damage:10 x:_xEnemy y:_xEnemy];
                                      
                                      
@@ -2840,33 +2920,33 @@ int sensitivity;
                 
             }else{//
                 
-//                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
-                    if(arc4random() % 2 == 0){
-                        _item = [[ItemClass alloc] init:ItemTypeBig x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                    }else if(arc4random() % 2 == 0){
-                        _item = [[ItemClass alloc] init:ItemTypeBomb x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                    }else{
-                        _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                    }
-//                }
+                //                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
+                if(arc4random() % 2 == 0){
+                    _item = [[ItemClass alloc] init:ItemTypeBig x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+                }else if(arc4random() % 2 == 0){
+                    _item = [[ItemClass alloc] init:ItemTypeBomb x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+                }else{
+                    _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+                }
+                //                }
             }
-//        }else if(arc4random() % 2 == 0){//0.35%
-//            _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];//bomb
-//        }else if(arc4random() % 2 == 0){//0.175%
-//            _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-//        }else if(arc4random() % 2 == 0){//0.03%
-//            _item = [[ItemClass alloc] init:ItemTypeRedGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-//        }else if(arc4random() % 2 == 0){//0.35%
-//            _item = [[ItemClass alloc] init:ItemTypeTransparency x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-//        }else{
-//            _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-//        }
+            //        }else if(arc4random() % 2 == 0){//0.35%
+            //            _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];//bomb
+            //        }else if(arc4random() % 2 == 0){//0.175%
+            //            _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            //        }else if(arc4random() % 2 == 0){//0.03%
+            //            _item = [[ItemClass alloc] init:ItemTypeRedGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            //        }else if(arc4random() % 2 == 0){//0.35%
+            //            _item = [[ItemClass alloc] init:ItemTypeTransparency x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            //        }else{
+            //            _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            //        }
             //test:item2
-//            _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            //            _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         }
         
-//        //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+        //        //test:item
+        //        _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
@@ -2914,7 +2994,7 @@ int sensitivity;
     
     ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
     
-//    NSLog(@"aaa");
+    //    NSLog(@"aaa");
     [UIView animateWithDuration:0.5f
                      animations:^{
                          ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);//OBJECT_SIZE/2, -OBJECT_SIZE);
@@ -2962,4 +3042,45 @@ int sensitivity;
         }
     }
 }
+
+
+-(void)setBackGroundInit{
+    NSLog(@"set BackGround init at GameView");
+    if(BackGround != nil &&
+       ![BackGround isEqual:[NSNull null]]){
+        
+        [BackGround exitAnimations];//前のアニメーションの停止
+    }
+    
+//test:worldtype
+//    BackGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
+    BackGround = [[BackGroundClass2 alloc] init:worldType
+                                         width:self.view.bounds.size.width
+                                        height:self.view.bounds.size.height
+                                          secs:5.0f];
+    
+    
+    [self.view addSubview:[BackGround getImageView1]];
+    [self.view addSubview:[BackGround getImageView2]];
+//    [self.view bringSubviewToFront:[BackGround getImageView1]];
+//    [self.view bringSubviewToFront:[BackGround getImageView2]];
+    [self.view sendSubviewToBack:[BackGround getImageView1]];
+    [self.view sendSubviewToBack:[BackGround getImageView2]];
+    NSLog(@"background bring front");
+    [self startAnimateBackGround];
+    //test:red
+//    [self.view setBackgroundColor:[UIColor redColor]];
+//    UIImageView *ivtest=[[UIImageView alloc]initWithFrame:self.view.bounds];
+//    ivtest.image = [UIImage imageNamed:@"close.png"];
+//    [self.view addSubview:ivtest];
+    
+    
+    
+}
+
+-(void)startAnimateBackGround{
+    NSLog(@"startAnimateBackGround at GameView");
+    [BackGround startAnimation];//3sec-Round
+}
+
 @end

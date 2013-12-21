@@ -71,6 +71,7 @@
 
 #define WEAPON_BUY_COUNT 10
 
+int x_frame_center;//横軸中心値
 NSTimer *tm;
 UITextView *tv_timer;
 UITextView *tv_gameLife;
@@ -80,7 +81,6 @@ int lifeGame;
 int maxLifeGame;
 //NSMutableArray *imageFileArray;
 //NSMutableArray *tagArray;
-//NSMutableArray *titleArray;
 NSMutableArray *arrNoImage;
 NSMutableArray *arrBtnBack;
 
@@ -88,6 +88,7 @@ UIView *subView;
 UIButton *closeButton;//閉じるボタン
 BGMClass *bgmClass;
 BackGroundClass2 *backGround;
+UIImageView *ivBackChara;
 AttrClass *attr;
 
 UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新するのでグローバルに宣言しておく(武器やアイテムの購入等)
@@ -123,6 +124,19 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
         //back ground music
 //        audioPlayerCapture = [self getAVAudioPlayer:@"mySoundEffects.caf" ];
 //        [audioPlayerCapture prepareToPlay];
+        
+        
+        //本来ならここに全ての変数を定義し、viewWillAppearもしくはその前のviewDidLoadでaddSubviewすべき。
+//        ivBackChara = [[UIImageView alloc] initWithFrame:CGRectMake(-110, -10, 544, 400)];
+//        ivBackChara.image = [UIImage imageNamed:@"chara01.png"];
+//        ivBackChara.center = self.view.center;//CGPointMake(self.view.center.x, self.view.center.y);
+//        //    iv_back.alpha = ALPHA_COMPONENT;
+//        [self.view sendSubviewToBack:ivBackChara];
+//        [self.view addSubview:ivBackChara];
+//
+//        [self animAirViewUp];
+
+        
         
     }
     return self;
@@ -251,21 +265,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     attr = [[AttrClass alloc]init];
     
     
-    //タイトル配列
-//    titleArray = [NSMutableArray arrayWithObjects:
-//                  [NSArray arrayWithObjects:
-//                   @"wpn",//
-//                   @"drgn",
-//                   @"heal",//INN:try-count recover
-//                   @"配合",
-//                   nil],
-//                  [NSArray arrayWithObjects:
-//                   @"buy",
-//                   @"item",//
-//                   @"set",//
-//                   @"gold",//
-//                   nil],
-//                  nil];
+
 //    imageFile = [[NSMutableArray alloc]init];
 //    _imageFile = [NSArray arrayWithObjects:@"red.png", @"blue_item_yuri_big.png", nil];
     arrNoImage = [NSMutableArray arrayWithObjects:
@@ -308,67 +308,45 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //    NSLog(@"tagArray initialization complete");
 
 	// Do any additional setup after loading the view.
-}
--(void)viewDidAppear:(BOOL)animated{
-//    [self.view.subviews removeFromSuperview];
     
-    //background
-    [self setBackGroundInit];
     
-    //ホームボタン押下後の再開時に以下の登録したメソッドから開始する
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-//     selector:@selector(applicationDidBecomeActive)
-     selector:@selector(viewDidAppear:)
-     name:UIApplicationDidBecomeActiveNotification
-     object:nil];
-    
-    [self.view bringSubviewToFront:bannerView_];
-    
-    //時間を遅らせてBGM
-    [self performSelector:@selector(playBGM) withObject:nil afterDelay:0.3];
-
-//    NSLog(@"init select view controller start!!");
-    int x_frame_center = (int)[[UIScreen mainScreen] bounds].size.width/2;
-//    NSLog(@"%d" , x_frame_center);
-//    int y_frame_center = (int)[[UIScreen mainScreen] bounds].size.height/2;//使用しない？
-//    NSLog(@"中心＝%d", (int)[[UIScreen mainScreen] bounds].origin.x);
+    x_frame_center = (int)[[UIScreen mainScreen] bounds].size.width/2;
+    //    NSLog(@"%d" , x_frame_center);
+    //    int y_frame_center = (int)[[UIScreen mainScreen] bounds].size.height/2;//使用しない？
+    //    NSLog(@"中心＝%d", (int)[[UIScreen mainScreen] bounds].origin.x);
     
     //背景作成
-//    UIImageView *iv_back = [self createImageView:@"chara_test2.png" tag:0 frame:[[UIScreen mainScreen] bounds]];
-//    UIImageView *iv_back = [self createImageView:@"chara01.png" tag:0 frame:CGRectMake(-110, -10, 680, 500)];
-//    UIImageView *iv_back = [[UIImageView alloc] initWithFrame:CGRectMake(-110, -10, 680, 500)];
-    UIImageView *iv_back = [[UIImageView alloc] initWithFrame:CGRectMake(-110, -10, 544, 400)];
-    iv_back.image = [UIImage imageNamed:@"chara01.png"];
-    iv_back.center = self.view.center;//CGPointMake(self.view.center.x, self.view.center.y);
-    [self animAirViewUp:iv_back];
-//    iv_back.alpha = ALPHA_COMPONENT;
-    [self.view sendSubviewToBack:iv_back];
-    [self.view addSubview:iv_back];
+    //    UIImageView *iv_back = [self createImageView:@"chara_test2.png" tag:0 frame:[[UIScreen mainScreen] bounds]];
+    //    UIImageView *iv_back = [self createImageView:@"chara01.png" tag:0 frame:CGRectMake(-110, -10, 680, 500)];
+    //    UIImageView *iv_back = [[UIImageView alloc] initWithFrame:CGRectMake(-110, -10, 680, 500)];
+    
     
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+    
+    //背景描画
+    [self setBackGroundInit];
     
     //レベル表示部分:枠
     UIView *v_level =
     [CreateComponentClass createView:CGRectMake(x_frame_center - MARGIN_UPPER_COMPONENT - W_MOST_UPPER_COMPONENT*3/2,
-                                                        Y_MOST_UPPER_COMPONENT,
-                                                        W_MOST_UPPER_COMPONENT,
-                                                        H_MOST_UPPER_COMPONENT)];
+                                                Y_MOST_UPPER_COMPONENT,
+                                                W_MOST_UPPER_COMPONENT,
+                                                H_MOST_UPPER_COMPONENT)];
     [self.view addSubview:v_level];
     //レベル表示部分:ラベル
     CGRect rectLevelLabel = CGRectMake(x_frame_center - MARGIN_UPPER_COMPONENT - W_MOST_UPPER_COMPONENT*3/2 + 3,
-                                        Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 50,
-                                        W_MOST_UPPER_COMPONENT,
-                                        H_MOST_UPPER_COMPONENT);
+                                       Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 50,
+                                       W_MOST_UPPER_COMPONENT,
+                                       H_MOST_UPPER_COMPONENT);
     UITextView *tvLevelLabel = [CreateComponentClass createTextView:rectLevelLabel
-                                                                text:@"Lv."
-                                                                font:@"AmericanTypewriter-Bold"
-                                                                size:15
-                                                           textColor:[UIColor whiteColor]
-                                                           backColor:[UIColor clearColor]
-                                                          isEditable:NO];
+                                                               text:@"Lv."
+                                                               font:@"AmericanTypewriter-Bold"
+                                                               size:15
+                                                          textColor:[UIColor whiteColor]
+                                                          backColor:[UIColor clearColor]
+                                                         isEditable:NO];
     [self.view addSubview:tvLevelLabel];
     
     //レベル表示部分:数字
@@ -378,12 +356,12 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                         H_MOST_UPPER_COMPONENT);
     NSString *strLevel = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"level"] intValue]];
     UITextView *tvLevelAmount = [CreateComponentClass createTextView:rectLevelAmount
-                                                          text:strLevel
-                                                          font:@"AmericanTypewriter-Bold"
-                                                          size:10
-                                                     textColor:[UIColor whiteColor]
-                                                     backColor:[UIColor clearColor]
-                                                    isEditable:NO];
+                                                                text:strLevel
+                                                                font:@"AmericanTypewriter-Bold"
+                                                                size:10
+                                                           textColor:[UIColor whiteColor]
+                                                           backColor:[UIColor clearColor]
+                                                          isEditable:NO];
     [self.view addSubview:tvLevelAmount];
     
     
@@ -451,34 +429,34 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     [self.view addSubview:tvGoldLabel2];
     
     CGRect rectGoldLabel = CGRectMake(x_frame_center + MARGIN_UPPER_COMPONENT + W_MOST_UPPER_COMPONENT/2 + 3,
-                                       Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 50,
-                                       W_MOST_UPPER_COMPONENT,
-                                       H_MOST_UPPER_COMPONENT);
+                                      Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 50,
+                                      W_MOST_UPPER_COMPONENT,
+                                      H_MOST_UPPER_COMPONENT);
     UITextView *tvGoldLabel = [CreateComponentClass createTextView:rectGoldLabel
-                                                               text:@"Zeny."
-                                                               font:@"AmericanTypewriter-Bold"
-                                                               size:15
-                                                          textColor:[UIColor whiteColor]
-                                                          backColor:[UIColor clearColor]
-                                                         isEditable:NO];
+                                                              text:@"Zeny."
+                                                              font:@"AmericanTypewriter-Bold"
+                                                              size:15
+                                                         textColor:[UIColor whiteColor]
+                                                         backColor:[UIColor clearColor]
+                                                        isEditable:NO];
     [self.view addSubview:tvGoldLabel];
-
+    
     
     
     
     //ゴールド表示部分:数字
     CGRect rectGoldAmount = CGRectMake(x_frame_center + MARGIN_UPPER_COMPONENT + W_MOST_UPPER_COMPONENT/2 + 10,
-                                        Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 30,
-                                        W_MOST_UPPER_COMPONENT,
-                                        H_MOST_UPPER_COMPONENT);
+                                       Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 30,
+                                       W_MOST_UPPER_COMPONENT,
+                                       H_MOST_UPPER_COMPONENT);
     NSString *strGold = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"gold"] intValue]];
     tvGoldAmount_global = [CreateComponentClass createTextView:rectGoldAmount
-                                                                text:strGold
-                                                                font:@"AmericanTypewriter-Bold"
-                                                                size:10
-                                                           textColor:[UIColor whiteColor]
-                                                           backColor:[UIColor clearColor]
-                                                          isEditable:NO];
+                                                          text:strGold
+                                                          font:@"AmericanTypewriter-Bold"
+                                                          size:10
+                                                     textColor:[UIColor whiteColor]
+                                                     backColor:[UIColor clearColor]
+                                                    isEditable:NO];
     [self.view addSubview:tvGoldAmount_global];
     
     
@@ -489,7 +467,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                      Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING,
                                      W_RANKING_COMPONENT,
                                      H_RANKING_COMPONENT);
-//    UIView *v_ranking = [CreateComponentClass createView:rect_ranking];
+    //    UIView *v_ranking = [CreateComponentClass createView:rect_ranking];
     UIView *v_ranking = [CreateComponentClass createViewWithFrame:rect_ranking
                                                             color:[UIColor colorWithRed:0 green:0 blue:0 alpha:ALPHA_COMPONENT]
                                                               tag:100//行数は０、１、２の１番目
@@ -497,28 +475,28 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                                          selector:@"imageTapped:"];
     [self.view addSubview:v_ranking];
     
-//    UIImageView *iv_ranking = [self createImageView:@"black_128.png"
-//                                             tag:103
-//                                           frame:CGRectMake(x_frame_center - W_RANKING_COMPONENT / 2,
-//                                                            Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING,
-//                                                            W_RANKING_COMPONENT,
-//                                                            H_RANKING_COMPONENT)];
-//    iv_ranking.alpha = ALPHA_COMPONENT;
-//    [[iv_ranking layer] setCornerRadius:10.0];
-//    [iv_ranking setClipsToBounds:YES];
-//    [self.view bringSubviewToFront:iv_ranking];
-//    [self.view addSubview:iv_ranking];
-
+    //    UIImageView *iv_ranking = [self createImageView:@"black_128.png"
+    //                                             tag:103
+    //                                           frame:CGRectMake(x_frame_center - W_RANKING_COMPONENT / 2,
+    //                                                            Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING,
+    //                                                            W_RANKING_COMPONENT,
+    //                                                            H_RANKING_COMPONENT)];
+    //    iv_ranking.alpha = ALPHA_COMPONENT;
+    //    [[iv_ranking layer] setCornerRadius:10.0];
+    //    [iv_ranking setClipsToBounds:YES];
+    //    [self.view bringSubviewToFront:iv_ranking];
+    //    [self.view addSubview:iv_ranking];
     
     
-//    NSLog(@"count = %d", [[imageFileArray objectAtIndex:0] count]);
+    
+    //    NSLog(@"count = %d", [[imageFileArray objectAtIndex:0] count]);
     
     //各種アイコン表示部分
     for(int row = 0; row < [arrNoImage count];row++){
-//        NSLog(@"row = %d", row);
-
+        //        NSLog(@"row = %d", row);
+        
         for(int col = 0; col < [[arrNoImage objectAtIndex:row] count] ;col++){
-//            NSLog(@"row = %d, col = %d", row, col);
+            //            NSLog(@"row = %d, col = %d", row, col);
             CGRect rect_bt = CGRectMake(
                                         x_frame_center - (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [[arrNoImage objectAtIndex:0] count]/2 +
                                         (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * col,
@@ -551,12 +529,12 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                    W_BT_START,
                                    H_BT_START);
     
-//    UIImageView *bt_start = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
-//                                                         imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
-//                                                              rect:(CGRect)rect_start
-//                                                            target:(id)self
-//                                                          selector:(NSString *)@"pushedButton:"
-//                                                               tag:ButtonMenuImageTypeStart];
+    //    UIImageView *bt_start = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
+    //                                                         imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
+    //                                                              rect:(CGRect)rect_start
+    //                                                            target:(id)self
+    //                                                          selector:(NSString *)@"pushedButton:"
+    //                                                               tag:ButtonMenuImageTypeStart];
     UIButton *bt_start = [CreateComponentClass
                           createCoolButton:rect_start
                           text:@"START"
@@ -565,8 +543,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                           selector:@"pushedStartButton:"
                           tag:ButtonMenuImageTypeStart];
     //丸角
-//    [[bt_start layer] setCornerRadius:10.0];
-//    [bt_start setClipsToBounds:YES];
+    //    [[bt_start layer] setCornerRadius:10.0];
+    //    [bt_start setClipsToBounds:YES];
     [self.view addSubview:bt_start];
     
     //game開始以外でも、ホームボタン押下時、アイテムリストViewCon起動時等、様々なイベント(MenuViewConが消えるイベント)毎にsetValueToDeviceをする。
@@ -576,51 +554,11 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     maxLifeGame = 6;//const要修正
     //本来ならシステム時計を読み込んで次のlifeUpまでの時間を計測
     maxSecondForLife = 360;//6minutes:const要修正
+    //secondForLifeはこの後viewWillAppear内でシステム時間を取得して更新
     secondForLife = maxSecondForLife;//equal to 6minutes
     
     NSString *strLifeGame =
     [attr getValueFromDevice:@"lifeGame"];
-    NSString *ymdMenuLastOpen =
-    [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
-    NSString *hmsMenuLastOpen =
-    [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
-    
-    if([strLifeGame isEqual:[NSNull null]] ||
-       strLifeGame == nil ||
-       ymdMenuLastOpen == nil ||
-       [ymdMenuLastOpen isEqual:[NSNull null]] ||
-       hmsMenuLastOpen == nil ||
-       [hmsMenuLastOpen isEqual:[NSNull null]]){
-        lifeGame = maxLifeGame;
-    }else{
-        //前回のsecondForLifeがカウントされていた最後の時間を取得して、そこからの経過時間を計測
-        
-
-        if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){
-            //getPassSecond:二つの時間からint型差額秒数を返す
-            int passedSecond = [self getPassTime:hmsMenuLastOpen
-                                            hms2:[self getYYYYMMDD]];
-            if(passedSecond > maxSecondForLife * maxLifeGame){//36分以上経過
-                lifeGame = maxLifeGame;
-            }else if(passedSecond > maxSecondForLife * (maxLifeGame-1)){//30分以上経過
-                lifeGame = MIN(lifeGame + 5, maxLifeGame);
-            }else if(passedSecond > maxSecondForLife * (maxLifeGame-2)){//24分以上経過
-                lifeGame = MIN(lifeGame + 4, maxLifeGame);
-            }else if(passedSecond > maxSecondForLife * (maxLifeGame-3)){//18分以上経過
-                lifeGame = MIN(lifeGame + 3, maxLifeGame);
-            }else if(passedSecond > maxSecondForLife * (maxLifeGame-4)){//12分以上経過
-                lifeGame = MIN(lifeGame + 2, maxLifeGame);
-            }else if(passedSecond > maxSecondForLife * (maxLifeGame-5)){//6分以上経過
-                lifeGame = MIN(lifeGame + 1, maxLifeGame);
-            }else{//6分未満の経過
-                //nothing...
-//                lifeGame = lifeGame;
-            }
-        }else{//日付が違えば全回復
-            lifeGame = maxLifeGame;
-        }
-        lifeGame = strLifeGame.integerValue;
-    }
     
     
     tv_gameLife =
@@ -658,7 +596,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
      backColor:[UIColor clearColor]
      isEditable:NO];
     tv_timer.textAlignment = NSTextAlignmentCenter;
-//    [tv_timer setContentVerticalAlignment:UIControlContentHorizontalAlignmentCenter];
+    //    [tv_timer setContentVerticalAlignment:UIControlContentHorizontalAlignmentCenter];
     [viewForTimer addSubview:tv_timer];
     
     //キャラ変更部分(購入部分)
@@ -667,11 +605,185 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     //機体数増加部分(購入ページ)
     
     //timer起動部分
+    if(tm != nil){
+        [tm invalidate];
+        tm = nil;
+    }
     tm = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                           target:self
                                         selector:@selector(time:)//タイマー呼び出し
                                         userInfo:nil
                                          repeats:YES];
+    
+}//viewdidload
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [tm invalidate];
+    
+    NSLog(@"view will disappear at menuviewcontroller");
+    
+    
+    
+}
+
+//画面が表示される度に起動
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //background
+//    NSLog(@"background=%@", backGround);
+//    NSLog(@"background=%d", backGround == nil);//1
+//    NSLog(@"background=%d", [backGround isEqual:[NSNull null]]);//0
+    
+    //前回最後に取得した時刻からの差額を算出
+    
+    if(tm != nil){
+        [tm invalidate];
+        tm = nil;
+    }
+    tm = [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                          target:self
+                                        selector:@selector(time:)//タイマー呼び出し
+                                        userInfo:nil
+                                         repeats:YES];
+
+    
+    //次に描画するため
+    //http://stackoverflow.com/questions/4175729/run-animation-every-time-app-is-opened
+    //In iOS 4, pressing the home button doesn't terminate the app, it suspends it. When the app is made active again, a UIApplicationDidBecomeActiveNotification is posted. Register for that notification and initiate the animation in you
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(setBackGroundInit)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
+    
+    //ホームボタンが押されたらsetBackGroundInitとviewWillAppearを実行
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(viewWillAppear:)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
+    
+    
+    //以下の目的：secondForLifeとlifeGameの更新
+    NSString *strLifeGame =
+    [attr getValueFromDevice:@"lifeGame"];
+    NSString *ymdMenuLastOpen =
+    [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
+    NSString *hmsMenuLastOpen =
+    [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
+
+    if([strLifeGame isEqual:[NSNull null]] ||
+       strLifeGame == nil ||
+       ymdMenuLastOpen == nil ||
+       [ymdMenuLastOpen isEqual:[NSNull null]] ||
+       hmsMenuLastOpen == nil ||
+       [hmsMenuLastOpen isEqual:[NSNull null]]){
+        lifeGame = maxLifeGame;
+    }else{
+        //前回のsecondForLifeがカウントされていた最後の日時と時刻からの経過時間passedSecondを計測
+        if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){//最後に観測されたのが同日ならば
+            
+            //getPassSecond:二つの時間からint型差額秒数を返す
+            int passedSecond = [self getPassTime:hmsMenuLastOpen
+                                            hms2:[self getHHMMSS]];
+            NSLog(@"passedSec=%d, last=%@, now=%@", passedSecond,
+                  hmsMenuLastOpen, [self getHHMMSS]);
+            //secondForLifeの更新
+            secondForLife = [attr getValueFromDevice:@"secondForLife"].integerValue - passedSecond;
+            NSLog(@"secondForLife:%d, passedSecond:%d", secondForLife, passedSecond);
+            
+            //lifeGameの更新
+            if(secondForLife < -maxSecondForLife * (maxLifeGame-1)){//30分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-0), maxLifeGame);
+                secondForLife += (maxLifeGame-1) * maxSecondForLife;
+                //以下、残りの経過時間(secondForLifeの負値はmaxSecondForLifeからの経過時間とする)
+                secondForLife = maxSecondForLife + secondForLife;
+                //結局上記２行によってsecondForLife += maxLifeGame * maxSecondForLifeで良い
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-2)){//24分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-1), maxLifeGame);
+//                secondForLife += (maxLifeGame-2) * maxSecondForLife;
+//                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 1) * maxSecondForLife;
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-3)){//18分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-2), maxLifeGame);
+//                secondForLife += (maxLifeGame-3) * maxSecondForLife;
+//                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 2) * maxSecondForLife;
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-4)){//12分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-3), maxLifeGame);
+//                secondForLife += (maxLifeGame-4) * maxSecondForLife;
+//                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 3) * maxSecondForLife;
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-5)){//6分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-4), maxLifeGame);
+//                secondForLife += (maxLifeGame-5) * maxSecondForLife;
+//                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 4) * maxSecondForLife;
+            }else if(secondForLife < 0){//6分未満の経過時間の場合
+                lifeGame = MIN(lifeGame + (maxLifeGame-5), maxLifeGame);
+                secondForLife += (maxLifeGame - 5) * maxSecondForLife;
+            }
+            secondForLife = MIN(secondForLife, maxSecondForLife);
+        }else{//日付が違えば全回復
+            lifeGame = maxLifeGame;
+        }
+//        lifeGame = strLifeGame.integerValue;
+    }
+    if(lifeGame < maxLifeGame){
+        tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
+        if(secondForLife < maxSecondForLife){
+            tv_timer.text = [self transformSecToMMSS:secondForLife];
+        }else{
+            tv_timer.text = @"MAX";
+        }
+    }else{
+        tv_gameLife.text = @"MAX";
+        tv_timer.text = @"MAX";
+    }
+    //上記により更新されたlifeGameとsecondForLifeを用いて、timeメソッド内でtv_timer, tv_lifegameに動的に反映
+    
+}
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
+    
+    
+    //ホームボタンが押された時の対応：カウンターのため
+    //時間を記憶
+    NSLog(@"viewDidDisappear");
+    [attr setValueToDevice:@"ymdMenuLastOpen"
+                  strValue:[self getYYYYMMDD]];
+    [attr setValueToDevice:@"hmsMenuLastOpen"
+                  strValue:[self getHHMMSS]];
+    [attr setValueToDevice:@"secondForLife"
+                  strValue:[NSString stringWithFormat:@"%d", secondForLife]];
+    
+    
+
+}
+-(void)viewDidAppear:(BOOL)animated{
+//    [self.view.subviews removeFromSuperview];
+    
+    
+    
+    //ホームボタン押下後の再開時に以下の登録したメソッドから開始する
+//    [[NSNotificationCenter defaultCenter]
+//     addObserver:self
+////     selector:@selector(applicationDidBecomeActive)
+//     selector:@selector(viewDidAppear:)
+//     name:UIApplicationDidBecomeActiveNotification
+//     object:nil];
+    
+    [self.view bringSubviewToFront:bannerView_];
+    
+    //時間を遅らせてBGM
+    [self performSelector:@selector(playBGM) withObject:nil afterDelay:0.3];
+
+//    NSLog(@"init select view controller start!!");
     
     NSLog(@"now = %@ : %@",
           [self getYYYYMMDD],
@@ -682,26 +794,34 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 
 - (void)time:(NSTimer*)timer{//every-1sec
     
-    //DFの場合、次のlifeUpまでの時間は12分
-//    NSLog(@"secondForLife = %d" , secondForLife);
-//    if(lifeGame <= maxLifeGame){
-    if(secondForLife > 0 && lifeGame != maxLifeGame){
-        secondForLife --;//every1second
-        //attrに書き込む必要あり
-//        NSLog(@"secondForLife decrease to = %d" , secondForLife);
-        tv_timer.text =
-        [self transformSecToMMSS:secondForLife];
-        if(secondForLife == 0){
-            secondForLife = maxSecondForLife;
-            if(lifeGame < maxLifeGame){
-                lifeGame++;
-                [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
-                tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
-                if(lifeGame == maxLifeGame){
-                    tv_timer.text = @"MAX";
+//    NSLog(@"timer = %@", tv_timer.text);
+    //DFの場合、次のlifeUpまでの時間は12分=720sec
+    NSLog(@"secondForlife = %d, lifeGame=%d",
+          secondForLife, lifeGame);
+    if(lifeGame < maxLifeGame){
+        if(secondForLife > 0){
+            secondForLife --;//every1second
+            //attrに書き込む必要あり
+            //        NSLog(@"secondForLife decrease to = %d" , secondForLife);
+            tv_timer.text =
+            [self transformSecToMMSS:secondForLife];
+            if(secondForLife == 0){
+                secondForLife = maxSecondForLife;
+                if(lifeGame < maxLifeGame){
+                    lifeGame++;
+                    [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
+                    tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
+                    if(lifeGame == maxLifeGame){
+                        tv_timer.text = @"MAX";
+                    }
                 }
             }
+        }else{
+            tv_timer.text = @"MAX";
         }
+    }else{//lifeGame == maxLifeGame
+        tv_gameLife.text = [NSString stringWithFormat:@"MAX"];
+        secondForLife = maxSecondForLife;
     }
     
 }
@@ -733,11 +853,11 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 }
 
 -(void)gotoGame{
-
-    GameClassViewController *gameView = [[GameClassViewController alloc] init];
-    [self presentViewController: gameView animated:YES completion: nil];
-
     [backGround exitAnimations];
+    GameClassViewController *gameView = [[GameClassViewController alloc] init];
+    [self presentViewController: gameView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
+
+//    [backGround exitAnimations];
 
 }
 -(void)pushedStartButton:(id)sender{//UIButton型による定義
@@ -764,16 +884,25 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
+//            lifeGame = 6;//test
             if(lifeGame > 0){
+            
                 lifeGame--;
                 [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
                 
-                //時間を記憶
+                //日時を記憶
                 [attr setValueToDevice:@"ymdMenuLastOpen"
                               strValue:[self getYYYYMMDD]];
                 [attr setValueToDevice:@"hmsMenuLastOpen"
                               strValue:[self getHHMMSS]];
                 
+                NSLog(@"before game : %@", [attr getValueFromDevice:@"hmsMenuLastOpen"]);
+                //現在カウンターを記憶
+                [attr setValueToDevice:@"secondForLife"
+                              strValue:[NSString stringWithFormat:@"%d", secondForLife]];
+                
+                [tm invalidate];
+                tm = nil;
                 [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
                 [backGround exitAnimations];
             }else{
@@ -827,31 +956,32 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             break;
         }
         case ButtonMenuImageTypeDefense:{
-            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            [backGround stopAnimation];//これをしないと裏で動いてしまう=>exit?
             DefenseUpListViewController *ilvc = [[DefenseUpListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
         case ButtonMenuImageTypeItem:{
-            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            [backGround stopAnimation];//これをしないと裏で動いてしまう=>exit?
             ItemUpListViewController *ilvc = [[ItemUpListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
         case ButtonMenuImageTypeWpnUp:{
-            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            [backGround stopAnimation];//これをしないと裏で動いてしまう=>exit?
             WeaponUpListViewController *ilvc = [[WeaponUpListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
         case ButtonMenuImageTypeInn:{
 //            [backGround pauseAnimations];
-            [backGround stopAnimation];//これをしないと裏で動いてしまう
+            [backGround stopAnimation];//これをしないと裏で動いてしまう=>exit?
             LifeUpListViewController *ilvc = [[LifeUpListViewController alloc]init];
             [self presentViewController: ilvc animated:YES completion: nil];
             break;
         }
-        case ButtonMenuImageTypeCoin:{//コイン購入画面へ
+        case ButtonMenuImageTypeCoin:{//コイン購入画面へ=>exit?
+            [backGround stopAnimation];
             PayProductViewController *ppvc = [[PayProductViewController alloc]init];
             [self presentViewController:ppvc animated:NO completion:nil];
             break;
@@ -1652,7 +1782,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return iv;
 }
 
-
+//test:anim
+//-(void)animAirViewUp{//:(UIView *)view{//浮遊アニメーション
 -(void)animAirViewUp:(UIView *)view{//浮遊アニメーション
     
     CGPoint kStartPos = self.view.center;//((CALayer *)[view.layer presentationLayer]).position;
@@ -1663,10 +1794,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [CATransaction setCompletionBlock:^{//終了処理
 //        [self animAirView:view];
         CAAnimation *animationKeyFrame = [view.layer animationForKey:@"position"];
+//        CAAnimation *animationKeyFrame = [ivBackChara.layer animationForKey:@"position"];
         if(animationKeyFrame){
             //途中で終わらずにアニメーションが全て完了して
 //            [self animAirViewDown:view];
             [self animAirViewUp:view];
+//            [self animAirViewUp];
 //            NSLog(@"animation key frame already exit & die");
         }else{
             //途中で何らかの理由で遮られた場合
@@ -1701,6 +1834,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
         // レイヤーにアニメーションを追加
         //                        [[[ItemArray objectAtIndex:i] getImageView].layer addAnimation:animation forKey:@"position"];
+//        [ivBackChara.layer addAnimation:animation forKey:@"position"];
         [view.layer addAnimation:animation forKey:@"position"];
         
     }
@@ -1709,8 +1843,30 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 -(void)setBackGroundInit{
     NSLog(@"set background init");
-    [backGround exitAnimations];//前のアニメーションの停止
     
+    //キャラクター描画
+    if(ivBackChara != nil &&
+       ![ivBackChara isEqual:[NSNull null]]){
+        
+        [ivBackChara removeFromSuperview];
+        [ivBackChara.layer removeAnimationForKey:@"position"];
+        NSLog(@"ivBackChara delete");
+        ivBackChara = nil;
+    }
+    ivBackChara = [[UIImageView alloc] initWithFrame:CGRectMake(-110, -10, 544, 400)];
+    ivBackChara.image = [UIImage imageNamed:@"chara01.png"];
+    ivBackChara.center = self.view.center;//CGPointMake(self.view.center.x, self.view.center.y);
+    //    iv_back.alpha = ALPHA_COMPONENT;
+    [self.view addSubview:ivBackChara];
+    [self.view sendSubviewToBack:ivBackChara];
+    
+    //背景描画
+    if(backGround != nil &&
+       ![backGround isEqual:[NSNull null]]){
+        
+        [backGround exitAnimations];//前のアニメーションの停止
+    }
+        
     backGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
                                          width:self.view.bounds.size.width
                                         height:self.view.bounds.size.height
@@ -1719,9 +1875,19 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     [self.view addSubview:[backGround getImageView1]];
     [self.view addSubview:[backGround getImageView2]];
-    [self.view bringSubviewToFront:[backGround getImageView1]];
-    [self.view bringSubviewToFront:[backGround getImageView2]];
+    [self.view sendSubviewToBack:[backGround getImageView1]];
+    [self.view sendSubviewToBack:[backGround getImageView2]];
+    
+
+    [self startAnimateBackGround];//背景動画
+}
+
+-(void)startAnimateBackGround{
+    NSLog(@"startAnimateBackGround");
+    [self animAirViewUp:ivBackChara];
+//    [self animAirViewUp];
     [backGround startAnimation];//3sec-Round
+    
 }
 
 //現在日時
@@ -1763,7 +1929,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     int beforeS = [before substringFromIndex:4].integerValue;
     
     return afterH * 3600 + afterM * 60 + afterS -
-            beforeH * 3600 + beforeM * 60 + beforeS;
+            (beforeH * 3600 + beforeM * 60 + beforeS);
     
 }
 @end

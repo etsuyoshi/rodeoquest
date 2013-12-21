@@ -25,7 +25,6 @@
     int enemyCount;//発生した敵の数
     int enemyDown;//倒した敵の数
     WorldType worldType;
-
 }
 //bgm
 @property (nonatomic, retain) AVAudioPlayer *audioPlayer;

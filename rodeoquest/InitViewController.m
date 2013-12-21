@@ -138,7 +138,7 @@ UIActivityIndicatorView *_indicator;
     [self presentViewController: tvc animated:YES completion: nil];
 #else
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ItemSelectViewController"];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
     //    NSLog(@"%@", vc);
     [self presentViewController: vc animated:YES completion: nil];
 #endif
@@ -207,9 +207,12 @@ UIActivityIndicatorView *_indicator;
         [self hideActivityIndicator];
         
         //StoryboardでのID：ItemSelectViewControllerはMenuViewControllerを示す
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ItemSelectViewController"];
-        [self presentViewController: vc animated:YES completion: nil];
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+//        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
+//        [self presentViewController: vc animated:NO completion: nil];
+        //上記ブロックと同値
+        MenuViewController *menuView = [[MenuViewController alloc] init];
+        [self presentViewController: menuView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
         
         
     }else{

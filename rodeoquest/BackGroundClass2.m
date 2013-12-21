@@ -224,6 +224,11 @@ int imageMargin;
     [iv_background2 removeFromSuperview];
     [iv_oscillate1 removeFromSuperview];
     [iv_oscillate2 removeFromSuperview];
+    
+    iv_background1 = nil;
+    iv_background2 = nil;
+    iv_oscillate1 = nil;
+    iv_oscillate2 = nil;
 }
 
 
@@ -469,7 +474,7 @@ int imageMargin;
 
 
 -(void)startAnimation{
-    NSLog(@"start animation method call");
+//    NSLog(@"start animation method call");
     //1*original->2*original
     //moving-distance=1*original : duration=routine/4
     [self animation1:iv_background1.center.y];
@@ -611,7 +616,6 @@ int imageMargin;
 }
 
 -(UIImageView *)getImageView1{
-    NSLog(@"get imageview 1");
     return iv_background1;
 }
 -(UIImageView *)getImageView2{
