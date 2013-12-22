@@ -8,6 +8,7 @@
 
 #import "WeaponBuyListViewController.h"
 #import "QBFlatButton.h"
+#import "KiraParticleView.h"
 
 //dispSlideShow内で使用:購入時に表示されるイメージファイルに使用
 NSArray *imageArrayWithWhite;
@@ -252,8 +253,8 @@ UIView *superViewForEquipWpn;
     
 
     
-    //1.デバイスに購入済み情報(装備済)を書き込む&ボタンの状態を装備中に変更
-    //2.既に装備済のデバイスがあればvalue=1:購入済に設定＆ボタンの状態を装備可能に変更
+    //1.1.デバイスに購入済み情報(装備済)を書き込む&ボタンの状態を装備中に変更
+    //1.2.既に装備済のデバイスがあればvalue=1:購入済に設定＆ボタンの状態を装備可能に変更
     for(int i = 0 ; i < [imageArrayWithWhite count];i++){
         if(i == numSelected){
             [attr setValueToDevice:
@@ -341,6 +342,24 @@ UIView *superViewForEquipWpn;
     [viewFrame setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.1f]];
     [superViewForDispWpn addSubview:viewFrame];
     
+    //フレームの上に背景画像表示withAnimation
+    UIImageView *viewBack =
+    [CreateComponentClass
+     createImageView:CGRectMake(0, 0, 350, 350)
+     image:@"BuyWeapon_BG.png"];
+    viewBack.center = CGPointMake(widthFrame/2, widthFrame/2-50);
+    [viewFrame addSubview:viewBack];
+    [UIView animateWithDuration:3.0
+                          delay:0.0
+                        options:UIViewAnimationOptionRepeat |
+                                UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+                         viewBack.transform = transform;
+                     }
+                     completion:nil];
+    
+    
     //フレームの上に画像表示
     UIImageView *ivSelectedWeapon =
     [CreateComponentClass
@@ -350,17 +369,36 @@ UIView *superViewForEquipWpn;
      target:self
      selector:@"dispSlideShow:"];
     [viewFrame addSubview:ivSelectedWeapon];
+//    viewFrame.center = self.view.center;//test
     
+    //フレームの上にパーティクル表示
+    //...
+    
+    
+    //フレームをアニメーションで下から上に動かす
+    //test:stop
     [UIView animateWithDuration:1.0f
                      animations:^ {
                          viewFrame.center = self.view.center;
                      }
                      completion:^(BOOL finished){
-                         
+                         [self dispParticle:ivSelectedWeapon delay:0.3f];
                      }];
-    
-    
+}
 
+//delaySec後、viewにパーティクルを載せる
+-(void)dispParticle:(UIView *)view delay:(int)delaySec{
+    //disp perticle after delay
+    KiraParticleView *viewKiraParticle;
+    for(int i = 0; i < 3;i++){//width
+        for(int j = 0 ; j < 4 ; j++){//height
+            viewKiraParticle = [[KiraParticleView alloc]
+                                initWithFrame:CGRectMake((i * 100) % (int)view.bounds.size.width,
+                                                         (j * 120) % (int)view.bounds.size.height, 50, 50)
+                                particleType:ParticleTypeKilled];
+            [view addSubview:viewKiraParticle];
+        }
+    }
 
 }
 

@@ -153,7 +153,7 @@ UIView *viewKiraParticle;
             [self addSubview:viewKiraParticle];
         }
         
-        //whole-frame-effect
+        //whole-frame-effect:kirakira=3x4interval
         for(int i = 0; i < 3;i++){//width
             for(int j = 0 ; j < 4 ; j++){//height
                 viewKiraParticle = [[KiraParticleView alloc]

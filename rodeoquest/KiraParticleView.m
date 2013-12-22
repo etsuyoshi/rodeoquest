@@ -92,7 +92,7 @@
         particle.emissionRange = 3.491;
         
         switch(_particleType){
-            case ParticleTypeFireflowers:{
+            case ParticleTypeFireworks:{
                 
                 particle.contents = (id) [[UIImage imageNamed: @"snow.png"] CGImage];//菱形
                 particle.lifetime = 1.0f;
@@ -217,6 +217,55 @@
                 
                 break;
             }
+                
+            case ParticleTypeBuyWpn:{
+                particle.contents = (id) [[UIImage imageNamed: @"krkr01.png"] CGImage];//菱形：小
+                
+//                particle.contents = (id) [[UIImage imageNamed: @"krkr02.png"] CGImage];//菱形：小
+//                particle.contents = (id) [[UIImage imageNamed: @"krkr03.png"] CGImage];//菱形：小
+//                particle.contents = (id) [[UIImage imageNamed: @"krkr04.png"] CGImage];//菱形：小
+                //すぐに白くする場合
+                particle.color = [[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0f] CGColor];
+                particle.redSpeed = 0.92;//赤増加速度
+                particle.greenSpeed = 0.84;
+                particle.blueSpeed = 0.74;
+                particle.alphaSpeed = 0.55;
+                
+                particle.redRange = 0;
+                particle.greenRange = 0;
+                particle.blueRange = 0;
+                particle.alphaRange = 0;
+                
+                particle.xAcceleration = 0;
+                particle.yAcceleration = 0;
+                particle.zAcceleration = 0;
+                
+                particle.spin = 0.384;
+                particle.spinRange = 0;
+                particle.emissionLatitude = 0;
+                particle.emissionLongitude = 0;
+                particle.emissionRange = 0;
+                
+                //大きさを小さく
+                particle.scale = 1.5f;
+                particle.scaleRange = 0;
+                particle.scaleSpeed = -1.0f;
+                
+                //拡散しないように
+                particle.velocity = 0.00;
+                particle.velocityRange = 0;
+                
+                //発生個数は1つ
+                if(arc4random() % 2 == 0){
+                    birthRate = 1;
+                }else{
+                    birthRate = 3;
+                }
+                
+                particle.birthRate = birthRate;
+                
+                break;
+            }
         }
         
         particleEmitter.emitterCells = [NSArray arrayWithObject: particle];
@@ -276,7 +325,7 @@
 //    }
     particleType = _type;
     switch(_type){
-        case ParticleTypeFireflowers:{
+        case ParticleTypeFireworks:{
             
             break;
         }
@@ -329,6 +378,9 @@
         }
         case ParticleTypeKilled:{
             
+            break;
+        }
+        case ParticleTypeBuyWpn:{
             break;
         }
     }

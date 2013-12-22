@@ -208,6 +208,7 @@
 		348C445518669D020029D09B /* purchased03.png in Resources */ = {isa = PBXBuildFile; fileRef = 348C445118669D020029D09B /* purchased03.png */; };
 		348C445618669D020029D09B /* purchased04.png in Resources */ = {isa = PBXBuildFile; fileRef = 348C445218669D020029D09B /* purchased04.png */; };
 		348C445A1866A9410029D09B /* purchased00.png in Resources */ = {isa = PBXBuildFile; fileRef = 348C44591866A9410029D09B /* purchased00.png */; };
+		348C445C1866BC6F0029D09B /* BuyWeapon_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 348C445B1866BC6F0029D09B /* BuyWeapon_BG.png */; };
 		348D635017FE11EF00A3049B /* circle_7w_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 348D634F17FE11EF00A3049B /* circle_7w_128.png */; };
 		348D635417FE13DF00A3049B /* circle_2w_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 348D635317FE13DF00A3049B /* circle_2w_128.png */; };
 		348D635617FE14B000A3049B /* circle_2w_rSmall_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 348D635517FE14B000A3049B /* circle_2w_rSmall_128.png */; };
@@ -592,6 +593,7 @@
 		348C445118669D020029D09B /* purchased03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purchased03.png; sourceTree = "<group>"; };
 		348C445218669D020029D09B /* purchased04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purchased04.png; sourceTree = "<group>"; };
 		348C44591866A9410029D09B /* purchased00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purchased00.png; sourceTree = "<group>"; };
+		348C445B1866BC6F0029D09B /* BuyWeapon_BG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyWeapon_BG.png; sourceTree = "<group>"; };
 		348D634B17FD963100A3049B /* powerGauge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = powerGauge2.png; sourceTree = "<group>"; };
 		348D634F17FE11EF00A3049B /* circle_7w_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_7w_128.png; sourceTree = "<group>"; };
 		348D635317FE13DF00A3049B /* circle_2w_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_2w_128.png; sourceTree = "<group>"; };
@@ -1162,6 +1164,7 @@
 		348C444618669C870029D09B /* ornament */ = {
 			isa = PBXGroup;
 			children = (
+				348C445B1866BC6F0029D09B /* BuyWeapon_BG.png */,
 				348C44591866A9410029D09B /* purchased00.png */,
 				348C444F18669D020029D09B /* purchased01.png */,
 				348C445018669D020029D09B /* purchased02.png */,
@@ -1653,6 +1656,7 @@
 				3460F9511824FA2700951A99 /* defense_barrier.png in Resources */,
 				3411FB7D17FED1DF001D1491 /* powerGauge_pt11.png in Resources */,
 				3411FB7E17FED1DF001D1491 /* powerGauge_pt12.png in Resources */,
+				348C445C1866BC6F0029D09B /* BuyWeapon_BG.png in Resources */,
 				344052A0182BBC1A0049AE46 /* back_forest2.png in Resources */,
 				3411FB7F17FED1DF001D1491 /* powerGauge_pt13.png in Resources */,
 				34CA558618447A9B00F9657A /* laser_r02.png in Resources */,

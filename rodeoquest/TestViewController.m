@@ -12,7 +12,7 @@
 //#define MODE4
 
 //#define CATRANSACTION_TEST
-//#define TEST_EFFECT
+#define TEST_EFFECT
 //#define ORBITPATH_TEST
 //#define TRACK_TEST
 //#define EXPLOSTION_TEST
@@ -23,7 +23,7 @@
 //#define BTNPRESS_TEST
 //#define COOLBUTTON_TEST
 //#define SPECIALWEAPON_TEST
-#define PARTICLE_TEST
+//#define PARTICLE_TEST
 
 #import "ViewFireWorks.h"
 #import "KiraParticleView.h"
@@ -835,7 +835,7 @@ int tempCount = 0;
         
         kiraParticle = [[KiraParticleView alloc] initWithFrame:CGRectMake(tempInt1, 240,
                                                                           30, 30)
-                                                  particleType:ParticleTypeFireflowers];
+                                                  particleType:ParticleTypeFireworks];
         [array insertObject:kiraParticle atIndex:0];
         [self.view addSubview:[array objectAtIndex:0]];
         

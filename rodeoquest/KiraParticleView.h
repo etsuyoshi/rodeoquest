@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 typedef NS_ENUM(NSInteger, ParticleType) {
-    ParticleTypeFireflowers,
+    ParticleTypeFireworks,
     ParticleTypeOccurred,
     ParticleTypeMoving,
-    ParticleTypeKilled
+    ParticleTypeKilled,
+    ParticleTypeBuyWpn
     
 };
 
