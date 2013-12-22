@@ -363,6 +363,7 @@
     return nil;
 }
 
+//一般使用不可：RodeoQuest仕様
 +(UIView *)createSlideShowHorizon:(CGRect)rect
                  imageFile:(NSArray *)imageArray
                     target:(id)target
@@ -486,6 +487,7 @@
 
 }
 
+//一般使用不可：RodeoQuest仕様
 //垂直表示：購入済のみ表示
 +(UIView *)createSlideShowVertical:(CGRect)rect
                  imageFile:(NSArray *)imageArray
@@ -621,7 +623,7 @@
     
 }
 
-
+//一般使用不可：RodeoQuest仕様
 //垂直表示：購入済のみカラー表示：使用中atWeaponBuyListViewController
 +(UIView *)createSlideShowVerticalAll:(CGRect)rect
                          imageFile:(NSArray *)imageArray
@@ -663,38 +665,23 @@
     CGRect uv_rect = CGRectMake(rect.origin.x,
                                 rect.origin.y,
                                 rect.size.width,
-                                rect.size.height - 80);
+                                rect.size.height);
     
     //            UIScrollView *sv = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame:uv_rect];
     sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
     
     UIView *uvOnScroll = [[UIView alloc]
-                          initWithFrame:CGRectMake(uv_rect.origin.x,
-                                                   uv_rect.origin.y,
+                          initWithFrame:CGRectMake(0,//uv_rect.origin.x,
+                                                   0,//uv_rect.origin.y,
                                                    uv_rect.size.width,
-                                                   imageMarginVertical + amountOfImage * (frameHeight + imageMarginVertical))];
+                                                   imageMarginVertical + amountOfImage * (frameHeight + imageMarginVertical) + 100)];//adding100 is below adjust
     //                                                 imageMarginHorizon + amountOfImage * (imageWidth + imageMarginHorizon),
     //                                                 uv_rect.size.height)];
     [uvOnScroll setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0f]];
     sv.contentSize = uvOnScroll.bounds.size;
     
     
-    
-    //    NSArray *arrImage = [dictWeapon allKeys];
-    //    NSArray *arrBeamType = [dictWeapon allValues];
-    //
-    //    for(int i = 0 ;i < [arrImage count] ;i++){
-    //        NSLog(@"arrimage=%@", [arrImage objectAtIndex:i]);
-    //    }
-    
-    //sort:caz,gettin like uppon description disturbs order
-    //    arrImage = [arrImage sortedArrayUsingComparator:^(id a, id b) {
-    //        return [a compare:b options:NSNumericSearch];
-    //    }];
-    //    arrBeamType = [arrBeamType sortedArrayUsingComparator:^(id a, id b){
-    //        return [a compare:b options:NSNumericSearch];
-    //    }];
     
     //uvにタップリスナーを付けて、画像以外がタップされたら閉じる(selfを渡してremovefromsuperview?)=>できない
     //xボタンを付けるuiviewを付けるしかないか。。
@@ -703,7 +690,7 @@
     
     NSLog(@"start loop");
     for(int numImage = 0; numImage < [imageArray count]; numImage++){
-        NSLog(@"numImage=%d", numImage);
+//        NSLog(@"numImage=%d", numImage);
         int holdWeaponID = [_attr getValueFromDevice:
                             [NSString stringWithFormat:@"weaponID%d", numImage]].integerValue;
         
@@ -711,10 +698,12 @@
         
         //        NSLog(@"tag=%d, image=%@", numImage, [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
         //imageViewには、タグ付けとtarget設定ができないので
-        
         CGRect rectFrame =
         CGRectMake(5,imageMarginVertical + numImage * (frameHeight + imageMarginVertical),
                    imageWidth, frameHeight);
+//        NSLog(@"nuImage = %d, imageMarginVertical = %d, rect.y(left-up)=%f",
+//              numImage, imageMarginVertical,
+//              rectFrame.origin.y);
         
         CGRect rectImage =
         CGRectMake(5,imageMarginVertical + numImage * (imageHeight + imageMarginVertical),
@@ -723,6 +712,14 @@
         //                       -30, imageWidth, imageHeight);
         UIView *frameView = [self createView:rectFrame];//imageのframe
         [frameView setBackgroundColor:[UIColor colorWithRed:0 green:0.05 blue:0.1 alpha:0.5f]];
+        frameView.clipsToBounds = YES;
+        // 角丸にする。0以上の浮動小数点。大きくなるほど丸くなる。
+        frameView.layer.cornerRadius = 10.0;
+        // ボーダーに線を付ける。角丸に沿ってボーターがつく。
+        // 大きくなるほどボーダーが太くなる。
+        [frameView.layer setBorderWidth:1.0];
+        // ボーダーの色を設定する。角丸に沿ってボーターの色がつく。
+        [frameView.layer setBorderColor:[[UIColor clearColor] CGColor]];
         [uvOnScroll addSubview:frameView];
         
         //未購入武器は別画像
@@ -733,6 +730,10 @@
                                       image:[_arrNhImage objectAtIndex:numImage]];
             [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
             viewEquip.center = frameView.center;
+            viewEquip.clipsToBounds = YES;
+            viewEquip.layer.cornerRadius = 10.0;
+            [viewEquip.layer setBorderWidth:1.0];
+            [viewEquip.layer setBorderColor:[[UIColor clearColor] CGColor]];
             [uvOnScroll addSubview:viewEquip];
             
             //ornament:枠線
@@ -748,11 +749,20 @@
 //                  [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
             
             //image引数はattr内配列の順番に対応させるため、配列指定よりもdictionary指定が好ましい
+            //画像表示
             UIImageView *imageView = [self createImageView:rectImage
                                                      image:[imageArray objectAtIndex:numImage]//[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
                                                        tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
                                                     target:nil
                                                   selector:nil];
+            imageView.clipsToBounds = YES;
+            // 角丸にする。0以上の浮動小数点。大きくなるほど丸くなる。
+            imageView.layer.cornerRadius = 10.0;
+            // ボーダーに線を付ける。角丸に沿ってボーターがつく。
+            // 大きくなるほどボーダーが太くなる。
+            [imageView.layer setBorderWidth:1.0];
+            // ボーダーの色を設定する。角丸に沿ってボーターの色がつく。
+            [imageView.layer setBorderColor:[[UIColor clearColor] CGColor]];
             imageView.center = frameView.center;
             [uvOnScroll addSubview:imageView];
             
@@ -762,7 +772,16 @@
                 [self createImageView:rectImage
                                 image:@"purchased04.png"];
                 viewOrnament.center = frameView.center;
-//                viewOrnament.alpha = 0.3f;
+                viewOrnament.alpha = 0.3f;
+                // レイヤー処理を有効化する。
+                viewOrnament.clipsToBounds = YES;
+                // 角丸にする。0以上の浮動小数点。大きくなるほど丸くなる。
+                viewOrnament.layer.cornerRadius = 10.0;
+                // ボーダーに線を付ける。角丸に沿ってボーターがつく。
+                // 大きくなるほどボーダーが太くなる。
+                [viewOrnament.layer setBorderWidth:1.0];
+                // ボーダーの色を設定する。角丸に沿ってボーターの色がつく。
+                [viewOrnament.layer setBorderColor:[[UIColor clearColor] CGColor]];
                 [uvOnScroll addSubview:viewOrnament];
             }else if(holdWeaponID == 2){//装備中
                 UIImageView *viewOrnament =
