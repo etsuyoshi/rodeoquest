@@ -498,7 +498,7 @@
     AttrClass *_attr = [[AttrClass alloc] init];
     NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
     
-    int imageHeight = 300;
+    int imageHeight = 200;
     int imageWidth = 300;
     int frameHeight = 200;
     int imageMarginVertical = 15;
@@ -622,7 +622,7 @@
 }
 
 
-//垂直表示：購入済のみカラー表示
+//垂直表示：購入済のみカラー表示：使用中atWeaponBuyListViewController
 +(UIView *)createSlideShowVerticalAll:(CGRect)rect
                          imageFile:(NSArray *)imageArray
                             target:(id)target
@@ -632,9 +632,21 @@
     NSLog(@"create=slideshowにおいてattr初期化");
     
     AttrClass *_attr = [[AttrClass alloc] init];
-    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+//    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
+    NSArray *_arrNhImage = [NSArray arrayWithObjects:
+                            @"NH_RockBow.png",
+                            @"NH_FireBow.png",
+                            @"NH_WaterBow.png",
+                            @"NH_IceBow.png",
+                            @"NH_BugBow.png",
+                            @"NH_AnimalBow.png",
+                            @"NH_GrassBow.png",
+                            @"NH_ClothBow.png",
+                            @"NH_SpaceBow.png",
+                            @"NH_WingBow.png",
+                            nil];
     
-    int imageHeight = 300;
+    int imageHeight = 200;//300;
     int imageWidth = 300;
     int frameHeight = 200;
     int imageMarginVertical = 15;
@@ -718,21 +730,48 @@
 //            NSLog(@"%d is nil",numImage);
             UIImageView *viewEquip = [CreateComponentClass
                                       createImageView:rectFrame
-                                      image:@"close.png"];
+                                      image:[_arrNhImage objectAtIndex:numImage]];
             [viewEquip setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5]];
             viewEquip.center = frameView.center;
             [uvOnScroll addSubview:viewEquip];
+            
+            //ornament:枠線
+            UIImageView *viewOrnament =
+            [self createImageView:rectImage
+                            image:@"purchased00.png"];
+            viewOrnament.center = frameView.center;
+            viewOrnament.alpha = 0.3f;
+            [uvOnScroll addSubview:viewOrnament];
+            
         }else{//購入済み武器については画像表示
 //            NSLog(@"%d is %@", numImage,
 //                  [dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]);
             
+            //image引数はattr内配列の順番に対応させるため、配列指定よりもdictionary指定が好ましい
             UIImageView *imageView = [self createImageView:rectImage
-                                                     image:[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
+                                                     image:[imageArray objectAtIndex:numImage]//[dictWeapon objectForKey:[NSNumber numberWithInt:numImage]]//[arrImage objectAtIndex:numImage]//[imageArray objectAtIndex:numImage]
                                                        tag:(BowType)numImage//[[arrBeamType objectAtIndex:numImage] intValue]//[[dictWeapon objectForKey:[imageArray objectAtIndex:numImage]] intValue]//beamtype
                                                     target:nil
                                                   selector:nil];
             imageView.center = frameView.center;
             [uvOnScroll addSubview:imageView];
+            
+            //ornament:枠線の表示
+            if(holdWeaponID == 1){//購入済
+                UIImageView *viewOrnament =
+                [self createImageView:rectImage
+                                image:@"purchased04.png"];
+                viewOrnament.center = frameView.center;
+//                viewOrnament.alpha = 0.3f;
+                [uvOnScroll addSubview:viewOrnament];
+            }else if(holdWeaponID == 2){//装備中
+                UIImageView *viewOrnament =
+                [self createImageView:rectImage
+                                image:@"purchased02.png"];
+                viewOrnament.center = frameView.center;
+//                viewOrnament.alpha = 0.3f;
+                [uvOnScroll addSubview:viewOrnament];
+            }
         }
         //                [_iv addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
         //タップリスナーを追加してタップされたらダイアログで購入確認。
@@ -883,6 +922,9 @@
     [rectDialog
      setBackgroundColor:
      [UIColor colorWithRed:0 green:0 blue:0 alpha:0.9]];
+    rectDialog.center =
+    CGPointMake(superView.bounds.size.width/2,
+                superView.bounds.size.height/2);
     [superView addSubview:rectDialog];
     
     //title

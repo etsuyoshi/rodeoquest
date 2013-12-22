@@ -84,6 +84,8 @@ int maxLifeGame;
 NSMutableArray *arrNoImage;
 NSMutableArray *arrBtnBack;
 
+
+
 UIView *subView;
 UIButton *closeButton;//閉じるボタン
 BGMClass *bgmClass;
@@ -91,6 +93,8 @@ BackGroundClass2 *backGround;
 UIImageView *ivBackChara;
 AttrClass *attr;
 
+UITextView *tvLevelAmount;
+UITextView *tvScoreAmount;
 UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新するのでグローバルに宣言しておく(武器やアイテムの購入等)
 
 
@@ -363,7 +367,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                         W_MOST_UPPER_COMPONENT,
                                         H_MOST_UPPER_COMPONENT);
     NSString *strLevel = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"level"] intValue]];
-    UITextView *tvLevelAmount = [CreateComponentClass createTextView:rectLevelAmount
+    tvLevelAmount = [CreateComponentClass createTextView:rectLevelAmount
                                                                 text:strLevel
                                                                 font:@"AmericanTypewriter-Bold"
                                                                 size:10
@@ -405,7 +409,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     NSString *strExp = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"exp"]
                                                             intValue]];
     
-    UITextView *tvScoreAmount = [CreateComponentClass createTextView:rectScoreAmount
+    
+    tvScoreAmount = [CreateComponentClass createTextView:rectScoreAmount
                                                                 text:strExp
                                                                 font:@"AmericanTypewriter-Bold"
                                                                 size:10
@@ -673,6 +678,11 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
      selector:@selector(viewWillAppear:)
      name:UIApplicationDidBecomeActiveNotification
      object:nil];
+    
+    //exp, level, goldの更新
+    tvLevelAmount.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"level"] intValue]];
+    tvGoldAmount_global.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"gold"] intValue]];
+    tvScoreAmount.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"exp"] intValue]];
     
     
     //以下の目的：secondForLifeとlifeGameの更新

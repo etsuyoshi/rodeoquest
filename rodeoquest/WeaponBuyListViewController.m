@@ -9,7 +9,8 @@
 #import "WeaponBuyListViewController.h"
 #import "QBFlatButton.h"
 
-NSArray *imageArray;
+//dispSlideShow内で使用:購入時に表示されるイメージファイルに使用
+NSArray *imageArrayWithWhite;
 @interface WeaponBuyListViewController ()
 
 @end
@@ -31,16 +32,27 @@ UIView *superViewForEquipWpn;
         
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects:
-                 @"close.png",//0
-                 @"close.png",//1
-                 @"close.png",//2
-                 @"close.png",//3
-                 @"close.png",//4
-                 @"close.png",//5
-                 @"close.png",//6
-                 @"close.png",//7
-                 @"close.png",//8
-                 @"close.png",//9
+//                 @"close.png",//0
+//                 @"close.png",//1
+//                 @"close.png",//2
+//                 @"close.png",//3
+//                 @"close.png",//4
+//                 @"close.png",//5
+//                 @"close.png",//6
+//                 @"close.png",//7
+//                 @"close.png",//8
+//                 @"close.png",//9
+//                 
+                 @"Rock.png",
+                 @"Fire.png",
+                 @"Water.png",
+                 @"Ice.png",
+                 @"Bug.png",
+                 @"Animal.png",
+                 @"Grass.png",
+                 @"Cloth.png",
+                 @"Space.png",
+                 @"Wing.png",
                  nil];
         arrTv = [NSMutableArray arrayWithObjects:
                  @"いわ",//1rep=100coin
@@ -138,7 +150,7 @@ UIView *superViewForEquipWpn;
 //0.既に装備しているアイテムかどうか判定する
 //1.デバイスに購入済み情報を書き込む
 //2.購入した武器を表示(表示された武器をタップすると今まで購入した武器一覧を見ることが出来る)
-//arg:[itemList objectAtIndex:[sender tag]]
+//arg:UIButton (UIView)
 -(void)onSelectButton:(id)sender{
     int numSelected = [sender tag];
     NSString *strIDWpn = [NSString stringWithFormat:@"weaponID%d", numSelected];
@@ -199,33 +211,37 @@ UIView *superViewForEquipWpn;
 
 /*
  *購入処理(@superclass)が完了した後に呼ばれる：
- *ID設定を行う
+ *機能：ID設定を行う
+ *引数_key:factro of itemList :@"itemlistWeaponBuy0", @"itemlistWeaponBuy1",...
+ *スーパークラスbuyBtnPressed:メソッドから以下により呼び出される
+ *呼出し元：[self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
  */
 -(void)processAfterBtnPressed:(NSString *)_key{
 
     
     NSLog(@"weapon buy list : %@", _key);
-    imageArray = [NSArray arrayWithObjects:
-                           @"RockBow.png",
-                           @"FireBow.png",
-                           @"WaterBow.png",
-                           @"IceBow.png",
-                           @"BugBow.png",
-                           @"AnimalBow.png",
-                           @"GrassBow.png",
-                           @"ClothBow.png",
-                           @"SpaceBow.png",
-                           @"WingBow.png",
+    //dispSlideShow内で使用:購入時に表示されるイメージファイルに使用。
+    imageArrayWithWhite = [NSArray arrayWithObjects:
+                           @"W_RockBow.png",
+                           @"W_FireBow.png",
+                           @"W_WaterBow.png",
+                           @"W_IceBow.png",
+                           @"W_BugBow.png",
+                           @"W_AnimalBow.png",
+                           @"W_GrassBow.png",
+                           @"W_ClothBow.png",
+                           @"W_SpaceBow.png",
+                           @"W_WingBow.png",
                            nil];
     
     //numSelectedに選択されたボタン番号を格納
     int numSelected = -1;
-    for(int i = 0;i < [imageArray count];i++){
+    for(int i = 0;i < [imageArrayWithWhite count];i++){
         if([[itemList objectAtIndex:i] isEqualToString:_key]){
             numSelected = i;
-            NSLog(@"selected item is %@", [imageArray objectAtIndex:numSelected]);
+            NSLog(@"selected item is %@", [imageArrayWithWhite objectAtIndex:numSelected]);
             break;
-        }else if(i == [imageArray count]-1){
+        }else if(i == [imageArrayWithWhite count]-1){
             NSLog(@"ERROR : processAfterBuy selection error. caz:_key is no correspondings.");//=\n%@ and itemList0=\n%@",
 //                  _key,[itemList objectAtIndex:0]);
 
@@ -238,7 +254,7 @@ UIView *superViewForEquipWpn;
     
     //1.デバイスに購入済み情報(装備済)を書き込む&ボタンの状態を装備中に変更
     //2.既に装備済のデバイスがあればvalue=1:購入済に設定＆ボタンの状態を装備可能に変更
-    for(int i = 0 ; i < [imageArray count];i++){
+    for(int i = 0 ; i < [imageArrayWithWhite count];i++){
         if(i == numSelected){
             [attr setValueToDevice:
              [NSString stringWithFormat:@"weaponID%d", numSelected] strValue:@"2"];
@@ -315,9 +331,11 @@ UIView *superViewForEquipWpn;
     [superViewForDispWpn addSubview:viewWithCloseFunc];
     
     //フレームのみ
+    int widthFrame = 300;
+    int heightFrame = 200;
     UIView *viewFrame =
     [CreateComponentClass
-     createView:CGRectMake(0,0 , 300, 300)];
+     createView:CGRectMake(0,0 , widthFrame, heightFrame)];
     viewFrame.center = CGPointMake(self.view.center.x,
                                    self.view.center.y * 5);
     [viewFrame setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.1f]];
@@ -327,7 +345,7 @@ UIView *superViewForEquipWpn;
     UIImageView *ivSelectedWeapon =
     [CreateComponentClass
      createImageView:viewFrame.bounds
-     image:[imageArray objectAtIndex:numSelected]
+     image:[imageArrayWithWhite objectAtIndex:numSelected]
      tag:numSelected
      target:self
      selector:@"dispSlideShow:"];
@@ -357,7 +375,7 @@ UIView *superViewForEquipWpn;
                          createSlideShowVerticalAll:CGRectMake(0,50,
                                                             self.view.bounds.size.width,
                                                             self.view.bounds.size.height)
-                         imageFile:imageArray
+                         imageFile:imageArrayWithWhite
                          target:self
                          selector1:@"closeSuperViewForDispWpn:"
                          selector2:nil];//@"weaponSelected:"];

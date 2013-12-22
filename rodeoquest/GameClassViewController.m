@@ -1723,33 +1723,33 @@ int sensitivity;
     //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
     //5秒間隔で非表示
     if(gameSecond < 20){//20秒未満なら
-        if(arc4random() % 200 == 0){//平均2秒に1回=100px程度の間隔
+        if(arc4random() % 100 == 0){//平均2秒に1回=100px程度の間隔
             difficulty = 0;
             isYield = true;
             NSLog(@"isyield");//interval-check!
         }
-    }else if(gameSecond < 25){//5秒間隔で非表示
+    }else if(gameSecond < 22){//5秒間隔で非表示
         //nothing : isYield = false;
     }else if(gameSecond < 40){//40秒未満
         if(arc4random() % 100 == 0){//平均１秒に1回
             difficulty = 0;
             isYield = true;
         }
-    }else if(gameSecond < 45){//5秒間隔で非表示
+    }else if(gameSecond < 42){//5秒間隔で非表示
         //nothing : isYield = false;
     }else if(gameSecond < 60){
         if(arc4random() % 50 == 0){//平均0.5秒に1回出現
             difficulty = 1;
             isYield = true;
         }
-    }else if(gameSecond < 65){
+    }else if(gameSecond < 61){
         //nothing : isYield = false;
     }else if(gameSecond < 80){//初級殺し
         if(arc4random() % 30 == 0){//平均0.3秒に1回出現
             difficulty = 0;
             isYield = true;
         }
-    }else if(gameSecond < 85){
+    }else if(gameSecond < 81){
         //nothing : is...
     }else if(gameSecond < 100){
         if(arc4random() % 30 == 0){

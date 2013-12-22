@@ -37,8 +37,8 @@
                   //value, keys
                   @"RockBow.png",[NSNumber numberWithInt:BowTypeRock],
                   @"FireBow.png",[NSNumber numberWithInt:BowTypeFire],
-                  @"IceBow.png",[NSNumber numberWithInt:BowTypeWater],
                   @"WaterBow.png",[NSNumber numberWithInt:BowTypeIce],
+                  @"IceBow.png",[NSNumber numberWithInt:BowTypeWater],
                   @"BugBow.png",[NSNumber numberWithInt:BowTypeBug],
                   @"AnimalBow.png",[NSNumber numberWithInt:BowTypeAnimal],
                   @"GrassBow.png",[NSNumber numberWithInt:BowTypeGrass],
@@ -50,8 +50,8 @@
     dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
                 @"Rock.png",[NSNumber numberWithInt:BeamTypeRock],
                 @"Fire.png",[NSNumber numberWithInt:BeamTypeFire],
-                @"Ice.png",[NSNumber numberWithInt:BeamTypeWater],
                 @"Water.png",[NSNumber numberWithInt:BeamTypeIce],
+                @"Ice.png",[NSNumber numberWithInt:BeamTypeWater],
                 @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],
                 @"Animal.png",[NSNumber numberWithInt:BeamTypeAnimal],
                 @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass],
