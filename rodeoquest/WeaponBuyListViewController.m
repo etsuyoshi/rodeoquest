@@ -4,6 +4,18 @@
 //
 //  Created by 遠藤 豪 on 2013/12/17.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
+/*
+ *initWithNibName:データ初期化
+ *viewDidLoad:各コンポーネントの張り付け
+ *viewWillAppear:コインや装備状態(サブクラスのWeaponBuyList...)にデータを反映
+ *viewDidAppear:
+ *onSelectButton:(id)sender:リスト中のボタン押下により呼出される。サブクラスである本クラスにおいて即座に購入せずに状態を判定する機能も備える。
+ *buyBtnPressed:sender:onSelectButtonから呼出し:購入処理orコイン不足のエフェクト表示
+ *processAfterBtnPressed:(NSString *)_key:各アイテムの状態をセット。サブクラスである本クラスにおいて装備状態を判定し、選択したアイテムを中央に表示
+ *dispSlideShow:processAfterBtnPressed内で中央に表示されたアイテムを選択するとアイテム一覧のスライドショー表示
+ *viewWillDisappear:
+ *viewDidDisappear:
+ */
 //
 
 #import "WeaponBuyListViewController.h"
@@ -215,7 +227,7 @@ UIView *superViewForEquipWpn;
  *機能：ID設定を行う
  *引数_key:factro of itemList :@"itemlistWeaponBuy0", @"itemlistWeaponBuy1",...
  *スーパークラスbuyBtnPressed:メソッドから以下により呼び出される
- *呼出し元：[self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
+ *呼出しside：[self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
  */
 -(void)processAfterBtnPressed:(NSString *)_key{
 
@@ -348,16 +360,27 @@ UIView *superViewForEquipWpn;
      createImageView:CGRectMake(0, 0, 350, 350)
      image:@"BuyWeapon_BG.png"];
     viewBack.center = CGPointMake(widthFrame/2, widthFrame/2-50);
+    viewBack.clipsToBounds = YES;// レイヤー処理を有効化する。
+    viewBack.layer.cornerRadius = 10.0;// 角丸にする。0以上の浮動小数点。大きくなるほど丸くなる。
+    [viewBack.layer setBorderWidth:1.0];    // 大きくなるほどボーダーが太くなる。// ボーダーに線を付ける。角丸に沿ってボーターがつく。
+    [viewBack.layer setBorderColor:[[UIColor clearColor] CGColor]];    // ボーダーの色を設定する。角丸に沿ってボーターの色がつく。
     [viewFrame addSubview:viewBack];
-    [UIView animateWithDuration:3.0
-                          delay:0.0
-                        options:UIViewAnimationOptionRepeat |
-                                UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
-                         viewBack.transform = transform;
-                     }
-                     completion:nil];
+    //背景画像にアニメーションを付与
+    //一回転できない
+//    [UIView animateWithDuration:3.0
+//                          delay:0.0
+//                        options:UIViewAnimationOptionRepeat |
+//                                UIViewAnimationOptionCurveLinear
+//                     animations:^{
+//                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+//                         viewBack.transform = transform;
+//                     }
+//                     completion:nil];
+    
+[self runSpinAnimationOnView:(UIView*)viewBack
+                    duration:(CGFloat)3.0f
+                   rotations:(CGFloat)1.0f
+                      repeat:(float)CGFLOAT_MAX];
     
     
     //フレームの上に画像表示
@@ -371,11 +394,9 @@ UIView *superViewForEquipWpn;
     [viewFrame addSubview:ivSelectedWeapon];
 //    viewFrame.center = self.view.center;//test
     
-    //フレームの上にパーティクル表示
-    //...
     
     
-    //フレームをアニメーションで下から上に動かす
+    //フレームをアニメーションで下から上に動かす:完了したらパーティクル表示
     //test:stop
     [UIView animateWithDuration:1.0f
                      animations:^ {
@@ -385,6 +406,25 @@ UIView *superViewForEquipWpn;
                          [self dispParticle:ivSelectedWeapon delay:0.3f];
                      }];
 }
+
+/*
+ *Z軸周りに回転し続ける
+ */
+- (void) runSpinAnimationOnView:(UIView*)view
+                       duration:(CGFloat)duration
+                      rotations:(CGFloat)rotations
+                         repeat:(float)repeat{
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration ];
+    rotationAnimation.duration = duration;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = repeat;
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
+
 
 //delaySec後、viewにパーティクルを載せる
 -(void)dispParticle:(UIView *)view delay:(int)delaySec{
