@@ -4,6 +4,17 @@
 //
 //  Created by 遠藤 豪 on 13/10/17.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
+/*
+ *initWithNibName:データ初期化
+ *viewDidLoad:各コンポーネントの張り付け
+ *viewWillAppear:コインや装備状態(サブクラスのWeaponBuyList...)にデータを反映
+ *viewDidAppear:
+ *onSelectButton:(id)sender:リスト中のボタン押下により呼出される。サブクラスにおいて即座に購入せずに状態を判定する機能も備える。
+ *buyBtnPressed:sender:onSelectButtonから呼出し:購入処理orコイン不足のエフェクト表示
+ *processAfterBtnPressed:(NSString *)_key:各アイテムの状態をセット。サブクラスにおいて装備状態を判定する機能も備える。
+ *viewWillDisappear:
+ *viewDidDisappear:
+ */
 //
 
 #import "ItemListViewController.h"
