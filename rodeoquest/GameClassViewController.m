@@ -81,7 +81,7 @@
 
 #define MAX_ENEMY_NUM 50
 
-#define COUNT_TEST
+//#define COUNT_TEST
 
 #import "GameClassViewController.h"
 #import "ViewWithEffectLevelUp.h"
@@ -372,7 +372,7 @@ int sensitivity;
     }
     else
     {
-        // iOS 6=>iOS 7ではきかない
+        // bar非表示：iOS 6=>iOS 7ではきかない
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     }
     

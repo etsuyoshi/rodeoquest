@@ -197,7 +197,7 @@
                 break;
             }
             case ButtonMenuImageTypeDefense:{
-                imgAdd.image = [UIImage imageNamed:@"defense_shield.png"];
+                imgAdd.image = [UIImage imageNamed:@"shield_b.png"];
                 break;
             }
             case  ButtonMenuImageTypeWpnUp:{

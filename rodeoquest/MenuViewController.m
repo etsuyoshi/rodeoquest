@@ -612,6 +612,34 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     //    [tv_timer setContentVerticalAlignment:UIControlContentHorizontalAlignmentCenter];
     [viewForTimer addSubview:tv_timer];
     
+    //時間を買うためのコイン購入ページへの誘導イベントの駆動コンポーネント
+    UIView *viewTimer =
+    [CreateComponentClass
+     createViewWithFrame:rect_timer
+     color:[UIColor clearColor]
+     tag:101
+     target:self
+     selector:@"imageTapped:"];
+    [self.view addSubview:viewTimer];
+    
+    
+    
+    //invitation of friends by app-socially
+    //    UIView *v_ranking = [CreateComponentClass createView:rect_ranking];
+    UIView *viewInvite =
+    [CreateComponentClass
+     createViewWithFrame:CGRectMake(0, 0, H_BT_START, H_BT_START)
+     color:[UIColor colorWithRed:0 green:0 blue:0 alpha:ALPHA_COMPONENT]
+     tag:102//invite
+     target:self
+     selector:@"imageTapped:"];
+    viewInvite.center =
+    CGPointMake(x_frame_center + W_BT_START/2 + MARGIN_UPPER_TO_RANKING + H_BT_START/2,
+                bt_start.center.y);
+    [self.view addSubview:viewInvite];
+
+    
+    
     //キャラ変更部分(購入部分)
     
     
@@ -1497,19 +1525,16 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
 }
 
+
 -(void)imageTapped:(id)sender{
 
     UIView *tappedView = [sender view];
     NSLog(@"imageTapped at tag = %d", tappedView.tag);
     
-    //武器タグの場合
-    
-    switch(tappedView.tag){//->MenuTagType
-        //case:0 - 9 => definite in upper for-loop
-        case 100:{
+    switch(tappedView.tag){
+        case 100:{//leaderboard表示用
 //            NSLog(@"invite");
-//            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
-//            [self presentViewController:inviteView animated:YES completion:nil];
+
             
             NSLog(@"leader board");
             //learderboard
@@ -1518,6 +1543,19 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             //    [self presentModalViewController:leaderboardController animated:YES];
             [self presentViewController: leaderboardController animated:YES completion: nil];
 
+            break;
+        }
+        case 101:{//set timer=> buy money
+            NSLog(@"set timer event to code: not yet");
+            //no coding yet...
+            
+            break;
+        }
+        case 102:{//invite - friends
+            NSLog(@"invitation of friends");
+            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
+            [self presentViewController:inviteView animated:YES completion:nil];
+            
             break;
         }
         

@@ -141,6 +141,7 @@
 		34616E241859DF8700DE8226 /* sozai_paper.png in Resources */ = {isa = PBXBuildFile; fileRef = 34616E221859DF8700DE8226 /* sozai_paper.png */; };
 		3467B71D17FD53AF004EEE94 /* item.png in Resources */ = {isa = PBXBuildFile; fileRef = 3467B71C17FD53AF004EEE94 /* item.png */; };
 		3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3467B72117FD5980004EEE94 /* PowerGaugeClass.m */; };
+		346B1A7B18685DD3003E908D /* shield_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 346B1A7A18685DD3003E908D /* shield_b.png */; };
 		3476D05E180DE6B800839BD8 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3476D05C180DE6B800839BD8 /* QBFlatButton.m */; };
 		3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3477C2091851F8C60006A9BB /* CountButtonWithView.m */; };
 		34791E3E185D7A8F00440B92 /* ornament.png in Resources */ = {isa = PBXBuildFile; fileRef = 34791E3D185D7A8F00440B92 /* ornament.png */; };
@@ -521,6 +522,7 @@
 		3467B71C17FD53AF004EEE94 /* item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = item.png; sourceTree = "<group>"; };
 		3467B72017FD5980004EEE94 /* PowerGaugeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerGaugeClass.h; sourceTree = "<group>"; };
 		3467B72117FD5980004EEE94 /* PowerGaugeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerGaugeClass.m; sourceTree = "<group>"; };
+		346B1A7A18685DD3003E908D /* shield_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shield_b.png; sourceTree = "<group>"; };
 		3476D05C180DE6B800839BD8 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QBFlatButton.m; path = ../../GradientButton/GradientButton/QBFlatButton.m; sourceTree = "<group>"; };
 		3476D05D180DE6B800839BD8 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBFlatButton.h; path = ../../GradientButton/GradientButton/QBFlatButton.h; sourceTree = "<group>"; };
 		3477C2081851F8C60006A9BB /* CountButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountButtonWithView.h; sourceTree = "<group>"; };
@@ -802,23 +804,24 @@
 		340D04F218597F9A001DD8EC /* button */ = {
 			isa = PBXGroup;
 			children = (
-				34595730185E9484006BB4FB /* btn_g_on.png */,
-				34595731185E9484006BB4FB /* btn_r_off.png */,
 				34595732185E9484006BB4FB /* btn_b_off.png */,
 				34595733185E9484006BB4FB /* btn_b_on.png */,
 				34595734185E9484006BB4FB /* btn_g_off.png */,
+				3422319C1845B5C400055ADF /* btn_g_off2.png */,
+				34595730185E9484006BB4FB /* btn_g_on.png */,
+				3422319D1845B5C400055ADF /* btn_g_on2.png */,
+				34595731185E9484006BB4FB /* btn_r_off.png */,
 				34595735185E9484006BB4FB /* btn_r_on.png */,
-				340D04FB1859815D001DD8EC /* item_UP2.png */,
-				340D04F318597FEC001DD8EC /* item_UP.png */,
-				340D04F418597FEC001DD8EC /* weapon_b_g.png */,
-				340D04F518597FEC001DD8EC /* weapon_b.png */,
-				340D04FC1859815D001DD8EC /* weapon_UP2.png */,
-				340D04F618597FEC001DD8EC /* weapon_UP.png */,
-				343D9701184F3296000239F4 /* icon_INN_b.png */,
 				34390EE41855EA3000D02C54 /* icon_coin_b.png */,
 				343D9700184F3296000239F4 /* icon_gear_b.png */,
-				3422319C1845B5C400055ADF /* btn_g_off2.png */,
-				3422319D1845B5C400055ADF /* btn_g_on2.png */,
+				343D9701184F3296000239F4 /* icon_INN_b.png */,
+				340D04F318597FEC001DD8EC /* item_UP.png */,
+				340D04FB1859815D001DD8EC /* item_UP2.png */,
+				346B1A7A18685DD3003E908D /* shield_b.png */,
+				340D04F518597FEC001DD8EC /* weapon_b.png */,
+				340D04F418597FEC001DD8EC /* weapon_b_g.png */,
+				340D04F618597FEC001DD8EC /* weapon_UP.png */,
+				340D04FC1859815D001DD8EC /* weapon_UP2.png */,
 			);
 			name = button;
 			sourceTree = "<group>";
@@ -1566,6 +1569,7 @@
 				342057E417F2B34C0084E99D /* Default.png in Resources */,
 				3460F9581824FA2700951A99 /* weapon_laser.png in Resources */,
 				34B5FB50185714C900F43531 /* damage3.mp3 in Resources */,
+				346B1A7B18685DD3003E908D /* shield_b.png in Resources */,
 				342057E617F2B34C0084E99D /* Default@2x.png in Resources */,
 				34D30EC2181EDB25006D05F0 /* WingBow.png in Resources */,
 				340C3B9318549DDD0017BBBE /* Cloth_.png in Resources */,
