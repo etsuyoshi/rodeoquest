@@ -4,7 +4,7 @@
 //
 //  Created by 遠藤 豪 on 2013/12/17.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
-/*
+/*ItemListViewControllerのサブクラス+slideShowを直接表示するボタンを追加
  *initWithNibName:データ初期化
  *viewDidLoad:各コンポーネントの張り付け
  *viewWillAppear:コインや装備状態(サブクラスのWeaponBuyList...)にデータを反映
@@ -21,9 +21,11 @@
 #import "WeaponBuyListViewController.h"
 #import "QBFlatButton.h"
 #import "KiraParticleView.h"
+#import "CoolButton.h"
 
 //dispSlideShow内で使用:購入時に表示されるイメージファイルに使用
 NSArray *imageArrayWithWhite;
+CoolButton *btnClDispSlide;
 @interface WeaponBuyListViewController ()
 
 @end
@@ -44,7 +46,7 @@ UIView *superViewForEquipWpn;
               [attr getValueFromDevice:@"gold"]);
         
         // Custom initialization
-        arrIv = [NSMutableArray arrayWithObjects:
+        arrIv = [NSMutableArray arrayWithObjects://bullet image
 //                 @"close.png",//0
 //                 @"close.png",//1
 //                 @"close.png",//2
@@ -68,16 +70,16 @@ UIView *superViewForEquipWpn;
                  @"Wing.png",
                  nil];
         arrTv = [NSMutableArray arrayWithObjects:
-                 @"いわ",//1rep=100coin
-                 @"ほのお",//1rep=90coin
-                 @"みず",//1rep=80coin
-                 @"こおり",//1rep=70coin
-                 @"むし",//1rep=90coin
-                 @"どうぶつ",//1rep=80coin
-                 @"くさ",//1rep=70coin
-                 @"ぬの",//1rep=90coin
-                 @"うちゅう",//1rep=80coin
-                 @"かぜ",//1rep=70coin
+                 @"装填に時間がかかる一方、敵に通常弾以上の物理ダメージを与えます。レベルアップにより発射頻度が向上します。",//1rep=100coin
+                 @"着弾した瞬間のダメージはわずかでも、その後燃えさかる炎により継続的にダメージを与えることがあります。水属性の敵に大ダメージを与えます。",//1rep=90coin
+                 @"発射頻度の高い武器で、通常の敵に中ダメージを与えます。特に水属性以外(火属性？)の敵に中ダメージを与えます。",//1rep=80coin
+                 @"発射頻度は中程度ですが、通常の敵に大ダメージを与えます。特に水属性以外(火属性？)の敵に最大のダメージを与えます。",//1rep=70coin
+                 @"致死性の毒を持つ虫を発射します。クリティカルヒットにより即死することがあります。",//1rep=90coin
+                 @"武器自体の見た目は可愛い一方で、着弾した瞬間に敵を食い尽くし、大ダメージを与えます。針属性の敵や虫属性の敵にはダメージを与えないことがあります。",//1rep=80coin
+                 @"切れ味鋭い針葉を放ちます。クリティカルヒットと継続的なダメージを与えます。",//1rep=70coin
+                 @"魔力によりクリティカルヒットすると敵を完全に消し去ります。",//1rep=90coin
+                 @"流れ星によるメテオストライク。全ての敵に大ダメージを与えます。",//1rep=80coin
+                 @"大気のエネルギーを使った真空波動により、全ての敵に極大ダメージを与えます。翼が生えた的にダメージを与えます。",//1rep=70coin
                  nil];
         arrCost = [NSMutableArray arrayWithObjects:
                    @"100",//test:price=>increase
@@ -121,15 +123,42 @@ UIView *superViewForEquipWpn;
                     nil];
         
         
+        //独自配列：slideShow表示用画像
+        imageArrayWithWhite = [NSArray arrayWithObjects:
+                               @"W_RockBow.png",
+                               @"W_FireBow.png",
+                               @"W_WaterBow.png",
+                               @"W_IceBow.png",
+                               @"W_BugBow.png",
+                               @"W_AnimalBow.png",
+                               @"W_GrassBow.png",
+                               @"W_ClothBow.png",
+                               @"W_SpaceBow.png",
+                               @"W_WingBow.png",
+                               nil];
+
+        
     }
     return self;
 }
 - (void)viewDidLoad
 {
+	// Do any additional setup after loading the view.
     [super viewDidLoad];
     
     
-	// Do any additional setup after loading the view.
+    //slideShowを表示するメソッド呼出しのためのボタン
+    btnClDispSlide =
+    [CreateComponentClass
+     createCoolButton:CGRectMake(10, 10, 130, 60)
+     text:@"コレクション"
+     hue:0.75f saturation:0.5f brightness:0.5f
+     target:self selector:@"onPressedBtnCollection" tag:0];
+    [self.view addSubview:btnClDispSlide];
+    
+    btnClDispSlide.center =
+    CGPointMake(btnClDispSlide.bounds.size.width/2+5,
+                tvGoldAmount.center.y);
     
     
 }
@@ -148,6 +177,10 @@ UIView *superViewForEquipWpn;
         [self
          setStateButtonSelected:[arrBtnBuy objectAtIndex:i]
          status:stateHoldWpn];
+        
+        
+        //textView size
+        
     }
     
 }
@@ -234,18 +267,6 @@ UIView *superViewForEquipWpn;
     
     NSLog(@"weapon buy list : %@", _key);
     //dispSlideShow内で使用:購入時に表示されるイメージファイルに使用。
-    imageArrayWithWhite = [NSArray arrayWithObjects:
-                           @"W_RockBow.png",
-                           @"W_FireBow.png",
-                           @"W_WaterBow.png",
-                           @"W_IceBow.png",
-                           @"W_BugBow.png",
-                           @"W_AnimalBow.png",
-                           @"W_GrassBow.png",
-                           @"W_ClothBow.png",
-                           @"W_SpaceBow.png",
-                           @"W_WingBow.png",
-                           nil];
     
     //numSelectedに選択されたボタン番号を格納
     int numSelected = -1;
@@ -352,6 +373,11 @@ UIView *superViewForEquipWpn;
     viewFrame.center = CGPointMake(self.view.center.x,
                                    self.view.center.y * 5);
     [viewFrame setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.1f]];
+    
+    viewFrame.clipsToBounds = YES;// レイヤー処理を有効化する。
+    viewFrame.layer.cornerRadius = 20.0;// 角丸にする。0以上の浮動小数点。大きくなるほど丸くなる。
+    [viewFrame.layer setBorderWidth:0.5f];// 大きくなるほどボーダーが太くなる。// ボーダーに線を付ける。角丸に沿ってボーターがつく。
+    [viewFrame.layer setBorderColor:[[UIColor clearColor] CGColor]];// ボーダーの色を設定する。角丸に沿ってボーターの色がつく。
     [superViewForDispWpn addSubview:viewFrame];
     
     //フレームの上に背景画像表示withAnimation
@@ -360,10 +386,6 @@ UIView *superViewForEquipWpn;
      createImageView:CGRectMake(0, 0, 350, 350)
      image:@"BuyWeapon_BG.png"];
     viewBack.center = CGPointMake(widthFrame/2, widthFrame/2-50);
-    viewBack.clipsToBounds = YES;// レイヤー処理を有効化する。
-    viewBack.layer.cornerRadius = 10.0;// 角丸にする。0以上の浮動小数点。大きくなるほど丸くなる。
-    [viewBack.layer setBorderWidth:1.0];    // 大きくなるほどボーダーが太くなる。// ボーダーに線を付ける。角丸に沿ってボーターがつく。
-    [viewBack.layer setBorderColor:[[UIColor clearColor] CGColor]];    // ボーダーの色を設定する。角丸に沿ってボーターの色がつく。
     [viewFrame addSubview:viewBack];
     //背景画像にアニメーションを付与
     //一回転できない
@@ -377,10 +399,11 @@ UIView *superViewForEquipWpn;
 //                     }
 //                     completion:nil];
     
-[self runSpinAnimationOnView:(UIView*)viewBack
-                    duration:(CGFloat)3.0f
-                   rotations:(CGFloat)1.0f
-                      repeat:(float)CGFLOAT_MAX];
+    //回転し続ける
+    [self runSpinAnimationOnView:(UIView*)viewBack
+                        duration:(CGFloat)100.0f//times of rotation
+                       rotations:(CGFloat)1.0f//
+                          repeat:(float)CGFLOAT_MAX];
     
     
     //フレームの上に画像表示
@@ -390,7 +413,7 @@ UIView *superViewForEquipWpn;
      image:[imageArrayWithWhite objectAtIndex:numSelected]
      tag:numSelected
      target:self
-     selector:@"dispSlideShow:"];
+     selector:@"dispSlideShow"];
     [viewFrame addSubview:ivSelectedWeapon];
 //    viewFrame.center = self.view.center;//test
     
@@ -425,7 +448,6 @@ UIView *superViewForEquipWpn;
 }
 
 
-
 //delaySec後、viewにパーティクルを載せる
 -(void)dispParticle:(UIView *)view delay:(int)delaySec{
     //disp perticle after delay
@@ -443,12 +465,12 @@ UIView *superViewForEquipWpn;
 }
 
 
--(void)dispSlideShow:(id)sender{
-    UIView *tappedView = [sender view];
-    NSLog(@"weaponSelected:%@", tappedView);
-    
+-(void)dispSlideShow{
+    NSLog(@"dispSlideShow");
+    for(int i = 0 ; i < [itemList count];i++){
+        NSLog(@"%d is %@", i, [imageArrayWithWhite objectAtIndex:i]);
+    }
     //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
-    //購入した武器の分だけ右を見れる
     UIView *viewSlide = [CreateComponentClass
                          createSlideShowVerticalAll:CGRectMake(0,50,
                                                             self.view.bounds.size.width,
@@ -460,66 +482,36 @@ UIView *superViewForEquipWpn;
     viewSlide.tag = 0;
     [superViewForDispWpn addSubview:viewSlide];
     
-    //slideshowでビューを選択した時の挙動(ボタンや説明文等)＝＞廃止？
-//    int WEAPON_BUY_COUNT = 10;
-    //slideshowの上に表示するダイアログボックス
-//    for(int i = 0;i < WEAPON_BUY_COUNT;i++){//最初のタグは武器イメージタップ時のイベント
-//        if(i == tappedView.tag){
-//            UIView *viewAll = [[UIView alloc]initWithFrame:self.view.bounds];
-//            [viewAll setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f]];//タップイベントを受け付けないビューを画面全体に配置
-//            UIView *viewFrame = [CreateComponentClass createView:CGRectMake(10, 120, 300, 300)];
-//            [viewFrame setBackgroundColor:[UIColor colorWithRed:((float)i+1)/WEAPON_BUY_COUNT green:1.0f blue:1.0f alpha:0.3f]];
-//            NSLog(@"%f", (float)i/WEAPON_BUY_COUNT);
-//            UIButton *bt = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
-//                                                                 rect:CGRectMake(260, 50, 25, 25)
-//                                                                image:@"close.png"
-//                                                               target:self
-//                                                             selector:@"closeSuperSuperView:"];//親クラスを削除する
-//            bt.tag = 9999;
-//            [viewFrame addSubview:bt];
-//            
-//            //説明文
-//            UITextView *tv_buy = [CreateComponentClass createTextView:CGRectMake(30, 30,
-//                                                                                 viewFrame.bounds.size.width-60,
-//                                                                                 100)
-//                                                                 text:@"explanation"
-//                                                                 font:@"AmericanTypewriter-Bold"
-//                                                                 size:12
-//                                                            textColor:[UIColor whiteColor]
-//                                                            backColor:[UIColor clearColor]
-//                                                           isEditable:NO];
-//            [viewFrame addSubview:tv_buy];
-//            
-//            NSString *strButtonText;
-//            //現在の武器のフレームには枠を付ける
-//            NSString *strWeaponIDX = [NSString stringWithFormat:@"weaponID%d", i];
-//            if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"0"] ||
-//               [[attr getValueFromDevice:strWeaponIDX] isEqual:[NSNull null]] ||
-//               [attr getValueFromDevice:strWeaponIDX] == nil){
-//                
-//                strButtonText = @"buy now!";
-//            }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"1"]){
-//                //既に購入済
-//                strButtonText = @"set";
-//            }else if([[attr getValueFromDevice:strWeaponIDX] isEqualToString:@"2"]){
-//                strButtonText = @"now setting.";
-//            }
-//            CoolButton *bt_buy = [CreateComponentClass createCoolButton:CGRectMake(30, 150, viewFrame.bounds.size.width-60, 70)
-//                                                                   text:strButtonText
-//                                                                    hue:0.532f
-//                                                             saturation:0.553f
-//                                                             brightness:0.535f
-//                                                                 target:self
-//                                                               selector:@"buyWeapon:"
-//                                                                    tag:i];
-//            [viewFrame addSubview:bt_buy];
-//            
-//            
-//            [viewAll addSubview:viewFrame];
-//            [self.view addSubview:viewAll];
-//            break;
-//        }
-//    }
+    NSLog(@"base=%@, slide=%@", superViewForDispWpn, viewSlide);
+}
+
+
+
+/*
+ *コレクションボタン表示時のイベント
+ *slideshowを表示するためのベースview、閉じるview、スライドショーの表示
+ */
+-(void)onPressedBtnCollection{
+    
+    //slideshowを表示するためのベースview、閉じるview、スライドショーの表示
+    superViewForDispWpn =
+    [[UIView alloc] initWithFrame:self.view.bounds];
+    [superViewForDispWpn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01f]];
+    [self.view addSubview:superViewForDispWpn];
+    
+    //閉じる機能を持つ画面全体ビュー
+    UIView *viewWithCloseFunc =
+    [CreateComponentClass
+     createViewNoFrame:superViewForDispWpn.bounds
+     color:[UIColor clearColor]
+     tag:0 target:self selector:@"closeSuperViewForDispWpn:"];
+    //    [viewWithCloseFunc setBackgroundColor:[UIColor blackColor]];
+    
+    [superViewForDispWpn addSubview:viewWithCloseFunc];
+    
+    
+    //スライドショーの表示
+    [self dispSlideShow];
     
 }
 

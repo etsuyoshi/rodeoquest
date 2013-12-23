@@ -27,7 +27,6 @@
 @implementation ItemListViewController
 
 AttrClass *attr;
-UITextView *tvGoldAmount;
 //UIButton *btnBuy;
 UIView *viewForCoinShort;
 BackGroundClass2 *backGround;
@@ -241,15 +240,16 @@ void (^actNoForCoinShort)(void) = ^(void) {
         
         //名称、説明文の貼付：配列等にしておく必要あり
         UITextView *tv = [[TextViewForItemList alloc]initWithFrame:CGRectMake(imageFrameInitX + imageFrameWidth,
-                                                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
+                                                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),// + 10,
                                                                      itemFrameWidth * 5 / 9,
-                                                                     itemFrameHeight - 20)];
+                                                                     itemFrameHeight)];
 //        tv.alpha = 0.5f;//文字色にも適用されてしまう
         tv.backgroundColor = [UIColor clearColor];
-        tv.font = [UIFont fontWithName:@"Arial" size:12.0f];
+        tv.font = [UIFont fontWithName:@"Arial" size:10.0f];//12.0f
         tv.textColor = [UIColor whiteColor];
 //        tv.text = @"explanation";
         tv.text = [arrTv objectAtIndex:i];
+//        tv.adjustsFontSizeToFitWidth = YES;//only for textlabel
         tv.editable = NO;
         tv.bounces = NO;//no-bound
 //        [self.view addSubview:tv];

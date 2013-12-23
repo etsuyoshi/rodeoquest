@@ -786,7 +786,7 @@
             }else if(holdWeaponID == 2){//装備中
                 UIImageView *viewOrnament =
                 [self createImageView:rectImage
-                                image:@"purchased02.png"];
+                                image:@"purchased01.png"];
                 viewOrnament.center = frameView.center;
 //                viewOrnament.alpha = 0.3f;
                 [uvOnScroll addSubview:viewOrnament];
@@ -912,6 +912,8 @@
     [coolButton setTitle:_text forState:UIControlStateNormal]; //有効時
     [coolButton setTitle:_text forState:UIControlStateHighlighted]; //ハイライト時
     [coolButton setTitle:_text forState:UIControlStateDisabled]; //無効時
+    //タイトル色を変更する場合
+//    [coolButton setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
     coolButton.hue = _hue;
     coolButton.saturation = _saturation;
     coolButton.brightness = _brightness;

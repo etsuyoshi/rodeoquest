@@ -12,7 +12,8 @@
 #import "AttrClass.h"
 
 
-
+//サブクラスでボタン追加するときに位置調整のために使用するのでグローバルに。
+UITextView *tvGoldAmount;
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;
