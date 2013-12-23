@@ -15,10 +15,12 @@
 {
     // Override point for customization after application launch.
     
+    //https://appsocial.ly/v2/526906b9f5eb66c75b0005c6/
     [AppSocially setAPIKey:@"7774ac78f4afd9934a1483eb5485e2d5"];//38abee1be738a828fecc1a56a79d4592"];
     
-//    #warning Replace with YOUR APP's AppSociallyAPIKey and FacebookAppID
-    [AppSocially setFacebookAppID:@"117100645022644"];
+//RodeoQuest APP's AppSociallyAPIKey and FacebookAppID
+//    https://developers.facebook.com/x/apps/487381754714313/dashboard/
+    [AppSocially setFacebookAppID:@"487381754714313"];
     
     
     
