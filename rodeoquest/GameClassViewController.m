@@ -83,6 +83,7 @@
 
 //#define COUNT_TEST
 
+#import <AppSocially/AppSocially.h>
 #import "GameClassViewController.h"
 #import "ViewWithEffectLevelUp.h"
 #import "BGMClass.h"
@@ -195,7 +196,7 @@ UIView *viewMyEffect;
 
 
 @interface GameClassViewController ()
-
+<ASFriendPickerViewControllerDelegate>
 @end
 
 
@@ -2231,6 +2232,11 @@ int sensitivity;
                                         afterLevel:beforeLevel+1
                                         ];
                         [self.view addSubview:vwel];
+                        
+                        //上記ビューにボタンを配置して以下のメソッドを実行して自慢する
+//                        [ASInviter showInviteSheetInView:self.view];//test:report
+                        //このメソッドは<ASFriendPickerViewControllerDelegate>を追加し、
+                        //- (void)friendPickerViewController:(ASFriendPickerViewController *)controllerをオーバーロードする必要がある
                     }
                     
                     [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.001f];
@@ -3085,6 +3091,19 @@ int sensitivity;
 -(void)startAnimateBackGround{
     NSLog(@"startAnimateBackGround at GameView");
     [BackGround startAnimation];//3sec-Round
+}
+
+
+- (void)friendPickerViewController:(ASFriendPickerViewController *)controller
+                  didPickedFriends:(NSArray *)friends
+{
+    NSLog(@"friendPickerViewController");
+//    pickedFriends = friends;
+    
+    [controller dismissViewControllerAnimated:YES
+                                   completion:^{
+//                                       [self myInviteFriends:friends];
+                                   }];
 }
 
 @end

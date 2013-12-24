@@ -4,7 +4,7 @@
 //
 //  Created by 遠藤 豪 on 13/10/24.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
-//
+//　本アプリではこのクラスは使用しない＝＞AppSociallyInviteMainViewController
 
 #import "InviteFriendsViewController.h"
 #import <AppSocially/AppSocially.h>
@@ -77,7 +77,7 @@ NSArray *pickedFriends;
 
 - (void)invite:(UIButton *)sender {
     //method1
-//    [ASInviter showInviteSheetInView:self.view];
+    [ASInviter showInviteSheetInView:self.view];
     
     //method2
 //    [ASInviter inviteFriends:self.pickedFriends
@@ -86,12 +86,11 @@ NSArray *pickedFriends;
     
     
     //method3
-    ASFriendPickerViewController *pickerCtr = [[ASFriendPickerViewController alloc] init];
-    pickerCtr.delegate = self;
+//    ASFriendPickerViewController *pickerCtr = [[ASFriendPickerViewController alloc] init];
+//    pickerCtr.delegate = self;
     
     // customize here
-    
-    [self presentViewController:pickerCtr animated:YES completion:nil];
+//    [self presentViewController:pickerCtr animated:YES completion:nil];
 }
 
 
@@ -102,6 +101,7 @@ NSArray *pickedFriends;
 
 
 
+//写真の起動：本アプリでは使用せず
 - (void)showImagePicker {
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {

@@ -266,7 +266,7 @@ UILabel *lbBulk;
     
     [controller dismissViewControllerAnimated:YES
                                    completion:^{
-                                       [self inviteFriends];
+                                       [self myInviteFriends];
 //                                       [self showImagePicker];
                                    }];
 }
@@ -344,7 +344,7 @@ UILabel *lbBulk;
                   }];
 }
 
--(void)inviteFriends{
+-(void)myInviteFriends{
     NSString *urlStr = @"https://www.facebook.com/tuyo.endo";
     
     // Any key is abailable. (Following key is used in "Include Content" template.)
