@@ -1822,11 +1822,11 @@ int sensitivity;
                             _enemyType = EnemyTypeZou;
                         }
                         
-                    }else{
-                        if(difficulty < 2){
-                            _enemyType = MAX(arc4random() % 5, 2)-2;//type:4,3,2のうちいずれか(針と象以外の上位敵)
-                        }else{
-                            _enemyType = MAX(arc4random() % 5, 2)-1;//type:4,3,2のうちいずれか(象以外の上位敵)
+                    }else{//pr.25% => hari & zou
+                        if(difficulty < 2){//only tanu-musa-pen
+                            _enemyType = MAX(arc4random() % 5, 3);//type:0,1のうちいずれか(針と象以外の上位敵)
+                        }else{//tanu-musa-pen-hari-zou
+                            _enemyType = MAX(arc4random() % 5, 2);//type:のうちいずれか(象以外の上位敵)
                         }
                     }
                     break;

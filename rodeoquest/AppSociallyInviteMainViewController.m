@@ -60,14 +60,20 @@ UILabel *lbBulk;
     int interval = 40;
     
     //label settings
-    lbAddressbook   = [[UILabel alloc]init];
-    lbFacebook      = [[UILabel alloc]init];
-    lbTwitter       = [[UILabel alloc]init];
-    lbTab           = [[UILabel alloc]init];
-    lbBulk          = [[UILabel alloc]init];
+    lbAddressbook   = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];
+    lbFacebook      = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];
+    lbTwitter       = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];
+    lbTab           = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];
+    lbBulk          = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];
+//    lbAddressbook.backgroundColor = [UIColor redColor];//test:loc
     
+    lbAddressbook.font  = [UIFont fontWithName:@"AppleGothic" size:12];
+    lbFacebook.font     = [UIFont fontWithName:@"AppleGothic" size:12];
+    lbTwitter.font      = [UIFont fontWithName:@"AppleGothic" size:12];
+    lbTab.font          = [UIFont fontWithName:@"AppleGothic" size:12];
+    lbBulk.font         = [UIFont fontWithName:@"AppleGothic" size:12];
     
-    lbAddressbook.text  = @"address";
+    lbAddressbook.text  = @"address book";
     lbFacebook.text     = @"facebook";
     lbTwitter.text      = @"twitter";
     lbTab.text          = @"tab";
@@ -79,19 +85,17 @@ UILabel *lbBulk;
     lbTab.textColor         = [UIColor blackColor];
     lbBulk.textColor        = [UIColor blackColor];
     
-    lbAddressbook.textAlignment = NSTextAlignmentRight;
-    lbFacebook.textAlignment    = NSTextAlignmentRight;
-    lbTwitter.textAlignment     = NSTextAlignmentRight;
-    lbTab.textAlignment         = NSTextAlignmentRight;
-    lbBulk.textAlignment        = NSTextAlignmentRight;
+    lbAddressbook.textAlignment = NSTextAlignmentLeft;
+    lbFacebook.textAlignment    = NSTextAlignmentLeft;
+    lbTwitter.textAlignment     = NSTextAlignmentLeft;
+    lbTab.textAlignment         = NSTextAlignmentLeft;
+    lbBulk.textAlignment        = NSTextAlignmentLeft;
     
-    
-    lbAddressbook.center = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 0);
-    lbFacebook.center    = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 1);
-    lbTwitter.center     = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 2);
-    lbTab.center         = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 3);
-    lbBulk.center        = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 4);
-
+    lbAddressbook.center = CGPointMake(lbAddressbook.bounds.size.width/2 + 10,yTop + interval * 0);
+    lbFacebook.center    = CGPointMake(lbFacebook.bounds.size.width/2 + 10,   yTop + interval * 1);
+    lbTwitter.center     = CGPointMake(lbTwitter.bounds.size.width/2 + 10,    yTop + interval * 2);
+    lbTab.center         = CGPointMake(lbTab.bounds.size.width/2 + 10,        yTop + interval * 3);
+    lbBulk.center        = CGPointMake(lbBulk.bounds.size.width/2 + 10,       yTop + interval * 4);
     
     //GUI settings
     addressbookSwitch       = [[UISwitch alloc] init];
@@ -117,7 +121,6 @@ UILabel *lbBulk;
     
     
     //GUI allocating parameter
-    
     addressbookSwitch.center = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 0);
     facebookSwitch.center    = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 1);
     twitterSwitch.center     = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 2);
@@ -125,14 +128,11 @@ UILabel *lbBulk;
     bulkSwitch.center        = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 4);
     showPickerBtn.center     = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 6);
     
-
-    
-    
     addressbookSwitch.onTintColor = kSpecialColor;
-    facebookSwitch.onTintColor = kSpecialColor;
-    twitterSwitch.onTintColor = kSpecialColor;
-    bulkSwitch.onTintColor = kSpecialColor;
-    tabSwitch.onTintColor = kSpecialColor;
+    facebookSwitch.onTintColor    = kSpecialColor;
+    twitterSwitch.onTintColor     = kSpecialColor;
+    bulkSwitch.onTintColor        = kSpecialColor;
+    tabSwitch.onTintColor         = kSpecialColor;
     
     
     [self.view addSubview:addressbookSwitch];
@@ -142,12 +142,25 @@ UILabel *lbBulk;
     [self.view addSubview:bulkSwitch];
     [self.view addSubview:showPickerBtn];
     
+    [self.view addSubview:lbAddressbook];
+    [self.view addSubview:lbFacebook];
+    [self.view addSubview:lbTwitter];
+    [self.view addSubview:lbTab];
+    [self.view addSubview:lbBulk];
+    
+    
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    
+    addressbookSwitch.on = YES;
+    facebookSwitch.on = YES;
+    twitterSwitch.on = YES;
+    tabSwitch.on = YES;
+    bulkSwitch.on = YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
