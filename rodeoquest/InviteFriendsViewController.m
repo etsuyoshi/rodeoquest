@@ -73,9 +73,25 @@
 }
 
 - (void)invite:(UIButton *)sender {
+    //method1
+//    [ASInviter showInviteSheetInView:self.view];
     
-    [ASInviter showInviteSheetInView:self.view];
+    //method2
+//    [ASInviter inviteFriends:self.pickedFriends
+//                  inviteInfo:inviteInfo
+//                  completion:nil];
+    
+    
+    //method3
+    ASFriendPickerViewController *pickerCtr = [[ASFriendPickerViewController alloc] init];
+    pickerCtr.delegate = self;
+    
+    // customize here
+    
+    [self presentViewController:pickerCtr animated:YES completion:nil];
 }
+
+
 
 -(void) clickBack {
     [self dismissViewControllerAnimated:YES completion:nil];
