@@ -81,7 +81,6 @@
 		3422319F1845B5C400055ADF /* btn_g_on2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3422319D1845B5C400055ADF /* btn_g_on2.png */; };
 		342231A21845EDAF00055ADF /* BackGroundClass2.m in Sources */ = {isa = PBXBuildFile; fileRef = 342231A11845EDAF00055ADF /* BackGroundClass2.m */; };
 		3424020117F6E8A100E06902 /* BeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3424020017F6E8A100E06902 /* BeamClass.m */; };
-		3429D90E180FBD1A005CDFCE /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 3429D90D180FBD1A005CDFCE /* close.png */; };
 		342A75D61856BA3800034E97 /* PayProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342A75D51856BA3800034E97 /* PayProductViewController.m */; };
 		342C03AB17F4604E0023C11F /* nothing32.png in Resources */ = {isa = PBXBuildFile; fileRef = 342C039D17F4604E0023C11F /* nothing32.png */; };
 		342C03AD17F4604E0023C11F /* gameover.png in Resources */ = {isa = PBXBuildFile; fileRef = 342C039F17F4604E0023C11F /* gameover.png */; };
@@ -451,7 +450,6 @@
 		342231A11845EDAF00055ADF /* BackGroundClass2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackGroundClass2.m; sourceTree = "<group>"; };
 		342401FF17F6E8A100E06902 /* BeamClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamClass.h; sourceTree = "<group>"; };
 		3424020017F6E8A100E06902 /* BeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamClass.m; sourceTree = "<group>"; };
-		3429D90D180FBD1A005CDFCE /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		342A75D41856BA3800034E97 /* PayProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayProductViewController.h; sourceTree = "<group>"; };
 		342A75D51856BA3800034E97 /* PayProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayProductViewController.m; sourceTree = "<group>"; };
 		342C039D17F4604E0023C11F /* nothing32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nothing32.png; sourceTree = "<group>"; };
@@ -955,7 +953,6 @@
 				348D635317FE13DF00A3049B /* circle_2w_128.png */,
 				348D635517FE14B000A3049B /* circle_2w_rSmall_128.png */,
 				348D634F17FE11EF00A3049B /* circle_7w_128.png */,
-				3429D90D180FBD1A005CDFCE /* close.png */,
 				34FA1A2D180BBD540011E1CA /* coin001_32.png */,
 				34A087471803F194005458EF /* coin2.png */,
 				348D635D17FE1A1100A3049B /* cross.png */,
@@ -1806,7 +1803,6 @@
 				34FA1A39180BE08B0011E1CA /* player4.png in Resources */,
 				34CA558318447A9B00F9657A /* laser_g02.png in Resources */,
 				34F53372181BBB7700FB9470 /* hisho_hmix.mp3 in Resources */,
-				3429D90E180FBD1A005CDFCE /* close.png in Resources */,
 				34A8897A18542ABA005667B4 /* 20.png in Resources */,
 				34390EE51855EA3000D02C54 /* icon_coin_b.png in Resources */,
 				348C445A1866A9410029D09B /* purchased00.png in Resources */,

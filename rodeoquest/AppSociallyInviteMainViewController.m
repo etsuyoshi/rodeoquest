@@ -13,7 +13,7 @@
 #import "Utils.h"
 
 
-#define kPresetMessage @"一緒にこのゲームをやろう->RodeoQuest!"
+#define kPresetMessage @"ニートが作ったアプリらしいよ->RodeoQuest!"
 #define kSpecialColor [UIColor colorWithRed: 9.0/255.0 green:187./255.0 blue: 198./255.0 alpha:1.0]
 
 
@@ -56,8 +56,33 @@ UILabel *lbBulk;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    int yTop = 100;
+    
+    //back button at navigation bar
+    UIBarButtonItem *button = [[UIBarButtonItem alloc]
+                               initWithImage:[UIImage imageNamed:@"close"]
+                               style:UIBarButtonItemStyleBordered
+                               target:self
+                               action:@selector(closeMySelf:)
+                               ];
+    self.navigationItem.leftBarButtonItem = button;
+    
+    //set title in navigation bar
+//    self.navigationController.title = @"RodeoQuest";
+    UILabel *lblNvgTitle = [[UILabel alloc]init];
+    lblNvgTitle.frame = CGRectMake(0, 0, 100, 50);
+    lblNvgTitle.textAlignment = NSTextAlignmentCenter;
+    lblNvgTitle.textColor = [UIColor whiteColor];
+    lblNvgTitle.text = @"RodeoQuestに友達を誘いましょう！";
+    lblNvgTitle.font = [UIFont boldSystemFontOfSize:13.0f];
+    lblNvgTitle.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    self.navigationItem.titleView = lblNvgTitle;
+    [lblNvgTitle sizeToFit];
+    
+    
+    //all GUI set start!
+    int yTop = 150;
     int interval = 45;
+    int marginLeft = 20;
     
     //label settings
     lbAddressbook   = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];
@@ -77,7 +102,7 @@ UILabel *lbBulk;
     lbFacebook.text     = @"facebook";
     lbTwitter.text      = @"twitter";
     lbTab.text          = @"tab";
-    lbBulk.text         = @"bulk";
+    lbBulk.text         = @"複数選択";
     
     lbAddressbook.textColor = [UIColor blackColor];
     lbFacebook.textColor    = [UIColor blackColor];
@@ -91,11 +116,11 @@ UILabel *lbBulk;
     lbTab.textAlignment         = NSTextAlignmentLeft;
     lbBulk.textAlignment        = NSTextAlignmentLeft;
     
-    lbAddressbook.center = CGPointMake(lbAddressbook.bounds.size.width/2 + 10,yTop + interval * 0);
-    lbFacebook.center    = CGPointMake(lbFacebook.bounds.size.width/2 + 10,   yTop + interval * 1);
-    lbTwitter.center     = CGPointMake(lbTwitter.bounds.size.width/2 + 10,    yTop + interval * 2);
-    lbTab.center         = CGPointMake(lbTab.bounds.size.width/2 + 10,        yTop + interval * 3);
-    lbBulk.center        = CGPointMake(lbBulk.bounds.size.width/2 + 10,       yTop + interval * 4);
+    lbAddressbook.center = CGPointMake(lbAddressbook.bounds.size.width/2 + marginLeft,yTop + interval * 0);
+    lbFacebook.center    = CGPointMake(lbFacebook.bounds.size.width/2 + marginLeft,   yTop + interval * 1);
+    lbTwitter.center     = CGPointMake(lbTwitter.bounds.size.width/2 + marginLeft,    yTop + interval * 2);
+    lbTab.center         = CGPointMake(lbTab.bounds.size.width/2 + marginLeft,        yTop + interval * 3);
+    lbBulk.center        = CGPointMake(lbBulk.bounds.size.width/2 + marginLeft,       yTop + interval * 4);
     
     //GUI settings
     addressbookSwitch       = [[UISwitch alloc] init];
@@ -104,7 +129,7 @@ UILabel *lbBulk;
     tabSwitch               = [[UISwitch alloc] init];
     bulkSwitch              = [[UISwitch alloc] init];
     showPickerBtn           = [UIButton buttonWithType:UIButtonTypeCustom];
-    [showPickerBtn setFrame:CGRectMake(0, 0, 150, 40)];
+    [showPickerBtn setFrame:CGRectMake(0, 0, 180, 40)];
     showPickerBtn.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     showPickerBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     showPickerBtn.contentMode = UIViewContentModeScaleToFill;
@@ -117,7 +142,7 @@ UILabel *lbBulk;
     [showPickerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     showPickerBtn.layer.cornerRadius = 3.0;
     showPickerBtn.layer.masksToBounds = YES;
-    [showPickerBtn setTitle:@"show picker" forState:UIControlStateNormal];
+    [showPickerBtn setTitle:@"リストから選択する" forState:UIControlStateNormal];
     
     
     //GUI allocating parameter
@@ -187,7 +212,7 @@ UILabel *lbBulk;
 #pragma mark - Private
 
 - (void)showImagePicker {
-
+    NSLog(@"showImagePicker");
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         return;
@@ -210,6 +235,7 @@ UILabel *lbBulk;
     nameLabel.text = @"";
     for (ASFriend *aFriend in pickedFriends) {
         if (cnt > 0) {
+            //カメラ撮影時に画面上に表示されるテキストビュー
             nameLabel.text = [nameLabel.text stringByAppendingString:@", "];
         }
         nameLabel.text = [nameLabel.text stringByAppendingString:aFriend.fullname];
@@ -218,10 +244,14 @@ UILabel *lbBulk;
     [overlayView addSubview:nameLabel];
     picker.cameraOverlayView = overlayView;
     
+//    NSLog(@"nameLabel = %@", nameLabel);
+    
+    //カメラの起動
     [self presentViewController:picker
                        animated:YES
                      completion:^{
                      }];
+    
 }
 
 
@@ -231,12 +261,13 @@ UILabel *lbBulk;
 - (void)friendPickerViewController:(ASFriendPickerViewController *)controller
                   didPickedFriends:(NSArray *)friends
 {
+    NSLog(@"friendPickerViewController");
     pickedFriends = friends;
     
     [controller dismissViewControllerAnimated:YES
                                    completion:^{
-                                       
-                                       [self showImagePicker];
+                                       [self inviteFriends];
+//                                       [self showImagePicker];
                                    }];
 }
 
@@ -277,14 +308,15 @@ UILabel *lbBulk;
 // =============================================================================
 #pragma mark - UIImagePickerControllerDelegate
 /*
- * after sending message..
+ * process after sending message..
  */
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSLog(@"imagePickerController");
 //    UIImage *pickedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     // It is assumed that the URL of uploaded image was obtained as follows:
-    NSString *urlStr = @"http://img.uptodown.net/screen/android/bigthumb/otaku-camera-1.jpg";
+//    NSString *urlStr = @"http://img.uptodown.net/screen/android/bigthumb/otaku-camera-1.jpg";
+    NSString *urlStr = @"https://www.facebook.com/tuyo.endo";
 
     // Any key is abailable. (Following key is used in "Include Content" template.)
     NSDictionary *inviteInfo = @{@"content_url": urlStr,
@@ -302,8 +334,37 @@ UILabel *lbBulk;
     [ASInviter inviteFriends:pickedFriends
                   inviteInfo:inviteInfo
                   completion:^(NSError *error) {
-                      
-                      NSLog(@"error:%@", error);
+                      if([error isEqual:[NSNull null]] ||
+                         error == nil){
+                          NSLog(@"送信しました。正常終了。");
+                      }else{
+                          NSLog(@"error:%@", error);
+                      }
+                      pickedFriends = nil;
+                  }];
+}
+
+-(void)inviteFriends{
+    NSString *urlStr = @"https://www.facebook.com/tuyo.endo";
+    
+    // Any key is abailable. (Following key is used in "Include Content" template.)
+    NSDictionary *inviteInfo = @{@"content_url": urlStr,
+                                 @"message" :kPresetMessage};
+    
+    // > OPTIONAL
+    // This name is used for Mail / SMS. (not used for Facebook / Twitter.)
+    [ASInviter setSenderName:@"APP_USER_NAME"];
+    // < OPTIONAL
+    
+    [ASInviter inviteFriends:pickedFriends
+                  inviteInfo:inviteInfo
+                  completion:^(NSError *error) {
+                      if([error isEqual:[NSNull null]] ||
+                         error == nil){
+                          NSLog(@"送信しました。正常終了。");
+                      }else{
+                          NSLog(@"error:%@", error);
+                      }
                       pickedFriends = nil;
                   }];
 }
@@ -322,14 +383,14 @@ UILabel *lbBulk;
 // =============================================================================
 #pragma mark IBAction
 
-- (void)showFriendPicker {//show friendPicker button pressed
+- (void)showFriendPicker {//call after pressed button => show friendPicker
     NSLog(@"showFriendPicker");
     ASFriendPickerViewController *pickerCtr = [[ASFriendPickerViewController alloc] init];
     
     pickerCtr.delegate = self;
     
     // > Customization
-    UIImage *image = [UIImage imageNamed:@"unda_icon"];
+    UIImage *image = [UIImage imageNamed:@"unda_icon"];//appli-icon must be set.
     pickerCtr.imageForInternalFriends = image;
     
     pickerCtr.fontForMainLabel = [UIFont fontWithName:@"Futura-Medium" size:14];
@@ -393,6 +454,11 @@ UILabel *lbBulk;
                               }
                           }];
                      }];
+}
+
+-(void)closeMySelf:(id)sender{
+    NSLog(@"close button");
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

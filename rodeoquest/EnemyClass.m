@@ -65,7 +65,7 @@ int unique_id;
         case EnemyTypeHari:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_hari_01.png"];
-            hitPoint = 2000;
+            hitPoint = 1000;
             break;
         }
         case EnemyTypeZou:{
