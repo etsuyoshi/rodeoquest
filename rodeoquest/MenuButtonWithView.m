@@ -208,8 +208,28 @@
                 imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];
                 break;
             }
-            case ButtonMenuImageTypeBuyProduct:{
-                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
+            case ButtonMenuImageTypeBuyProduct0:{
+                imgAdd.image = [UIImage imageNamed:@"apatite01.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyProduct1:{
+                imgAdd.image = [UIImage imageNamed:@"apatite02.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyProduct2:{
+                imgAdd.image = [UIImage imageNamed:@"apatite03.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyProduct3:{
+                imgAdd.image = [UIImage imageNamed:@"apatite04.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyProduct4:{
+                imgAdd.image = [UIImage imageNamed:@"apatite05.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyProduct5:{
+                imgAdd.image = [UIImage imageNamed:@"apatite06.png"];
                 break;
             }
             case ButtonMenuImageTypeDemand:{

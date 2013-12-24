@@ -28,6 +28,7 @@ BackGroundClass2 *background;
 NSArray *arrProductId;
 NSArray *arrAcquired;
 NSArray *arrPrice;
+NSArray *arrTypeImage;//ボタンアイコンタイプ
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -50,6 +51,19 @@ NSArray *arrPrice;
                        @"27500",
                        @"60000",
                        nil];
+        
+        arrTypeImage = [NSArray arrayWithObjects:
+                        [NSArray arrayWithObjects:
+                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct0],
+                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct1],
+                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct2],
+                         nil],
+                        [NSArray arrayWithObjects:
+                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct3],
+                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct4],
+                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct5],
+                         nil],
+                        nil];
         
         activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
@@ -151,7 +165,7 @@ NSArray *arrPrice;
                                         SIZE_BUTTON_PRODUCT, SIZE_BUTTON_PRODUCT);
                 eachFrame = [CreateComponentClass createView:rectFrame];//ボタン周りの小さな枠
                 payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
-                                                             imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
+                                                             imageType:(ButtonMenuImageType)[[arrTypeImage objectAtIndex:row] objectAtIndex:col]
                                                                   rect:(CGRect)rectButton
                                                                 target:(id)self
                                                               selector:(NSString *)@"pushedButton:"

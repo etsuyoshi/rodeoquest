@@ -17,7 +17,12 @@ typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
     ButtonMenuImageTypeWpnUp,// at menu
     ButtonMenuImageTypeStart,// at menu
     ButtonMenuImageTypeDemand,//at menu
-    ButtonMenuImageTypeBuyProduct//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct0,//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct1,//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct2,//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct3,//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct4,//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct5//at buyItemMenu
     
 };
 
