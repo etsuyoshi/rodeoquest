@@ -72,7 +72,7 @@
 
 #define WEAPON_BUY_COUNT 10
 
-int x_frame_center;//横軸中心値
+int x_frame_center;//画面横軸中心値
 NSTimer *tm;
 UITextView *tv_timer;
 UITextView *tv_gameLife;

@@ -24,6 +24,7 @@
 
 
 @implementation AppSociallyInviteMainViewController
+
 NSArray *pickedFriends;
 UISwitch *addressbookSwitch;
 UISwitch *facebookSwitch;
@@ -31,30 +32,130 @@ UISwitch *twitterSwitch;
 UISwitch *tabSwitch;
 UISwitch *bulkSwitch;
 UIButton *showPickerBtn;
+
+UILabel *lbAddressbook;
+UILabel *lbFacebook;
+UILabel *lbTwitter;
+UILabel *lbTab;
+UILabel *lbBulk;
+//no label for UIButton
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        NSLog(@"app socially invite main view controller");
     }
     return self;
 }
 
 - (void)viewDidLoad {
-    
+    NSLog(@"viewDidLoad at appsocially");
     [super viewDidLoad];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    int yTop = 100;
+    int interval = 40;
+    
+    //label settings
+    lbAddressbook   = [[UILabel alloc]init];
+    lbFacebook      = [[UILabel alloc]init];
+    lbTwitter       = [[UILabel alloc]init];
+    lbTab           = [[UILabel alloc]init];
+    lbBulk          = [[UILabel alloc]init];
+    
+    
+    lbAddressbook.text  = @"address";
+    lbFacebook.text     = @"facebook";
+    lbTwitter.text      = @"twitter";
+    lbTab.text          = @"tab";
+    lbBulk.text         = @"bulk";
+    
+    lbAddressbook.textColor = [UIColor blackColor];
+    lbFacebook.textColor    = [UIColor blackColor];
+    lbTwitter.textColor     = [UIColor blackColor];
+    lbTab.textColor         = [UIColor blackColor];
+    lbBulk.textColor        = [UIColor blackColor];
+    
+    lbAddressbook.textAlignment = NSTextAlignmentRight;
+    lbFacebook.textAlignment    = NSTextAlignmentRight;
+    lbTwitter.textAlignment     = NSTextAlignmentRight;
+    lbTab.textAlignment         = NSTextAlignmentRight;
+    lbBulk.textAlignment        = NSTextAlignmentRight;
+    
+    
+    lbAddressbook.center = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 0);
+    lbFacebook.center    = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 1);
+    lbTwitter.center     = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 2);
+    lbTab.center         = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 3);
+    lbBulk.center        = CGPointMake(self.view.bounds.size.width/2 - 150, yTop + interval + 4);
 
+    
+    //GUI settings
+    addressbookSwitch       = [[UISwitch alloc] init];
+    facebookSwitch          = [[UISwitch alloc] init];
+    twitterSwitch           = [[UISwitch alloc] init];
+    tabSwitch               = [[UISwitch alloc] init];
+    bulkSwitch              = [[UISwitch alloc] init];
+    showPickerBtn           = [UIButton buttonWithType:UIButtonTypeCustom];
+    [showPickerBtn setFrame:CGRectMake(0, 0, 150, 40)];
+    showPickerBtn.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    showPickerBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    showPickerBtn.contentMode = UIViewContentModeScaleToFill;
+    [showPickerBtn addTarget:self
+                      action:@selector(showFriendPicker)
+//               action:NSSelectorFromString(@"showFriendPicker")
+     forControlEvents:UIControlEventTouchUpInside];
     UIImage *btnColorImage = [Utils drawImageOfSize:CGSizeMake(1, 1) andColor:kSpecialColor];
     [showPickerBtn setBackgroundImage:btnColorImage forState:UIControlStateNormal];
     [showPickerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     showPickerBtn.layer.cornerRadius = 3.0;
     showPickerBtn.layer.masksToBounds = YES;
+    [showPickerBtn setTitle:@"show picker" forState:UIControlStateNormal];
+    
+    
+    //GUI allocating parameter
+    
+    addressbookSwitch.center = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 0);
+    facebookSwitch.center    = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 1);
+    twitterSwitch.center     = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 2);
+    tabSwitch.center         = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 3);
+    bulkSwitch.center        = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 4);
+    showPickerBtn.center     = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 6);
+    
+
+    
     
     addressbookSwitch.onTintColor = kSpecialColor;
     facebookSwitch.onTintColor = kSpecialColor;
     twitterSwitch.onTintColor = kSpecialColor;
     bulkSwitch.onTintColor = kSpecialColor;
     tabSwitch.onTintColor = kSpecialColor;
+    
+    
+    [self.view addSubview:addressbookSwitch];
+    [self.view addSubview:facebookSwitch];
+    [self.view addSubview:twitterSwitch];
+    [self.view addSubview:tabSwitch];
+    [self.view addSubview:bulkSwitch];
+    [self.view addSubview:showPickerBtn];
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    NSLog(@"view did appear at appsocially ");
+    
+    
 }
 
 // > OPTIONAL
@@ -208,7 +309,7 @@ UIButton *showPickerBtn;
 // =============================================================================
 #pragma mark IBAction
 
-- (IBAction)showFriendPicker {//show friendPicker button pressed
+- (void)showFriendPicker {//show friendPicker button pressed
     NSLog(@"showFriendPicker");
     ASFriendPickerViewController *pickerCtr = [[ASFriendPickerViewController alloc] init];
     
