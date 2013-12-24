@@ -57,7 +57,7 @@ UILabel *lbBulk;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     int yTop = 100;
-    int interval = 40;
+    int interval = 45;
     
     //label settings
     lbAddressbook   = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 50)];

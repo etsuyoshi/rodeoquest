@@ -1554,11 +1554,20 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
         case 102:{//invite - friends
             NSLog(@"invitation of friends");
+            //firstSample
 //            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
 //            [self presentViewController:inviteView animated:YES completion:nil];
-            AppSociallyInviteMainViewController *apInviteVC =
-            [[AppSociallyInviteMainViewController alloc] init];
-            [self presentViewController:apInviteVC animated:YES completion:nil];
+            
+            //inviteSample
+//            AppSociallyInviteMainViewController *apInviteVC =
+//            [[AppSociallyInviteMainViewController alloc] init];
+//            [self presentViewController:apInviteVC animated:YES completion:nil];
+            
+            //inviteSample=>navigation-version
+            AppSociallyInviteMainViewController *controller = [[AppSociallyInviteMainViewController alloc] init];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            [self presentViewController:navigationController animated:YES completion:nil];
+            
             
             break;
         }
