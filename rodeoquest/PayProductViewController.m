@@ -164,8 +164,13 @@ NSArray *arrTypeImage;//ボタンアイコンタイプ
                 rectButton = CGRectMake(MARGIN_FRAME_PRODUCT/2, MARGIN_FRAME_PRODUCT/2,
                                         SIZE_BUTTON_PRODUCT, SIZE_BUTTON_PRODUCT);
                 eachFrame = [CreateComponentClass createView:rectFrame];//ボタン周りの小さな枠
-                payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
-                                                             imageType:(ButtonMenuImageType)[[arrTypeImage objectAtIndex:row] objectAtIndex:col]
+                NSLog(@"button type %d, %d = %@",
+                      row, col, [[arrTypeImage objectAtIndex:row] objectAtIndex:col]);
+                payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+                                                             imageType:(ButtonMenuImageType)[[[arrTypeImage
+                                                                                               objectAtIndex:row]
+                                                                                              objectAtIndex:col]
+                                                                                             integerValue]
                                                                   rect:(CGRect)rectButton
                                                                 target:(id)self
                                                               selector:(NSString *)@"pushedButton:"

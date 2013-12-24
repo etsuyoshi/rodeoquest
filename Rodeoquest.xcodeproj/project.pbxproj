@@ -289,6 +289,8 @@
 		34BD6DC81819327A006BC523 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DC31819327A006BC523 /* Social.framework */; };
 		34BD6DC91819327A006BC523 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DC41819327A006BC523 /* SystemConfiguration.framework */; };
 		34BD6DCC18194683006BC523 /* InviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34BD6DCB18194683006BC523 /* InviteFriendsViewController.m */; };
+		34BDCB791869427200C641AF /* AppSociallyInviteMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34BDCB781869427200C641AF /* AppSociallyInviteMainViewController.m */; };
+		34BDCB7C186943B400C641AF /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 34BDCB7B186943B400C641AF /* Utils.m */; };
 		34C09ECE1800497900E4A4D8 /* GoldBoardClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C09ECD1800497900E4A4D8 /* GoldBoardClass.m */; };
 		34C09ED0180085DF00E4A4D8 /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C09ECF180085DF00E4A4D8 /* blue.png */; };
 		34C09EDB18009C5F00E4A4D8 /* blue_item_yuri.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C09ED918009C5E00E4A4D8 /* blue_item_yuri.png */; };
@@ -686,6 +688,10 @@
 		34BD6DC41819327A006BC523 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		34BD6DCA18194683006BC523 /* InviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteFriendsViewController.h; sourceTree = "<group>"; };
 		34BD6DCB18194683006BC523 /* InviteFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteFriendsViewController.m; sourceTree = "<group>"; };
+		34BDCB771869427200C641AF /* AppSociallyInviteMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSociallyInviteMainViewController.h; sourceTree = "<group>"; };
+		34BDCB781869427200C641AF /* AppSociallyInviteMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSociallyInviteMainViewController.m; sourceTree = "<group>"; };
+		34BDCB7A186943B400C641AF /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		34BDCB7B186943B400C641AF /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		34C09ECC1800497900E4A4D8 /* GoldBoardClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoldBoardClass.h; sourceTree = "<group>"; };
 		34C09ECD1800497900E4A4D8 /* GoldBoardClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoldBoardClass.m; sourceTree = "<group>"; };
 		34C09ECF180085DF00E4A4D8 /* blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue.png; sourceTree = "<group>"; };
@@ -1332,6 +1338,19 @@
 			path = rodeoquest/AppSociallySDK;
 			sourceTree = "<group>";
 		};
+		34BDCB761869421500C641AF /* InviteViaAppSocially */ = {
+			isa = PBXGroup;
+			children = (
+				34BDCB7A186943B400C641AF /* Utils.h */,
+				34BDCB7B186943B400C641AF /* Utils.m */,
+				34BDCB771869427200C641AF /* AppSociallyInviteMainViewController.h */,
+				34BDCB781869427200C641AF /* AppSociallyInviteMainViewController.m */,
+				34BD6DCA18194683006BC523 /* InviteFriendsViewController.h */,
+				34BD6DCB18194683006BC523 /* InviteFriendsViewController.m */,
+			);
+			name = InviteViaAppSocially;
+			sourceTree = "<group>";
+		};
 		34E216BF181BE7F300B939E6 /* se */ = {
 			isa = PBXGroup;
 			children = (
@@ -1456,6 +1475,7 @@
 		34F3007318218C350082DCBC /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				34BDCB761869421500C641AF /* InviteViaAppSocially */,
 				3419C07518604338009BF0D8 /* ListViewController */,
 				342057EC17F2B34C0084E99D /* InitViewController.h */,
 				342057ED17F2B34C0084E99D /* InitViewController.m */,
@@ -1467,8 +1487,6 @@
 				342A75D51856BA3800034E97 /* PayProductViewController.m */,
 				342057F817F2B8810084E99D /* GameClassViewController.h */,
 				342057F917F2B8810084E99D /* GameClassViewController.m */,
-				34BD6DCA18194683006BC523 /* InviteFriendsViewController.h */,
-				34BD6DCB18194683006BC523 /* InviteFriendsViewController.m */,
 				344928B018025E6100315F2D /* MenuViewController.h */,
 				344928B118025E6100315F2D /* MenuViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
@@ -1860,6 +1878,7 @@
 				342057DE17F2B34C0084E99D /* main.m in Sources */,
 				34E041E21850D81500CA3034 /* DefenseUpListViewController.m in Sources */,
 				342057E217F2B34C0084E99D /* AppDelegate.m in Sources */,
+				34BDCB7C186943B400C641AF /* Utils.m in Sources */,
 				342057EE17F2B34C0084E99D /* InitViewController.m in Sources */,
 				342057FA17F2B8810084E99D /* GameClassViewController.m in Sources */,
 				340C3B8418549AB30017BBBE /* SpecialBeamClass.m in Sources */,
@@ -1884,6 +1903,7 @@
 				3420AB961827AA9200AB0A84 /* UIView+Animation.m in Sources */,
 				34F3006F182162660082DCBC /* KiraParticleView.m in Sources */,
 				343F802B17FF947100224839 /* ScoreBoardClass.m in Sources */,
+				34BDCB791869427200C641AF /* AppSociallyInviteMainViewController.m in Sources */,
 				34038C1F185181820011AE05 /* SwitchButtonWithView.m in Sources */,
 				34E041DC1850AEEC00CA3034 /* WeaponUpListViewController.m in Sources */,
 				3458DB251827C3E2003F1672 /* BackGroundClass.m in Sources */,

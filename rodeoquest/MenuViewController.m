@@ -24,6 +24,7 @@
 #import "LifeUpListViewController.h"
 #import "CreateComponentClass.h"
 #import "InviteFriendsViewController.h"
+#import "AppSociallyInviteMainViewController.h"
 #import "PayProductViewController.h"
 #import "TestViewController.h"
 #import "AttrClass.h"
@@ -1553,8 +1554,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
         case 102:{//invite - friends
             NSLog(@"invitation of friends");
-            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
-            [self presentViewController:inviteView animated:YES completion:nil];
+//            InviteFriendsViewController *inviteView = [[InviteFriendsViewController alloc] init];
+//            [self presentViewController:inviteView animated:YES completion:nil];
+            AppSociallyInviteMainViewController *apInviteVC =
+            [[AppSociallyInviteMainViewController alloc] init];
+            [self presentViewController:apInviteVC animated:YES completion:nil];
             
             break;
         }

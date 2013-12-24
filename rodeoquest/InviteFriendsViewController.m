@@ -10,11 +10,14 @@
 #import <AppSocially/AppSocially.h>
 
 @interface InviteFriendsViewController ()
-
+<ASFriendPickerViewControllerDelegate,
+ UIImagePickerControllerDelegate,
+ UINavigationControllerDelegate>
 @end
 
 @implementation InviteFriendsViewController
 
+NSArray *pickedFriends;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -95,6 +98,62 @@
 
 -(void) clickBack {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+
+- (void)showImagePicker {
+    
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        return;
+    }
+    
+    NSAssert(pickedFriends, @"No friends are picked.");
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.delegate = self;
+    
+    UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 50, 320, 40)];
+    overlayView.backgroundColor = [UIColor clearColor];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 40)];
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.numberOfLines = 0;
+    nameLabel.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:14.0];
+    nameLabel.textColor = [UIColor whiteColor];
+    int cnt = 0;
+    nameLabel.text = @"";
+    for (ASFriend *aFriend in pickedFriends) {
+        if (cnt > 0) {
+            nameLabel.text = [nameLabel.text stringByAppendingString:@", "];
+        }
+        nameLabel.text = [nameLabel.text stringByAppendingString:aFriend.fullname];
+        cnt++;
+    }
+    [overlayView addSubview:nameLabel];
+    picker.cameraOverlayView = overlayView;
+    
+    [self presentViewController:picker
+                       animated:YES
+                     completion:^{
+                     }];
+}
+
+
+// =============================================================================
+#pragma mark - ASFriendPickerViewControllerDelegate
+
+- (void)friendPickerViewController:(ASFriendPickerViewController *)controller
+                  didPickedFriends:(NSArray *)friends
+{
+    pickedFriends = friends;
+    
+    [controller dismissViewControllerAnimated:YES
+                                   completion:^{
+                                       
+                                       [self showImagePicker];
+                                   }];
 }
 
 @end

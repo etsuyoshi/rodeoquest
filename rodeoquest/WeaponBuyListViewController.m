@@ -40,10 +40,10 @@ UIView *superViewForEquipWpn;
     if (self) {
         attr = [[AttrClass alloc]init];
         
-        //test:wallet
-        [attr setValueToDevice:@"gold" strValue:@"1000"];
-        NSLog(@"test:zeny = %@",
-              [attr getValueFromDevice:@"gold"]);
+//        //test:wallet
+//        [attr setValueToDevice:@"gold" strValue:@"1000"];
+//        NSLog(@"test:zeny = %@",
+//              [attr getValueFromDevice:@"gold"]);
         
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects://bullet image
