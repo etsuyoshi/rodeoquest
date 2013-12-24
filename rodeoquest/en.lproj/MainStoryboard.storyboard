@@ -33,7 +33,7 @@
                             <constraint firstItem="EBb-yw-9sh" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" id="gLI-9R-Rwe"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="初期画面" id="axM-gk-Ddr">
+                    <navigationItem key="navigationItem" title="ようこそRodeoQuestへ！" id="axM-gk-Ddr">
                         <barButtonItem key="backBarButtonItem" title="戻る" id="BkH-vi-BJ0"/>
                     </navigationItem>
                 </viewController>

@@ -13,7 +13,7 @@
 #import "Utils.h"
 
 
-#define kPresetMessage @"ニートが作ったアプリらしいよ->RodeoQuest!"
+#define kPresetMessage @"コレ面白いよ->RodeoQuest!"
 #define kSpecialColor [UIColor colorWithRed: 9.0/255.0 green:187./255.0 blue: 198./255.0 alpha:1.0]
 
 
@@ -32,6 +32,7 @@ UISwitch *twitterSwitch;
 UISwitch *tabSwitch;
 UISwitch *bulkSwitch;
 UIButton *showPickerBtn;
+UIButton *lineBtn;
 
 UILabel *lbAddressbook;
 UILabel *lbFacebook;
@@ -129,7 +130,9 @@ UILabel *lbBulk;
     tabSwitch               = [[UISwitch alloc] init];
     bulkSwitch              = [[UISwitch alloc] init];
     showPickerBtn           = [UIButton buttonWithType:UIButtonTypeCustom];
-    [showPickerBtn setFrame:CGRectMake(0, 0, 180, 40)];
+    lineBtn                 = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [showPickerBtn setFrame:CGRectMake(0, 0, 300, 40)];
     showPickerBtn.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     showPickerBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     showPickerBtn.contentMode = UIViewContentModeScaleToFill;
@@ -145,6 +148,20 @@ UILabel *lbBulk;
     [showPickerBtn setTitle:@"リストから選択する" forState:UIControlStateNormal];
     
     
+    [lineBtn setFrame:CGRectMake(0, 0, 300, 40)];
+    lineBtn.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    lineBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    lineBtn.contentMode = UIViewContentModeScaleToFill;
+    [lineBtn addTarget:self
+                      action:@selector(invitationWithLine)
+            forControlEvents:UIControlEventTouchUpInside];
+    [lineBtn setBackgroundImage:btnColorImage forState:UIControlStateNormal];
+    [lineBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    lineBtn.layer.cornerRadius = 3.0;
+    lineBtn.layer.masksToBounds = YES;
+    [lineBtn setTitle:@"メッセージを送る(LINEはこちら)" forState:UIControlStateNormal];
+    
+    
     //GUI allocating parameter
     addressbookSwitch.center = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 0);
     facebookSwitch.center    = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 1);
@@ -152,6 +169,7 @@ UILabel *lbBulk;
     tabSwitch.center         = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 3);
     bulkSwitch.center        = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 4);
     showPickerBtn.center     = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 6);
+    lineBtn.center           = CGPointMake(self.view.bounds.size.width/2,yTop + interval * 7);
     
     addressbookSwitch.onTintColor = kSpecialColor;
     facebookSwitch.onTintColor    = kSpecialColor;
@@ -166,6 +184,7 @@ UILabel *lbBulk;
     [self.view addSubview:tabSwitch];
     [self.view addSubview:bulkSwitch];
     [self.view addSubview:showPickerBtn];
+    [self.view addSubview:lineBtn];
     
     [self.view addSubview:lbAddressbook];
     [self.view addSubview:lbFacebook];
@@ -459,6 +478,10 @@ UILabel *lbBulk;
 -(void)closeMySelf:(id)sender{
     NSLog(@"close button");
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)invitationWithLine{
+    [ASInviter showInviteSheetInView:self.view];
 }
 
 @end
