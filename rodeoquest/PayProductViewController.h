@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <StoreKit/StoreKit.h>
+#import "AttrClass.h"
+#import "BackGroundClass2.h"
+#import "CreateComponentClass.h"
+
 
 typedef NS_ENUM(NSInteger, ProductType) {
     ProductTypeCoin1,
@@ -17,6 +21,10 @@ typedef NS_ENUM(NSInteger, ProductType) {
     ProductTypeCoin5,
     ProductTypeCoin6
 };
+NSArray *arrAcquired;
+NSArray *arrPrice;
+NSArray *arrTypeImage;//ボタンアイコンタイプ
+UIImageView *viewYenImage;//サブクラスで変更するためグローバル
 
 @interface PayProductViewController : UIViewController<SKProductsRequestDelegate,
 SKPaymentTransactionObserver>{

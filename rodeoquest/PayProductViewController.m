@@ -6,10 +6,7 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
-#import "AttrClass.h"
 #import "PayProductViewController.h"
-#import "BackGroundClass2.h"
-#import "CreateComponentClass.h"
 
 #define WIDTH_FRAME_SUPER 290
 #define HEIGHT_FRAME_SUPER 300
@@ -26,9 +23,6 @@
 UIActivityIndicatorView *activityIndicator;
 BackGroundClass2 *background;
 NSArray *arrProductId;
-NSArray *arrAcquired;
-NSArray *arrPrice;
-NSArray *arrTypeImage;//ボタンアイコンタイプ
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -64,170 +58,6 @@ NSArray *arrTypeImage;//ボタンアイコンタイプ
                          [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct5],
                          nil],
                         nil];
-        
-        activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
-                                               self.view.bounds.size.height/2);
-        [self.view addSubview:activityIndicator];
-        
-        //動画背景
-        background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
-                                              width:self.view.bounds.size.width
-                                             height:self.view.bounds.size.height
-                                               secs:5.0f];
-        
-        [self.view addSubview:[background getImageView1]];
-        [self.view addSubview:[background getImageView2]];
-        [self.view sendSubviewToBack:[background getImageView1]];
-        [self.view sendSubviewToBack:[background getImageView2]];
-        //        [self.view bringSubviewToFront:[background getImageView1]];
-        //        [self.view bringSubviewToFront:[background getImageView2]];
-        
-        
-        [background startAnimation];
-
-        
-        
-        
-        //何もしないUIViewをaddする:他のコンポーネントをこの上に置く(閉じるアクションをつけたuiviewの上にaddすると他のコンポーネントに対するアクションにも閉じるアクションが適用されてしまう)
-        UIView *viewSuperInPay = [CreateComponentClass createViewNoFrame:self.view.bounds
-                                                                   color:[UIColor clearColor]
-                                                                     tag:0
-                                                                  target:Nil
-                                                                selector:nil];
-        [viewSuperInPay setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5]];
-        [self.view addSubview:viewSuperInPay];
-        
-        //その上に閉じるアクションをつけたuiviewをaddする(この上に他のコンポーネントを置いてはだめ)
-//        UIView *viewSuper = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
-//                                                                  rect:self.view.bounds
-//                                                                 image:nil
-//                                                                target:self
-//                                                              selector:@"closeViewCon:"];//このviewControllerだけ閉じる
-//        [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
-//        [viewSuperInPay addSubview:viewSuper];
-        
-        
-        //画面中心にWIDTH_FRAME_SUPER X HEIGHT_FRAME_SUPERの枠を表示
-        UIView *viewFrame = [CreateComponentClass createView:CGRectMake(self.view.bounds.size.width/2 - WIDTH_FRAME_SUPER/2,
-                                                                        self.view.bounds.size.height/2 - HEIGHT_FRAME_SUPER/2,
-                                                                        WIDTH_FRAME_SUPER,
-                                                                        HEIGHT_FRAME_SUPER)];
-        [viewFrame setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];//どちらでも良い
-//        [viewSuperInPay addSubview:viewFrame];//ここにviewFrameを乗っけるとボタンの反応がおかしい。
-        [self.view addSubview:viewFrame];
-        
-        
-        CGRect rectFrame;
-        CGRect rectButton;
-        UIView *eachFrame;
-        UIImageView *payButtonView;
-        UIImageView *viewYenImage;
-        UITextView *tvPrice;
-        int widthPrice = SIZE_BUTTON_PRODUCT*1.3/2;
-        int heightPrice = HEIGHT_FRAME_PRODUCT - SIZE_BUTTON_PRODUCT;//20
-        
-        //viewFrameに2x3行列のframeを置いて、更にそれぞれにbuttonを置く
-        int numOfRow = 2;
-        int numOfCol = 3;
-        NSArray *arrProductType = [NSArray arrayWithObjects:
-                                   [NSArray arrayWithObjects:
-                                    [NSNumber numberWithInt:ProductTypeCoin1],
-                                    [NSNumber numberWithInt:ProductTypeCoin2],
-                                    [NSNumber numberWithInt:ProductTypeCoin3],
-                                    nil],
-                                   [NSArray arrayWithObjects:
-                                    [NSNumber numberWithInt:ProductTypeCoin4],
-                                    [NSNumber numberWithInt:ProductTypeCoin5],
-                                    [NSNumber numberWithInt:ProductTypeCoin6],
-                                    nil],
-                                  nil];
-        //price
-        arrPrice = [NSArray arrayWithObjects:
-                    [NSArray arrayWithObjects:
-                     @"200",//yen
-                     @"500",
-                     @"1200",
-                     nil],
-                    [NSArray arrayWithObjects:
-                     @"2500",
-                     @"4100",
-                     @"6300",
-                     nil],
-                    nil];
-        
-        for(int row = 0;row < numOfRow ;row++){
-            for(int col = 0;col < numOfCol ; col++){
-                rectFrame = CGRectMake(MARGIN_FRAME_PRODUCT + col * (WIDTH_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
-                                       MARGIN_FRAME_PRODUCT + row * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
-                                       WIDTH_FRAME_PRODUCT, HEIGHT_FRAME_PRODUCT);
-                rectButton = CGRectMake(MARGIN_FRAME_PRODUCT/2, MARGIN_FRAME_PRODUCT/2,
-                                        SIZE_BUTTON_PRODUCT, SIZE_BUTTON_PRODUCT);
-                eachFrame = [CreateComponentClass createView:rectFrame];//ボタン周りの小さな枠
-                NSLog(@"button type %d, %d = %@",
-                      row, col, [[arrTypeImage objectAtIndex:row] objectAtIndex:col]);
-                payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
-                                                             imageType:(ButtonMenuImageType)[[[arrTypeImage
-                                                                                               objectAtIndex:row]
-                                                                                              objectAtIndex:col]
-                                                                                             integerValue]
-                                                                  rect:(CGRect)rectButton
-                                                                target:(id)self
-                                                              selector:(NSString *)@"pushedButton:"
-                                                                   tag:[[[arrProductType objectAtIndex:row] objectAtIndex:col] intValue]];
-                [eachFrame addSubview:payButtonView];//各フレームに各ボタンに置く
-                
-                //yen-mark
-                viewYenImage = [CreateComponentClass createImageView:CGRectMake(MARGIN_FRAME_PRODUCT-10,
-                                                                                HEIGHT_FRAME_PRODUCT - heightPrice+5, 20, 20)
-                                                               image:@"yen_g.png"];
-//                viewYenImage.center = CGPointMake(MARGIN_FRAME_PRODUCT, SIZE_BUTTON_PRODUCT + MARGIN_FRAME_PRODUCT*2);
-                [eachFrame addSubview:viewYenImage];
-                
-                //price
-                tvPrice = [CreateComponentClass createTextView:CGRectMake(SIZE_BUTTON_PRODUCT-widthPrice,
-                                                                          HEIGHT_FRAME_PRODUCT-heightPrice,//center-adoption
-                                                                          widthPrice,heightPrice)
-                                                                          text:[[arrPrice objectAtIndex:row] objectAtIndex:col]
-                                                          font:@"AmericanTypewriter-Bold"
-                                                          size:13
-                                                     textColor:[UIColor whiteColor]
-                                                     backColor:[UIColor clearColor]//redColor]//
-                                                    isEditable:NO];
-                tvPrice.textAlignment = NSTextAlignmentRight;
-                [eachFrame addSubview:tvPrice];
-                
-                [viewFrame addSubview:eachFrame];//各フレームをviewFrameに置く
-                
-            }
-        }
-        
-        //確認ボタン->閉じる(viewFrameの外を押しても閉じる)
-        int btHeight = 30;
-        int btWidth = 150;
-//        UIImageView *btnConfirm = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
-//                                                               imageType:nil//(ButtonMenuImageType)ButtonMenuImageTypeCoin//test:仮
-//                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
-//                                                                                    numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
-//                                                                                    btWidth, btHeight)
-//                                                                  target:(id)self
-//                                                                selector:@"closeViewCon"];
-//        UIButton *btnConfirm = [[CoolButton alloc]initWithFrame:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
-//                                                                          numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
-//                                                                           btWidth, btHeight)];
-        UIButton *btnConfirm = [CreateComponentClass createCoolButton:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
-                                                                                  numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
-                                                                                  btWidth, btHeight)
-                                                                  text:@"confirm"
-                                                                   hue:0.3
-                                                            saturation:0.3
-                                                            brightness:0.3
-                                                                target:self
-                                                              selector:@"closeViewCon"
-                                                                   tag:0];
-        [viewFrame addSubview:btnConfirm];
-//        [self.view addSubview:btnConfirm];//位置修正が必要
-        
         
     }
     
@@ -306,6 +136,178 @@ NSArray *arrTypeImage;//ボタンアイコンタイプ
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    
+    
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.center = CGPointMake(self.view.bounds.size.width/2,
+                                           self.view.bounds.size.height/2);
+    [self.view addSubview:activityIndicator];
+    
+    //動画背景
+    background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
+                                          width:self.view.bounds.size.width
+                                         height:self.view.bounds.size.height
+                                           secs:5.0f];
+    
+    [self.view addSubview:[background getImageView1]];
+    [self.view addSubview:[background getImageView2]];
+    [self.view sendSubviewToBack:[background getImageView1]];
+    [self.view sendSubviewToBack:[background getImageView2]];
+    //        [self.view bringSubviewToFront:[background getImageView1]];
+    //        [self.view bringSubviewToFront:[background getImageView2]];
+    
+    
+    [background startAnimation];
+    
+    
+    
+    
+    //何もしないUIViewをaddする:他のコンポーネントをこの上に置く(閉じるアクションをつけたuiviewの上にaddすると他のコンポーネントに対するアクションにも閉じるアクションが適用されてしまう)
+    UIView *viewSuperInPay = [CreateComponentClass createViewNoFrame:self.view.bounds
+                                                               color:[UIColor clearColor]
+                                                                 tag:0
+                                                              target:Nil
+                                                            selector:nil];
+    [viewSuperInPay setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5]];
+    [self.view addSubview:viewSuperInPay];
+    
+    //その上に閉じるアクションをつけたuiviewをaddする(この上に他のコンポーネントを置いてはだめ)
+    //        UIView *viewSuper = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
+    //                                                                  rect:self.view.bounds
+    //                                                                 image:nil
+    //                                                                target:self
+    //                                                              selector:@"closeViewCon:"];//このviewControllerだけ閉じる
+    //        [viewSuper setBackgroundColor:[UIColor colorWithRed:0.0f green:0 blue:0 alpha:0.7f]];
+    //        [viewSuperInPay addSubview:viewSuper];
+    
+    
+    //画面中心にWIDTH_FRAME_SUPER X HEIGHT_FRAME_SUPERの枠を表示
+    UIView *viewFrame = [CreateComponentClass createView:CGRectMake(self.view.bounds.size.width/2 - WIDTH_FRAME_SUPER/2,
+                                                                    self.view.bounds.size.height/2 - HEIGHT_FRAME_SUPER/2,
+                                                                    WIDTH_FRAME_SUPER,
+                                                                    HEIGHT_FRAME_SUPER)];
+    [viewFrame setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];//どちらでも良い
+    //        [viewSuperInPay addSubview:viewFrame];//ここにviewFrameを乗っけるとボタンの反応がおかしい。
+    [self.view addSubview:viewFrame];
+    
+    
+    CGRect rectFrame;
+    CGRect rectButton;
+    UIView *eachFrame;
+    UIImageView *payButtonView;
+
+    UITextView *tvPrice;
+    int widthPrice = SIZE_BUTTON_PRODUCT*1.3/2;
+    int heightPrice = HEIGHT_FRAME_PRODUCT - SIZE_BUTTON_PRODUCT;//20
+    
+    //viewFrameに2x3行列のframeを置いて、更にそれぞれにbuttonを置く
+    int numOfRow = 2;
+    int numOfCol = 3;
+    NSArray *arrProductType = [NSArray arrayWithObjects:
+                               [NSArray arrayWithObjects:
+                                [NSNumber numberWithInt:ProductTypeCoin1],
+                                [NSNumber numberWithInt:ProductTypeCoin2],
+                                [NSNumber numberWithInt:ProductTypeCoin3],
+                                nil],
+                               [NSArray arrayWithObjects:
+                                [NSNumber numberWithInt:ProductTypeCoin4],
+                                [NSNumber numberWithInt:ProductTypeCoin5],
+                                [NSNumber numberWithInt:ProductTypeCoin6],
+                                nil],
+                               nil];
+    //price
+    arrPrice = [NSArray arrayWithObjects:
+                [NSArray arrayWithObjects:
+                 @"200",//yen
+                 @"500",
+                 @"1200",
+                 nil],
+                [NSArray arrayWithObjects:
+                 @"2500",
+                 @"4100",
+                 @"6300",
+                 nil],
+                nil];
+    
+    for(int row = 0;row < numOfRow ;row++){
+        for(int col = 0;col < numOfCol ; col++){
+            rectFrame = CGRectMake(MARGIN_FRAME_PRODUCT + col * (WIDTH_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
+                                   MARGIN_FRAME_PRODUCT + row * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT),
+                                   WIDTH_FRAME_PRODUCT, HEIGHT_FRAME_PRODUCT);
+            rectButton = CGRectMake(MARGIN_FRAME_PRODUCT/2, MARGIN_FRAME_PRODUCT/2,
+                                    SIZE_BUTTON_PRODUCT, SIZE_BUTTON_PRODUCT);
+            eachFrame = [CreateComponentClass createView:rectFrame];//ボタン周りの小さな枠
+            NSLog(@"button type %d, %d = %@",
+                  row, col, [[arrTypeImage objectAtIndex:row] objectAtIndex:col]);
+            payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+                                                         imageType:(ButtonMenuImageType)[[[arrTypeImage
+                                                                                           objectAtIndex:row]
+                                                                                          objectAtIndex:col]
+                                                                                         integerValue]
+                                                              rect:(CGRect)rectButton
+                                                            target:(id)self
+                                                          selector:(NSString *)@"pushedButton:"
+                                                               tag:[[[arrProductType objectAtIndex:row] objectAtIndex:col] intValue]];
+            [eachFrame addSubview:payButtonView];//各フレームに各ボタンに置く
+            
+            //yen-mark
+            viewYenImage = [CreateComponentClass createImageView:CGRectMake(MARGIN_FRAME_PRODUCT-10,
+                                                                            HEIGHT_FRAME_PRODUCT - heightPrice+5, 20, 20)
+                                                           image:@"yen_g.png"];
+            //                viewYenImage.center = CGPointMake(MARGIN_FRAME_PRODUCT, SIZE_BUTTON_PRODUCT + MARGIN_FRAME_PRODUCT*2);
+            [eachFrame addSubview:viewYenImage];
+            
+            //price
+            tvPrice = [CreateComponentClass createTextView:CGRectMake(SIZE_BUTTON_PRODUCT-widthPrice,
+                                                                      HEIGHT_FRAME_PRODUCT-heightPrice,//center-adoption
+                                                                      widthPrice,heightPrice)
+                                                      text:[[arrPrice objectAtIndex:row] objectAtIndex:col]
+                                                      font:@"AmericanTypewriter-Bold"
+                                                      size:13
+                                                 textColor:[UIColor whiteColor]
+                                                 backColor:[UIColor clearColor]//redColor]//
+                                                isEditable:NO];
+            tvPrice.textAlignment = NSTextAlignmentRight;
+            [eachFrame addSubview:tvPrice];
+            
+            [viewFrame addSubview:eachFrame];//各フレームをviewFrameに置く
+            
+        }
+    }
+    
+    //確認ボタン->閉じる(viewFrameの外を押しても閉じる)
+    int btHeight = 30;
+    int btWidth = 150;
+    //        UIImageView *btnConfirm = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+    //                                                               imageType:nil//(ButtonMenuImageType)ButtonMenuImageTypeCoin//test:仮
+    //                                                                    rect:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+    //                                                                                    numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
+    //                                                                                    btWidth, btHeight)
+    //                                                                  target:(id)self
+    //                                                                selector:@"closeViewCon"];
+    //        UIButton *btnConfirm = [[CoolButton alloc]initWithFrame:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+    //                                                                          numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
+    //                                                                           btWidth, btHeight)];
+    UIButton *btnConfirm = [CreateComponentClass createCoolButton:CGRectMake(WIDTH_FRAME_SUPER - btWidth - MARGIN_FRAME_PRODUCT,//右寄り
+                                                                             numOfRow * (HEIGHT_FRAME_PRODUCT + MARGIN_FRAME_PRODUCT) + MARGIN_FRAME_PRODUCT*3/2,//最下段フレームの下
+                                                                             btWidth, btHeight)
+                                                             text:@"confirm"
+                                                              hue:0.3
+                                                       saturation:0.3
+                                                       brightness:0.3
+                                                           target:self
+                                                         selector:@"closeViewCon"
+                                                              tag:0];
+    [viewFrame addSubview:btnConfirm];
+    //        [self.view addSubview:btnConfirm];//位置修正が必要
+    
+
+    
+    
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

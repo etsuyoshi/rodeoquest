@@ -220,6 +220,7 @@
 		348D635617FE14B000A3049B /* circle_2w_rSmall_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 348D635517FE14B000A3049B /* circle_2w_rSmall_128.png */; };
 		348D635E17FE1A1100A3049B /* cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 348D635D17FE1A1100A3049B /* cross.png */; };
 		348D636017FE1A9D00A3049B /* ribrary.png in Resources */ = {isa = PBXBuildFile; fileRef = 348D635F17FE1A9D00A3049B /* ribrary.png */; };
+		3493A03D1869A51A0079452C /* CoinProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493A03C1869A51A0079452C /* CoinProductViewController.m */; };
 		3498259D18143B240043B0C0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3498259C18143B240043B0C0 /* AVFoundation.framework */; };
 		349825A318144F750043B0C0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349825A218144F750043B0C0 /* AudioToolbox.framework */; };
 		349DA9F418695D4D008C9AE6 /* BarColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 349DA9F018695D4D008C9AE6 /* BarColor.png */; };
@@ -618,6 +619,8 @@
 		348D635517FE14B000A3049B /* circle_2w_rSmall_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_2w_rSmall_128.png; sourceTree = "<group>"; };
 		348D635D17FE1A1100A3049B /* cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross.png; sourceTree = "<group>"; };
 		348D635F17FE1A9D00A3049B /* ribrary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ribrary.png; sourceTree = "<group>"; };
+		3493A03B1869A51A0079452C /* CoinProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinProductViewController.h; sourceTree = "<group>"; };
+		3493A03C1869A51A0079452C /* CoinProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinProductViewController.m; sourceTree = "<group>"; };
 		3498259C18143B240043B0C0 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		349825A218144F750043B0C0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		349A7D9D184C586E006C2BD4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -1211,6 +1214,17 @@
 			name = ornament;
 			sourceTree = "<group>";
 		};
+		3493A03A1869A4F60079452C /* ProductViewController */ = {
+			isa = PBXGroup;
+			children = (
+				342A75D41856BA3800034E97 /* PayProductViewController.h */,
+				342A75D51856BA3800034E97 /* PayProductViewController.m */,
+				3493A03B1869A51A0079452C /* CoinProductViewController.h */,
+				3493A03C1869A51A0079452C /* CoinProductViewController.m */,
+			);
+			name = ProductViewController;
+			sourceTree = "<group>";
+		};
 		349DA9EF18695D30008C9AE6 /* close */ = {
 			isa = PBXGroup;
 			children = (
@@ -1492,6 +1506,7 @@
 		34F3007318218C350082DCBC /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3493A03A1869A4F60079452C /* ProductViewController */,
 				34BDCB761869421500C641AF /* InviteViaAppSocially */,
 				3419C07518604338009BF0D8 /* ListViewController */,
 				342057EC17F2B34C0084E99D /* InitViewController.h */,
@@ -1500,8 +1515,6 @@
 				34C16CCE181C2D9000650A40 /* TestViewController.m */,
 				34390EE11855E49100D02C54 /* PaymentTestViewController.h */,
 				34390EE21855E49100D02C54 /* PaymentTestViewController.m */,
-				342A75D41856BA3800034E97 /* PayProductViewController.h */,
-				342A75D51856BA3800034E97 /* PayProductViewController.m */,
 				342057F817F2B8810084E99D /* GameClassViewController.h */,
 				342057F917F2B8810084E99D /* GameClassViewController.m */,
 				344928B018025E6100315F2D /* MenuViewController.h */,
@@ -1906,6 +1919,7 @@
 				344DA1DB185309EA00B392A7 /* CoolButton.m in Sources */,
 				342A75D61856BA3800034E97 /* PayProductViewController.m in Sources */,
 				3424020117F6E8A100E06902 /* BeamClass.m in Sources */,
+				3493A03D1869A51A0079452C /* CoinProductViewController.m in Sources */,
 				34EB7ACE182F2E850079B0EB /* Effect.m in Sources */,
 				343D9706184F3A0C000239F4 /* MenuButtonWithView.m in Sources */,
 				34E976A2185AC18700B666B6 /* ViewFireWorks.m in Sources */,

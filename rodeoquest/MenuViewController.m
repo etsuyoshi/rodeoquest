@@ -8,7 +8,6 @@
 
 //#define TEST//TestViewController-transition
 
-#import <GameKit/GameKit.h>
 #import "DBAccessClass.h"
 #import "GADBannerView.h"
 #import "BGMClass.h"
@@ -26,8 +25,10 @@
 #import "InviteFriendsViewController.h"
 #import "AppSociallyInviteMainViewController.h"
 #import "PayProductViewController.h"
+#import "CoinProductViewController.h"
 #import "TestViewController.h"
 #import "AttrClass.h"
+#import <GameKit/GameKit.h>
 #import <QuartzCore/QuartzCore.h>
 
 //#define COMPONENT_00 0
@@ -1548,7 +1549,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
         case 101:{//set timer=> buy money
             NSLog(@"set timer event to code: not yet");
-            //no coding yet...
+            CoinProductViewController * coinView =
+            [[CoinProductViewController alloc] init];
+            [self presentViewController:coinView animated:YES completion:nil];
             
             break;
         }
