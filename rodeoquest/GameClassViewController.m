@@ -3007,6 +3007,10 @@ int sensitivity;
     //    NSLog(@"aaa");
     [UIView animateWithDuration:0.5f
                      animations:^{
+                         //add rotation
+                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+                         ivItemAcq.transform = transform;//...ok?
+                         
                          ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);//OBJECT_SIZE/2, -OBJECT_SIZE);
                          ivItemAcq.alpha = 0.0f;
                      }
