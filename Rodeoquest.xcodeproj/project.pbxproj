@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		340012F9186C3CDF00EE6E61 /* BuyCoin01.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F3186C3CDF00EE6E61 /* BuyCoin01.png */; };
+		340012FA186C3CDF00EE6E61 /* BuyCoin02.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F4186C3CDF00EE6E61 /* BuyCoin02.png */; };
+		340012FB186C3CDF00EE6E61 /* BuyCoin03.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F5186C3CDF00EE6E61 /* BuyCoin03.png */; };
+		340012FC186C3CDF00EE6E61 /* BuyCoin04.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F6186C3CDF00EE6E61 /* BuyCoin04.png */; };
+		340012FD186C3CDF00EE6E61 /* BuyCoin05.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F7186C3CDF00EE6E61 /* BuyCoin05.png */; };
+		340012FE186C3CDF00EE6E61 /* BuyCoin06.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F8186C3CDF00EE6E61 /* BuyCoin06.png */; };
 		3400396F17F408070093E07E /* EnemyClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3400396E17F408070093E07E /* EnemyClass.m */; };
 		340378F2186BECD9009306FB /* ViewKira.m in Sources */ = {isa = PBXBuildFile; fileRef = 340378F1186BECD9009306FB /* ViewKira.m */; };
 		34038C1F185181820011AE05 /* SwitchButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34038C1E185181820011AE05 /* SwitchButtonWithView.m */; };
@@ -359,6 +365,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		340012F3186C3CDF00EE6E61 /* BuyCoin01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin01.png; sourceTree = "<group>"; };
+		340012F4186C3CDF00EE6E61 /* BuyCoin02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin02.png; sourceTree = "<group>"; };
+		340012F5186C3CDF00EE6E61 /* BuyCoin03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin03.png; sourceTree = "<group>"; };
+		340012F6186C3CDF00EE6E61 /* BuyCoin04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin04.png; sourceTree = "<group>"; };
+		340012F7186C3CDF00EE6E61 /* BuyCoin05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin05.png; sourceTree = "<group>"; };
+		340012F8186C3CDF00EE6E61 /* BuyCoin06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin06.png; sourceTree = "<group>"; };
 		3400396D17F408070093E07E /* EnemyClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyClass.h; sourceTree = "<group>"; };
 		3400396E17F408070093E07E /* EnemyClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyClass.m; sourceTree = "<group>"; };
 		340378F0186BECD9009306FB /* ViewKira.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewKira.h; sourceTree = "<group>"; };
@@ -834,6 +846,12 @@
 		340D04F218597F9A001DD8EC /* button */ = {
 			isa = PBXGroup;
 			children = (
+				340012F3186C3CDF00EE6E61 /* BuyCoin01.png */,
+				340012F4186C3CDF00EE6E61 /* BuyCoin02.png */,
+				340012F5186C3CDF00EE6E61 /* BuyCoin03.png */,
+				340012F6186C3CDF00EE6E61 /* BuyCoin04.png */,
+				340012F7186C3CDF00EE6E61 /* BuyCoin05.png */,
+				340012F8186C3CDF00EE6E61 /* BuyCoin06.png */,
 				3462DA74186932F500CFDB14 /* apatite01.png */,
 				3462DA75186932F500CFDB14 /* apatite02.png */,
 				3462DA76186932F500CFDB14 /* apatite03.png */,
@@ -1645,6 +1663,7 @@
 				342057E617F2B34C0084E99D /* Default@2x.png in Resources */,
 				34D30EC2181EDB25006D05F0 /* WingBow.png in Resources */,
 				340C3B9318549DDD0017BBBE /* Cloth_.png in Resources */,
+				340012F9186C3CDF00EE6E61 /* BuyCoin01.png in Resources */,
 				34D55FD1183CA05400788533 /* bomb017.png in Resources */,
 				3462DA7F186932F500CFDB14 /* apatite06.png in Resources */,
 				343D9702184F3296000239F4 /* icon_gear_b.png in Resources */,
@@ -1739,6 +1758,8 @@
 				348C445C1866BC6F0029D09B /* BuyWeapon_BG.png in Resources */,
 				344052A0182BBC1A0049AE46 /* back_forest2.png in Resources */,
 				3411FB7F17FED1DF001D1491 /* powerGauge_pt13.png in Resources */,
+				340012FE186C3CDF00EE6E61 /* BuyCoin06.png in Resources */,
+				340012FA186C3CDF00EE6E61 /* BuyCoin02.png in Resources */,
 				34CA558618447A9B00F9657A /* laser_r02.png in Resources */,
 				348C443F18669C640029D09B /* re_FireBow.png in Resources */,
 				3411FB8017FED1DF001D1491 /* powerGauge_pt14.png in Resources */,
@@ -1762,6 +1783,7 @@
 				34EB7ACB182F28220079B0EB /* powerGauge2.png in Resources */,
 				3460F9521824FA2700951A99 /* defense_shield.png in Resources */,
 				34595736185E9484006BB4FB /* btn_g_on.png in Resources */,
+				340012FB186C3CDF00EE6E61 /* BuyCoin03.png in Resources */,
 				348C441D18669C300029D09B /* W_WingBow.png in Resources */,
 				34A087421803EBBD005458EF /* blue_item_yuri_big2.png in Resources */,
 				3422319F1845B5C400055ADF /* btn_g_on2.png in Resources */,
@@ -1773,6 +1795,7 @@
 				34E216C6181BF62F00B939E6 /* bgm_game_687.mp3 in Resources */,
 				34A087461803F017005458EF /* red.png in Resources */,
 				34A087481803F194005458EF /* coin2.png in Resources */,
+				340012FD186C3CDF00EE6E61 /* BuyCoin05.png in Resources */,
 				34A0874A180419CE005458EF /* white_128.png in Resources */,
 				348C441818669C300029D09B /* W_GrassBow.png in Resources */,
 				3413B9A01804FF6400D450FF /* black_128.png in Resources */,
@@ -1853,6 +1876,7 @@
 				34A8898018542ABA005667B4 /* 26.png in Resources */,
 				34A8897018542ABA005667B4 /* 10.png in Resources */,
 				344BD61D1815936B00387201 /* mob_musa_01.png in Resources */,
+				340012FC186C3CDF00EE6E61 /* BuyCoin04.png in Resources */,
 				348C443C18669C640029D09B /* re_AnimalBow.png in Resources */,
 				344BD61E1815936B00387201 /* mob_hari_02.png in Resources */,
 				344052A1182BBC1A0049AE46 /* tool_transparancy.png in Resources */,

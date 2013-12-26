@@ -22,14 +22,14 @@
         
         arrTypeImage = [NSArray arrayWithObjects:
                         [NSArray arrayWithObjects:
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeCoin],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeCoin],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeCoin],
+                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin0],
+                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin1],
+                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin2],
                          nil],
                         [NSArray arrayWithObjects:
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeCoin],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeCoin],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeCoin],
+                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin3],
+                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin4],
+                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin5],
                          nil],
                         nil];
     }

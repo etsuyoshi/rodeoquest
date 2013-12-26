@@ -3097,10 +3097,14 @@ int sensitivity;
         [self.view bringSubviewToFront:ivItemAcq];
     }else{//kiratypeWhite
         //沢山の小さなキラキラを表示
-        for(int i = 0; i < 5; i++){
-            UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];
-            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
-            ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
+        for(int i = 0; i < 10; i++){
+//            UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];
+//            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
+//            ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
+            ViewKira *ivItemAcq =
+            [[ViewKira alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)
+                                       type:_kiraType];
+            ivItemAcq.center = CGPointMake(x0, y0);
             
             ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
             

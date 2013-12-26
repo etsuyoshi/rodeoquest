@@ -236,6 +236,10 @@
                 imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
                 break;
             }
+            case ButtonMenuImageTypeBuyCoin0:{
+                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
+                break;
+            }
         }
 //    }else{
 //        switch (menuBtnType) {
