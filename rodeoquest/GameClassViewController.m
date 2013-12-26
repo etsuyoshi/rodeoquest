@@ -1716,10 +1716,15 @@ int sensitivity;
  *21-25sec:0.125secに一回=ほぼ毎回
  */
 -(void)yieldEnemy{
+    
+    if([EnemyArray count] > MAX_ENEMY_NUM - 10){
+        
+        return;
+    }
     Boolean isYield = false;
-    int difficulty = 0;//easy:0, 1, ... difficult
     
 #ifndef ENEMY_TEST//本番
+    int difficulty = 0;//easy:0, 1, ... difficult
     //最初の30秒？(総ゲーム時間の5分の4)は一定間隔：例えば10秒目から１５秒目は表示しない等の小休憩が必要
     //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
     //5秒間隔で非表示
@@ -1727,7 +1732,6 @@ int sensitivity;
         if(arc4random() % 100 == 0){//平均2秒に1回=100px程度の間隔
             difficulty = 0;
             isYield = true;
-            NSLog(@"isyield");//interval-check!
         }
     }else if(gameSecond < 22){//5秒間隔で非表示
         //nothing : isYield = false;
@@ -1747,28 +1751,29 @@ int sensitivity;
         //nothing : isYield = false;
     }else if(gameSecond < 80){//初級殺し
         if(arc4random() % 30 == 0){//平均0.3秒に1回出現
-            difficulty = 0;
+            difficulty = 2;
             isYield = true;
         }
     }else if(gameSecond < 81){
         //nothing : is...
     }else if(gameSecond < 100){
         if(arc4random() % 30 == 0){
-            difficulty = 1;
+            difficulty = 3;
             isYield = true;
         }
     }else if(gameSecond < 140){
         if(arc4random() % 30 == 0){
-            difficulty = 0;
+            difficulty = 4;
             isYield = true;
         }
     }else if(gameSecond < 200){
         if(arc4random() % 30 == 0){
-            difficulty = 2;
+            difficulty = 5;
             isYield = true;
         }
     }else{
-        if(true){
+        if(arc4random() % 30 == 0){
+            difficulty = 6;
             isYield = true;
         }
     }
@@ -1783,6 +1788,9 @@ int sensitivity;
     
 #endif
     if(isYield){
+        NSLog(@"gameSec = %f, difficulty = %d",gameSecond, difficulty);
+        
+        
         int occurredX = 0;
         EnemyType _enemyType = EnemyTypeTanu;
         
@@ -1794,70 +1802,82 @@ int sensitivity;
             //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
             //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * (OBJECT_SIZE - 7);
-            
-            
-            
-            //order of easily:tanu-musa-pen-hari-zou
-            int rnd = MAX(2, abs(arc4random()));//2以上の正数
-            //            NSLog(@"rnd = %d", rnd);
-            //            if(rnd < 0)[self exitProcess];//??
-            int countInterval = 5;//5秒(任意)間隔でモンスターの難易度ステージを変更していく
-            //            if(count * 1000 < 1){
-            //                _enemyType = 0;
-            //            }else if(count * 1000 < 2){
-            //                if(prob % 2 == 0){
-            //                    _enemyType = 0;
-            //                }else if(prob % 2 == 1){
-            //                    _enemyType = 1;
-            //                }
-            ////                _enemyType = eneCnt % 2;//order
-            //            }else if(count * 1000 < 3){...続く
-            //以下、上記と同義
-            for(int stageCount = 0;;stageCount++){//tanu-musa-pen-hari-zou
-                if(stageCount >= 5){//stageCountが5以上＝以下のelse if内のfor-_typeループのいずれにも該当しなかった場合
-                    //                    if((float)(arc4random() % stageCount) / stageCount){
-                    if(arc4random() % 3 <= 1){//75%
-                        if(difficulty < 2){
+            switch (difficulty) {
+                case 0:{
+                    //all:tanu
+                    _enemyType = EnemyTypeTanu;
+                    break;
+                }
+                case 1:{
+                    //tanu4,musa1
+                    if(arc4random()%5<4){//80%
+                        _enemyType = EnemyTypeTanu;
+                    }else{
+                        _enemyType = EnemyTypeMusa;
+                    }
+                    break;
+                }
+                case 2:{
+                    //tanu1,musa4
+                    if(arc4random()%5<4){
+                        _enemyType = EnemyTypeMusa;
+                    }else{
+                        _enemyType = EnemyTypeTanu;
+                    }
+                    break;
+                }
+                case 3:{
+                    //tanu6,musa2,hari2
+                    if(arc4random()%5<3){//60%
+                        _enemyType = EnemyTypeTanu;
+                    }else{
+                        if(arc4random()%2==0){//20%
+                            _enemyType = EnemyTypeMusa;
+                        }else{//20%
+                            _enemyType = EnemyTypeHari;
+                        }
+                    }
+
+                    break;
+                }
+                case 4:{
+                    //tanu3,musa3,hari4
+                    if(arc4random()%10<3){
+                        _enemyType = EnemyTypeTanu;
+                    }else{
+                        if(arc4random() % 7 < 3){
+                            _enemyType = EnemyTypeMusa;
+                        }else{
+                            _enemyType = EnemyTypeMusa;
+                        }
+                    }
+                    break;
+                }
+                case 5:{
+                    //tanu0,musa4,hari5,zou1
+                    if(arc4random() % 10 < 4){
+                        _enemyType = EnemyTypeMusa;
+                    }else{
+                        if(arc4random() % 6 < 5){
                             _enemyType = EnemyTypeHari;
                         }else{
                             _enemyType = EnemyTypeZou;
                         }
-                        
-                    }else{//pr.25% => hari & zou
-                        if(difficulty < 2){//only tanu-musa-pen
-                            _enemyType = MAX(arc4random() % 5, 3);//type:0,1のうちいずれか(針と象以外の上位敵)
-                        }else{//tanu-musa-pen-hari-zou
-                            _enemyType = MAX(arc4random() % 5, 2);//type:のうちいずれか(象以外の上位敵)
-                        }
-                    }
-                    break;
-                }else if(gameSecond >= stageCount * countInterval &&
-                         gameSecond < (stageCount+1) * countInterval){//countInterval * stageCount[sec]台の間
-                    
-                    if(stageCount == 0){
-                        _enemyType = 0;
-                        break;
-                    }else{
-                        //stageCount:0-4の間では以下ループの内部のif条件のいずれかに合致するはず。
-                        //                        NSLog(@"start t=%d", stageCount);
-                        int _type = -1;//初期状態
-                        for(_type = 0;_type < stageCount+1;_type++){//stageCount=1の時_type=0,1の両方をループ
-                            //                            NSLog(@"rnd=%d, t1=%d, t=%d", rnd, _type, stageCount);
-                            if(rnd % (stageCount+1) == _type){//stageCount=1の時は_type=0,1のいずれかに合致
-                                //                                NSLog(@"mod = %d", _type);
-                                _enemyType = _type;
-                                break;//for-_type
-                            }
-                        }
-                        
-                        //上記ループ内でbreakした場合(stageCount>=1で、かつ_type=0,1の場合)、_typeは初期値-1ではない
-                        if(_type >= 0){
-                            break;//for-stageCount
-                        }
                     }
                 }
+                case 6:{
+                    //tanu0,musa0,hari5,zou5
+                    if(arc4random() % 2 == 0){
+                        _enemyType = EnemyTypeHari;
+                    }else{
+                        _enemyType = EnemyTypeZou;
+                    }
+                }
+                default:{
+                    
+                    break;
+                }
             }
-            //            NSLog(@"enemyType = %d", _enemyType);
             
             
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
@@ -2126,7 +2146,8 @@ int sensitivity;
             cnt < (float)enemyDown/(float)enemyCount*100//倒した敵の数
             ;cnt++){
             
-            goldCnt = MIN(goldCnt += goldAdd, [GoldBoard getScore]);
+            goldCnt += goldAdd;
+            goldCnt = MIN(goldCnt, [GoldBoard getScore]);
             //時間のかかる処理
             //            NSLog(@"cnt = %d", cnt);
             for(int i = 0; i < 10;i++){
@@ -3007,15 +3028,24 @@ int sensitivity;
     //    NSLog(@"aaa");
     [UIView animateWithDuration:0.5f
                      animations:^{
-                         //add rotation
-                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
-                         ivItemAcq.transform = transform;//...ok?
-                         
                          ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);//OBJECT_SIZE/2, -OBJECT_SIZE);
-                         ivItemAcq.alpha = 0.0f;
                      }
                      completion:^(BOOL finished){
-                         [ivItemAcq removeFromSuperview];
+                         
+                         
+                         [UIView animateWithDuration:0.5f
+                                          animations:^{
+                                              ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);//OBJECT_SIZE/2, -OBJECT_SIZE);
+                                          }
+                                          completion:^(BOOL finished){
+                                              
+                                              //add rotation
+                                              CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
+                                              ivItemAcq.transform = transform;//...ok?
+                                              
+                                              ivItemAcq.alpha = 0.0f;
+                                              [ivItemAcq removeFromSuperview];
+                                          }];
                      }];
     
     //上記で設定したUIImageViewを配列格納

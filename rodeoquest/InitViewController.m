@@ -9,7 +9,7 @@
 //　同期通信の場合はサブスレッド立てるhttp://www.yoheim.net/blog.php?q=20130206
 
 
-#define NoConnectTEST
+//#define NoConnectTEST
 //#define TestView
 
 #ifdef TestView//PaymentTestでテストする場合、TestViewをオンにしたまま以下をコメントイン(コメントアウトを外す)
@@ -63,7 +63,7 @@ UIActivityIndicatorView *_indicator;
         if (localPlayer.isAuthenticated)
         {
             //do some stuff
-            NSLog(@" autherize complete" );
+            NSLog(@"autherize complete" );
         }
         else {
             NSLog(@"authenticating-error = %@", error);

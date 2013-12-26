@@ -722,6 +722,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
     NSString *hmsMenuLastOpen =
     [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
+    
+    NSLog(@"lifegame= %@", strLifeGame);
 
     if([strLifeGame isEqual:[NSNull null]] ||
        strLifeGame == nil ||
@@ -781,6 +783,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //        lifeGame = strLifeGame.integerValue;
     }
     if(lifeGame < maxLifeGame){
+        NSLog(@"lifegameInt=%d", lifeGame);
         tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
         if(secondForLife < maxSecondForLife){
             tv_timer.text = [self transformSecToMMSS:secondForLife];
@@ -792,6 +795,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
         tv_timer.text = @"MAX";
     }
     //上記により更新されたlifeGameとsecondForLifeを用いて、timeメソッド内でtv_timer, tv_lifegameに動的に反映
+    
+    NSLog(@"lifegame= %@", strLifeGame);
     
 }
 
@@ -925,7 +930,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-//            lifeGame = 6;//test:life
+            lifeGame = 6;//test:life
             if(lifeGame > 0){
             
                 lifeGame--;
