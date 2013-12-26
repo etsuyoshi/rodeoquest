@@ -86,6 +86,7 @@
 #import <AppSocially/AppSocially.h>
 #import "GameClassViewController.h"
 #import "ViewWithEffectLevelUp.h"
+#import "ViewKira.h"
 #import "BGMClass.h"
 #import "DBAccessClass.h"
 #import "AttrClass.h"
@@ -3020,13 +3021,46 @@ int sensitivity;
     
     int x0 = [MyMachine getImageView].center.x;
     int y0 = [MyMachine getImageView].center.y;
-    if(_itemType == ItemTypeRedGold){
+    KiraType _kiraType = KiraTypeYellow;
+    switch (_itemType) {
+        case ItemTypeYellowGold:{
+            _kiraType = KiraTypeYellow;
+            break;
+        }
+        case ItemTypeGreenGold:{
+            _kiraType = KiraTypeGreen;
+            break;
+        }
+        case ItemTypeBlueGold:{
+            _kiraType = KiraTypeBlue;
+            break;
+        }
+        case ItemTypePurpleGold:{
+            _kiraType = KiraTypePurple;
+            break;
+        }
+        case ItemTypeRedGold:{
+            _kiraType = KiraTypeRed;
+            break;
+        }
+        default:{
+            _kiraType = KiraTypeWhite;
+            break;
+        }
+    }
+    if(_itemType == ItemTypeRedGold ||
+       _itemType == ItemTypePurpleGold ||
+       _itemType == ItemTypeBlueGold ||
+       _itemType == ItemTypeGreenGold ||
+       _itemType == ItemTypeYellowGold){
         
-        UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE*3, OBJECT_SIZE*3)];
+//        UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE*3, OBJECT_SIZE*3)];
+        ViewKira *ivItemAcq = [[ViewKira alloc]
+                               initWithFrame:CGRectMake(0, 0, OBJECT_SIZE/2, OBJECT_SIZE/2)
+                               type:_kiraType];
         ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
-        ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
         
-        ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
+//        ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
         
         [UIView animateWithDuration:0.5f
                               delay:0.0
@@ -3061,7 +3095,7 @@ int sensitivity;
         //上記で設定したUIImageViewを配列格納
         [self.view addSubview:ivItemAcq];
         [self.view bringSubviewToFront:ivItemAcq];
-    }else{// if(_itemType == ItemTypeRedGold){
+    }else{//kiratypeWhite
         //沢山の小さなキラキラを表示
         for(int i = 0; i < 5; i++){
             UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];

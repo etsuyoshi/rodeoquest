@@ -136,6 +136,9 @@ int tempCount = 0;
     
     
 //#ifdef KIRA_TEST
+    
+    [self.view setBackgroundColor:[UIColor blueColor]];
+    
     ViewKira *_viewKira = [[ViewKira alloc] initWithFrame:CGRectMake(0, 0,50, 50)];//
 //                                                                     self.view.bounds.size.width,
 //                                                                     self.view.bounds.size.height)];

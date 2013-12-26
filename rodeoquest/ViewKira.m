@@ -9,14 +9,23 @@
 #import "ViewKira.h"
 
 @implementation ViewKira
-
+@synthesize kiraType;
 - (id)initWithFrame:(CGRect)frame
+{
+    self = [self initWithFrame:frame type:KiraTypeYellow];
+    if(self){
+        
+    }
+    return self;
+}
+
+-(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        
-        
+        self.backgroundColor = [UIColor clearColor];
+        kiraType = _kiraType;
     }
     return self;
 }
@@ -27,7 +36,6 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     
@@ -35,15 +43,61 @@
     
     CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
     //hotpink:(255, 105, 180)
+    //周囲の色は最後の色にセットされる
+    float fR = 0;
+    float fG = 0;
+    float fB = 0;
+//    http://lowlife.jp/yasusii/static/color_chart.html
+    switch (kiraType) {
+        case KiraTypeYellow:{//goldenrod1
+            fR = 255.0f;
+            fG = 193.0f;
+            fB = 37.0f;
+            break;
+        }
+        case KiraTypeGreen:{//LawnGreen
+            fR = 124.0f;
+            fG = 252.0f;
+            fB = 0.0f;
+            break;
+        }
+        case KiraTypeBlue:{//cyan1
+            fR = 0;
+            fG = 255.0f;
+            fB = 255.0f;
+            break;
+        }
+        case KiraTypePurple:{//magenta
+            fR = 255.0f;
+            fG = 0;
+            fB = 255.0f;
+            break;
+        }
+        case KiraTypeRed:{//hotpink
+            fR = 255.0f;
+            fG = 105.0f;
+            fB = 180.0f;
+            break;
+        }
+        case KiraTypeWhite:{//black?
+            fR = 0.0f;
+            fG = 0.0f;
+            fB = 0.0f;
+            break;
+        }
+        default:
+            break;
+    }
+    
     CGFloat components[] = {
-        255.0f/255.0f, 105.0f/255.0f, 180.0f/255.0f, 1.0f,//r,g,b,a
-        255.0f/255.0f, 105.0f/255.0f, 180.0f/255.0f, 0.5f,
-        0.0f, 0.0f, 0.0f, 0.0f,//clearcolor
+        fR/255.0f, fG/255.0f, fB/255.0f, 1.0f,//r,g,b,a
+        fR/255.0f, fG/255.0f, fB/255.0f, 0.5f,
+        fR/255.0f, fG/255.0f, fB/255.0f, 0.0f,//clearcolor
     };
-    //default:black-white
+    //default:white to black
 //    CGFloat components[] = {
 //        1.0f, 1.0f, 1.0f, 1.0f,//r,g,b,a
-//        0.5f, 0.5f, 0.5f, 1.0f,
+//        0.5f, 0.5f, 0.5f, 0.5f,
 //        0.25f, 0.25f, 0.25f, 0.0f,
 //    };
 
@@ -87,6 +141,7 @@
     _img.center = CGPointMake(self.bounds.size.width/2,
                               self.bounds.size.height/2);
     [self addSubview:_img];
+    
 }
 
 

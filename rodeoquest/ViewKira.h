@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewKira : UIView
 
+typedef NS_ENUM(NSInteger, KiraType) {//order with difficulty of get down
+    KiraTypeYellow,
+    KiraTypeGreen,
+    KiraTypeBlue,
+    KiraTypePurple,
+    KiraTypeRed,
+    KiraTypeWhite
+};
+
+
+@interface ViewKira : UIView
+@property(nonatomic) KiraType kiraType;
+-(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType;
 @end
