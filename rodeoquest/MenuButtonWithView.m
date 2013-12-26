@@ -237,7 +237,27 @@
                 break;
             }
             case ButtonMenuImageTypeBuyCoin0:{
-                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
+                imgAdd.image = [UIImage imageNamed:@"BuyCoin01.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyCoin1:{
+                imgAdd.image = [UIImage imageNamed:@"BuyCoin02.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyCoin2:{
+                imgAdd.image = [UIImage imageNamed:@"BuyCoin03.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyCoin3:{
+                imgAdd.image = [UIImage imageNamed:@"BuyCoin04.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyCoin4:{
+                imgAdd.image = [UIImage imageNamed:@"BuyCoin05.png"];
+                break;
+            }
+            case ButtonMenuImageTypeBuyCoin5:{
+                imgAdd.image = [UIImage imageNamed:@"BuyCoin06.png"];
                 break;
             }
         }
