@@ -1140,7 +1140,7 @@ int sensitivity;
                 //                }
                 flagItemTrigger = true;
                 
-                [self dispEffectItemAcq];
+                [self dispEffectItemAcq:[_item getType]];
                 
                 
                 //                NSLog(@"Item acquired");
@@ -3016,42 +3016,97 @@ int sensitivity;
 }
 
 
--(void)dispEffectItemAcq{
+-(void)dispEffectItemAcq:(ItemType)_itemType{
+    
     int x0 = [MyMachine getImageView].center.x;
     int y0 = [MyMachine getImageView].center.y;
-    UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE*5, OBJECT_SIZE*5)];
-    ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
-    ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
-    
-    ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
-    
-    //    NSLog(@"aaa");
-    [UIView animateWithDuration:0.5f
-                     animations:^{
-                         ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);//OBJECT_SIZE/2, -OBJECT_SIZE);
-                     }
-                     completion:^(BOOL finished){
-                         
-                         
-                         [UIView animateWithDuration:0.5f
-                                          animations:^{
-                                              ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);//OBJECT_SIZE/2, -OBJECT_SIZE);
-                                          }
-                                          completion:^(BOOL finished){
-                                              
-                                              //add rotation
-                                              CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
-                                              ivItemAcq.transform = transform;//...ok?
-                                              
-                                              ivItemAcq.alpha = 0.0f;
-                                              [ivItemAcq removeFromSuperview];
-                                          }];
-                     }];
-    
-    //上記で設定したUIImageViewを配列格納
-    [self.view addSubview:ivItemAcq];
-    [self.view bringSubviewToFront:ivItemAcq];
-    
+    if(_itemType == ItemTypeRedGold){
+        
+        UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE*3, OBJECT_SIZE*3)];
+        ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
+        ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
+        
+        ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
+        
+        [UIView animateWithDuration:0.5f
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^{
+                             ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE*4/5);//OBJECT_SIZE/2, -OBJECT_SIZE);
+                             ivItemAcq.alpha = 0.7f;
+                             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+                             ivItemAcq.transform = transform;//...ok?
+                         }
+                         completion:^(BOOL finished){
+                             
+                             if(finished){
+                                 [UIView animateWithDuration:0.5f
+                                                       delay:0.0
+                                                     options:UIViewAnimationOptionCurveLinear
+                                                  animations:^{
+                                                      //add rotation
+                                                      CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+                                                      ivItemAcq.transform = transform;//...ok?
+                                                      ivItemAcq.center = CGPointMake(x0, y0 - OBJECT_SIZE);
+                                                      ivItemAcq.alpha = 0.0f;
+                                                  }
+                                                  completion:^(BOOL finished){
+                                                      
+                                                      if(finished){
+                                                          [ivItemAcq removeFromSuperview];
+                                                      }
+                                                  }];
+                             }
+                         }];
+        //上記で設定したUIImageViewを配列格納
+        [self.view addSubview:ivItemAcq];
+        [self.view bringSubviewToFront:ivItemAcq];
+    }else{// if(_itemType == ItemTypeRedGold){
+        //沢山の小さなキラキラを表示
+        for(int i = 0; i < 5; i++){
+            UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];
+            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
+            ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
+            
+            ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
+            
+            [UIView animateWithDuration:0.5f
+                                  delay:0.0
+                                options:UIViewAnimationOptionCurveLinear
+                             animations:^{
+                                 ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
+                                                                y0 - OBJECT_SIZE*4/5+arc4random()%OBJECT_SIZE/2);
+                                 ivItemAcq.alpha = 0.7f;
+                                 CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+                                 ivItemAcq.transform = transform;//...ok?
+                             }
+                             completion:^(BOOL finished){
+                                 
+                                 if(finished){
+                                     [UIView animateWithDuration:0.5f
+                                                           delay:0.0
+                                                         options:UIViewAnimationOptionCurveLinear
+                                                      animations:^{
+                                                          //add rotation
+                                                          CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+                                                          ivItemAcq.transform = transform;//...ok?
+                                                          ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
+                                                                                         y0 - OBJECT_SIZE+arc4random()%OBJECT_SIZE/2);
+                                                          ivItemAcq.alpha = 0.0f;
+                                                      }
+                                                      completion:^(BOOL finished){
+                                                          
+                                                          if(finished){
+                                                              [ivItemAcq removeFromSuperview];
+                                                          }
+                                                      }];
+                                 }
+                             }];
+            //上記で設定したUIImageViewを配列格納
+            [self.view addSubview:ivItemAcq];
+            [self.view bringSubviewToFront:ivItemAcq];
+        }
+    }
 }
 
 -(void)oscillateBackgroundEffect{

@@ -12,7 +12,7 @@
 //#define MODE4
 
 //#define CATRANSACTION_TEST
-#define TEST_EFFECT
+//#define TEST_EFFECT
 //#define ORBITPATH_TEST
 //#define TRACK_TEST
 //#define EXPLOSTION_TEST
@@ -24,7 +24,9 @@
 //#define COOLBUTTON_TEST
 //#define SPECIALWEAPON_TEST
 //#define PARTICLE_TEST
+#define KIRA_Test
 
+#import "ViewKira.h"
 #import "ViewFireWorks.h"
 #import "KiraParticleView.h"
 #import "SpecialBeamClass.h"
@@ -130,6 +132,18 @@ int tempCount = 0;
     
     [uiv addGestureRecognizer:flick_frame];
     
+    
+    
+    
+//#ifdef KIRA_TEST
+    ViewKira *_viewKira = [[ViewKira alloc] initWithFrame:CGRectMake(0, 0,50, 50)];//
+//                                                                     self.view.bounds.size.width,
+//                                                                     self.view.bounds.size.height)];
+    _viewKira.center = CGPointMake(self.view.bounds.size.width/2,
+                                   self.view.bounds.size.height/2);
+    [self.view addSubview:_viewKira];
+    NSLog(@"viewkira.center = %f, %f", _viewKira.center.x, _viewKira.center.y);
+//#endif
     
 //    int diameter = 300;//直径
 //    CGPoint saveCenter = self.view.center;
@@ -876,6 +890,7 @@ int tempCount = 0;
 //        [array removeAllObjects];
     }
     
+
 #else
     NSLog(@"aaa");
     //nothing

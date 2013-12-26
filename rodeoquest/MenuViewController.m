@@ -718,12 +718,13 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     //以下の目的：secondForLifeとlifeGameの更新
     NSString *strLifeGame =
     [attr getValueFromDevice:@"lifeGame"];
+    lifeGame = strLifeGame.integerValue;
     NSString *ymdMenuLastOpen =
     [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
     NSString *hmsMenuLastOpen =
     [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
     
-    NSLog(@"lifegame= %@", strLifeGame);
+//    NSLog(@"lifegame= %@", strLifeGame);
 
     if([strLifeGame isEqual:[NSNull null]] ||
        strLifeGame == nil ||
@@ -777,6 +778,9 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                 secondForLife += (maxLifeGame - 5) * maxSecondForLife;
             }
             secondForLife = MIN(secondForLife, maxSecondForLife);
+            
+//            NSLog(@"lifeGame == %d", lifeGame);
+//            NSLog(@"secondForLife == %d", secondForLife);
         }else{//日付が違えば全回復
             lifeGame = maxLifeGame;
         }

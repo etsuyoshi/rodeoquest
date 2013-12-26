@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3400396F17F408070093E07E /* EnemyClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3400396E17F408070093E07E /* EnemyClass.m */; };
+		340378F2186BECD9009306FB /* ViewKira.m in Sources */ = {isa = PBXBuildFile; fileRef = 340378F1186BECD9009306FB /* ViewKira.m */; };
 		34038C1F185181820011AE05 /* SwitchButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34038C1E185181820011AE05 /* SwitchButtonWithView.m */; };
 		34043A5A17FA0FE50000E338 /* ExplodeParticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34043A5917FA0FE50000E338 /* ExplodeParticleView.m */; };
 		34043A5C17FA103C0000E338 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34043A5B17FA103C0000E338 /* QuartzCore.framework */; };
@@ -360,6 +361,8 @@
 /* Begin PBXFileReference section */
 		3400396D17F408070093E07E /* EnemyClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyClass.h; sourceTree = "<group>"; };
 		3400396E17F408070093E07E /* EnemyClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyClass.m; sourceTree = "<group>"; };
+		340378F0186BECD9009306FB /* ViewKira.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewKira.h; sourceTree = "<group>"; };
+		340378F1186BECD9009306FB /* ViewKira.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewKira.m; sourceTree = "<group>"; };
 		34038C1D185181820011AE05 /* SwitchButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchButtonWithView.h; sourceTree = "<group>"; };
 		34038C1E185181820011AE05 /* SwitchButtonWithView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchButtonWithView.m; sourceTree = "<group>"; };
 		34043A5817FA0FE50000E338 /* ExplodeParticleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExplodeParticleView.h; sourceTree = "<group>"; };
@@ -1499,6 +1502,8 @@
 				34F3006E182162660082DCBC /* KiraParticleView.m */,
 				34EB7ACC182F2E850079B0EB /* Effect.h */,
 				34EB7ACD182F2E850079B0EB /* Effect.m */,
+				340378F0186BECD9009306FB /* ViewKira.h */,
+				340378F1186BECD9009306FB /* ViewKira.m */,
 			);
 			name = Particle;
 			sourceTree = "<group>";
@@ -1955,6 +1960,7 @@
 				34A6A1A3180EF48F006F26D6 /* ItemListViewController.m in Sources */,
 				3436369C180FDA8B005A5C01 /* FontTestViewController.m in Sources */,
 				347D276818167FA000498F68 /* BGMClass.m in Sources */,
+				340378F2186BECD9009306FB /* ViewKira.m in Sources */,
 				34BD6DCC18194683006BC523 /* InviteFriendsViewController.m in Sources */,
 				34C16CCF181C2D9000650A40 /* TestViewController.m in Sources */,
 			);
