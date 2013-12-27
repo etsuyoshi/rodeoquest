@@ -934,7 +934,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-            lifeGame = 6;//test:life
+//            lifeGame = 6;//test:life
             if(lifeGame > 0){
             
                 lifeGame--;

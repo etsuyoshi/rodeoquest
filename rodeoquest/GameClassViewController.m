@@ -276,7 +276,7 @@ int sensitivity;
 //    NSLog(@"background=%d", BackGround == nil);//1
 //    NSLog(@"background=%d", [BackGround isEqual:[NSNull null]]);//0
     
-//    [self setBackGroundInit];//defined at viewDidLoad called before viewwillappear
+    [self setBackGroundInit];//defined at viewDidLoad called before viewwillappear
     
     //次に描画するため
     //http://stackoverflow.com/questions/4175729/run-animation-every-time-app-is-opened
@@ -838,13 +838,14 @@ int sensitivity;
     //アイテムの進行=[アイテム自体の移動 & 生成したパーティクルの時間経過:寿命判定は別途]
     for(int i = 0 ; i< [ItemArray count]; i ++){
         if([[ItemArray objectAtIndex:i] getIsAlive]){
-            if([(ItemClass *)[ItemArray objectAtIndex:i] doNext]){//移動とパーティクル発生判定：同時実行
+            [(ItemClass *)[ItemArray objectAtIndex:i] doNext];
+//            if([(ItemClass *)[ItemArray objectAtIndex:i] doNext]){//移動とパーティクル発生判定：同時実行
                 //                NSLog(@"create particle");
                 //動線上パーティクルの格納と表示
                 //                [self.view addSubview:[[ItemArray objectAtIndex:i] getMovingParticle:0]] ;//生成したparticleは自動消滅
                 //                [KiraArray insertObject:[((ItemClass*)[ItemArray objectAtIndex:i]) getMovingParticle:0] atIndex:0];
                 //                [self.view addSubview:[KiraArray objectAtIndex:0]];
-            }
+//            }
             //            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
             
             //確認用
@@ -880,7 +881,7 @@ int sensitivity;
                         if(animationKeyFrame){
                             //途中で終わらずにアニメーションが全て完了して
                             //            [self die];
-                            //                            NSLog(@"animation key frame already exit & die");
+                            NSLog(@"animation key frame already exit & die");
                         }else{
                             //途中で何らかの理由で遮られた場合
                             //                            NSLog(@"animation key frame not exit");
@@ -895,7 +896,7 @@ int sensitivity;
                         animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
                         animation.fillMode = kCAFillModeForwards;
                         animation.removedOnCompletion = NO;
-                        animation.duration = 0.1f;
+                        animation.duration = 0.15f;
                         
                         // 放物線のパスを生成
                         //    CGFloat jumpHeight = kStartPos.y * 0.2;
@@ -3102,7 +3103,7 @@ int sensitivity;
 //            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
 //            ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
             ViewKira *ivItemAcq =
-            [[ViewKira alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)
+            [[ViewKira alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE/5, OBJECT_SIZE/5)
                                        type:_kiraType];
             ivItemAcq.center = CGPointMake(x0, y0);
             
