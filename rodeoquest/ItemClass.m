@@ -28,10 +28,7 @@ int numCell;
     }
     
 //    arrayLoc = [[NSMutableArray alloc]init];
-    arrayLoc = [NSMutableArray arrayWithObjects:
-                [NSValue valueWithCGPoint:CGPointMake(0.0f, 0.0f)],
-                [NSValue valueWithCGPoint:CGPointMake(0.0f, 0.0f)],
-                nil];
+
     
     //polymophysm
     return [self init:type x_init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h];
@@ -46,6 +43,10 @@ int numCell;
     isAlive = true;
     arrayViewKira = [[NSMutableArray alloc]init];
     numCell = 10;
+    arrayLoc = [NSMutableArray arrayWithObjects:
+                [NSValue valueWithCGPoint:CGPointMake(99.0f, 99.0f)],
+                [NSValue valueWithCGPoint:CGPointMake(99.0f, 99.0f)],
+                nil];
     arrayUIImageKira = [[NSArray alloc] initWithObjects:
        [UIImage imageNamed:@"img03.png"],
        [UIImage imageNamed:@"img04.png"],
@@ -490,33 +491,44 @@ int numCell;
         isOccurringParticle = true;
         
         
-        //時系列の位置を格納
-        [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
-                                                                     mLayer.position.y)]
-                       atIndex:0];
         
-        NSLog(@"xlay=%f, %f, ylay=%f, %f",
-              mLayer.position.x,
-              [[arrayLoc objectAtIndex:0] CGPointValue].x,
-              mLayer.position.y,
-              [[arrayLoc objectAtIndex:0] CGPointValue].y);
-        
-        if(lifetime_count > 10 &&
-           [[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
+    
+    }
+    
+//    NSLog(@"count=%d", lifetime_count);
+    
+    
+    /*
+     *<バグ対策>
+     *【具体的事象】
+     *スイープモード(sm)でアイテムを引寄せた後、自機位置変更と同時にsm終了により、
+     *アイテムが元の自機位置に停止したまま消去されないことがある
+     *【対策】
+     *各アイテムでアニメーション中の時系列位置を記憶し、同じ位置に留まっていれば上記事象が発生したと判断し、
+     *当該アイテムを消去([self die])する
+     *参考：smにおけるアニメーション時の終了時処理として扱うことは困難である(アイテムに対するインデックス指定が難しいため)。
+     */
+    //時系列の位置を格納
+    [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
+                                                                 mLayer.position.y)]
+                   atIndex:0];
+    
+    if(lifetime_count > 10){
+        if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
            [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
-            NSLog(@"x=%f, y=%f",
-                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
-                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
+//            NSLog(@"remove item at x=%f, y=%f",
+//                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
+//                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
             [self die];
+            [iv removeFromSuperview];
             return isOccurringParticle;
         }else{
             
         }
         [arrayLoc removeLastObject];
-    
     }
     
-//    NSLog(@"count=%d", lifetime_count);
+    
     
     lifetime_count ++;
     

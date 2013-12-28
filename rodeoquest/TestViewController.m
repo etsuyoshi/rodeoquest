@@ -136,6 +136,10 @@ int tempCount = 0;
     NSMutableArray *ar = [NSMutableArray arrayWithObjects:
 //                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
                            nil];
+    NSLog(@"first log");
+    
+    [ar insertObject:[NSValue valueWithCGPoint:CGPointMake(99, 99)] atIndex:0];
+    NSLog(@"first log = %f", [[ar objectAtIndex:0] CGPointValue].x);
     
     for(int i = 0; i < 10;i++){
 //        [ar addObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)]];
