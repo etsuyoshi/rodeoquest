@@ -133,7 +133,20 @@ int tempCount = 0;
     [uiv addGestureRecognizer:flick_frame];
     
     
-    
+    NSMutableArray *ar = [NSMutableArray arrayWithObjects:
+                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
+                           nil];
+    for(int i = 0; i < [ar count];i++){
+        NSLog(@"%d", [ar count]);
+        NSLog(@"%@", [NSValue valueWithCGPoint:CGPointMake(i, 100)]);
+        [ar addObject:[NSValue valueWithCGPoint:CGPointMake(i, 100)]];
+    }
+    for(int i  = 0; i < [ar count] ;i++){
+        NSLog(@"x=%f,y=%f",
+              [[ar objectAtIndex:i] CGPointValue].x,
+              [[ar objectAtIndex:i] CGPointValue].y);
+    }
+    NSLog(@"");
     
 //#ifdef KIRA_TEST
     
@@ -895,7 +908,7 @@ int tempCount = 0;
     
 
 #else
-    NSLog(@"aaa");
+//    NSLog(@"aaa");
     //nothing
 #endif
     

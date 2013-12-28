@@ -14,6 +14,7 @@
 
 @synthesize type;
 NSArray *arrayUIImageKira;//UIImage-array
+NSMutableArray *arrayLoc;//同じ位置にあるアイテムを削除する
 CGRect rectKira;
 int numCell;
 
@@ -26,7 +27,11 @@ int numCell;
         type = arc4random() % 16;
     }
     
-    
+//    arrayLoc = [[NSMutableArray alloc]init];
+    arrayLoc = [NSMutableArray arrayWithObjects:
+                [NSValue valueWithCGPoint:CGPointMake(0.0f, 0.0f)],
+                [NSValue valueWithCGPoint:CGPointMake(0.0f, 0.0f)],
+                nil];
     
     //polymophysm
     return [self init:type x_init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h];
@@ -483,6 +488,31 @@ int numCell;
 //        [kiraMovingArray insertObject:movingParticle atIndex:0];//FIFO
         [self drawKira];
         isOccurringParticle = true;
+        
+        
+        //時系列の位置を格納
+        [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
+                                                                     mLayer.position.y)]
+                       atIndex:0];
+        
+        NSLog(@"xlay=%f, %f, ylay=%f, %f",
+              mLayer.position.x,
+              [[arrayLoc objectAtIndex:0] CGPointValue].x,
+              mLayer.position.y,
+              [[arrayLoc objectAtIndex:0] CGPointValue].y);
+        
+        if(lifetime_count > 10 &&
+           [[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
+           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
+            NSLog(@"x=%f, y=%f",
+                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
+                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
+            [self die];
+            return isOccurringParticle;
+        }else{
+            
+        }
+        [arrayLoc removeLastObject];
     
     }
     

@@ -881,7 +881,10 @@ int sensitivity;
                         if(animationKeyFrame){
                             //途中で終わらずにアニメーションが全て完了して
                             //            [self die];
-                            NSLog(@"animation key frame already exit & die");
+                            //NSLog(@"animation key frame already exit & die");
+                            
+                            //スイープモードが終わって射程圏内に入ったアイテムを削除したいが、
+                            //ここでのindex:iはスイープモードになっているインデックスとはならない。
                         }else{
                             //途中で何らかの理由で遮られた場合
                             //                            NSLog(@"animation key frame not exit");
@@ -1093,21 +1096,6 @@ int sensitivity;
             
             //test
             _item = [ItemArray objectAtIndex:i];
-            //        }//if([[ItemArray objectAtIndex:i] getIsAlive]){
-            //    }//for(int i = 0 ; i< [ItemArray count]; i ++){
-            //
-            ////    NSLog(@"敵機配列");
-            //    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-            //    //_/_/_/_/表示_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-            //    //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-            //
-            //
-            //    //アイテム取得判定：前倒しに取得させる
-            //    for(int itemCount = 0; itemCount < [ItemArray count] ; itemCount++){
-            //        _item = [ItemArray objectAtIndex:itemCount];
-            
-            //        if([_item getIsAlive]){//アイテムの獲得判定
-            
             _xItem = [_item getX];
             _yItem = [_item getY];
             //            NSLog(@"y=%d", _yItem);
@@ -1731,7 +1719,7 @@ int sensitivity;
     //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
     //5秒間隔で非表示
     if(gameSecond < 20){//20秒未満なら
-        if(arc4random() % 100 == 0){//平均2秒に1回=100px程度の間隔
+        if(arc4random() % 10 == 0){//平均2秒に1回=100px程度の間隔
             difficulty = 0;
             isYield = true;
         }
@@ -1790,7 +1778,7 @@ int sensitivity;
     
 #endif
     if(isYield){
-        NSLog(@"gameSec = %f, difficulty = %d",gameSecond, difficulty);
+//        NSLog(@"gameSec = %f, difficulty = %d",gameSecond, difficulty);
         
         
         int occurredX = 0;
@@ -3116,7 +3104,7 @@ int sensitivity;
                                  ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
                                                                 y0 - OBJECT_SIZE*4/5+arc4random()%OBJECT_SIZE/2);
                                  ivItemAcq.alpha = 0.7f;
-                                 CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+                                 CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
                                  ivItemAcq.transform = transform;//...ok?
                              }
                              completion:^(BOOL finished){
