@@ -14,6 +14,11 @@
 		340012FD186C3CDF00EE6E61 /* BuyCoin05.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F7186C3CDF00EE6E61 /* BuyCoin05.png */; };
 		340012FE186C3CDF00EE6E61 /* BuyCoin06.png in Resources */ = {isa = PBXBuildFile; fileRef = 340012F8186C3CDF00EE6E61 /* BuyCoin06.png */; };
 		3400396F17F408070093E07E /* EnemyClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3400396E17F408070093E07E /* EnemyClass.m */; };
+		34008FB4186EB4B500988C70 /* backback_desert.png in Resources */ = {isa = PBXBuildFile; fileRef = 34008FAF186EB4B500988C70 /* backback_desert.png */; };
+		34008FB5186EB4B500988C70 /* backback_forest2.png in Resources */ = {isa = PBXBuildFile; fileRef = 34008FB0186EB4B500988C70 /* backback_forest2.png */; };
+		34008FB6186EB4B500988C70 /* backback_nangoku.png in Resources */ = {isa = PBXBuildFile; fileRef = 34008FB1186EB4B500988C70 /* backback_nangoku.png */; };
+		34008FB7186EB4B500988C70 /* backback_snow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34008FB2186EB4B500988C70 /* backback_snow.png */; };
+		34008FB8186EB4B500988C70 /* backback_univ.png in Resources */ = {isa = PBXBuildFile; fileRef = 34008FB3186EB4B500988C70 /* backback_univ.png */; };
 		340378F2186BECD9009306FB /* ViewKira.m in Sources */ = {isa = PBXBuildFile; fileRef = 340378F1186BECD9009306FB /* ViewKira.m */; };
 		34038C1F185181820011AE05 /* SwitchButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34038C1E185181820011AE05 /* SwitchButtonWithView.m */; };
 		34043A5A17FA0FE50000E338 /* ExplodeParticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34043A5917FA0FE50000E338 /* ExplodeParticleView.m */; };
@@ -373,6 +378,11 @@
 		340012F8186C3CDF00EE6E61 /* BuyCoin06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyCoin06.png; sourceTree = "<group>"; };
 		3400396D17F408070093E07E /* EnemyClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyClass.h; sourceTree = "<group>"; };
 		3400396E17F408070093E07E /* EnemyClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyClass.m; sourceTree = "<group>"; };
+		34008FAF186EB4B500988C70 /* backback_desert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backback_desert.png; sourceTree = "<group>"; };
+		34008FB0186EB4B500988C70 /* backback_forest2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backback_forest2.png; sourceTree = "<group>"; };
+		34008FB1186EB4B500988C70 /* backback_nangoku.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backback_nangoku.png; sourceTree = "<group>"; };
+		34008FB2186EB4B500988C70 /* backback_snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backback_snow.png; sourceTree = "<group>"; };
+		34008FB3186EB4B500988C70 /* backback_univ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backback_univ.png; sourceTree = "<group>"; };
 		340378F0186BECD9009306FB /* ViewKira.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewKira.h; sourceTree = "<group>"; };
 		340378F1186BECD9009306FB /* ViewKira.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewKira.m; sourceTree = "<group>"; };
 		34038C1D185181820011AE05 /* SwitchButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchButtonWithView.h; sourceTree = "<group>"; };
@@ -825,6 +835,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34008FAD186EB2F000988C70 /* backOfBack */ = {
+			isa = PBXGroup;
+			children = (
+				34008FAF186EB4B500988C70 /* backback_desert.png */,
+				34008FB0186EB4B500988C70 /* backback_forest2.png */,
+				34008FB1186EB4B500988C70 /* backback_nangoku.png */,
+				34008FB2186EB4B500988C70 /* backback_snow.png */,
+				34008FB3186EB4B500988C70 /* backback_univ.png */,
+			);
+			name = backOfBack;
+			sourceTree = "<group>";
+		};
+		34008FAE186EB2FE00988C70 /* backOfFront */ = {
+			isa = PBXGroup;
+			children = (
+				34405298182BBC1A0049AE46 /* back_forest2.png */,
+				348AD7EE180ACD52007226EC /* back_desert.png */,
+				348AD7F0180ACD52007226EC /* back_nangoku.png */,
+				348AD7F1180ACD52007226EC /* back_snow.png */,
+				348AD7F2180ACD52007226EC /* back_univ.png */,
+				34FA1A15180B95BD0011E1CA /* back_univ2.png */,
+				3411FB8917FF2D06001D1491 /* cosmos_star4_repair.png */,
+			);
+			name = backOfFront;
+			sourceTree = "<group>";
+		};
 		340C3B8518549DCB0017BBBE /* special */ = {
 			isa = PBXGroup;
 			children = (
@@ -1436,13 +1472,8 @@
 		34E216C3181BE93A00B939E6 /* background */ = {
 			isa = PBXGroup;
 			children = (
-				34405298182BBC1A0049AE46 /* back_forest2.png */,
-				348AD7EE180ACD52007226EC /* back_desert.png */,
-				348AD7F0180ACD52007226EC /* back_nangoku.png */,
-				348AD7F1180ACD52007226EC /* back_snow.png */,
-				348AD7F2180ACD52007226EC /* back_univ.png */,
-				34FA1A15180B95BD0011E1CA /* back_univ2.png */,
-				3411FB8917FF2D06001D1491 /* cosmos_star4_repair.png */,
+				34008FAE186EB2FE00988C70 /* backOfFront */,
+				34008FAD186EB2F000988C70 /* backOfBack */,
 			);
 			name = background;
 			sourceTree = "<group>";
@@ -1727,6 +1758,7 @@
 				3440529C182BBC1A0049AE46 /* coin_yellow.png in Resources */,
 				34F53376181BBEDC00FB9470 /* bgm_menu_683.mp3 in Resources */,
 				348D635E17FE1A1100A3049B /* cross.png in Resources */,
+				34008FB4186EB4B500988C70 /* backback_desert.png in Resources */,
 				348D636017FE1A9D00A3049B /* ribrary.png in Resources */,
 				348C441418669C300029D09B /* W_AnimalBow.png in Resources */,
 				3411FB7217FED1DF001D1491 /* powerGauge_pt0.png in Resources */,
@@ -1754,6 +1786,7 @@
 				3411FB7C17FED1DF001D1491 /* powerGauge_pt10.png in Resources */,
 				3460F9511824FA2700951A99 /* defense_barrier.png in Resources */,
 				3411FB7D17FED1DF001D1491 /* powerGauge_pt11.png in Resources */,
+				34008FB8186EB4B500988C70 /* backback_univ.png in Resources */,
 				3411FB7E17FED1DF001D1491 /* powerGauge_pt12.png in Resources */,
 				348C445C1866BC6F0029D09B /* BuyWeapon_BG.png in Resources */,
 				344052A0182BBC1A0049AE46 /* back_forest2.png in Resources */,
@@ -1765,6 +1798,7 @@
 				3411FB8017FED1DF001D1491 /* powerGauge_pt14.png in Resources */,
 				34FD2822185094B900C751FC /* up_red.png in Resources */,
 				3411FB8117FED1DF001D1491 /* powerGauge_pt15.png in Resources */,
+				34008FB6186EB4B500988C70 /* backback_nangoku.png in Resources */,
 				3411FB8617FEF392001D1491 /* mechanical_design_3.png in Resources */,
 				34F30068182161A30082DCBC /* kira2.png in Resources */,
 				3462DA7D186932F500CFDB14 /* apatite04.png in Resources */,
@@ -1819,6 +1853,7 @@
 				340C3B9418549DDD0017BBBE /* Cloth.png in Resources */,
 				348AD7F5180ACD52007226EC /* back_nangoku.png in Resources */,
 				3488ACCA183D272F00833F93 /* img09.png in Resources */,
+				34008FB5186EB4B500988C70 /* backback_forest2.png in Resources */,
 				344DA253184CB6A6004F71EE /* README.txt in Resources */,
 				341D9C68182DE67E009B904E /* smoke.png in Resources */,
 				348C441618669C300029D09B /* W_ClothBow.png in Resources */,
@@ -1836,6 +1871,7 @@
 				348C442E18669C500029D09B /* NH_RockBow.png in Resources */,
 				34FA1A2E180BBD540011E1CA /* coin001_32.png in Resources */,
 				34FA1A34180BDAA80011E1CA /* player.png in Resources */,
+				34008FB7186EB4B500988C70 /* backback_snow.png in Resources */,
 				348C442B18669C500029D09B /* NH_FireBow.png in Resources */,
 				34FA1A35180BDAA80011E1CA /* player2.png in Resources */,
 				34A8897618542ABA005667B4 /* 16.png in Resources */,

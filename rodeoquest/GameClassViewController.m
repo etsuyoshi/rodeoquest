@@ -233,7 +233,7 @@ int sensitivity;
     worldType = arc4random() % WorldTypeCount;
     switch (worldType) {
         case WorldTypeForest:{
-            [self.view setBackgroundColor:[UIColor greenColor]];
+//            [self.view setBackgroundColor:[UIColor greenColor]];
             break;
         }
         case WorldTypeUniverse1:{
