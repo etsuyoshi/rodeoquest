@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, ItemType) {
 //    NSMutableArray *kiraMovingArray;//FIFO=>取り出す時に分かりやすいようにfromコントローラ
     
     NSMutableArray *arrayViewKira;
+    NSMutableArray *arrayLoc;//同じ位置にあるアイテムを削除する
     UIImageView *ivKira;
     int countKira;
     

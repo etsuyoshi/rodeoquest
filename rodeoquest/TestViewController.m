@@ -134,19 +134,18 @@ int tempCount = 0;
     
     
     NSMutableArray *ar = [NSMutableArray arrayWithObjects:
-                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
+//                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
                            nil];
-    for(int i = 0; i < [ar count];i++){
-        NSLog(@"%d", [ar count]);
-        NSLog(@"%@", [NSValue valueWithCGPoint:CGPointMake(i, 100)]);
-        [ar addObject:[NSValue valueWithCGPoint:CGPointMake(i, 100)]];
+    
+    for(int i = 0; i < 10;i++){
+//        [ar addObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)]];
+        [ar insertObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)] atIndex:0];
     }
     for(int i  = 0; i < [ar count] ;i++){
         NSLog(@"x=%f,y=%f",
               [[ar objectAtIndex:i] CGPointValue].x,
               [[ar objectAtIndex:i] CGPointValue].y);
     }
-    NSLog(@"");
     
 //#ifdef KIRA_TEST
     

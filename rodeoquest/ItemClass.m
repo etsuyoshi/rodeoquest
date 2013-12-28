@@ -14,7 +14,7 @@
 
 @synthesize type;
 NSArray *arrayUIImageKira;//UIImage-array
-NSMutableArray *arrayLoc;//同じ位置にあるアイテムを削除する
+
 CGRect rectKira;
 int numCell;
 
