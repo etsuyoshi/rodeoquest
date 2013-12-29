@@ -88,6 +88,7 @@ UIView *viewDialog;
     
     //remove cashView defined in superclass
     [cashView removeFromSuperview];
+    cashView = nil;
     cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
                                                                    cashFrameInitY,
                                                                    cashFrameWidth,
@@ -99,22 +100,31 @@ UIView *viewDialog;
     [self.view addSubview:cashView];
     
     //ruby image
-    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
-                                                                       cashFrameInitY + 14, 23, 23)];
+    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
+                                                                       14, 23, 23)];
     cashIV.image = [UIImage imageNamed:@"jewel.png"];
-    [self.view addSubview:cashIV];
+    [cashView addSubview:cashIV];
     
     //ruby numeric
-    CGRect rectRubyAmount = CGRectMake(cashFrameInitX + 50,
-                                       cashFrameInitY + 10,
+    CGRect rectRubyAmount = CGRectMake(50,
+                                       10,
                                        150, 32);
-    lblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
-    [lblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
-    lblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
-    lblRubyAmount.textColor = [UIColor whiteColor];
-    lblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
-    [self.view addSubview:lblRubyAmount];
+    myLblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
+    [myLblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
+    myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
+    myLblRubyAmount.textColor = [UIColor whiteColor];
+    myLblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
+    [cashView addSubview:myLblRubyAmount];
     
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    myLblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
+    [self.view bringSubviewToFront:cashView];
+    
+    NSLog(@"view will appear at coinProduct at ruby:%@", myLblRubyAmount.text);
 }
 
 - (void)didReceiveMemoryWarning

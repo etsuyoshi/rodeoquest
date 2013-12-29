@@ -179,34 +179,40 @@ NSArray *arrProductId;
     int cashFrameInitX = 145;
     int cashFrameInitY = 40;
     
-    //remove cashView defined in superclass
-    [cashView removeFromSuperview];
+    
+    if(cashView != nil){//if extends from subclass (no possible?)
+        [cashView removeFromSuperview];
+    }
     cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
                                                            cashFrameInitY,
                                                            cashFrameWidth,
                                                            cashFrameHeight)];
-    UITapGestureRecognizer *singleFingerTap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(pushedMoneyFrame:)];
-    [cashView addGestureRecognizer:singleFingerTap];
+//    UITapGestureRecognizer *singleFingerTap =
+//    [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                            action:@selector(pushedMoneyFrame:)];
+//    [cashView addGestureRecognizer:singleFingerTap];
     [self.view addSubview:cashView];
     
     //ruby image
-    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
-                                                                       cashFrameInitY + 14, 23, 23)];
-    cashIV.image = [UIImage imageNamed:strImgUnit];
-    [self.view addSubview:cashIV];
+    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
+                                                                       14, 23, 23)];
+    cashIV.image = [UIImage imageNamed:@"jewel"];
+    [cashView addSubview:cashIV];
     
     //ruby numeric
-    CGRect rectRubyAmount = CGRectMake(cashFrameInitX + 50,
-                                       cashFrameInitY + 10,
+//    CGRect rectRubyAmount = CGRectMake(cashFrameInitX + 50,
+//                                       cashFrameInitY + 10,
+//                                       150, 32);
+    CGRect rectRubyAmount = CGRectMake(50,
+                                       10,
                                        150, 32);
+
     lblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
     [lblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
     lblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     lblRubyAmount.textColor = [UIColor whiteColor];
     lblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
-    [self.view addSubview:lblRubyAmount];
+    [cashView addSubview:lblRubyAmount];
     
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -363,6 +369,9 @@ NSArray *arrProductId;
     
     //rubyの更新
     lblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
+    [self.view bringSubviewToFront:cashView];
+    
+    NSLog(@"view will appear at payProduct at ruby:%@", lblRubyAmount.text);
 }
 
 - (void)didReceiveMemoryWarning
@@ -468,19 +477,21 @@ NSArray *arrProductId;
         NSString *strId = [arrProductId objectAtIndex:i];
         if([strId isEqualToString:productId]){
             //log
-            NSLog(@"%@を取得したのでコイン%dを追加します",
+            NSLog(@"%@を取得したのでルビー%d個を追加します",
                   strId,
                   [[arrAcquired objectAtIndex:i] intValue]);
             
             int _ruby = [[attr getValueFromDevice:@"ruby"] intValue] + [[arrAcquired objectAtIndex:i] intValue];
             [attr setValueToDevice:@"ruby" strValue:[NSString stringWithFormat:@"%d", _ruby]];
             
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"コイン%@枚を追加しました。", [arrAcquired objectAtIndex:i]]
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"ルビー%@個を追加しました。", [arrAcquired objectAtIndex:i]]
                                                            message:nil
                                                           delegate:self
                                                  cancelButtonTitle:@"OK"
                                                  otherButtonTitles:nil, nil];
             [alert show];
+            
+            lblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
         }
     }
     
