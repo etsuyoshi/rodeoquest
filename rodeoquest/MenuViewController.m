@@ -1824,31 +1824,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
 }
 
-//-(UIButton*)createButtonWithImage:(NSString*)imageFile tag:(int)tag frame:(CGRect)frame
-//{
-//    //画像を表示させる場合：http://blog.syuhari.jp/archives/1407
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    button.frame = frame;
-//    button.tag   = tag;
-//    UIImage *image = [UIImage imageNamed:imageFile];
-//    [button setBackgroundImage:image forState:UIControlStateNormal];
-//    [button addTarget:self action:@selector(pushed_button:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    return button;
-//}
-//-(UIButton*)createButtonWithTitle:(NSString*)title tag:(int)tag frame:(CGRect)frame
-//{
-//    //画像を表示させる場合：http://blog.syuhari.jp/archives/1407
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    button.frame = frame;
-//    button.tag   = tag;
-//    [button setTitle:title forState:UIControlStateNormal];
-//    [button addTarget:self action:@selector(pushed_button:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    return button;
-//}
-
-
 -(UIImageView*)createImageView:(NSString*)filename tag:(int)tag frame:(CGRect)frame{
     UIImageView *iv = [[UIImageView alloc] initWithFrame:frame];
     iv.tag = tag;
@@ -1879,11 +1854,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             //途中で何らかの理由で遮られた場合
 //            NSLog(@"animation key frame not exit");
         }
-        
     }];
     
     {
-        
         // CAKeyframeAnimationオブジェクトを生成
         CAKeyframeAnimation *animation;
         animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];

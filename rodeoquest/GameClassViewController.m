@@ -149,6 +149,7 @@ UIPanGestureRecognizer *panGesture;
 Boolean isTouched;
 
 BackGroundClass2 *BackGround;
+UIImageView *viewBackBack;
 MyMachineClass *MyMachine;
 NSMutableArray *EnemyArray;
 //NSMutableArray *BeamArray;
@@ -231,34 +232,6 @@ int sensitivity;
                                                object: nil];
     
     worldType = arc4random() % WorldTypeCount;
-    switch (worldType) {
-        case WorldTypeForest:{
-//            [self.view setBackgroundColor:[UIColor greenColor]];
-            break;
-        }
-        case WorldTypeUniverse1:{
-            [self.view setBackgroundColor:[UIColor blackColor]];
-            break;
-        }
-        case WorldTypeUniverse2:{
-            [self.view setBackgroundColor:[UIColor blackColor]];
-            break;
-        }
-        case WorldTypeNangoku:{
-            [self.view setBackgroundColor:[UIColor blueColor]];
-            break;
-        }
-        case WorldTypeDesert:{
-            [self.view setBackgroundColor:[UIColor yellowColor]];
-            break;
-        }
-        case WorldTypeSnow:{
-            [self.view setBackgroundColor:[UIColor whiteColor]];
-            break;
-        }
-        default:
-            break;
-    }
     return self;
 }
 //ステータスバー非表示の一環
@@ -1719,7 +1692,7 @@ int sensitivity;
     //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
     //5秒間隔で非表示
     if(gameSecond < 20){//20秒未満なら
-        if(arc4random() % 10 == 0){//平均2秒に1回=100px程度の間隔
+        if(arc4random() % 50 == 0){//平均2秒に1回=100px程度の間隔
             difficulty = 0;
             isYield = true;
         }
@@ -3172,6 +3145,10 @@ int sensitivity;
 
 -(void)setBackGroundInit{
     NSLog(@"set BackGround init at GameView");
+    
+
+    
+    
     if(BackGround != nil &&
        ![BackGround isEqual:[NSNull null]]){
         
@@ -3184,24 +3161,78 @@ int sensitivity;
                                          width:self.view.bounds.size.width
                                         height:self.view.bounds.size.height
                                           secs:5.0f];
-    
-    
     [self.view addSubview:[BackGround getImageView1]];
     [self.view addSubview:[BackGround getImageView2]];
-//    [self.view bringSubviewToFront:[BackGround getImageView1]];
-//    [self.view bringSubviewToFront:[BackGround getImageView2]];
     [self.view sendSubviewToBack:[BackGround getImageView1]];
     [self.view sendSubviewToBack:[BackGround getImageView2]];
-    NSLog(@"background bring front");
     [self startAnimateBackGround];
-    //test:red
-//    [self.view setBackgroundColor:[UIColor redColor]];
-//    UIImageView *ivtest=[[UIImageView alloc]initWithFrame:self.view.bounds];
-//    ivtest.image = [UIImage imageNamed:@"close.png"];
-//    [self.view addSubview:ivtest];
+
+    
+//    [self.view addSubview:[BackGround getImageView1]];
+//    [self.view addSubview:[BackGround getImageView2]];
+//    [self.view bringSubviewToFront:[BackGround getImageView1]];
+//    [self.view bringSubviewToFront:[BackGround getImageView2]];
+//    [self.view sendSubviewToBack:[BackGround getImageView1]];
+//    [self.view sendSubviewToBack:[BackGround getImageView2]];
+    NSLog(@"background bring front");
+//    [self startAnimateBackGround];
+    
+    //背景の下地
+    UIGraphicsBeginImageContext(self.view.frame.size);
     
     
     
+//    if(viewBackBack == nil){
+//        viewBackBack =
+//        [[UIImageView alloc]initWithFrame:self.view.bounds];
+//    }
+    
+    switch (worldType) {
+        case WorldTypeForest:{
+            //            [self.view setBackgroundColor:[UIColor greenColor]];
+//            viewBackBack.image = [UIImage imageNamed:@"backback_forest2.png"];
+            [[UIImage imageNamed:@"backback_forest2.png"] drawInRect:self.view.bounds];
+            break;
+        }
+        case WorldTypeUniverse1:{
+            //            [self.view setBackgroundColor:[UIColor blackColor]];
+//            viewBackBack.image = [UIImage imageNamed:@"bacback_univ.png"];
+            [[UIImage imageNamed:@"backback_univ.png"] drawInRect:self.view.bounds];
+            break;
+        }
+        case WorldTypeUniverse2:{
+            //            [self.view setBackgroundColor:[UIColor blackColor]];
+//            viewBackBack.image = [UIImage imageNamed:@"backback_univ.png"];
+            [[UIImage imageNamed:@"backback_univ.png"] drawInRect:self.view.bounds];
+            break;
+        }
+        case WorldTypeNangoku:{
+            //            [self.view setBackgroundColor:[UIColor blueColor]];
+//            viewBackBack.image = [UIImage imageNamed:@"backback_nangoku.png"];
+            [[UIImage imageNamed:@"backback_nangoku.png"] drawInRect:self.view.bounds];
+            break;
+        }
+        case WorldTypeDesert:{
+            //            [self.view setBackgroundColor:[UIColor yellowColor]];
+//            viewBackBack.image = [UIImage imageNamed:@"backback_desert.png"];
+            [[UIImage imageNamed:@"backback_desert.png"] drawInRect:self.view.bounds];
+            break;
+        }
+        case WorldTypeSnow:{
+            //            [self.view setBackgroundColor:[UIColor whiteColor]];
+//            viewBackBack.image = [UIImage imageNamed:@"backback_snow.png"];
+            [[UIImage imageNamed:@"backback_snow.png"] drawInRect:self.view.bounds];
+            break;
+        }
+        default:
+            break;
+    }
+//    [self.view addSubview:viewBackBack];
+//    [self.view sendSubviewToBack:viewBackBack];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:image];
 }
 
 -(void)startAnimateBackGround{

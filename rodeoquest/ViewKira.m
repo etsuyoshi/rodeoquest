@@ -49,10 +49,10 @@
     float fB = 0;
 //    http://lowlife.jp/yasusii/static/color_chart.html
     switch (kiraType) {
-        case KiraTypeYellow:{//goldenrod1
+        case KiraTypeYellow:{//yellow
             fR = 255.0f;
-            fG = 193.0f;
-            fB = 37.0f;
+            fG = 255.0f;
+            fB = 0.0f;
             break;
         }
         case KiraTypeGreen:{//LawnGreen

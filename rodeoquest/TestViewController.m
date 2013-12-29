@@ -24,8 +24,10 @@
 //#define COOLBUTTON_TEST
 //#define SPECIALWEAPON_TEST
 //#define PARTICLE_TEST
-#define KIRA_Test
+//#define KIRA_Test
+#define EXPLODE_TEST
 
+#import "ViewExplode.h"
 #import "ViewKira.h"
 #import "ViewFireWorks.h"
 #import "KiraParticleView.h"
@@ -151,18 +153,19 @@ int tempCount = 0;
               [[ar objectAtIndex:i] CGPointValue].y);
     }
     
-//#ifdef KIRA_TEST
+#ifdef KIRA_TEST
     
     [self.view setBackgroundColor:[UIColor blueColor]];
     
-    ViewKira *_viewKira = [[ViewKira alloc] initWithFrame:CGRectMake(0, 0,50, 50)];//
+    ViewKira *_viewKira = [[ViewKira alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];//
 //                                                                     self.view.bounds.size.width,
 //                                                                     self.view.bounds.size.height)];
     _viewKira.center = CGPointMake(self.view.bounds.size.width/2,
                                    self.view.bounds.size.height/2);
     [self.view addSubview:_viewKira];
     NSLog(@"viewkira.center = %f, %f", _viewKira.center.x, _viewKira.center.y);
-//#endif
+
+#endif
     
 //    int diameter = 300;//直径
 //    CGPoint saveCenter = self.view.center;
@@ -909,6 +912,38 @@ int tempCount = 0;
 //        [array removeAllObjects];
     }
     
+#elif defined EXPLODE_TEST
+    if(counter == 0){
+        [self.view setBackgroundColor:[UIColor blueColor]];
+        
+        ViewExplode *_viewEx = [[ViewExplode alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/2,
+                                                                             self.view.bounds.size.height/2, 1, 1)];//
+        //                                                                     self.view.bounds.size.width,
+        //                                                                     self.view.bounds.size.height)];
+//        _viewEx.center = CGPointMake(self.view.bounds.size.width/2,
+//                                     self.view.bounds.size.height/2);
+        [self.view addSubview:_viewEx];
+        NSLog(@"viewkira.center = %f, %f", _viewEx.center.x, _viewEx.center.y);
+        
+        [UIView animateWithDuration:0.5f
+                              delay:0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^{
+                             _viewEx.frame = CGRectMake(self.view.bounds.size.width/2-100,
+                                                        self.view.bounds.size.height/2-100,
+                                                        200, 200);
+//                             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+//                             _viewEx.transform = transform;//...ok?
+//                             _viewEx.center = CGPointMake(self.view.bounds.size.width/2,
+//                                                          self.view.bounds.size.height/2);
+//                             _viewEx.center = CGPointMake(self.view.bounds.size.width/2,
+//                                                          self.view.bounds.size.height/2);
+//                             _viewEx.alpha = 0.0f;
+                         }
+                         completion:^(BOOL finished){
+                             
+                         }];
+    }
 
 #else
 //    NSLog(@"aaa");

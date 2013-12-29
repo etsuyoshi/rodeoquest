@@ -159,6 +159,7 @@
 		3467B71D17FD53AF004EEE94 /* item.png in Resources */ = {isa = PBXBuildFile; fileRef = 3467B71C17FD53AF004EEE94 /* item.png */; };
 		3467B72217FD5981004EEE94 /* PowerGaugeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3467B72117FD5980004EEE94 /* PowerGaugeClass.m */; };
 		346B1A7B18685DD3003E908D /* shield_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 346B1A7A18685DD3003E908D /* shield_b.png */; };
+		3471843A186F203200C4B52E /* ViewExplode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34718439186F203200C4B52E /* ViewExplode.m */; };
 		3476D05E180DE6B800839BD8 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3476D05C180DE6B800839BD8 /* QBFlatButton.m */; };
 		3477C20A1851F8C60006A9BB /* CountButtonWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3477C2091851F8C60006A9BB /* CountButtonWithView.m */; };
 		34791E3E185D7A8F00440B92 /* ornament.png in Resources */ = {isa = PBXBuildFile; fileRef = 34791E3D185D7A8F00440B92 /* ornament.png */; };
@@ -565,6 +566,8 @@
 		3467B72017FD5980004EEE94 /* PowerGaugeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerGaugeClass.h; sourceTree = "<group>"; };
 		3467B72117FD5980004EEE94 /* PowerGaugeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerGaugeClass.m; sourceTree = "<group>"; };
 		346B1A7A18685DD3003E908D /* shield_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shield_b.png; sourceTree = "<group>"; };
+		34718438186F203200C4B52E /* ViewExplode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewExplode.h; sourceTree = "<group>"; };
+		34718439186F203200C4B52E /* ViewExplode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewExplode.m; sourceTree = "<group>"; };
 		3476D05C180DE6B800839BD8 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QBFlatButton.m; path = ../../GradientButton/GradientButton/QBFlatButton.m; sourceTree = "<group>"; };
 		3476D05D180DE6B800839BD8 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBFlatButton.h; path = ../../GradientButton/GradientButton/QBFlatButton.h; sourceTree = "<group>"; };
 		3477C2081851F8C60006A9BB /* CountButtonWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountButtonWithView.h; sourceTree = "<group>"; };
@@ -1553,6 +1556,8 @@
 				34EB7ACD182F2E850079B0EB /* Effect.m */,
 				340378F0186BECD9009306FB /* ViewKira.h */,
 				340378F1186BECD9009306FB /* ViewKira.m */,
+				34718438186F203200C4B52E /* ViewExplode.h */,
+				34718439186F203200C4B52E /* ViewExplode.m */,
 			);
 			name = Particle;
 			sourceTree = "<group>";
@@ -1998,6 +2003,7 @@
 				34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */,
 				34E041D91850A93400CA3034 /* ItemUpListViewController.m in Sources */,
 				3411FB8417FEE301001D1491 /* MyMachineClass.m in Sources */,
+				3471843A186F203200C4B52E /* ViewExplode.m in Sources */,
 				34390EE31855E49100D02C54 /* PaymentTestViewController.m in Sources */,
 				3420AB961827AA9200AB0A84 /* UIView+Animation.m in Sources */,
 				34F3006F182162660082DCBC /* KiraParticleView.m in Sources */,
