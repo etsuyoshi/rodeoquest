@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BackGroundClass2.h"
+#import "CoinProductViewController.h"
 #import "CreateComponentClass.h"
 #import "AttrClass.h"
 

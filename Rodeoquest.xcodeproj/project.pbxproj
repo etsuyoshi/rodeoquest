@@ -297,6 +297,8 @@
 		34B949A018700AA70091688C /* start_r.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B9499E18700AA70091688C /* start_r.png */; };
 		34B949A418700CA90091688C /* back_shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B949A218700CA90091688C /* back_shop.png */; };
 		34B949A518700CA90091688C /* back_shop02.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B949A318700CA90091688C /* back_shop02.png */; };
+		34B949AC1870355B0091688C /* jewel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B949AB1870355B0091688C /* jewel@2x.png */; };
+		34B949AE187035C10091688C /* jewel_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B949AD187035C10091688C /* jewel_small@2x.png */; };
 		34BD6DB018193135006BC523 /* AppSocially.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 34BD6DAE18193135006BC523 /* AppSocially.bundle */; };
 		34BD6DB118193135006BC523 /* AppSocially.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DAF18193135006BC523 /* AppSocially.framework */; };
 		34BD6DB318193180006BC523 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DB218193180006BC523 /* Accounts.framework */; };
@@ -721,6 +723,8 @@
 		34B9499E18700AA70091688C /* start_r.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = start_r.png; sourceTree = "<group>"; };
 		34B949A218700CA90091688C /* back_shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_shop.png; sourceTree = "<group>"; };
 		34B949A318700CA90091688C /* back_shop02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_shop02.png; sourceTree = "<group>"; };
+		34B949AB1870355B0091688C /* jewel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jewel@2x.png"; sourceTree = "<group>"; };
+		34B949AD187035C10091688C /* jewel_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jewel_small@2x.png"; sourceTree = "<group>"; };
 		34BD6DAE18193135006BC523 /* AppSocially.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AppSocially.bundle; sourceTree = "<group>"; };
 		34BD6DAF18193135006BC523 /* AppSocially.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppSocially.framework; sourceTree = "<group>"; };
 		34BD6DB218193180006BC523 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -1056,6 +1060,8 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				34B949AD187035C10091688C /* jewel_small@2x.png */,
+				34B949AB1870355B0091688C /* jewel@2x.png */,
 				349DA9EF18695D30008C9AE6 /* close */,
 				34791E3D185D7A8F00440B92 /* ornament.png */,
 				34616E211859DF8700DE8226 /* sozai_maki.png */,
@@ -1917,6 +1923,7 @@
 				34F53372181BBB7700FB9470 /* hisho_hmix.mp3 in Resources */,
 				34A8897A18542ABA005667B4 /* 20.png in Resources */,
 				34390EE51855EA3000D02C54 /* icon_coin_b.png in Resources */,
+				34B949AC1870355B0091688C /* jewel@2x.png in Resources */,
 				348C445A1866A9410029D09B /* purchased00.png in Resources */,
 				340C3B9718549DDD0017BBBE /* Ice.png in Resources */,
 				348C445318669D020029D09B /* purchased01.png in Resources */,
@@ -1952,6 +1959,7 @@
 				344BD61E1815936B00387201 /* mob_hari_02.png in Resources */,
 				34B949A418700CA90091688C /* back_shop.png in Resources */,
 				344052A1182BBC1A0049AE46 /* tool_transparancy.png in Resources */,
+				34B949AE187035C10091688C /* jewel_small@2x.png in Resources */,
 				340C3B9618549DDD0017BBBE /* Grass.png in Resources */,
 				34A8898418542ABA005667B4 /* 30.png in Resources */,
 				348C441C18669C300029D09B /* W_WaterBow.png in Resources */,

@@ -1002,36 +1002,6 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
         case ButtonMenuImageTypeWeapon:{
             WeaponBuyListViewController *wblvc = [[WeaponBuyListViewController alloc]init];
             [self presentViewController: wblvc animated:YES completion: nil];
-            
-            
-            //slide-show
-//            NSArray *imageArray = [NSArray arrayWithObjects:
-//                                   @"RockBow.png",
-//                                   @"FireBow.png",
-//                                   @"WaterBow.png",
-//                                   @"IceBow.png",
-//                                   @"BugBow.png",
-//                                   @"AnimalBow.png",
-//                                   @"GrassBow.png",
-//                                   @"ClothBow.png",
-//                                   @"SpaceBow.png",
-//                                   @"WingBow.png",
-//                                   nil];
-//            //画面中央部にイメージファイル、その周りに半透明ビュー、更にその周囲に透明ビュー(イメージ以外をタップすると消える)
-//            //購入した武器の分だけ右を見れる
-//            UIView *superView = [CreateComponentClass createSlideShow:CGRectMake(0,
-//                                                                                 50,
-//                                                                                 self.view.bounds.size.width,
-//                                                                                 self.view.bounds.size.height)
-//                                                            imageFile:imageArray
-//                                                               target:self
-//                                                            selector1:@"closeView:"
-//                                                            selector2:@"weaponSelected:"];
-////                                                            selector2:@"imageTapped:"];
-//            superView.tag = 0;
-//            [self.view addSubview:superView];
-            
-            
             break;
         }
         case ButtonMenuImageTypeDefense:{
@@ -1061,8 +1031,10 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
         }
         case ButtonMenuImageTypeCoin:{//コイン購入画面へ=>exit?
             [backGround stopAnimation];
-            PayProductViewController *ppvc = [[PayProductViewController alloc]init];
-            [self presentViewController:ppvc animated:NO completion:nil];
+//            PayProductViewController *ppvc = [[PayProductViewController alloc]init];
+//            [self presentViewController:ppvc animated:NO completion:nil];
+            CoinProductViewController *cpvc = [[CoinProductViewController alloc] init];
+            [self presentViewController:cpvc animated:YES completion:nil];
             break;
         }
         case ButtonMenuImageTypeSet:{//設定画面：BGM,効果音、操作感度、ボイス、難易度
@@ -1588,12 +1560,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
             break;
         }
-        case 101:{//set timer=> buy money
+        case 101:{//set timer=> buy money at left of bt_start
             NSLog(@"set timer event to code: not yet");
-            CoinProductViewController * coinView =
-            [[CoinProductViewController alloc] init];
-            [self presentViewController:coinView animated:YES completion:nil];
-            
+//            CoinProductViewController * coinView =
+//            [[CoinProductViewController alloc] init];
+//            [self presentViewController:coinView animated:YES completion:nil];
+            LifeUpListViewController *ilvc = [[LifeUpListViewController alloc]init];
+            [self presentViewController: ilvc animated:YES completion: nil];
+
             break;
         }
         case 102:{//invite - friends

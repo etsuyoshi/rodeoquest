@@ -7,6 +7,14 @@
 //
 
 #import "PayProductViewController.h"
+typedef NS_ENUM(NSInteger, CoinType) {
+    CoinType1,
+    CoinType2,
+    CoinType3,
+    CoinType4,
+    CoinType5,
+    CoinType6
+};
 
 @interface CoinProductViewController : PayProductViewController
 

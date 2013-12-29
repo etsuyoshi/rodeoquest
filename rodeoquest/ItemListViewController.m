@@ -145,6 +145,12 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                                    cashFrameHeight)];
     [self.view addSubview:cashView];
     
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(pushedCashFrame:)];
+    [cashView addGestureRecognizer:singleFingerTap];
+    
+    
     //cash image
     UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
                                                                        cashFrameInitY + 14, 23, 23)];
@@ -406,6 +412,13 @@ void (^actNoForCoinShort)(void) = ^(void) {
 }
 -(void)updateToDeviceCoin:(int)coin{
     [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", coin]];
+    
+}
+
+-(void)pushedCashFrame:(UITapGestureRecognizer *)recognizer{
+    CoinProductViewController * coinView =
+    [[CoinProductViewController alloc] init];
+    [self presentViewController:coinView animated:YES completion:nil];
     
 }
 

@@ -29,6 +29,7 @@ NSArray *arrProductId;
     if (self) {
         // Custom initialization
         
+        //arrProductIdはrubyX.X.Xに変更したいがitunes connect側で実行する必要がある
         arrProductId = [NSArray arrayWithObjects:
                         @"coin1.1.1",
                         @"coin2.1.1",
@@ -38,13 +39,28 @@ NSArray *arrProductId;
                         @"coin6.1.1",
                         nil];
         arrAcquired = [NSArray arrayWithObjects:
-                       @"1500",//coin
-                       @"3500",
-                       @"8000",
-                       @"15000",
-                       @"27500",
-                       @"60000",
+                       @"16",//number of ruby when user buy this item
+                       @"48",
+                       @"100",
+                       @"203",
+                       @"339",
+                       @"715",
                        nil];
+        
+        //ボタン押下時の判定キー
+        arrProductType = [NSArray arrayWithObjects:
+                          [NSArray arrayWithObjects:
+                           [NSNumber numberWithInt:RubyType1],
+                           [NSNumber numberWithInt:RubyType2],
+                           [NSNumber numberWithInt:RubyType3],
+                           nil],
+                          [NSArray arrayWithObjects:
+                           [NSNumber numberWithInt:RubyType4],
+                           [NSNumber numberWithInt:RubyType5],
+                           [NSNumber numberWithInt:RubyType6],
+                           nil],
+                          nil];
+        
         
         arrTypeImage = [NSArray arrayWithObjects:
                         [NSArray arrayWithObjects:
@@ -58,6 +74,24 @@ NSArray *arrProductId;
                          [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct5],
                          nil],
                         nil];
+        //price
+        arrPrice = [NSArray arrayWithObjects:
+                    [NSArray arrayWithObjects:
+                     @"200",//yen
+                     @"500",
+                     @"1200",
+                     nil],
+                    [NSArray arrayWithObjects:
+                     @"2500",
+                     @"4100",
+                     @"6300",
+                     nil],
+                    nil];
+        
+        
+        strImgUnit = @"yen_g.png";
+        
+        attr = [[AttrClass alloc]init];
         
     }
     
@@ -90,36 +124,36 @@ NSArray *arrProductId;
     }else{
         NSLog(@"アプリ内課金制限なし：クリアー");
         SKProductsRequest *request;
-        switch((ProductType)(num.integerValue)){
-            case ProductTypeCoin1:{
+        switch((RubyType)(num.integerValue)){
+            case RubyType1:{
                 
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin1]]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType1]]];
                 break;
             }
-            case ProductTypeCoin2:{
+            case RubyType2:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin2]]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType2]]];
                 break;
             }
-            case ProductTypeCoin3:{
+            case RubyType3:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin3]]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType3]]];
                 break;
             }
-            case ProductTypeCoin4:{
+            case RubyType4:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin4]]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType4]]];
                 break;
             }
-            case ProductTypeCoin5:{
+            case RubyType5:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin5]]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType5]]];
                 break;
             }
-            case ProductTypeCoin6:{
+            case RubyType6:{
                 request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:ProductTypeCoin6]]];
+                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType6]]];
                 break;
             }
         }
@@ -137,6 +171,42 @@ NSArray *arrProductId;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    
+    
+    //ruby　frame
+    int cashFrameWidth = 170;
+    int cashFrameHeight = 50;
+    int cashFrameInitX = 145;
+    int cashFrameInitY = 40;
+    
+    //remove cashView defined in superclass
+    [cashView removeFromSuperview];
+    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
+                                                           cashFrameInitY,
+                                                           cashFrameWidth,
+                                                           cashFrameHeight)];
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(pushedMoneyFrame:)];
+    [cashView addGestureRecognizer:singleFingerTap];
+    [self.view addSubview:cashView];
+    
+    //ruby image
+    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
+                                                                       cashFrameInitY + 14, 23, 23)];
+    cashIV.image = [UIImage imageNamed:strImgUnit];
+    [self.view addSubview:cashIV];
+    
+    //ruby numeric
+    CGRect rectRubyAmount = CGRectMake(cashFrameInitX + 50,
+                                       cashFrameInitY + 10,
+                                       150, 32);
+    lblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
+    [lblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
+    lblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
+    lblRubyAmount.textColor = [UIColor whiteColor];
+    lblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
+    [self.view addSubview:lblRubyAmount];
     
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -204,31 +274,8 @@ NSArray *arrProductId;
     //viewFrameに2x3行列のframeを置いて、更にそれぞれにbuttonを置く
     int numOfRow = 2;
     int numOfCol = 3;
-    NSArray *arrProductType = [NSArray arrayWithObjects:
-                               [NSArray arrayWithObjects:
-                                [NSNumber numberWithInt:ProductTypeCoin1],
-                                [NSNumber numberWithInt:ProductTypeCoin2],
-                                [NSNumber numberWithInt:ProductTypeCoin3],
-                                nil],
-                               [NSArray arrayWithObjects:
-                                [NSNumber numberWithInt:ProductTypeCoin4],
-                                [NSNumber numberWithInt:ProductTypeCoin5],
-                                [NSNumber numberWithInt:ProductTypeCoin6],
-                                nil],
-                               nil];
-    //price
-    arrPrice = [NSArray arrayWithObjects:
-                [NSArray arrayWithObjects:
-                 @"200",//yen
-                 @"500",
-                 @"1200",
-                 nil],
-                [NSArray arrayWithObjects:
-                 @"2500",
-                 @"4100",
-                 @"6300",
-                 nil],
-                nil];
+    
+    
     
     for(int row = 0;row < numOfRow ;row++){
         for(int col = 0;col < numOfCol ; col++){
@@ -254,7 +301,7 @@ NSArray *arrProductId;
             //yen-mark
             viewYenImage = [CreateComponentClass createImageView:CGRectMake(MARGIN_FRAME_PRODUCT-10,
                                                                             HEIGHT_FRAME_PRODUCT - heightPrice+5, 20, 20)
-                                                           image:@"yen_g.png"];
+                                                           image:strImgUnit];
             //                viewYenImage.center = CGPointMake(MARGIN_FRAME_PRODUCT, SIZE_BUTTON_PRODUCT + MARGIN_FRAME_PRODUCT*2);
             [eachFrame addSubview:viewYenImage];
             
@@ -310,12 +357,19 @@ NSArray *arrProductId;
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    //rubyの更新
+    lblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 
 -(void)showDialog{
@@ -418,9 +472,8 @@ NSArray *arrProductId;
                   strId,
                   [[arrAcquired objectAtIndex:i] intValue]);
             
-            AttrClass *attr = [[AttrClass alloc]init];
-            int _gold = [[attr getValueFromDevice:@"gold"] intValue] + [[arrAcquired objectAtIndex:i] intValue];
-            [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", _gold]];
+            int _ruby = [[attr getValueFromDevice:@"ruby"] intValue] + [[arrAcquired objectAtIndex:i] intValue];
+            [attr setValueToDevice:@"ruby" strValue:[NSString stringWithFormat:@"%d", _ruby]];
             
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"コイン%@枚を追加しました。", [arrAcquired objectAtIndex:i]]
                                                            message:nil

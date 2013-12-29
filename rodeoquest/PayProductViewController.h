@@ -13,18 +13,24 @@
 #import "CreateComponentClass.h"
 
 
-typedef NS_ENUM(NSInteger, ProductType) {
-    ProductTypeCoin1,
-    ProductTypeCoin2,
-    ProductTypeCoin3,
-    ProductTypeCoin4,
-    ProductTypeCoin5,
-    ProductTypeCoin6
+typedef NS_ENUM(NSInteger, RubyType) {
+    RubyType1,
+    RubyType2,
+    RubyType3,
+    RubyType4,
+    RubyType5,
+    RubyType6
 };
+//サブクラスで変更するためグローバル
+NSString *strImgUnit;//yen-or-ruby
 NSArray *arrAcquired;
 NSArray *arrPrice;
 NSArray *arrTypeImage;//ボタンアイコンタイプ
-UIImageView *viewYenImage;//サブクラスで変更するためグローバル
+NSArray *arrProductType;
+UIImageView *viewYenImage;
+UIView *cashView;//現在保有ルビーを表示する
+UILabel *lblRubyAmount;
+AttrClass *attr;
 
 @interface PayProductViewController : UIViewController<SKProductsRequestDelegate,
 SKPaymentTransactionObserver>{
