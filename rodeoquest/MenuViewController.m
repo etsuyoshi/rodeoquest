@@ -76,7 +76,7 @@
 int x_frame_center;//画面横軸中心値
 NSTimer *tm;
 UITextView *tv_timer;
-UITextView *tv_gameLife;
+UILabel *lbl_gameLife;
 int secondForLife;
 int maxSecondForLife;
 int lifeGame;
@@ -87,6 +87,8 @@ NSMutableArray *arrNoImage;
 NSMutableArray *arrBtnBack;
 
 
+//game-start-button
+UIButton *bt_start;
 
 UIView *subView;
 UIButton *closeButton;//閉じるボタン
@@ -544,22 +546,29 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                    W_BT_START,
                                    H_BT_START);
     
-    //    UIImageView *bt_start = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeGreen
-    //                                                         imageType:(ButtonMenuImageType)ButtonMenuImageTypeStart
-    //                                                              rect:(CGRect)rect_start
-    //                                                            target:(id)self
-    //                                                          selector:(NSString *)@"pushedButton:"
-    //                                                               tag:ButtonMenuImageTypeStart];
-    UIButton *bt_start = [CreateComponentClass
-                          createCoolButton:rect_start
-                          text:@"START"
-                          hue:0 saturation:1 brightness:1
-                          target:self
-                          selector:@"pushedStartButton:"
-                          tag:ButtonMenuImageTypeStart];
-    //丸角
-    //    [[bt_start layer] setCornerRadius:10.0];
-    //    [bt_start setClipsToBounds:YES];
+    bt_start =
+    [UIButton buttonWithType:UIButtonTypeCustom];
+    bt_start.frame = rect_start;
+    [bt_start setBackgroundImage:[UIImage imageNamed:@"start_r.png"]
+                        forState:UIControlStateNormal];
+    [bt_start addTarget:self
+                 action:@selector(pushedStartButton:)
+       forControlEvents:UIControlEventTouchUpInside];
+    [bt_start addTarget:self
+                 action:@selector(selectingStartButton:)
+       forControlEvents:UIControlEventTouchDown];
+    [bt_start addTarget:self
+                 action:@selector(releasedStartButton:)
+       forControlEvents:UIControlEventTouchUpOutside];
+    [bt_start addTarget:self
+                 action:@selector(releasedStartButton:)
+       forControlEvents:UIControlEventTouchDragOutside];
+    [bt_start addTarget:self
+                 action:@selector(releasedStartButton:)
+       forControlEvents:UIControlEventTouchDragExit];
+    [bt_start addTarget:self
+                 action:@selector(selectingStartButton:)
+       forControlEvents:UIControlEventTouchDragInside];//ドラッグして戻ってきた時にサイズを大きくする
     [self.view addSubview:bt_start];
     
     //game開始以外でも、ホームボタン押下時、アイテムリストViewCon起動時等、様々なイベント(MenuViewConが消えるイベント)毎にsetValueToDeviceをする。
@@ -576,20 +585,30 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     [attr getValueFromDevice:@"lifeGame"];
     
     
-    tv_gameLife =
-    [CreateComponentClass
-     createTextView:CGRectMake(0, 0, rect_start.size.width,
-                               rect_start.size.height/2)
-     text:strLifeGame
-     font:@"AmericanTypewriter-Bold"
-     size:15
-     textColor:[UIColor purpleColor]
-     backColor:[UIColor clearColor]
-     isEditable:NO];
-    [bt_start addSubview:tv_gameLife];
+    lbl_gameLife =
+    [[UILabel alloc]
+     initWithFrame:
+     CGRectMake(0, 0, rect_start.size.width, rect_start.size.height/2)];
+    lbl_gameLife.text = strLifeGame;
+    lbl_gameLife.font = [UIFont fontWithName:@"AmericanTypewriter-Bold"
+                         size:15.0f];
+    lbl_gameLife.textColor = [UIColor purpleColor];
+    lbl_gameLife.backgroundColor = [UIColor clearColor];
+    
+    
+//    [CreateComponentClass
+//     createTextView:CGRectMake(0, 0, rect_start.size.width,
+//                               rect_start.size.height/2)
+//     text:strLifeGame
+//     font:@"AmericanTypewriter-Bold"
+//     size:15
+//     textColor:[UIColor purpleColor]
+//     backColor:[UIColor clearColor]
+//     isEditable:NO];
+    [bt_start addSubview:lbl_gameLife];
     
     CGRect rect_timer =
-    CGRectMake(x_frame_center - W_BT_START/2 - MARGIN_UPPER_COMPONENT - H_BT_START,
+    CGRectMake(x_frame_center - W_BT_START/2 - MARGIN_UPPER_COMPONENT*2 - H_BT_START,
                Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
                H_RANKING_COMPONENT + MARGIN_RANKING_TO_FORMAL_BUTTON +
                (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count] + MARGIN_FORMAL_TO_START,
@@ -636,7 +655,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
      target:self
      selector:@"imageTapped:"];
     viewInvite.center =
-    CGPointMake(x_frame_center + W_BT_START/2 + MARGIN_UPPER_TO_RANKING + H_BT_START/2,
+    CGPointMake(x_frame_center + W_BT_START/2 + MARGIN_UPPER_COMPONENT*2 + H_BT_START/2,
                 bt_start.center.y);
     [self.view addSubview:viewInvite];
 
@@ -788,14 +807,14 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     }
     if(lifeGame < maxLifeGame){
         NSLog(@"lifegameInt=%d", lifeGame);
-        tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
+        lbl_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
         if(secondForLife < maxSecondForLife){
             tv_timer.text = [self transformSecToMMSS:secondForLife];
         }else{
             tv_timer.text = @"MAX";
         }
     }else{
-        tv_gameLife.text = @"MAX";
+        lbl_gameLife.text = @"MAX";
         tv_timer.text = @"MAX";
     }
     //上記により更新されたlifeGameとsecondForLifeを用いて、timeメソッド内でtv_timer, tv_lifegameに動的に反映
@@ -860,7 +879,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                 if(lifeGame < maxLifeGame){
                     lifeGame++;
                     [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
-                    tv_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
+                    lbl_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
                     if(lifeGame == maxLifeGame){
                         tv_timer.text = @"MAX";
                     }
@@ -870,7 +889,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
             tv_timer.text = @"MAX";
         }
     }else{//lifeGame == maxLifeGame
-        tv_gameLife.text = [NSString stringWithFormat:@"MAX"];
+        lbl_gameLife.text = [NSString stringWithFormat:@"MAX"];
         secondForLife = maxSecondForLife;
     }
     
@@ -910,14 +929,22 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //    [backGround exitAnimations];
 
 }
+//ボタン押下時のサイズ反応
+-(void)selectingStartButton:(id)sender{
+    bt_start.transform = CGAffineTransformMakeScale(1.1f, 1.2f);//vertical-expand
+    
+}
+-(void)releasedStartButton:(id)sender{
+    bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+}
 -(void)pushedStartButton:(id)sender{//UIButton型による定義
-    NSNumber *num = [NSNumber numberWithInt:[sender tag]];
+//    NSNumber *num = [NSNumber numberWithInt:[sender tag]];
 //-(void)pushedButton:(NSNumber *)num{//UIImageView型による定義
     
-    NSLog(@"num = %d", num.integerValue);
-    switch((ButtonMenuImageType)num.integerValue){
-        case ButtonMenuImageTypeStart:{
-            
+//    NSLog(@"num = %d", num.integerValue);
+//    switch((ButtonMenuImageType)num.integerValue){
+//        case ButtonMenuImageTypeStart:{
+    
             NSLog(@"start games");
             
             if(bgmClass.getIsPlaying){
@@ -955,18 +982,20 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                 tm = nil;
                 [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
                 [backGround exitAnimations];
+                //button resize
+                bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
             }else{
                 NSLog(@"%d" , lifeGame);
             }
 #endif
 
             
-            break;
-        }
-        default:{
-            break;
-        }
-    }
+//            break;
+//        }
+//        default:{
+//            break;
+//        }
+//    }
 }
 -(void)pushedButton:(NSNumber *)num{//UIImageView型による定義
     switch((ButtonMenuImageType)num.integerValue){
@@ -1471,6 +1500,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 
+/*
+ *未使用？->weaponBuyListViewControllerに委譲
+ */
 -(void)weaponSelected:(id)sender{
     UIView *tappedView = [sender view];
     NSLog(@"%@", tappedView);

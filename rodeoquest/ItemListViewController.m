@@ -127,13 +127,12 @@ void (^actNoForCoinShort)(void) = ^(void) {
     }
     
     //backgroundの設定
-//    UIImageView *background = [[UIImageView alloc]initWithFrame:self.view.bounds];
-    [self.view setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.5f]];
-//    UIImageView *background = [[UIImageView alloc]initWithFrame:CGRectMake(-100, -10, 580, 480)];
-//    background.image = [UIImage imageNamed:@"chara01.png"];
-//    background.alpha = 0.5f;
-//    [self.view sendSubviewToBack:background];
-//    [self.view addSubview:background];
+    UIGraphicsBeginImageContext(self.view.frame.size);
+    [[UIImage imageNamed:@"back_shop02.png"] drawInRect:self.view.bounds];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    self.view.backgroundColor = [UIColor colorWithPatternImage:image];
+    
     
     //cash　frame
     int cashFrameWidth = 170;
@@ -280,11 +279,13 @@ void (^actNoForCoinShort)(void) = ^(void) {
     //参考戻る時(時間経過等ゲーム終了時で)：[self dismissModalViewControllerAnimated:YES];
     //            NSLog(@"return");
     //            [self dismissViewControllerAnimated:YES completion:nil];
-    UIButton *closeBtn = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
-                                                               rect:CGRectMake(300, 3, 20, 20)
-                                                              image:@"close.png"
+    closeBtn = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
+                                                               rect:CGRectMake(300, 3, 50, 50)
+                                                              image:@"exit_b.png"
                                                              target:self
                                                            selector:@"closeBtnClicked"];
+    closeBtn.center = CGPointMake(self.view.bounds.size.width-closeBtn.bounds.size.width/2,
+                                  closeBtn.bounds.size.height/2);
     [self.view addSubview:closeBtn];
     [self.view bringSubviewToFront:closeBtn];
     

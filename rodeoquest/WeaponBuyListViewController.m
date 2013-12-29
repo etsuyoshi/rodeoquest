@@ -146,6 +146,16 @@ UIView *superViewForEquipWpn;
 	// Do any additional setup after loading the view.
     [super viewDidLoad];
     
+    //閉じるボタンの色を赤に変更
+    closeBtn = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
+                                                     rect:CGRectMake(300, 3, 50, 50)
+                                                    image:@"exit_r.png"
+                                                   target:self
+                                                 selector:@"closeBtnClicked"];
+    closeBtn.center = CGPointMake(self.view.bounds.size.width-closeBtn.bounds.size.width/2,
+                                  closeBtn.bounds.size.height/2);
+    
+    
     
     //slideShowを表示するメソッド呼出しのためのボタン
     btnClDispSlide =

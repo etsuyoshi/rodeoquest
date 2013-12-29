@@ -14,6 +14,7 @@
 
 //サブクラスでボタン追加するときに位置調整のために使用するのでグローバルに。
 UITextView *tvGoldAmount;
+UIButton *closeBtn;
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;
