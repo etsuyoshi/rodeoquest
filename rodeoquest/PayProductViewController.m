@@ -174,35 +174,24 @@ NSArray *arrProductId;
     
     
     //ruby　frame
-    int cashFrameWidth = 170;
-    int cashFrameHeight = 50;
-    int cashFrameInitX = 145;
-    int cashFrameInitY = 40;
+    int rubyFrameWidth = 170;
+    int rubyFrameHeight = 50;
+    int rubyFrameInitX = 145;
+    int rubyFrameInitY = 40;
     
     
-//    if(cashView != nil){//if extends from subclass (no possible?)
-//        [cashView removeFromSuperview];
-//    }
-    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
-                                                           cashFrameInitY,
-                                                           cashFrameWidth,
-                                                           cashFrameHeight)];
-//    UITapGestureRecognizer *singleFingerTap =
-//    [[UITapGestureRecognizer alloc] initWithTarget:self
-//                                            action:@selector(pushedMoneyFrame:)];
-//    [cashView addGestureRecognizer:singleFingerTap];
-    [self.view addSubview:cashView];
+    rubyView = [CreateComponentClass createView:CGRectMake(rubyFrameInitX,
+                                                           rubyFrameInitY,
+                                                           rubyFrameWidth,
+                                                           rubyFrameHeight)];
+    [self.view addSubview:rubyView];
     
     //ruby image
-    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
+    UIImageView *rubyIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
                                                                        14, 23, 23)];
-    cashIV.image = [UIImage imageNamed:@"jewel"];
-    [cashView addSubview:cashIV];
+    rubyIV.image = [UIImage imageNamed:@"jewel"];
+    [rubyView addSubview:rubyIV];
     
-    //ruby numeric
-//    CGRect rectRubyAmount = CGRectMake(cashFrameInitX + 50,
-//                                       cashFrameInitY + 10,
-//                                       150, 32);
     CGRect rectRubyAmount = CGRectMake(50,
                                        10,
                                        150, 32);
@@ -212,7 +201,7 @@ NSArray *arrProductId;
     lblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     lblRubyAmount.textColor = [UIColor whiteColor];
     lblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
-    [cashView addSubview:lblRubyAmount];
+    [rubyView addSubview:lblRubyAmount];
     
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -369,7 +358,7 @@ NSArray *arrProductId;
     
     //rubyの更新
     lblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
-    [self.view bringSubviewToFront:cashView];
+    [self.view bringSubviewToFront:rubyView];
     
     NSLog(@"view will appear at payProduct at ruby:%@", lblRubyAmount.text);
 }

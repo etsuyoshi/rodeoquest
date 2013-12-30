@@ -28,7 +28,7 @@ NSArray *arrPrice;
 NSArray *arrTypeImage;//ボタンアイコンタイプ
 NSArray *arrProductType;
 UIImageView *viewYenImage;
-UIView *cashView;//現在保有ルビーを表示する
+UIView *rubyView;//現在保有ルビーを表示する
 UILabel *lblRubyAmount;
 AttrClass *attr;
 
@@ -40,5 +40,8 @@ SKPaymentTransactionObserver>{
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
+
+
+-(void)showDialog;
 
 @end

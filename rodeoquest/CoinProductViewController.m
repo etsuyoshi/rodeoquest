@@ -75,39 +75,72 @@ UIView *viewDialog;
     return self;
 }
 
+
+/*
+ *スーパークラスで定義されたrubyViewの位置を調整(上にずらす)
+ *本クラスでcashViewを新規に作成し、rubyViewの下に生成
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    //ruby　frame
-//    int cashFrameWidth = 170;
-//    int cashFrameHeight = 50;
-//    int cashFrameInitX = 145;
-//    int cashFrameInitY = 40;
+    //location adjustment
+    rubyView.center =
+    CGPointMake(rubyView.center.x,
+                rubyView.frame.size.height);
     
-    //remove cashView defined in superclass
-//    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
-//                                                                   cashFrameInitY,
-//                                                                   cashFrameWidth,
-//                                                                   cashFrameHeight)];
+    //cash　frame location
+    int cashFrameWidth = rubyView.frame.size.width;
+    int cashFrameHeight = rubyView.frame.size.height;
+    int cashFrameInitX = rubyView.frame.origin.x;
+    int cashFrameInitY = rubyView.frame.origin.y + rubyView.frame.size.height + 5;
+    
+    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
+                                                           cashFrameInitY,
+                                                           cashFrameWidth,
+                                                           cashFrameHeight)];
+    [self.view addSubview:cashView];
+    
+    
+    
+    //cash image
+    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 14, 23, 23)];
+    cashIV.image = [UIImage imageNamed:@"coin_yellow"];//png-file
+    [cashView addSubview:cashIV];
+    
+    CGRect rectCashAmount = CGRectMake(50,
+                                       10,
+                                       150, 32);
+    
+    lblCashAmount = [[UILabel alloc]initWithFrame:rectCashAmount];
+    [lblCashAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
+    lblCashAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"gold"] intValue]];
+    lblCashAmount.textColor = [UIColor whiteColor];
+    lblCashAmount.backgroundColor = [UIColor clearColor];//gray?
+    [cashView addSubview:lblCashAmount];
+    
+    
+    
+    
+    //スーパークラスのrubyViewにジェスチャーレコを付与
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(pushedMoneyFrame:)];
-    [cashView addGestureRecognizer:singleFingerTap];
+    [rubyView addGestureRecognizer:singleFingerTap];
     
     
 //    //ruby numeric
     CGRect rectRubyAmount = CGRectMake(50,
                                        10,
                                        150, 32);
-    [lblRubyAmount removeFromSuperview];//remove superclass field
+    [lblRubyAmount removeFromSuperview];//remove superclass field "rubyView"
     myLblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
     [myLblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
     myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     myLblRubyAmount.textColor = [UIColor whiteColor];
     myLblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
-    [cashView addSubview:myLblRubyAmount];//cashView is defined in superclass
+    [rubyView addSubview:myLblRubyAmount];//cashView is defined in superclass
     
     
     
@@ -119,7 +152,9 @@ UIView *viewDialog;
     [super viewWillAppear:animated];
     
     myLblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
-    [self.view bringSubviewToFront:cashView];
+//    [self.view bringSubviewToFront:rubyView];
+    
+    lblCashAmount.text = [attr getValueFromDevice:@"gold"];
     
     NSLog(@"view will appear at coinProduct at ruby:%@", myLblRubyAmount.text);
 }
@@ -256,9 +291,20 @@ UIView *viewDialog;
     [attr setValueToDevice:@"gold"
                   strValue:[NSString stringWithFormat:@"%d", nowCoin+_acquiredCoin]];
     
+    //GUI setting(cash & ruby)
+    lblCashAmount.text = [attr getValueFromDevice:@"gold"];
+    
+    myLblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
+    
+    
+    [super showDialog];
+    
 }
 
--(void)pushedMoneyFrame:(UITapGestureRecognizer *)recognizer{//rubyが表示されたフレームを押下するとruby購入ページへ移行
+/*
+ *rubyが表示されたフレームを押下するとruby購入ページへ移行
+ */
+-(void)pushedMoneyFrame:(UITapGestureRecognizer *)recognizer{
     PayProductViewController * payView =
     [[PayProductViewController alloc] init];
     [self presentViewController:payView animated:YES completion:nil];

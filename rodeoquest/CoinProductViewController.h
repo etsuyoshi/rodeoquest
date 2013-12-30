@@ -16,6 +16,9 @@ typedef NS_ENUM(NSInteger, CoinType) {
     CoinType6
 };
 UILabel *myLblRubyAmount;
+UIView *cashView;
+UILabel *lblCashAmount;
+
 @interface CoinProductViewController : PayProductViewController
 
 @end
