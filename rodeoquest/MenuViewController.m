@@ -715,13 +715,12 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
     //次に描画するため
     //http://stackoverflow.com/questions/4175729/run-animation-every-time-app-is-opened
     //In iOS 4, pressing the home button doesn't terminate the app, it suspends it. When the app is made active again, a UIApplicationDidBecomeActiveNotification is posted. Register for that notification and initiate the animation in you
+    //アプリが表示されたらsetBackGroundInitとviewWillAppearを実行
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(setBackGroundInit)
      name:UIApplicationDidBecomeActiveNotification
      object:nil];
-    
-    //アプリが表示されたらsetBackGroundInitとviewWillAppearを実行
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(viewWillAppear:)

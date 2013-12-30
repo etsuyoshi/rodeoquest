@@ -81,31 +81,29 @@ UIView *viewDialog;
 	// Do any additional setup after loading the view.
     
     //ruby　frame
-    int cashFrameWidth = 170;
-    int cashFrameHeight = 50;
-    int cashFrameInitX = 145;
-    int cashFrameInitY = 40;
+//    int cashFrameWidth = 170;
+//    int cashFrameHeight = 50;
+//    int cashFrameInitX = 145;
+//    int cashFrameInitY = 40;
     
     //remove cashView defined in superclass
-    [cashView removeFromSuperview];
-    cashView = nil;
-    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
-                                                                   cashFrameInitY,
-                                                                   cashFrameWidth,
-                                                                   cashFrameHeight)];
+//    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
+//                                                                   cashFrameInitY,
+//                                                                   cashFrameWidth,
+//                                                                   cashFrameHeight)];
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(pushedMoneyFrame:)];
     [cashView addGestureRecognizer:singleFingerTap];
-    [self.view addSubview:cashView];
+//    [self.view addSubview:cashView];
     
     //ruby image
-    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
-                                                                       14, 23, 23)];
-    cashIV.image = [UIImage imageNamed:@"jewel.png"];
-    [cashView addSubview:cashIV];
-    
-    //ruby numeric
+//    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
+//                                                                       14, 23, 23)];
+//    cashIV.image = [UIImage imageNamed:@"jewel.png"];
+//    [cashView addSubview:cashIV];
+//    
+//    //ruby numeric
     CGRect rectRubyAmount = CGRectMake(50,
                                        10,
                                        150, 32);
@@ -115,6 +113,10 @@ UIView *viewDialog;
     myLblRubyAmount.textColor = [UIColor whiteColor];
     myLblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
     [cashView addSubview:myLblRubyAmount];
+    
+    
+    [lblRubyAmount removeFromSuperview];
+    
     
 }
 

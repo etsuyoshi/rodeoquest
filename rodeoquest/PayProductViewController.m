@@ -180,9 +180,9 @@ NSArray *arrProductId;
     int cashFrameInitY = 40;
     
     
-    if(cashView != nil){//if extends from subclass (no possible?)
-        [cashView removeFromSuperview];
-    }
+//    if(cashView != nil){//if extends from subclass (no possible?)
+//        [cashView removeFromSuperview];
+//    }
     cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
                                                            cashFrameInitY,
                                                            cashFrameWidth,
