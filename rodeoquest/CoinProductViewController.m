@@ -95,27 +95,22 @@ UIView *viewDialog;
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(pushedMoneyFrame:)];
     [cashView addGestureRecognizer:singleFingerTap];
-//    [self.view addSubview:cashView];
     
-    //ruby image
-//    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10,
-//                                                                       14, 23, 23)];
-//    cashIV.image = [UIImage imageNamed:@"jewel.png"];
-//    [cashView addSubview:cashIV];
-//    
+    
 //    //ruby numeric
     CGRect rectRubyAmount = CGRectMake(50,
                                        10,
                                        150, 32);
+    [lblRubyAmount removeFromSuperview];//remove superclass field
     myLblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
     [myLblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
     myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     myLblRubyAmount.textColor = [UIColor whiteColor];
     myLblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
-    [cashView addSubview:myLblRubyAmount];
+    [cashView addSubview:myLblRubyAmount];//cashView is defined in superclass
     
     
-    [lblRubyAmount removeFromSuperview];
+    
     
     
 }

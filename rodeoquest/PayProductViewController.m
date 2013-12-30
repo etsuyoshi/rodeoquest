@@ -220,24 +220,6 @@ NSArray *arrProductId;
                                            self.view.bounds.size.height/2);
     [self.view addSubview:activityIndicator];
     
-    //動画背景
-    background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
-                                          width:self.view.bounds.size.width
-                                         height:self.view.bounds.size.height
-                                           secs:5.0f];
-    
-    [self.view addSubview:[background getImageView1]];
-    [self.view addSubview:[background getImageView2]];
-    [self.view sendSubviewToBack:[background getImageView1]];
-    [self.view sendSubviewToBack:[background getImageView2]];
-    //        [self.view bringSubviewToFront:[background getImageView1]];
-    //        [self.view bringSubviewToFront:[background getImageView2]];
-    
-    
-    [background startAnimation];
-    
-    
-    
     
     //何もしないUIViewをaddする:他のコンポーネントをこの上に置く(閉じるアクションをつけたuiviewの上にaddすると他のコンポーネントに対するアクションにも閉じるアクションが適用されてしまう)
     UIView *viewSuperInPay = [CreateComponentClass createViewNoFrame:self.view.bounds
@@ -366,6 +348,24 @@ NSArray *arrProductId;
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
+    
+    //動画背景
+    //background
+    [self setBackGroundInit];
+    //次に描画するため
+    //http://stackoverflow.com/questions/4175729/run-animation-every-time-app-is-opened
+    //In iOS 4, pressing the home button doesn't terminate the app, it suspends it. When the app is made active again, a UIApplicationDidBecomeActiveNotification is posted. Register for that notification and initiate the animation in you
+    //アプリが表示されたらsetBackGroundInitとviewWillAppearを実行
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(setBackGroundInit)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(viewWillAppear:)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
     
     //rubyの更新
     lblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
@@ -533,5 +533,27 @@ NSArray *arrProductId;
 }
 
 
+-(void)setBackGroundInit{
+//    NSLog(@"set background init");
+    
+    if(background != nil &&
+       ![background isEqual:[NSNull null]]){
+        [background exitAnimations];
+    }
+    background = [[BackGroundClass2 alloc] init:WorldTypeUniverse1
+                                          width:self.view.bounds.size.width
+                                         height:self.view.bounds.size.height
+                                           secs:5.0f];
+    
+    [self.view addSubview:[background getImageView1]];
+    [self.view addSubview:[background getImageView2]];
+    [self.view sendSubviewToBack:[background getImageView1]];
+    [self.view sendSubviewToBack:[background getImageView2]];
+    //        [self.view bringSubviewToFront:[background getImageView1]];
+    //        [self.view bringSubviewToFront:[background getImageView2]];
+    
+    
+    [background startAnimation];
+}
 
 @end

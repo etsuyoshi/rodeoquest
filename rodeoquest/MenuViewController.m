@@ -692,15 +692,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
-    //background
-//    NSLog(@"background=%@", backGround);
-//    NSLog(@"background=%d", backGround == nil);//1
-//    NSLog(@"background=%d", [backGround isEqual:[NSNull null]]);//0
-    [self setBackGroundInit];
     
-    
-    //前回最後に取得した時刻からの差額を算出
-    
+    //timer drive
     if(tm != nil){
         [tm invalidate];
         tm = nil;
@@ -711,7 +704,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                         userInfo:nil
                                          repeats:YES];
 
-    
+    //background
+    [self setBackGroundInit];
     //次に描画するため
     //http://stackoverflow.com/questions/4175729/run-animation-every-time-app-is-opened
     //In iOS 4, pressing the home button doesn't terminate the app, it suspends it. When the app is made active again, a UIApplicationDidBecomeActiveNotification is posted. Register for that notification and initiate the animation in you
