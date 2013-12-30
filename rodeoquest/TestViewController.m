@@ -914,35 +914,16 @@ int tempCount = 0;
     
 #elif defined EXPLODE_TEST
     if(counter == 0){
-        [self.view setBackgroundColor:[UIColor blueColor]];
+        [self.view setBackgroundColor:[UIColor whiteColor]];
         
         ViewExplode *_viewEx = [[ViewExplode alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/2,
-                                                                             self.view.bounds.size.height/2, 1, 1)];//
-        //                                                                     self.view.bounds.size.width,
-        //                                                                     self.view.bounds.size.height)];
-//        _viewEx.center = CGPointMake(self.view.bounds.size.width/2,
-//                                     self.view.bounds.size.height/2);
+                                                                             self.view.bounds.size.height/2, 1, 1)
+                                type:ExplodeType2];
         [self.view addSubview:_viewEx];
-        NSLog(@"viewkira.center = %f, %f", _viewEx.center.x, _viewEx.center.y);
         
-        [UIView animateWithDuration:0.5f
-                              delay:0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^{
-                             _viewEx.frame = CGRectMake(self.view.bounds.size.width/2-100,
-                                                        self.view.bounds.size.height/2-100,
-                                                        200, 200);
-//                             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
-//                             _viewEx.transform = transform;//...ok?
-//                             _viewEx.center = CGPointMake(self.view.bounds.size.width/2,
-//                                                          self.view.bounds.size.height/2);
-//                             _viewEx.center = CGPointMake(self.view.bounds.size.width/2,
-//                                                          self.view.bounds.size.height/2);
-//                             _viewEx.alpha = 0.0f;
-                         }
-                         completion:^(BOOL finished){
-                             
-                         }];
+        
+        NSLog(@"viewkira.center = %f, %f", _viewEx.center.x, _viewEx.center.y);
+        [_viewEx explode:(int)400 angle:(int)60 x:(float)_viewEx.center.x y:(float)_viewEx.center.y];
     }
 
 #else

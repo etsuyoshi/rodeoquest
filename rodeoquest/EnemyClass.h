@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ExplodeParticleView.h"
 #import "DamageParticleView.h"
+#import "ViewExplode.h"
 
 typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     EnemyTypeTanu,
@@ -35,6 +36,8 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     CGRect rect;
     ExplodeParticleView *explodeParticle;
     DamageParticleView *damageParticle;
+    
+    ViewExplode *viewExplode;
 }
 @property(nonatomic) EnemyType enemyType;
 
@@ -66,4 +69,5 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
 -(ExplodeParticleView *)getExplodeParticle;
 -(DamageParticleView *)getDamageParticle;
 -(UIView*)getSmokeEffect;
+-(ViewExplode *)getExplodeEffect;
 @end

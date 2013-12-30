@@ -86,6 +86,7 @@
 #import <AppSocially/AppSocially.h>
 #import "GameClassViewController.h"
 #import "ViewWithEffectLevelUp.h"
+#import "ViewExplode.h"
 #import "ViewKira.h"
 #import "BGMClass.h"
 #import "DBAccessClass.h"
@@ -2608,8 +2609,15 @@ int sensitivity;
     smoke = [[EnemyArray objectAtIndex:i] getSmokeEffect];
     [self.view bringSubviewToFront:smoke];
     [self.view addSubview:smoke];
-    //                            [self.view addSubview:[[EnemyArray objectAtIndex:i] getSmokeEffect]];
-    //                            [self.view addSubview:[[EnemyArray objectAtIndex:i] getSmokeEffect]];
+    
+    
+    //敵クラスに格納する！＝修正要
+    //explodeEffect
+    ViewExplode *viewExplode = [[EnemyArray objectAtIndex:i] getExplodeEffect];
+    [self.view addSubview:viewExplode];
+
+    
+    
     
     //得点の加算
     [ScoreBoard setScore:[ScoreBoard getScore] + 5];//+1でよい？！
@@ -3006,7 +3014,7 @@ int sensitivity;
             break;
         }
         default:{
-            _kiraType = KiraTypeWhite;
+            _kiraType = KiraTypeBlue;
             break;
         }
     }

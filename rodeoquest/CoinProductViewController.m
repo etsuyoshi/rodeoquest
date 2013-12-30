@@ -109,10 +109,7 @@ UIView *viewDialog;
     cashIV.image = [UIImage imageNamed:@"coin_yellow"];//png-file
     [cashView addSubview:cashIV];
     
-    CGRect rectCashAmount = CGRectMake(50,
-                                       10,
-                                       150, 32);
-    
+    CGRect rectCashAmount = CGRectMake(50, 10, 150, 32);
     lblCashAmount = [[UILabel alloc]initWithFrame:rectCashAmount];
     [lblCashAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
     lblCashAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"gold"] intValue]];
@@ -123,7 +120,7 @@ UIView *viewDialog;
     
     
     
-    //スーパークラスのrubyViewにジェスチャーレコを付与
+    //スーパークラスのrubyViewにジェスチャーレコを付与(subclassのみに適用)
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(pushedMoneyFrame:)];
@@ -293,10 +290,10 @@ UIView *viewDialog;
     
     //GUI setting(cash & ruby)
     lblCashAmount.text = [attr getValueFromDevice:@"gold"];
-    
     myLblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
     
     
+    //確認ダイアログ
     [super showDialog];
     
 }

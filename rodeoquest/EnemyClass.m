@@ -41,6 +41,7 @@ int unique_id;
     rect = CGRectMake(x_loc, y_loc, mySize, mySize);
     iv = [[UIImageView alloc]initWithFrame:rect];
     iv.center = CGPointMake(x_loc, y_loc);//位置を修正
+    
     enemyType = _enemyType;
     
     switch(enemyType){
@@ -379,6 +380,32 @@ int unique_id;
     [sv addSubview:smoke3];
     
     return sv;
+}
+
+-(ViewExplode *)getExplodeEffect{
+    switch (enemyType) {
+        case EnemyTypeHari:{
+            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
+                           type:ExplodeType1];
+            [viewExplode explode:250 angle:60 x:x_loc y:y_loc];
+            break;
+        }
+        case EnemyTypeZou:{
+            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
+                                                        type:ExplodeType2];
+            [viewExplode explode:300 angle:60 x:x_loc y:y_loc];
+            break;
+        }
+        default:{
+            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc,y_loc, 1, 1)
+                                                        type:ExplodeTypeSmallCircle];
+            [viewExplode explode:(int)200 angle:(int)60 x:(float)x_loc y:(float)y_loc];
+
+            break;
+        }
+    }
+    
+    return viewExplode;
 }
 
 @end

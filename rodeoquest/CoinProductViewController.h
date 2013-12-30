@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, CoinType) {
     CoinType5,
     CoinType6
 };
-UILabel *myLblRubyAmount;
+UILabel *myLblRubyAmount;//"my" means subclass distinct from superclass's lblRubyAmount
 UIView *cashView;
 UILabel *lblCashAmount;
 
