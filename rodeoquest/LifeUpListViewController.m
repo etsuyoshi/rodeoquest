@@ -66,6 +66,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
                     @"itemlistLifeUp2",
                     @"itemlistLifeUp3",
                    nil];
+        
+        strImgUnit = @"jewel";//image of unit to buy item.(abbreviate ".png")
     }
     return self;
 }
@@ -74,6 +76,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    tvGoldAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
 }
 
 - (void)didReceiveMemoryWarning

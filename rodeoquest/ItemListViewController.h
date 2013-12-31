@@ -18,6 +18,8 @@
 UITextView *tvGoldAmount;
 UIButton *closeBtn;
 UIView *viewForCoinShort;
+NSString *strImgUnit;
+UIView *cashView;
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;

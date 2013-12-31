@@ -95,6 +95,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //                                            height:self.view.bounds.size.height
 //                                              secs:5.0f];
         
+        strImgUnit = @"coin_yellow";//image of unit to buy item.
         attr = [[AttrClass alloc]init];
     }
     return self;
@@ -137,10 +138,10 @@ void (^actNoForCoinShort)(void) = ^(void) {
     int cashFrameHeight = 50;
     int cashFrameInitX = 145;
     int cashFrameInitY = 40;
-    UIView *cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
-                                                                   cashFrameInitY,
-                                                                   cashFrameWidth,
-                                                                   cashFrameHeight)];
+    cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
+                                                           cashFrameInitY,
+                                                           cashFrameWidth,
+                                                           cashFrameHeight)];
     [self.view addSubview:cashView];
     
     UITapGestureRecognizer *singleFingerTap =
@@ -153,8 +154,9 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
 //                                                                       cashFrameInitY + 14, 23, 23)];
     UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 14, 23, 23)];
-    cashIV.image = [UIImage imageNamed:@"coin_yellow.png"];
-    [self.view addSubview:cashIV];
+    cashIV.image = [UIImage imageNamed:strImgUnit];
+//    [self.view addSubview:cashIV];
+    [cashView addSubview:cashIV];
     
     //cash numeric
 //    CGRect rectGoldAmount = CGRectMake(cashFrameInitX + 50,
