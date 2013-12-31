@@ -14,6 +14,7 @@
 
 @implementation LifeUpListViewController
 id _self;
+NSMutableArray *arrAcquiredLifeNum;
 
 void (^actYesForRubyShort)(void) = ^(void) {
     
@@ -60,11 +61,22 @@ void (^actNoForRubyShort)(void) = ^(void) {
                    @"70",
                    nil];
         itemList = [NSMutableArray arrayWithObjects:
+//                    @"lifeGame",
+//                    @"lifeGame",
+//                    @"lifeGame",
+//                    @"lifeGame",
                     @"itemlistLifeUp0",
                     @"itemlistLifeUp1",
                     @"itemlistLifeUp2",
                     @"itemlistLifeUp3",
                    nil];
+        
+        arrAcquiredLifeNum = [NSMutableArray arrayWithObjects:
+                              @"1",
+                              @"2",
+                              @"3",
+                              @"4",
+                              nil];
         
         strImgUnit = @"jewel";//image of unit to buy item.(abbreviate ".png")
     }
@@ -115,8 +127,8 @@ void (^actNoForRubyShort)(void) = ^(void) {
          dialogRect:CGRectMake(10, 10,
                                self.view.bounds.size.width-30,
                                self.view.bounds.size.width-30)//正方形：縦＝横
-         title:@"コインが不足しています。"
-         message:@"コインを購入しますか？"
+         title:@"ルビーが不足しています。"
+         message:@"ルビーを購入しますか？"
          titleYes:@"購入"
          titleNo:@"戻る"
          onYes:actYesForRubyShort
@@ -134,19 +146,34 @@ void (^actNoForRubyShort)(void) = ^(void) {
 
 
 
+/*
+ *購入した商品情報(idに対応する個数)を更新
+ *引数：itemListの項目が渡される
+ */
 -(void)processAfterBtnPressed:(NSString *)_key{
-    if([[attr getValueFromDevice:_key] isEqual:[NSNull null]] ||
-       [attr getValueFromDevice:_key] == nil){
-        
+    
+    int _originalLife = [[attr getValueFromDevice:@"lifeGame"] intValue];
+    NSLog(@"processBeforeBtnPressed:%d", _originalLife);
+    //取得した項目(ItemList配列)と獲得ライフ数(arrAcquiredLifeNum配列)の対応辞書
+    NSDictionary *_dictAcquiredAndItem =
+    [NSDictionary dictionaryWithObjects:
+     arrAcquiredLifeNum forKeys:itemList];
+    int _addingLife = [[_dictAcquiredAndItem objectForKey:_key] integerValue];
+    
+    int afterLife = _originalLife + _addingLife;
+    
+    [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d", afterLife]];
+    
+    
+    
+//    if([[attr getValueFromDevice:_key] isEqual:[NSNull null]] ||
+//       [attr getValueFromDevice:_key] == nil){
 //        [attr setValueToDevice:_key strValue:@"1"];
-    }else{
-        
-        int beforeNum = [[attr getValueFromDevice:_key] intValue];
-        int afterNum = beforeNum + 1;
-        
-        
-        [attr setValueToDevice:_key strValue:[NSString stringWithFormat:@"%d", afterNum]];
-    }
+//    }else{
+//        int beforeNum = [[attr getValueFromDevice:_key] intValue];
+//        int afterNum = beforeNum + 1;
+//        [attr setValueToDevice:_key strValue:[NSString stringWithFormat:@"%d", afterNum]];
+//    }
     
     NSLog(@"processAfterBtnPressed:%@", [attr getValueFromDevice:_key]);
 }

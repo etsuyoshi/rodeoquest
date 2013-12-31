@@ -274,8 +274,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                        title:[arrTitle objectAtIndex:i]
                                                       target:self
                                                        selector:@"onSelectButton:"];
-//                                                    selector:@"buyBtnPressed:"];
-        btnBuy.tag = i;//[[arrCost objectAtIndex:i] intValue];
+        btnBuy.tag = i;
 //        [uvOnScroll addSubview:btnBuy];
         
         [arrBtnBuy addObject:btnBuy];

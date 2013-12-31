@@ -313,7 +313,8 @@ int sensitivity;
     CFBundleRef mainBundle;
     mainBundle = CFBundleGetMainBundle ();
     
-    if(isSE){
+    if(isSE){//no-sound??
+        NSLog(@"set sound-effect:%d", isSE);
         //敵機撃破
         sound_hit_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("flinging"),CFSTR ("mp3"),NULL);
         AudioServicesCreateSystemSoundID (sound_hit_URL, &sound_hit_ID);
@@ -321,9 +322,9 @@ int sensitivity;
         
         //敵機ダメージ：耳障りの良い物を選択しなければならない
         //    sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("gunshot3"),CFSTR ("mp3"),NULL);//耳障り
-        //        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);//耳障り
-        //        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
-        //        CFRelease (sound_damage_URL);
+        sound_damage_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("damage3"),CFSTR ("mp3"),NULL);//耳障り
+        AudioServicesCreateSystemSoundID (sound_damage_URL, &sound_damage_ID);
+        CFRelease (sound_damage_URL);
         
         //
         sound_itemGet_URL  = CFBundleCopyResourceURL (mainBundle,CFSTR ("synth-sweep1"),CFSTR ("mp3"),NULL);
@@ -2621,7 +2622,7 @@ int sensitivity;
     [self.view addSubview:smoke];
     
     
-    //敵クラスに格納する！＝修正要
+    //クリティカルヒット及びビーム発射時及び象撃破時のみ→修正要
     //explodeEffect
     ViewExplode *viewExplode = [[EnemyArray objectAtIndex:i] getExplodeEffect];
     [self.view addSubview:viewExplode];

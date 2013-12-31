@@ -309,7 +309,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
                    [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
-                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
                    nil],
                   nil];
                    
@@ -1748,7 +1748,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *name = @"se";
     NSLog(@"original-SE : %d", [[_myDefaults objectForKey:name] intValue]);
     //if se on/off then se off/on
-    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";
+    NSString *value = ([[_myDefaults objectForKey:name] intValue]==1)?@"0":@"1";//if value=1 then 0, else 1;
     [_myDefaults setObject:value forKey:name];
     NSLog(@"set up se : %d", [[_myDefaults objectForKey:name] intValue]);
 }
