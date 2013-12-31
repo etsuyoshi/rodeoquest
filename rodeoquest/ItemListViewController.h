@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BackGroundClass2.h"
 #import "CoinProductViewController.h"
+#import "PayProductViewController.h"
 #import "CreateComponentClass.h"
 #import "AttrClass.h"
 
@@ -16,6 +17,7 @@
 //サブクラスでボタン追加するときに位置調整のために使用するのでグローバルに。
 UITextView *tvGoldAmount;
 UIButton *closeBtn;
+UIView *viewForCoinShort;
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;
@@ -32,5 +34,8 @@ UIButton *closeBtn;
 //    NSMutableArray *arrBtn;
 }
 
+
+//in order to use :subclass method
 -(void)buyBtnPressed:(id)sender;
+-(void)oscillateTextViewGold:(int)count;
 @end

@@ -18,7 +18,6 @@
 //
 
 #import "ItemListViewController.h"
-#import "PayProductViewController.h"
 
 @interface ItemListViewController ()
 
@@ -28,7 +27,6 @@
 
 AttrClass *attr;
 //UIButton *btnBuy;
-UIView *viewForCoinShort;
 BackGroundClass2 *backGround;
 id _self;
 
@@ -39,8 +37,8 @@ void (^actYesForCoinShort)(void) = ^(void) {
     
     
     //             [self closeBtnClicked];
-    PayProductViewController *payView = [[PayProductViewController alloc] init];
-    [_self presentViewController: payView animated:NO completion: nil];
+    CoinProductViewController *coinView = [[CoinProductViewController alloc] init];
+    [_self presentViewController: coinView animated:NO completion: nil];
     
     
 };
@@ -152,15 +150,17 @@ void (^actNoForCoinShort)(void) = ^(void) {
     
     
     //cash image
-    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
-                                                                       cashFrameInitY + 14, 23, 23)];
+//    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
+//                                                                       cashFrameInitY + 14, 23, 23)];
+    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 14, 23, 23)];
     cashIV.image = [UIImage imageNamed:@"coin_yellow.png"];
     [self.view addSubview:cashIV];
     
     //cash numeric
-    CGRect rectGoldAmount = CGRectMake(cashFrameInitX + 50,
-                                       cashFrameInitY + 10,
-                                       150, 32);
+//    CGRect rectGoldAmount = CGRectMake(cashFrameInitX + 50,
+//                                       cashFrameInitY + 10,
+//                                       150, 32);
+    CGRect rectGoldAmount = CGRectMake(50, 10, 150, 32);
     tvGoldAmount = [[UITextView alloc]initWithFrame:rectGoldAmount];
     //@"AmericanTypewriter-Bold"
     [tvGoldAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
@@ -168,7 +168,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
     tvGoldAmount.textColor = [UIColor whiteColor];
     tvGoldAmount.backgroundColor = [UIColor clearColor];//gray?
     tvGoldAmount.editable = NO;
-    [self.view addSubview:tvGoldAmount];
+//    [self.view addSubview:tvGoldAmount];
+    [cashView addSubview:tvGoldAmount];
     
     
     
@@ -368,6 +369,9 @@ void (^actNoForCoinShort)(void) = ^(void) {
     
 }
 
+/*
+ *保有記録にフラグ１を立てる
+ */
 -(void)processAfterBtnPressed:(NSString *)_key{
     if([[attr getValueFromDevice:_key] isEqual:[NSNull null]] ||
        [attr getValueFromDevice:_key] == nil){

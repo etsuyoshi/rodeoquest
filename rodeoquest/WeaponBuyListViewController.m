@@ -15,6 +15,9 @@
  *dispSlideShow:processAfterBtnPressed内で中央に表示されたアイテムを選択するとアイテム一覧のスライドショー表示
  *viewWillDisappear:
  *viewDidDisappear:
+ 
+ *価格表示をルビーにする
+ *ボタン押下後に駆動するonSelectButtonの挙動を変更して、ルビーの個数が修正されるように変更する
  */
 //
 
