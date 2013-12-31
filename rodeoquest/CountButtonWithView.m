@@ -217,13 +217,17 @@
 -(void)setImage{
     switch (buttonCountType) {
         case ButtonCountImageTypeSensitivity:{
-            if(countPressed > 0){
-                imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
-                break;
-            }else{
-                imgAdd.image = nil;
-                break;
+            if(countPressed == 0){
+                imgAdd.image = [UIImage imageNamed:@"icon_flickx1.png"];
+            }else if(countPressed == 1){
+                imgAdd.image = [UIImage imageNamed:@"icon_flickx2.png"];
+            }else {
+                imgAdd.image = [UIImage imageNamed:@"icon_flickx3.png"];
             }
+            break;
+        }
+        default:{
+            break;
         }
     }
 }

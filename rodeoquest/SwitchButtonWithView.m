@@ -215,11 +215,19 @@
     //    if(isPressed){
     switch (buttonSwitchType) {
         case ButtonSwitchImageTypeSpeaker:{
-            imgAdd.image = [UIImage imageNamed:@"icon_INN_b.png"];
+            if(on_off){
+                imgAdd.image = [UIImage imageNamed:@"icon_speaker_on.png"];
+            }else{
+                imgAdd.image = [UIImage imageNamed:@"icon_speaker_on.png"];
+            }
             break;
         }
         case ButtonSwitchImageTypeBGM:{
-            imgAdd.image = [UIImage imageNamed:@"icon_gear_b.png"];
+            if(on_off){
+                imgAdd.image = [UIImage imageNamed:@"icon_music_on.png"];
+            }else{
+                imgAdd.image = [UIImage imageNamed:@"icon_music_off.png"];
+            }
             break;
         }
 //        case ButtonSwitchImageTypeSensitivity:{
