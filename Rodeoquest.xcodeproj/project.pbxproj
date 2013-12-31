@@ -311,6 +311,7 @@
 		34BC5CE01872A1A2005534EB /* icon_speaker_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CD61872A1A2005534EB /* icon_speaker_on.png */; };
 		34BC5CE21872AFDA005534EB /* icon_voice.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CE11872AFDA005534EB /* icon_voice.png */; };
 		34BC5CE41872AFE7005534EB /* icon_yen.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CE31872AFE7005534EB /* icon_yen.png */; };
+		34BC5D071872C8CF005534EB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5D061872C8CF005534EB /* Images.xcassets */; };
 		34BD6DB018193135006BC523 /* AppSocially.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 34BD6DAE18193135006BC523 /* AppSocially.bundle */; };
 		34BD6DB118193135006BC523 /* AppSocially.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DAF18193135006BC523 /* AppSocially.framework */; };
 		34BD6DB318193180006BC523 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DB218193180006BC523 /* Accounts.framework */; };
@@ -749,6 +750,7 @@
 		34BC5CD61872A1A2005534EB /* icon_speaker_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_speaker_on.png; sourceTree = "<group>"; };
 		34BC5CE11872AFDA005534EB /* icon_voice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_voice.png; sourceTree = "<group>"; };
 		34BC5CE31872AFE7005534EB /* icon_yen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_yen.png; sourceTree = "<group>"; };
+		34BC5D061872C8CF005534EB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Rodeoquest/Images.xcassets; sourceTree = "<group>"; };
 		34BD6DAE18193135006BC523 /* AppSocially.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AppSocially.bundle; sourceTree = "<group>"; };
 		34BD6DAF18193135006BC523 /* AppSocially.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppSocially.framework; sourceTree = "<group>"; };
 		34BD6DB218193180006BC523 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -985,6 +987,7 @@
 		342057C517F2B34C0084E99D = {
 			isa = PBXGroup;
 			children = (
+				34BC5D061872C8CF005534EB /* Images.xcassets */,
 				342057D717F2B34C0084E99D /* rodeoquest */,
 				342057D017F2B34C0084E99D /* Frameworks */,
 				342057CF17F2B34C0084E99D /* Products */,
@@ -1847,6 +1850,7 @@
 				34F53376181BBEDC00FB9470 /* bgm_menu_683.mp3 in Resources */,
 				348D635E17FE1A1100A3049B /* cross.png in Resources */,
 				34008FB4186EB4B500988C70 /* backback_desert.png in Resources */,
+				34BC5D071872C8CF005534EB /* Images.xcassets in Resources */,
 				348D636017FE1A9D00A3049B /* ribrary.png in Resources */,
 				348C441418669C300029D09B /* W_AnimalBow.png in Resources */,
 				3411FB7217FED1DF001D1491 /* powerGauge_pt0.png in Resources */,
@@ -2209,6 +2213,8 @@
 		342057F217F2B34C0084E99D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2238,6 +2244,8 @@
 		342057F317F2B34C0084E99D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
