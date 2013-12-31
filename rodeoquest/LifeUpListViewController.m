@@ -15,20 +15,19 @@
 @implementation LifeUpListViewController
 id _self;
 
-void (^actYesForCoinShort)(void) = ^(void) {
+void (^actYesForRubyShort)(void) = ^(void) {
     
     NSLog(@"link to buy money");
     [viewForCoinShort removeFromSuperview];
     
     
-    //             [self closeBtnClicked];
-    CoinProductViewController *coinView = [[CoinProductViewController alloc] init];
-    [_self presentViewController: coinView animated:NO completion: nil];
+    PayProductViewController *payView = [[PayProductViewController alloc] init];
+    [_self presentViewController: payView animated:NO completion: nil];
     
     
 };
 
-void (^actNoForCoinShort)(void) = ^(void) {
+void (^actNoForRubyShort)(void) = ^(void) {
     NSLog(@"automatically remove this alert");
     
     [viewForCoinShort removeFromSuperview];
@@ -91,7 +90,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
  *button->[onButtonSelect]->buyBtnPressed->[updateToDeviceRuby],[displayRuby],[processAfterBuyButton]
  */
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
-    if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
+    if([[attr getValueFromDevice:@"ruby"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
         NSLog(@"buy button pressed : %d", [sender tag]);
         //device data update
@@ -120,8 +119,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
          message:@"コインを購入しますか？"
          titleYes:@"購入"
          titleNo:@"戻る"
-         onYes:actYesForCoinShort
-         onNo:actNoForCoinShort
+         onYes:actYesForRubyShort
+         onNo:actNoForRubyShort
          ];
         
         viewForCoinShort.center =
