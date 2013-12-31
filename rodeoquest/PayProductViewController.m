@@ -89,7 +89,7 @@ NSArray *arrProductId;
                     nil];
         
         
-        strImgUnit = @"yen_g.png";
+        strImgUnit = @"icon_yen.png";
         
         attr = [[AttrClass alloc]init];
         

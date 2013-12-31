@@ -67,7 +67,7 @@
                                                           frame.size.height)];
         [self setBack];
         [self setImage];
-        [self switchLight];
+//        [self switchLight];
         [self addSubview:imgAdd];
         [self addSubview:imgLight];
         //        [self addSubview:mask];
@@ -115,10 +115,10 @@
     isPressed = true;
 //    on_off = on_off?false:true;
     //if countPressed=0,1 then 1,2 else 0
-    countPressed = (countPressed < MAXCOUNT-1)?(countPressed+1):0;
+    countPressed = (countPressed < MAXCOUNT-1)?(countPressed+1):0;//value-domain=0,1,2;
     //    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
     [self setBack];
-    [self switchLight];
+//    [self switchLight];
     [self setImage];
     
     
@@ -160,6 +160,11 @@
 //                 withObject:[NSNumber numberWithInteger:countPressed]
 //                 afterDelay:0.01f];
 }
+
+/*
+ *ライトの切り替え
+ *スイッチ機能ではなくカウンターなのでライト機能なしにした
+ */
 -(void)switchLight{
 //    if(on_off){
     if(countPressed > 0){

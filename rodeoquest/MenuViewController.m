@@ -309,7 +309,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
                    [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
-                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    nil],
                   nil];
                    
@@ -1079,8 +1079,8 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                                    @"効果音",
                                    nil];
             NSArray *arrImage = [NSArray arrayWithObjects:
-                                 [NSNumber numberWithInt:ButtonSwitchImageTypeSpeaker],
                                  [NSNumber numberWithInt:ButtonSwitchImageTypeBGM],
+                                 [NSNumber numberWithInt:ButtonSwitchImageTypeSpeaker],
 //                                 [NSNumber numberWithInt:ButtonSwitchImageTypeSensitivity],
                                  nil];
             for (int i = 0; i < [arrSetMethodName count]; i++){
@@ -1092,7 +1092,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                 UIImageView *iv_item = [CreateComponentClass createSwitchButton:rect_image
                                                                        backType:ButtonMenuBackTypeBlue
                                                                       imageType:[[arrImage objectAtIndex:i] intValue]
-                                                                            tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]
+                                                                            tag:[[NSString stringWithFormat:@"%d%d", 212, i] intValue]//non-use
                                                                          target:self
                                                                        selector:[arrSetMethodName objectAtIndex:i]];
                 [viewFrame addSubview:iv_item];

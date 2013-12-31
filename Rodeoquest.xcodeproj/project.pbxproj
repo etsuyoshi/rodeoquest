@@ -309,6 +309,8 @@
 		34BC5CDE1872A1A2005534EB /* icon_music_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CD41872A1A2005534EB /* icon_music_on.png */; };
 		34BC5CDF1872A1A2005534EB /* icon_speaker_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CD51872A1A2005534EB /* icon_speaker_off.png */; };
 		34BC5CE01872A1A2005534EB /* icon_speaker_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CD61872A1A2005534EB /* icon_speaker_on.png */; };
+		34BC5CE21872AFDA005534EB /* icon_voice.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CE11872AFDA005534EB /* icon_voice.png */; };
+		34BC5CE41872AFE7005534EB /* icon_yen.png in Resources */ = {isa = PBXBuildFile; fileRef = 34BC5CE31872AFE7005534EB /* icon_yen.png */; };
 		34BD6DB018193135006BC523 /* AppSocially.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 34BD6DAE18193135006BC523 /* AppSocially.bundle */; };
 		34BD6DB118193135006BC523 /* AppSocially.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DAF18193135006BC523 /* AppSocially.framework */; };
 		34BD6DB318193180006BC523 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD6DB218193180006BC523 /* Accounts.framework */; };
@@ -745,6 +747,8 @@
 		34BC5CD41872A1A2005534EB /* icon_music_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_music_on.png; sourceTree = "<group>"; };
 		34BC5CD51872A1A2005534EB /* icon_speaker_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_speaker_off.png; sourceTree = "<group>"; };
 		34BC5CD61872A1A2005534EB /* icon_speaker_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_speaker_on.png; sourceTree = "<group>"; };
+		34BC5CE11872AFDA005534EB /* icon_voice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_voice.png; sourceTree = "<group>"; };
+		34BC5CE31872AFE7005534EB /* icon_yen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_yen.png; sourceTree = "<group>"; };
 		34BD6DAE18193135006BC523 /* AppSocially.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AppSocially.bundle; sourceTree = "<group>"; };
 		34BD6DAF18193135006BC523 /* AppSocially.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppSocially.framework; sourceTree = "<group>"; };
 		34BD6DB218193180006BC523 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -921,6 +925,7 @@
 		340D04F218597F9A001DD8EC /* button */ = {
 			isa = PBXGroup;
 			children = (
+				34BC5CE11872AFDA005534EB /* icon_voice.png */,
 				34BC5CCC1872A177005534EB /* setMenu */,
 				34B9499D18700AA70091688C /* start_g.png */,
 				34B9499E18700AA70091688C /* start_r.png */,
@@ -1081,6 +1086,7 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				34BC5CE31872AFE7005534EB /* icon_yen.png */,
 				34B949AD187035C10091688C /* jewel_small@2x.png */,
 				34B949AB1870355B0091688C /* jewel@2x.png */,
 				349DA9EF18695D30008C9AE6 /* close */,
@@ -1929,6 +1935,7 @@
 				348C441B18669C300029D09B /* W_SpaceBow.png in Resources */,
 				34CA558418447A9B00F9657A /* laser_g03.png in Resources */,
 				348C443E18669C640029D09B /* re_ClothBow.png in Resources */,
+				34BC5CE41872AFE7005534EB /* icon_yen.png in Resources */,
 				3488ACC7183D272F00833F93 /* img06.png in Resources */,
 				348AD7F3180ACD52007226EC /* back_desert.png in Resources */,
 				3462DA7C186932F500CFDB14 /* apatite03.png in Resources */,
@@ -1976,6 +1983,7 @@
 				344BD6171815936B00387201 /* mob_zou_02.png in Resources */,
 				348C442F18669C500029D09B /* NH_SpaceBow.png in Resources */,
 				34A1ED41181CCDF20007471C /* IceBow.png in Resources */,
+				34BC5CE21872AFDA005534EB /* icon_voice.png in Resources */,
 				34616E241859DF8700DE8226 /* sozai_paper.png in Resources */,
 				34BC5CC918729E52005534EB /* apatite02.png in Resources */,
 				348C445418669D020029D09B /* purchased02.png in Resources */,

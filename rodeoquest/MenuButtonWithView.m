@@ -233,7 +233,7 @@
                 break;
             }
             case ButtonMenuImageTypeDemand:{
-                imgAdd.image = [UIImage imageNamed:@"icon_coin_b.png"];//test:
+                imgAdd.image = [UIImage imageNamed:@"icon_voice.png"];//test:
                 break;
             }
             case ButtonMenuImageTypeBuyCoin0:{

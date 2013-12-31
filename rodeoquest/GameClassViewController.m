@@ -296,6 +296,13 @@ int sensitivity;
         isSE = NO;
     }
     
+    if([[attr getValueFromDevice:@"sensitivity"] isEqual:[NSNull null]] ||
+       [attr getValueFromDevice:@"sensitivity"] == nil){
+        sensitivity = 0;
+    }else{
+        sensitivity = [attr getValueFromDevice:@"sensitivity"].integerValue;//value-domain=0,1,2;
+    }
+    
     
     
     
@@ -1512,6 +1519,9 @@ int sensitivity;
 }
 - (void)onFlickedFrame:(UIPanGestureRecognizer*)gr {
     CGPoint point = [gr translationInView:[MyMachine getImageView]];
+    if(sensitivity != 0){
+        point = CGPointMake(point.x*(0.5f*sensitivity+1), point.y);
+    }
     CGPoint movedPoint = CGPointMake([MyMachine getImageView].center.x + point.x,
                                      [MyMachine getImageView].center.y + point.y);
     
@@ -1543,18 +1553,18 @@ int sensitivity;
         
     }
     
-    if(movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
-        [MyMachine setLocation:CGPointMake([MyMachine getImageView].center.x,
-                                           movedPoint.y)];
-        [MyMachine getImageView].center = CGPointMake([MyMachine getImageView].center.x,
-                                                      movedPoint.y);
-        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
-        
-        
-        //エフェクト描画用frame
-        viewMyEffect.center = [MyMachine getImageView].center;
-        [gr setTranslation:CGPointZero inView:viewMyEffect];
-    }
+//    if(movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
+//        [MyMachine setLocation:CGPointMake([MyMachine getImageView].center.x,
+//                                           movedPoint.y)];
+//        [MyMachine getImageView].center = CGPointMake([MyMachine getImageView].center.x,
+//                                                      movedPoint.y);
+//        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
+//        
+//        
+//        //エフェクト描画用frame
+//        viewMyEffect.center = [MyMachine getImageView].center;
+//        [gr setTranslation:CGPointZero inView:viewMyEffect];
+//    }
     
     
     

@@ -46,7 +46,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     effectDuration = 10;//10回アニメーション
     wingStatus = 0;//翼の状態
     unique_id++;
-    y_loc = 350;
+    y_loc = [[UIScreen mainScreen] bounds].size.height - 100;//center of mymachine's location
     x_loc = x_init;
     maxHitPoint = 10;
     laserPower = level;

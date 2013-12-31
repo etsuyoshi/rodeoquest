@@ -101,6 +101,7 @@
 //    NSLog(@"switch=%@->%f", on_off?@"on":@"off", self.center.y);
     [self setBack];
     [self switchLight];
+    [self setImage];
     
 //    self.center = CGPointMake(self.center.x,
 //                              self.center.y + (on_off?+6:-6));
@@ -218,7 +219,7 @@
             if(on_off){
                 imgAdd.image = [UIImage imageNamed:@"icon_speaker_on.png"];
             }else{
-                imgAdd.image = [UIImage imageNamed:@"icon_speaker_on.png"];
+                imgAdd.image = [UIImage imageNamed:@"icon_speaker_off.png"];
             }
             break;
         }
