@@ -8,6 +8,7 @@
 
 #import "ItemListViewController.h"
 
+UILabel *myLblRubyAmount;
 @interface LifeUpListViewController : ItemListViewController
 
 @end

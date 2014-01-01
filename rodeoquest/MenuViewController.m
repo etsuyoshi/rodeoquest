@@ -111,6 +111,10 @@ NSString *strSubject = @"お名前は匿名です。個人が特定されるこ�
 NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nご協力ありがとうございます。";
 
 
+//dialog
+UIView *viewForDialog;
+
+
 //CreateComponentClass *createComponentClass;
 
 @interface MenuViewController ()
@@ -939,7 +943,7 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
 //        case ButtonMenuImageTypeStart:{
     
             NSLog(@"start games");
-            
+            bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
             if(bgmClass.getIsPlaying){
                 [bgmClass stop];
             }
@@ -976,9 +980,35 @@ NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いた
                 [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
                 [backGround exitAnimations];
                 //button resize
-                bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                
             }else{
-                NSLog(@"%d" , lifeGame);
+//                NSLog(@"%d" , lifeGame);
+                //for short-life, transfer LifeUpListViewController
+                viewForDialog =
+                [CreateComponentClass
+                 createAlertView:CGRectMake(10, 10,
+                                            self.view.bounds.size.width-10,
+                                            self.view.bounds.size.height)
+                 dialogRect:CGRectMake(10, 10,
+                                       self.view.bounds.size.width-30,
+                                       self.view.bounds.size.width-30)//正方形：縦＝横
+                 title:@"ライフが不足しています。"
+                 message:@"ライフとルビーを交換しますか？"
+                 titleYes:@"はい"
+                 titleNo:@"いいえ"
+                 onYes:^{
+                     LifeUpListViewController *lifeUpView = [[LifeUpListViewController alloc] init];
+                     [self presentViewController:lifeUpView animated:YES completion:nil];
+                     
+                     [viewForDialog removeFromSuperview];
+                 }
+                 onNo:^{
+                     [viewForDialog removeFromSuperview];
+                 }
+                 ];
+                
+                [self.view addSubview:viewForDialog];
+                
             }
 #endif
 

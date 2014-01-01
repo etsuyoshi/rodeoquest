@@ -1699,56 +1699,56 @@ int sensitivity;
     Boolean isYield = false;
     
 #ifndef ENEMY_TEST//本番
-    int difficulty = 0;//easy:0, 1, ... difficult
+    /*
+     *ゲーム進行と共にdifficultyを上げていく
+     */
+    int difficulty = gameSecond/20;//20秒経過するごとにdifficulty++//easy:0, 1, ... difficult
+    
+    
+    
     //最初の30秒？(総ゲーム時間の5分の4)は一定間隔：例えば10秒目から１５秒目は表示しない等の小休憩が必要
     //ゲーム時間：初級＝１分、中級＝３分、上級6分(最高記録：10分)
     //5秒間隔で非表示
-    if(gameSecond < 20){//20秒未満なら
-        if(arc4random() % 50 == 0){//平均2秒に1回=100px程度の間隔
-            difficulty = 0;
+    if([EnemyArray count] == 0){//画面上に敵がいなければ敵を発生(通常生成)
+        isYield = true;
+    }else if(gameSecond < 20){//20秒未満なら
+        if(arc4random() % 300 == 0){//平均2秒に1回=100px程度の間隔(通常生成とは別にゲーム進行と共に高頻度で敵を発生)
             isYield = true;
         }
     }else if(gameSecond < 22){//5秒間隔で非表示
         //nothing : isYield = false;
     }else if(gameSecond < 40){//40秒未満
-        if(arc4random() % 100 == 0){//平均１秒に1回
-            difficulty = 0;
+        if(arc4random() % 300 == 0){//平均１秒に1回
             isYield = true;
         }
     }else if(gameSecond < 42){//5秒間隔で非表示
         //nothing : isYield = false;
     }else if(gameSecond < 60){
-        if(arc4random() % 50 == 0){//平均0.5秒に1回出現
-            difficulty = 1;
+        if(arc4random() % 100 == 0){//平均0.5秒に1回出現
             isYield = true;
         }
     }else if(gameSecond < 61){
         //nothing : isYield = false;
     }else if(gameSecond < 80){//初級殺し
         if(arc4random() % 30 == 0){//平均0.3秒に1回出現
-            difficulty = 2;
             isYield = true;
         }
     }else if(gameSecond < 81){
         //nothing : is...
     }else if(gameSecond < 100){
         if(arc4random() % 30 == 0){
-            difficulty = 3;
             isYield = true;
         }
     }else if(gameSecond < 140){
         if(arc4random() % 30 == 0){
-            difficulty = 4;
             isYield = true;
         }
     }else if(gameSecond < 200){
         if(arc4random() % 30 == 0){
-            difficulty = 5;
             isYield = true;
         }
     }else{
         if(arc4random() % 30 == 0){
-            difficulty = 6;
             isYield = true;
         }
     }
@@ -1849,7 +1849,7 @@ int sensitivity;
                     }
                 }
                 default:{
-                    
+                    //difficuty > 6
                     break;
                 }
             }

@@ -87,7 +87,18 @@ NSArray *arrProductId;
                      @"6300",
                      nil],
                     nil];
-        
+        arrTypeBack = [NSArray arrayWithObjects:
+                    [NSArray arrayWithObjects:
+                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                     nil],
+                    [NSArray arrayWithObjects:
+                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                     nil],
+                    nil];
         
         strImgUnit = @"icon_yen.png";
         
@@ -192,9 +203,7 @@ NSArray *arrProductId;
     rubyIV.image = [UIImage imageNamed:@"jewel"];
     [rubyView addSubview:rubyIV];
     
-    CGRect rectRubyAmount = CGRectMake(50,
-                                       10,
-                                       150, 32);
+    CGRect rectRubyAmount = CGRectMake(50, 10, 150, 32);
 
     lblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
     [lblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
@@ -264,7 +273,9 @@ NSArray *arrProductId;
             eachFrame = [CreateComponentClass createView:rectFrame];//ボタン周りの小さな枠
             NSLog(@"button type %d, %d = %@",
                   row, col, [[arrTypeImage objectAtIndex:row] objectAtIndex:col]);
-            payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)ButtonMenuBackTypeBlue
+            payButtonView = [CreateComponentClass createMenuButton:(ButtonMenuBackType)[[[arrTypeBack objectAtIndex:row]
+                                                                                         objectAtIndex:col]
+                                                                                        integerValue]
                                                          imageType:(ButtonMenuImageType)[[[arrTypeImage
                                                                                            objectAtIndex:row]
                                                                                           objectAtIndex:col]
@@ -356,8 +367,9 @@ NSArray *arrProductId;
      name:UIApplicationDidBecomeActiveNotification
      object:nil];
     
-    //rubyの更新
-    lblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
+    //rubyの更新(nullの場合にゼロが表示されるように一度数値に変換した後に文字列に再度変換
+    lblRubyAmount.text = [NSString stringWithFormat:@"%d",
+                          [[attr getValueFromDevice:@"ruby"] integerValue]];
     [self.view bringSubviewToFront:rubyView];
     
     NSLog(@"view will appear at payProduct at ruby:%@", lblRubyAmount.text);

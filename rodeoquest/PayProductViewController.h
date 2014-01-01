@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, RubyType) {
 NSString *strImgUnit;//yen-or-ruby
 NSArray *arrAcquired;
 NSArray *arrPrice;
+NSArray *arrTypeBack;
 NSArray *arrTypeImage;//ボタンアイコンタイプ
 NSArray *arrProductType;
 UIImageView *viewYenImage;

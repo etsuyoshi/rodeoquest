@@ -68,7 +68,18 @@ UIView *viewDialog;
                      @"100",
                      nil],
                     nil];
-        
+        arrTypeBack = [NSArray arrayWithObjects:
+                       [NSArray arrayWithObjects:
+                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                        nil],
+                       [NSArray arrayWithObjects:
+                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                        nil],
+                       nil];
         
         strImgUnit = @"jewel_small";//購入単位イメージ画像(.png省略)
     }
@@ -128,9 +139,7 @@ UIView *viewDialog;
     
     
 //    //ruby numeric
-    CGRect rectRubyAmount = CGRectMake(50,
-                                       10,
-                                       150, 32);
+    CGRect rectRubyAmount = CGRectMake(50, 10, 150, 32);
     [lblRubyAmount removeFromSuperview];//remove superclass field "rubyView"
     myLblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
     [myLblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
@@ -148,10 +157,12 @@ UIView *viewDialog;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    myLblRubyAmount.text = [attr getValueFromDevice:@"ruby"];
+    myLblRubyAmount.text = [NSString stringWithFormat:@"%d",
+                            [[attr getValueFromDevice:@"ruby"] integerValue]];
 //    [self.view bringSubviewToFront:rubyView];
     
-    lblCashAmount.text = [attr getValueFromDevice:@"gold"];
+    lblCashAmount.text = [NSString stringWithFormat:@"%d",
+                          [[attr getValueFromDevice:@"gold"] integerValue]];
     
     NSLog(@"view will appear at coinProduct at ruby:%@", myLblRubyAmount.text);
 }

@@ -22,12 +22,12 @@
          */
         iv.image = nil;
         int grade=_level/30+1;//always:grade>=2
-        NSLog(@"grade=%d", grade);
+//        NSLog(@"grade=%d", grade);
         for(int i = 0;i < grade;i++){
             UIImageView *ivImg = [[UIImageView alloc] initWithFrame:iv.bounds];
             ivImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"%02d", (_level%30)+1]];
             ivImg.center = CGPointMake(i*iv.bounds.size.width/(grade-1), iv.bounds.size.height/2);
-            NSLog(@"x=%f, level=%d", i*iv.bounds.size.width/(grade-1), (_level%30)+1);
+//            NSLog(@"x=%f, level=%d", i*iv.bounds.size.width/(grade-1), (_level%30)+1);
             [iv addSubview:ivImg];
         }
         
