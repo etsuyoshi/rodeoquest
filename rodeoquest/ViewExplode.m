@@ -45,35 +45,49 @@
     
     // Create gradient
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGFloat locations[] = {0.0, 0.8, 1.0};
+    float middleLocation = 0.8;
+
     
     UIColor *centerColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0];//[UIColor clearColor];
     UIColor *middleColor = nil;//[UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//[UIColor blueColor];//orange
     UIColor *edgeColor = nil;//[UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//[UIColor clearColor];//lightYellow
     
     switch (explodeType) {
-        case ExplodeTypeSmallCircle:{
+        case ExplodeTypeSmallCircle:{//白ー＞明黄ー＞橙
+            middleLocation = 0.5;
+            centerColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5f];
+            middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
+//            edgeColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
+            edgeColor = [UIColor colorWithRed:1 green:1 blue:104.0f/225.0f alpha:1];
+            break;
+        }
+        case ExplodeTypeFireBomb:{//火炎系武器のクリティカルヒットエフェクト
+            middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
             edgeColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
             break;
         }
         case ExplodeType1:{
+            middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
             edgeColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
             break;
         }
          
         case ExplodeType2:{
+            middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:0.0f green:0.0f blue:205.0f/255.0f alpha:1.0f];//mediumBlue
             edgeColor = [UIColor colorWithRed:0.0f green:191.0f/255.0f blue:1.0f alpha:1.0f];//deepSkyBlue
             break;
         }
         default:{//equals explodeType1
+            middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//[UIColor blueColor];//orange
             edgeColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//[UIColor clearColor];//lightYellow
             break;
         }
     }
+    CGFloat locations[] = {0.0, middleLocation, 1.0};
     
     NSArray *colors = [NSArray arrayWithObjects:
                        (__bridge id)centerColor.CGColor,
@@ -88,6 +102,11 @@
     
     switch (explodeType) {
         case ExplodeTypeSmallCircle:{
+            scaleT = CGAffineTransformMakeScale(1.0, 1.0);
+            invScaleT = CGAffineTransformInvert(scaleT);
+            break;
+        }
+        case ExplodeTypeFireBomb:{
             scaleT = CGAffineTransformMakeScale(1.0, 1.0);//width x 2
             invScaleT = CGAffineTransformInvert(scaleT);
             break;
@@ -218,12 +237,16 @@
     float duration = 0;
     int radius = 0;//
     switch (explodeType) {
+        case ExplodeTypeFireBomb:{
+            radius = _size;
+            duration = _duration;
+            break;
+        }
         case ExplodeTypeSmallCircle:{
             radius = _size;
             duration = _duration;
             break;
         }
-            
         default:{
             radius = MAX(600, _size);//under 600px
             duration = MAX(0.5f, _duration);

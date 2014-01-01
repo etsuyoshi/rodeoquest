@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSInteger, ExplodeType) {//order with difficulty of get down
     ExplodeTypeSmallCircle,
+    ExplodeTypeFireBomb,
     ExplodeType1,
     ExplodeType2
 };

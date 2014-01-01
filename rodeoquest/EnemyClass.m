@@ -399,7 +399,7 @@ int unique_id;
         default:{
             viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc,y_loc, 1, 1)
                                                         type:ExplodeTypeSmallCircle];
-            [viewExplode explode:(int)200 angle:(int)60 x:(float)x_loc y:(float)y_loc];
+            [viewExplode explode:(int)100 angle:(int)0 x:(float)x_loc y:(float)y_loc];
 
             break;
         }

@@ -13,7 +13,7 @@
     self = [super init:x_init y_init:y_init width:w height:h];
     level = _level;
     power = _level;//test?仮
-    if(_level < 30){
+    if(_level <= 30){
         iv.image = [UIImage imageNamed:[NSString stringWithFormat:@"%02d", _level]];
     }else {
         /*
@@ -22,11 +22,13 @@
          */
         iv.image = nil;
         int grade=_level/30+1;//always:grade>=2
+        float middle = ((float)grade-1)/2.0f;//中点位置
 //        NSLog(@"grade=%d", grade);
         for(int i = 0;i < grade;i++){
+            NSLog(@"loc=%f at i=%d", (middle-i)*10, i);
             UIImageView *ivImg = [[UIImageView alloc] initWithFrame:iv.bounds];
             ivImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"%02d", (_level%30)+1]];
-            ivImg.center = CGPointMake(i*iv.bounds.size.width/(grade-1), iv.bounds.size.height/2);
+            ivImg.center = CGPointMake(iv.bounds.size.width*i/(grade-1) + (middle-i)*30, iv.bounds.size.height/2);
 //            NSLog(@"x=%f, level=%d", i*iv.bounds.size.width/(grade-1), (_level%30)+1);
             [iv addSubview:ivImg];
         }

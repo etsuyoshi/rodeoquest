@@ -914,16 +914,17 @@ int tempCount = 0;
     
 #elif defined EXPLODE_TEST
     if(counter == 0){
-        [self.view setBackgroundColor:[UIColor whiteColor]];
+        [self.view setBackgroundColor:[UIColor grayColor]];
         
         ViewExplode *_viewEx = [[ViewExplode alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/2,
                                                                              self.view.bounds.size.height/2, 1, 1)
-                                type:ExplodeType2];
+                                                             type:ExplodeTypeSmallCircle];
+//                                type:ExplodeTypeFireBomb];
         [self.view addSubview:_viewEx];
         
         
         NSLog(@"viewkira.center = %f, %f", _viewEx.center.x, _viewEx.center.y);
-        [_viewEx explode:(int)400 angle:(int)60 x:(float)_viewEx.center.x y:(float)_viewEx.center.y];
+        [_viewEx explode:(int)100 angle:(int)60 x:(float)_viewEx.center.x y:(float)_viewEx.center.y];
     }
 
 #else
