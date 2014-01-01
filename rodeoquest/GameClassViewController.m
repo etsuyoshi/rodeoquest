@@ -771,6 +771,7 @@ int sensitivity;
             //            NSLog(@"mymachine : set emitting no");
             
             isGameMode = false;
+            
             [self exitProcess];
             [self showActivityIndicator];
             return;
@@ -1346,6 +1347,9 @@ int sensitivity;
                 if(![MyMachine getIsAlive] &&
                    [MyMachine getDeadTime] == 1){//撃破されてから最初のタイミング
                     
+                    //oscillate and slow restart
+                    [self gameOverBackGround];
+                    
                     
                     //se
                     AudioServicesPlaySystemSound (sound_died_ID);
@@ -1897,14 +1901,8 @@ int sensitivity;
     [timer invalidate];
     timer = nil;
     
-    //background smoothly stop
-//    [self oscillateBackgroundEffect];
-    
-//    [BackGround setSpeed:0.07f];
-//    [BackGround gameOver];
-    [self gameOverBackGround];
-//    [BackGround pauseAnimations];
-//    [BackGround stopAnimation];
+
+
     
     UIView *superView = [CreateComponentClass createViewNoFrame:self.view.bounds
                                                           color:[UIColor clearColor]
@@ -2122,7 +2120,7 @@ int sensitivity;
         int goldCnt = 0;
         int goldAdd = 0;
         if([GoldBoard getScore] != 0){
-            goldAdd = ([GoldBoard getScore]/100==0)?1:([GoldBoard getScore]/100);//大体100カウントで終わらせる
+            goldAdd = ([GoldBoard getScore]/100==0)?1:((float)[GoldBoard getScore]/100);//大体100カウントで終わらせる
         }
         //exp初期値
         //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
@@ -2329,6 +2327,7 @@ int sensitivity;
         case 1:
             //２番目のボタンが押されたときの処理を記述する
             NSLog(@"2");
+            //exitprocessなし(情報記録なし)で終了した方が良いかも。
             [self exitProcess];
             break;
     }
