@@ -48,4 +48,5 @@ typedef NS_ENUM(NSInteger, WorldType) {
 -(UIImageView *)getIvOscillate2;
 -(void)setSpeed:(float)speed;
 -(void)exitAnimations;
+-(void)gameOver;
 @end

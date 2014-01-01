@@ -46,31 +46,48 @@
     // Create gradient
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     float middleLocation = 0.8;
-
+    float widthLength = 1.0f;//
+    float heightLength = 1.0f;
     
     UIColor *centerColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0];//[UIColor clearColor];
     UIColor *middleColor = nil;//[UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//[UIColor blueColor];//orange
     UIColor *edgeColor = nil;//[UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//[UIColor clearColor];//lightYellow
     
     switch (explodeType) {
+        case ExplodeTypeRed:{
+            middleLocation = 0.8f;
+            centerColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3f];
+            middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f];//lightYellow
+            //            edgeColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
+            edgeColor = [UIColor colorWithRed:1 green:69.0f/255.0f blue:0.0f alpha:1.0];
+            widthLength = 1.05f;
+            heightLength = 1.0f;
+            break;
+        }
         case ExplodeTypeSmallCircle:{//白ー＞明黄ー＞橙
             middleLocation = 0.5;
             centerColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5f];
             middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
 //            edgeColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
             edgeColor = [UIColor colorWithRed:1 green:1 blue:104.0f/225.0f alpha:1];
+            widthLength = 1.0f;
+            heightLength = 1.0f;
             break;
         }
         case ExplodeTypeFireBomb:{//火炎系武器のクリティカルヒットエフェクト
             middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
             edgeColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
+            widthLength = 1.0f;
+            heightLength = 1.0f;
             break;
         }
         case ExplodeType1:{
             middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
             edgeColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
+            widthLength = 2.0f;//横長
+            heightLength = 1.0f;
             break;
         }
          
@@ -78,6 +95,8 @@
             middleLocation = 0.8;
             middleColor = [UIColor colorWithRed:0.0f green:0.0f blue:205.0f/255.0f alpha:1.0f];//mediumBlue
             edgeColor = [UIColor colorWithRed:0.0f green:191.0f/255.0f blue:1.0f alpha:1.0f];//deepSkyBlue
+            widthLength = 2.0f;//横長
+            heightLength = 1.0f;
             break;
         }
         default:{//equals explodeType1
@@ -97,30 +116,8 @@
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
     
     // Scaling transformation and keeping track of the inverse
-    CGAffineTransform scaleT = CGAffineTransformMakeScale(2, 1.0);//width x 2
+    CGAffineTransform scaleT = CGAffineTransformMakeScale(widthLength, heightLength);//width x 2
     CGAffineTransform invScaleT = CGAffineTransformInvert(scaleT);
-    
-    switch (explodeType) {
-        case ExplodeTypeSmallCircle:{
-            scaleT = CGAffineTransformMakeScale(1.0, 1.0);
-            invScaleT = CGAffineTransformInvert(scaleT);
-            break;
-        }
-        case ExplodeTypeFireBomb:{
-            scaleT = CGAffineTransformMakeScale(1.0, 1.0);//width x 2
-            invScaleT = CGAffineTransformInvert(scaleT);
-            break;
-        }
-        
-        default:{//equals explodeType1
-            //default
-            scaleT = CGAffineTransformMakeScale(2, 1.0);//width x 2
-            invScaleT = CGAffineTransformInvert(scaleT);
-
-            break;
-        }
-    }
-    
     
     
     // Extract the Sx and Sy elements from the inverse matrix
@@ -237,6 +234,12 @@
     float duration = 0;
     int radius = 0;//
     switch (explodeType) {
+            
+        case ExplodeTypeRed:{
+            radius = _size;
+            duration = 1.2f;//MIN(_duration, 0.3f);
+            break;
+        }
         case ExplodeTypeFireBomb:{
             radius = _size;
             duration = _duration;
@@ -244,7 +247,7 @@
         }
         case ExplodeTypeSmallCircle:{
             radius = _size;
-            duration = _duration;
+            duration = MIN(_duration, 0.3f);
             break;
         }
         default:{
@@ -266,7 +269,7 @@
                      }
                      completion:^(BOOL finished){
                          switch (explodeType) {
-                             case ExplodeType2:{
+                             case ExplodeType2:{//type2のみ2重表示
                                  if(_times > 0){
                                      self.frame = CGRectMake(_x, _y, 1, 1);
                                      [self explode:_size angle:_angle x:_x y:_y times:_times-1 duration:_duration];

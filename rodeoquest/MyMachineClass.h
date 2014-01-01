@@ -13,6 +13,7 @@
 #import "OrdinaryBeamClass.h"
 #import "SpecialBeamClass.h"
 #import "ItemClass.h"
+#import "ViewExplode.h"
 
 
 @interface MyMachineClass : NSObject{
@@ -49,6 +50,8 @@
     NSMutableArray *beamArray;
     ExplodeParticleView *explodeParticle;
     DamageParticleView *damageParticle;
+    
+    ViewExplode *viewExplode;
     
     NSMutableDictionary *status;//可変ステータス
 }
@@ -95,4 +98,6 @@
 
 -(int)getLaserPower;
 -(BeamType)getSpWeapon;
+
+-(ViewExplode *)getExplodeEffect;
 @end

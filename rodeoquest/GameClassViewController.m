@@ -725,7 +725,7 @@ int sensitivity;
     //_/_/_/_/生成_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //    NSLog(@"yield enemy");
-    if(gameSecond > 3.0f){//１秒後から敵を開始
+    if(gameSecond > 0.3f){//１秒後から敵を開始
         [self yieldEnemy];
     }
     
@@ -1336,28 +1336,33 @@ int sensitivity;
                 
                 
                 //ダメージパーティクル表示
-                [[MyMachine getDamageParticle] setUserInteractionEnabled: NO];//インタラクション拒否
-                [[MyMachine getDamageParticle] setIsEmitting:YES];//消去するには数秒後にNOに
-                [self.view bringSubviewToFront: [MyMachine getDamageParticle]];//最前面に
-                [self.view addSubview: [MyMachine getDamageParticle]];//表示する
+//                [[MyMachine getDamageParticle] setUserInteractionEnabled: NO];//インタラクション拒否
+//                [[MyMachine getDamageParticle] setIsEmitting:YES];//消去するには数秒後にNOに
+//                [self.view bringSubviewToFront: [MyMachine getDamageParticle]];//最前面に
+//                [self.view addSubview: [MyMachine getDamageParticle]];//表示する
                 
                 
                 //爆発パーティクル(ダメージ前isAliveがtrueからダメージ後falseになった場合は攻撃によって死んだものとして爆発)
-                if(![MyMachine getIsAlive]){
+                if(![MyMachine getIsAlive] &&
+                   [MyMachine getDeadTime] == 1){//撃破されてから最初のタイミング
                     
                     
                     //se
                     AudioServicesPlaySystemSound (sound_died_ID);
                     
-                    /*
-                     修正点：爆発でスコアが見えなくなってしまっているので、爆発はスコアの背面にする(スコアが最前面にする？）
-                     */
                     
-                    //                    NSLog(@"パーティクル = %@", [MyMachine getExplodeParticle]);
+                    [self.view addSubview:[MyMachine getExplodeEffect]];
+                    
                     [[MyMachine getExplodeParticle] setUserInteractionEnabled: NO];//インタラクション拒否
                     [[MyMachine getExplodeParticle] setIsEmitting:YES];//消去するには数秒後にNOに
-                    [self.view bringSubviewToFront: [MyMachine getExplodeParticle]];//最前面に
+
                     [self.view addSubview: [MyMachine getExplodeParticle]];//表示する
+                    [self.view bringSubviewToFront: [MyMachine getExplodeParticle]];//最前面に
+                    
+                    [UIView animateWithDuration:5.0f
+                                     animations:^{
+                                         [[MyMachine getExplodeParticle] setAlpha:0];
+                                     }];
                 }
             }
             
@@ -1891,7 +1896,16 @@ int sensitivity;
     //タイマー終了(死んだ時に周囲の敵やイフェクトが動いているようにするかどうか)
     [timer invalidate];
     timer = nil;
-    //
+    
+    //background smoothly stop
+//    [self oscillateBackgroundEffect];
+    
+//    [BackGround setSpeed:0.07f];
+//    [BackGround gameOver];
+    [self gameOverBackGround];
+//    [BackGround pauseAnimations];
+//    [BackGround stopAnimation];
+    
     UIView *superView = [CreateComponentClass createViewNoFrame:self.view.bounds
                                                           color:[UIColor clearColor]
                                                             tag:0
@@ -3142,6 +3156,21 @@ int sensitivity;
     [BackGround oscillateEffect:10];
 }
 
+-(void)gameOverBackGround{
+    [BackGround pauseAnimations];
+    
+    //            [BackGround addIvOscillate];
+    [self.view addSubview:[BackGround getIvOscillate1]];
+    [self.view addSubview:[BackGround getIvOscillate2]];
+    [self.view sendSubviewToBack:[BackGround getIvOscillate1]];
+    [self.view sendSubviewToBack:[BackGround getIvOscillate2]];
+    
+    [self.view sendSubviewToBack:[BackGround getImageView1]];
+    [self.view sendSubviewToBack:[BackGround getImageView2]];
+//    [BackGround oscillateEffect:10];
+    [BackGround gameOver];//振動してから低スピードで進行
+}
+
 -(void)yieldBeamFromMyMachine{
     if([MyMachine yieldBeam:0 init_x:[MyMachine getX] init_y:[MyMachine getY]]){
         //ビームはFIFOなので最初のもののみを表示
@@ -3179,7 +3208,7 @@ int sensitivity;
     BackGround = [[BackGroundClass2 alloc] init:worldType
                                          width:self.view.bounds.size.width
                                         height:self.view.bounds.size.height
-                                          secs:5.0f];
+                                          secs:10.0f];
     [self.view addSubview:[BackGround getImageView1]];
     [self.view addSubview:[BackGround getImageView2]];
     [self.view sendSubviewToBack:[BackGround getImageView1]];

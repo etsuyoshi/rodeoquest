@@ -27,7 +27,7 @@
 //    NSLog(@"aaa");//
     MaxExpArray = [[NSMutableArray alloc]init];
 //    attrDict = [[NSDictionary alloc] init];
-    for(int i = 0; i < 100; i ++){//level 100がマックス
+    for(int i = 0; i < 90; i ++){//level 100がマックス
         [MaxExpArray addObject:[NSNumber numberWithInt:((i+1)*100)]];//100, 200, 300, 400, 500, ・・・
     }
 //    NSLog(@"bbb");//
@@ -141,32 +141,82 @@
     return true;
 }
 
+/*
+ *経験値を足してexpとして記憶
+ *レベルを足してlevelとして記憶
+ *最大経験値になったら次のレベルに上昇して記憶(何度でも繰り返す)
+ *返り値はlevel-max=>false, otherwise:true
+ */
 -(Boolean)addExp:(int)addingVal{
     //格納成功判定必要->格納失敗時はfalse
     NSLog(@"addExp");
     int beforeExp = [[self getValueFromDevice:@"exp"] intValue];
     int beforeLevel = [[self getValueFromDevice:@"level"] intValue];
-    NSLog(@"現在レベル%dの経験値%dに%dを加算", beforeLevel, beforeExp , addingVal);
-
-    int afterExp = beforeExp + addingVal;
-    int _maxExp = [[MaxExpArray objectAtIndex:(beforeLevel-1)] intValue];
-    NSLog(@"beforeExp = %d, beforeLevel = %d, afterExp = %d, _maxExp = %d",
-          beforeExp, beforeLevel, afterExp, _maxExp);
-    if ( afterExp > _maxExp){
-        int afterLevel = beforeLevel + 1;
-        [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
-        NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
+    if(beforeLevel < [MaxExpArray count]){//until-88
+        NSLog(@"現在レベル%dの経験値%dに%dを加算", beforeLevel, beforeExp , addingVal);
         
-        afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
-        //afterExpがafterLevelにおけるMaxExpArrayの値を超過している可能性があるので入れ子にする
-        [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", 0]];
-//        [self addExp:afterExp];
-        [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", [self addExp:afterExp]]];
-         return afterExp;
+        int afterExp = beforeExp + addingVal;
+        int _maxExp = [[MaxExpArray objectAtIndex:beforeLevel] intValue];
+        NSLog(@"beforeExp = %d, beforeLevel = %d, afterExp = %d, _maxExp = %d",
+              beforeExp, beforeLevel, afterExp, _maxExp);
+        if (afterExp > _maxExp){
+            int afterLevel = beforeLevel + 1;
+            [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
+            NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
+            
+            //_maxExpの更新
+            _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
+            
+            afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
+            
+            if(afterExp < _maxExp){
+                [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
+                return true;
+            }else{
+                [self addExp:afterExp];
+            }
+        }
+        [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
+        return true;
+    }else{
+        NSLog(@"レベルが99以上なのでレベルアップせず");
+        return false;
     }
-    [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
-//    return afterExp;
-    return true;
+}
+
+//返り値は意味なし
+-(Boolean)addWeaponExp:(int)addingVal weaponID:(NSString *)_weaponId{
+    NSString *strID_exp = [NSString stringWithFormat:@"%@_exp", _weaponId];
+    NSString *strID_level = [NSString stringWithFormat:@"%@_level", _weaponId];
+    int beforeExp = [[self getValueFromDevice:strID_exp] intValue];
+    int beforeLevel = [[self getValueFromDevice:strID_level] intValue];
+    
+    if(beforeLevel < [MaxExpArray count]-1){//until-88
+        int afterExp = beforeExp + addingVal;
+        int _maxExp = [[MaxExpArray objectAtIndex:beforeLevel] intValue];
+        
+        if(afterExp > _maxExp){
+            int afterLevel = beforeLevel + 1;
+            [self setValueToDevice:strID_level strValue:[NSString stringWithFormat:@"%d", afterLevel]];
+            NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
+            
+            //_maxExpの更新
+            _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
+            
+            afterExp = afterExp - _maxExp;
+            if(afterExp < _maxExp){
+                [self setValueToDevice:strID_exp strValue:[NSString stringWithFormat:@"%d", afterExp]];
+                return true;
+            }else{
+                [self addWeaponExp:afterExp weaponID:_weaponId];
+            }
+        }
+        [self setValueToDevice:strID_exp strValue:[NSString stringWithFormat:@"%d", afterExp]];
+    }else{
+        NSLog(@"level max");
+        return false;
+    }
+    return false;
 }
 
 

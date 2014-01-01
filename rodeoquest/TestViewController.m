@@ -918,7 +918,7 @@ int tempCount = 0;
         
         ViewExplode *_viewEx = [[ViewExplode alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/2,
                                                                              self.view.bounds.size.height/2, 1, 1)
-                                                             type:ExplodeTypeSmallCircle];
+                                                             type:ExplodeTypeRed];
 //                                type:ExplodeTypeFireBomb];
         [self.view addSubview:_viewEx];
         

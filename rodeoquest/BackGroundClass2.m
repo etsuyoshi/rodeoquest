@@ -11,7 +11,7 @@
 
 @implementation BackGroundClass2
 @synthesize wType;
-int oscillateWidth = 15;
+float oscillateWidth = 15;
 int imageMargin;
 -(id)init{//引数なしで呼び出された場合のポリモーフィズム
     self = [self init:0 width:320 height:480 secs:3];
@@ -232,7 +232,7 @@ int imageMargin;
 }
 
 
--(void)resumeAnimations{
+-(void)resumeAnimations{//引数指定なし(＝前回早さ)でのアニメ再開
     //about1
     CFTimeInterval pausedTime1 = [iv_background1.layer timeOffset];
     iv_background1.layer.speed = 1.0f;
@@ -248,6 +248,7 @@ int imageMargin;
     CFTimeInterval timeSincePause2 = [iv_background2.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime2;
     iv_background2.layer.beginTime = timeSincePause2;
 }
+
 
 
 -(void)oscillateEffect:(int)count{
@@ -284,7 +285,7 @@ int imageMargin;
 
     CGPoint kStartPos1 = ((CALayer *)[iv_background1.layer presentationLayer]).position;
     
-    CGPoint kEndPos1 = CGPointMake(kStartPos1.x + ((count%2==0)?-oscillateWidth:+oscillateWidth),
+    CGPoint kEndPos1 = CGPointMake(kStartPos1.x + (((count%2==0)?-1:+1)*oscillateWidth/3),
                                    kStartPos1.y);
     
     //about1
@@ -297,7 +298,7 @@ int imageMargin;
         [iv_oscillate1.layer removeAnimationForKey:@"position"];
         //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
         if(animationForKeyFrame){
-            NSLog(@"count =%d", count-1);
+//            NSLog(@"count =%d", count-1);
             
             if(count > 0){
 //                NSLog(@"count=%d->recursive", count);
@@ -346,7 +347,7 @@ int imageMargin;
         [iv_oscillate2.layer removeAnimationForKey:@"position"];
 //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
         if(animationForKeyFrame){
-            NSLog(@"count =%d", count);
+//            NSLog(@"count =%d", count);
             
             if(count > 0){
 //                NSLog(@"count=%d->recursive", count);
@@ -635,5 +636,118 @@ int imageMargin;
         iv_background2.layer.speed=nowSpeed;
     }
 }
+
+/*
+ *ゲーム終了時に一度停止して、1秒後に再度(超低スピードで)再開
+ *前提：呼出し元でpauseAnimations実行済み
+ */
+-(void)gameOver{
+    [self gameOverWithOscillate1:30];
+    [self gameOverWithOscillate2:30];
+    
+//    [self pauseAnimations];
+//    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(gameOver2) userInfo:nil repeats:NO];//低スピード再開
+}
+-(void)gameOverWithOscillate1:(int)count{
+    
+    
+    CGPoint kStartPos1 = ((CALayer *)[iv_background1.layer presentationLayer]).position;
+    
+    CGPoint kEndPos1 = CGPointMake(kStartPos1.x + (((count%2==0)?(-1):+1)*oscillateWidth/3),
+                                   kStartPos1.y);
+    
+    //about1
+    [CATransaction begin];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [CATransaction setCompletionBlock:^{
+        CAAnimation *animationForKeyFrame = [iv_oscillate1.layer animationForKey:@"position"];
+        NSLog(@"value of iv_oscillate1.layer = %@", animationForKeyFrame);
+        //        NSLog(@"%d", (int)animationForKeyFrame);
+        [iv_oscillate1.layer removeAnimationForKey:@"position"];
+        //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
+        if(animationForKeyFrame){
+//            NSLog(@"count =%d", count-1);
+            
+            if(count > 0){
+                NSLog(@"count=%d->recursive", count);
+                [self gameOverWithOscillate1:count-1];
+            }else{
+                [iv_oscillate1 removeFromSuperview];
+                //                [iv_oscillate2 removeFromSuperview];
+                //                NSLog(@"finished oscillate at kStartPos1.y=%f", kStartPos1.y);
+                //                [self animation1:gSecs start:kStartPos1.y];
+                [self resumeAnimations];
+                [self setSpeed:0.1f];//遅くして次回やりたいように心理誘導
+            }
+        }
+    }];
+    {
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+        [animation setValue:@"animation1" forKey:@"id"];
+        animation.fillMode = kCAFillModeForwards;
+        animation.removedOnCompletion = NO;
+        animation.duration = 0.05f;
+        animation.fromValue = [NSValue valueWithCGPoint:kStartPos1];
+        animation.toValue = [NSValue valueWithCGPoint:kEndPos1];
+        [iv_oscillate1.layer addAnimation:animation forKey:@"position"];
+        //        [iv_oscillate2.layer addAnimation:animation forKey:@"position"];
+        
+    }
+    [CATransaction commit];
+
+}
+
+
+-(void)gameOverWithOscillate2:(int)count{
+    CGPoint kStartPos2 = ((CALayer *)[iv_background2.layer presentationLayer]).position;
+    
+    CGPoint kEndPos2 = CGPointMake(kStartPos2.x + (((count%2==0)?(-1):+1)*oscillateWidth/3),
+                                   kStartPos2.y);
+    //    CGPoint kStartPos2 = ((CALayer *)[iv_background2.layer presentationLayer]).position;
+    //    CGPoint kEndPos2 = CGPointMake(kStartPos2.x + ((count%2==0)?-50:+50),
+    //                                   kStartPos2.y);
+    
+    
+    //about2
+    [CATransaction begin];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [CATransaction setCompletionBlock:^{
+        CAAnimation *animationForKeyFrame = [iv_oscillate2.layer animationForKey:@"position"];
+        NSLog(@"value of iv_oscillate2.layer = %@", animationForKeyFrame);
+        //        NSLog(@"%d", (int)animationForKeyFrame);
+        [iv_oscillate2.layer removeAnimationForKey:@"position"];
+        //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
+        if(animationForKeyFrame){
+//            NSLog(@"count =%d", count);
+            
+            if(count > 0){
+                NSLog(@"count=%d->recursive", count);
+                [self gameOverWithOscillate2:count-1];
+            }else{//終了時処理は既にgameOverWithOscillate1で記述済
+                [iv_oscillate2 removeFromSuperview];
+                //                NSLog(@"finished oscillate at kStartPos2.y=%f", kStartPos2.y);
+                //                [self resumeAnimations];//not execute here , it is only for 1
+            }
+        }
+    }];
+    {
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+        [animation setValue:@"animation2" forKey:@"id"];
+        animation.fillMode = kCAFillModeForwards;
+        animation.removedOnCompletion = NO;
+        animation.duration = 0.05f;
+        animation.fromValue = [NSValue valueWithCGPoint:kStartPos2];
+        animation.toValue = [NSValue valueWithCGPoint:kEndPos2];
+        [iv_oscillate2.layer addAnimation:animation forKey:@"position"];
+        
+    }
+    [CATransaction commit];
+}
+
+//-(void)gameOver2{
+//
+//    [self resumeAnimations];
+//    [self setSpeed:0.1f];
+//}
 
 @end

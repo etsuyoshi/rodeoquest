@@ -237,18 +237,9 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 -(void) die:(CGPoint) location{
     //爆発用パーティクルの初期化
+    bomb_size = 200;
+    //以下生成後、GameClassViewController側で(貼付けてから)透明化
     explodeParticle = [[ExplodeParticleView alloc] initWithFrame:CGRectMake(x_loc, y_loc, bomb_size, bomb_size)];
-    [UIView animateWithDuration:3.5f
-                     animations:^{
-                         [explodeParticle setAlpha:0.0f];//徐々に薄く
-                     }
-                     completion:^(BOOL finished){
-                         //終了時処理
-                         [explodeParticle setIsEmitting:NO];
-                         [explodeParticle removeFromSuperview];
-                         
-                         [iv removeFromSuperview];
-                     }];
     isAlive = false;
     [iv removeFromSuperview];
     dead_time ++;
@@ -953,6 +944,14 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 -(BeamType)getSpWeapon{
     return spWeapon;
+}
+
+-(ViewExplode *)getExplodeEffect{
+    viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 50, 50)
+                                                type:ExplodeTypeRed];
+    viewExplode.center = CGPointMake(x_loc, y_loc);
+    [viewExplode explode:120 angle:30 x:x_loc y:y_loc];
+    return viewExplode;
 }
 
 @end

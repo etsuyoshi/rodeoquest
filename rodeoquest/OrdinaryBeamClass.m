@@ -25,7 +25,7 @@
         float middle = ((float)grade-1)/2.0f;//中点位置
 //        NSLog(@"grade=%d", grade);
         for(int i = 0;i < grade;i++){
-            NSLog(@"loc=%f at i=%d", (middle-i)*10, i);
+//            NSLog(@"loc=%f at i=%d", (middle-i)*10, i);
             UIImageView *ivImg = [[UIImageView alloc] initWithFrame:iv.bounds];
             ivImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"%02d", (_level%30)+1]];
             ivImg.center = CGPointMake(iv.bounds.size.width*i/(grade-1) + (middle-i)*30, iv.bounds.size.height/2);
