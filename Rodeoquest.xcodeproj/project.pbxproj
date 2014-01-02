@@ -336,6 +336,7 @@
 		34C09EDE18009D0300E4A4D8 /* blue_item_yuri_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C09EDD18009D0300E4A4D8 /* blue_item_yuri_big.png */; };
 		34C16CCF181C2D9000650A40 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C16CCE181C2D9000650A40 /* TestViewController.m */; };
 		34C16CD1181C4E9400650A40 /* sabaki_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34C16CD0181C4E9400650A40 /* sabaki_hmix.mp3 */; };
+		34C75E5C18757146002C27C1 /* kira3.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C75E5B18757146002C27C1 /* kira3.png */; };
 		34C84E771822568200E4B074 /* snow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C84E761822568200E4B074 /* snow.png */; };
 		34CA557F18447A9B00F9657A /* laser_b01.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CA557618447A9B00F9657A /* laser_b01.png */; };
 		34CA558018447A9B00F9657A /* laser_b02.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CA557718447A9B00F9657A /* laser_b02.png */; };
@@ -780,6 +781,7 @@
 		34C16CCD181C2D9000650A40 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		34C16CCE181C2D9000650A40 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		34C16CD0181C4E9400650A40 /* sabaki_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sabaki_hmix.mp3; sourceTree = "<group>"; };
+		34C75E5B18757146002C27C1 /* kira3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kira3.png; sourceTree = "<group>"; };
 		34C84E761822568200E4B074 /* snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snow.png; sourceTree = "<group>"; };
 		34CA557618447A9B00F9657A /* laser_b01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser_b01.png; sourceTree = "<group>"; };
 		34CA557718447A9B00F9657A /* laser_b02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser_b02.png; sourceTree = "<group>"; };
@@ -1447,6 +1449,7 @@
 				34C84E761822568200E4B074 /* snow.png */,
 				34F30065182161A30082DCBC /* kira.png */,
 				34F30066182161A30082DCBC /* kira2.png */,
+				34C75E5B18757146002C27C1 /* kira3.png */,
 				3419C41317FD27E200980E71 /* explode3.png */,
 				3419C41217FD27E200980E71 /* explode4.png */,
 				3419C41617FD2B3300980E71 /* explode5.png */,
@@ -1918,6 +1921,7 @@
 				34F30067182161A30082DCBC /* kira.png in Resources */,
 				34B9499F18700AA70091688C /* start_g.png in Resources */,
 				34FD281F1850934200C751FC /* up_green.png in Resources */,
+				34C75E5C18757146002C27C1 /* kira3.png in Resources */,
 				348C441A18669C300029D09B /* W_RockBow.png in Resources */,
 				348C441918669C300029D09B /* W_IceBow.png in Resources */,
 				34E216C6181BF62F00B939E6 /* bgm_game_687.mp3 in Resources */,

@@ -25,8 +25,10 @@
 //#define SPECIALWEAPON_TEST
 //#define PARTICLE_TEST
 //#define KIRA_Test
-#define EXPLODE_TEST
+//#define EXPLODE_TEST
+#define VIEWWITHEFFECTLEVELUP_TEST
 
+#import "ViewWithEffectLevelUp.h"
 #import "ViewExplode.h"
 #import "ViewKira.h"
 #import "ViewFireWorks.h"
@@ -925,6 +927,15 @@ int tempCount = 0;
         
         NSLog(@"viewkira.center = %f, %f", _viewEx.center.x, _viewEx.center.y);
         [_viewEx explode:(int)100 angle:(int)60 x:(float)_viewEx.center.x y:(float)_viewEx.center.y];
+    }
+#elif defined VIEWWITHEFFECTLEVELUP_TEST
+    if(counter == 0){
+        UIView *vwel = [[ViewWithEffectLevelUp alloc]
+                        initWithFrame:self.view.bounds
+                        beforeLevel:30
+                        afterLevel:31
+                        ];
+        [self.view addSubview:vwel];
     }
 
 #else

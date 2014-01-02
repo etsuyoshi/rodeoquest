@@ -7,9 +7,6 @@
 //
 
 #import "ViewWithEffectLevelUp.h"
-#import "KiraParticleView.h"
-#import "ViewFireWorks.h"
-#import "CreateComponentClass.h"
 
 @implementation ViewWithEffectLevelUp
 UIView *viewLevelUp;
@@ -42,14 +39,14 @@ UIView *viewKiraParticle;
         [self addSubview:viewPaper];
         
         //right upper side : level-up label
-        //表示期間中、ジャンプアニメーション
-        viewLevelUp = [CreateComponentClass
-                              createView:CGRectMake(0, 0, 100, 70)];
-        viewLevelUp.center = CGPointMake(self.bounds.size.width-viewLevelUp.frame.size.width,
-                                         viewLevelUp.frame.size.height/2+10);
-        [viewLevelUp setBackgroundColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.5 alpha:0.5]];
-        [self addSubview:viewLevelUp];
-        [self animViewLevelUp:9 originalPoint:viewLevelUp.center];
+        //表示期間中、ジャンプアニメーション:fireworksアニメーションとバッティングして振動してしまう
+//        viewLevelUp = [CreateComponentClass
+//                              createView:CGRectMake(0, 0, 100, 70)];
+//        viewLevelUp.center = CGPointMake(self.bounds.size.width-viewLevelUp.frame.size.width,
+//                                         viewLevelUp.frame.size.height/2+10);
+//        [viewLevelUp setBackgroundColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.5 alpha:0.5]];
+//        [self addSubview:viewLevelUp];
+//        [self animViewLevelUp:9 originalPoint:viewLevelUp.center];
         
         
         /*
@@ -159,6 +156,10 @@ UIView *viewKiraParticle;
                                    initWithFrame:CGRectMake(0, 0, 20, 20)];
         [self addSubview: viewFire];
         
+        
+        /*
+         *kira kira
+         */
         for(int i = 0; i < 10;i++){
             viewKiraParticle = [[KiraParticleView alloc]
                                 initWithFrame:CGRectMake(i * 30, tvTitle.frame.origin.y + tvTitle.frame.size.height/2,
@@ -185,6 +186,9 @@ UIView *viewKiraParticle;
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(tappedView)];
         [self addGestureRecognizer:tapGesture];
+        
+        
+        [self dispAttribution];
     }
     return self;
 }
@@ -208,5 +212,77 @@ UIView *viewKiraParticle;
                          
                          [self animViewLevelUp:(count > 0)?(count-1):9 originalPoint:point];//10,9,...,1,0,10,9,...
                      }];
+}
+
+
+-(void)dispAttribution{
+    
+    AttrClass *attr = [[AttrClass alloc] init];
+    NSArray *arrId = [NSArray arrayWithObjects:
+                      @"level",
+                      @"score",
+                      @"exp_accum",
+                      @"break_enemy",
+                      @"gold_max",
+                      @"time_max",
+                      @"gamecnt",
+                      @"gold",
+                      @"ruby",
+                      nil];
+    NSArray *arrDisp = [NSArray arrayWithObjects:
+                        @"レベル:",
+                        @"最高得点:",
+                        @"今までの獲得経験値",
+                        @"今までに倒した敵の数",
+                        @"最高獲得コイン:",
+                        @"最高飛行時間:",
+                        @"総ゲーム回数:",
+                        @"現在保有コイン:",
+                        @"現在保有ルビー:",
+//                        @"総プレイ時間:",//ユーザーが認識してしまう可能性
+                        nil];
+    for(int i = 0; i < [arrId count]; i++){
+        NSString *strValueByID = [attr getValueFromDevice:[arrId objectAtIndex:i]];
+
+        if(strValueByID == nil ||
+           [strValueByID isEqual:[NSNull null]]){
+            strValueByID = @"0";
+        }
+        NSString *strDisplay = [NSString stringWithFormat:@"%@%@",
+                                [arrDisp objectAtIndex:i],
+                                strValueByID];
+        
+        UILabel *lblDisplay =
+        [self getLabel:strDisplay
+                center:CGPointMake(self.bounds.size.width/2,
+                                   viewAfterLevel.center.y + viewAfterLevel.bounds.size.height + i * 20)];
+        [self addSubview:lblDisplay];
+        [self bringSubviewToFront:lblDisplay];
+    }
+    
+    
+}
+
+-(UILabel *)getLabel:(NSString *)_string center:(CGPoint)_center{
+    if([_string isEqual:[NSNull null]] ||
+       _string == nil){
+        return nil;
+    }else{
+    
+        UILabel *lbl =
+        [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width-50, 100)];
+//        [lbl sizeToFit];
+//        NSLog(@"frame=%@", lbl);
+        lbl.text = _string;
+        lbl.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:15];
+        lbl.textAlignment = NSTextAlignmentRight;
+        lbl.center = _center;
+        lbl.textColor = [UIColor whiteColor];
+        lbl.backgroundColor = [UIColor clearColor];
+        
+        return lbl;
+        
+    }
+    return nil;
 }
 @end

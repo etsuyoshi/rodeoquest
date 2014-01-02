@@ -36,7 +36,7 @@ CAEmitterLayer *mortor;
         
         mortor = [CAEmitterLayer layer];
 //        mortor = (CAEmitterLayer *) self.layer;
-        mortor.emitterPosition = CGPointMake(200, 600);//320, 0);//発射位置
+        mortor.emitterPosition = CGPointMake(200, 550);//320, 0);//発射位置
         mortor.renderMode = kCAEmitterLayerAdditive;
         
         //Invisible particle representing the rocket before the explosion
@@ -63,6 +63,9 @@ CAEmitterLayer *mortor;
         [rocket setName:@"rocket"];
         
         //Flare particles emitted from the rocket as it flys
+        /*
+         *rocketを光らせるのみ
+         */
         CAEmitterCell *flare = [CAEmitterCell emitterCell];
 //        flare.contents = img;
         flare.contents = (id) [[UIImage imageNamed: @"snow.png"] CGImage];//菱形
@@ -78,7 +81,8 @@ CAEmitterLayer *mortor;
         flare.scaleRange = 0.1;
         flare.beginTime = 0.01;
         flare.duration = 0.7;
-        
+
+
         //The particles that make up the explosion
         CAEmitterCell *firework = [CAEmitterCell emitterCell];
 //        firework.contents = img;
@@ -88,7 +92,7 @@ CAEmitterLayer *mortor;
         firework.velocity = 130;
         firework.lifetime = 2;
         firework.alphaSpeed = -0.2;
-        firework.yAcceleration = -80;
+        firework.yAcceleration = 40;//acceleration of y-axis(free fall)
         firework.beginTime = 1.5;
         firework.duration = 0.1;
         firework.emissionRange = 2 * M_PI;
@@ -97,7 +101,7 @@ CAEmitterLayer *mortor;
         
         //Name the cell so that it can be animated later using keypath
         [firework setName:@"firework"];
-        
+
         //preSpark is an invisible particle used to later emit the spark
         CAEmitterCell *preSpark = [CAEmitterCell emitterCell];
         preSpark.birthRate = 80;
@@ -118,7 +122,7 @@ CAEmitterLayer *mortor;
 //        spark.contents = img;
         spark.contents = (id) [[UIImage imageNamed: @"snow.png"] CGImage];//菱形
         spark.lifetime = 0.05;
-        spark.yAcceleration = -250;
+        spark.yAcceleration = 250;
         spark.beginTime = 0.8;
         spark.scale = 0.4;
         spark.birthRate = 10;

@@ -9,8 +9,8 @@
 //　同期通信の場合はサブスレッド立てるhttp://www.yoheim.net/blog.php?q=20130206
 
 
-//#define NoConnectTEST
-//#define TestView
+#define NoConnectTEST
+#define TestView
 
 #ifdef TestView//PaymentTestでテストする場合、TestViewをオンにしたまま以下をコメントイン(コメントアウトを外す)
 //    #define PaymentTest//TestViewの場合にのみPaymentテスト有効

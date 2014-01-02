@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "OrdinaryBeamClass.h"
+#import "KiraParticleView.h"
+#import "ViewFireWorks.h"
+#import "CreateComponentClass.h"
+#import "AttrClass.h"
 
 @interface ViewWithEffectLevelUp : UIView
 

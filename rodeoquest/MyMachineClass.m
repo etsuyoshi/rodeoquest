@@ -394,7 +394,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             //            for(int i = 0; i < 30;i++){
 //            [self healEffectInit:30];
 //            [self healEffectRepeat];
-            [self healEffectWithViewKira:40];
+            [self healEffectWithViewKira:30];
             //            }
         }
         weapon2Count --;
@@ -436,7 +436,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //            for(int i = 0; i < 30;i++){
 //            [self healEffectInit:30];
 //            [self healEffectRepeat];
-            [self healEffectWithViewKira:40];
+            [self healEffectWithViewKira:30];
 //            }
         }
         if(hitPoint < maxHitPoint){
@@ -846,7 +846,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
                              
                              if(finished){
                                  [viewKira removeFromSuperview];
-                                 NSLog(@"view kira %d", i);
+                                 NSLog(@"view kira finished : %d", i);
                              }
                          }];
         //上記で設定したUIImageViewを配列格納
