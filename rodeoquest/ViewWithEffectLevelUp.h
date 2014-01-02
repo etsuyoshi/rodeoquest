@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrdinaryBeamClass.h"
 
 @interface ViewWithEffectLevelUp : UIView
 

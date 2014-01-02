@@ -14,6 +14,7 @@
 #import "SpecialBeamClass.h"
 #import "ItemClass.h"
 #import "ViewExplode.h"
+#import "ViewKira.h"
 
 
 @interface MyMachineClass : NSObject{
@@ -35,7 +36,9 @@
     int magnetCount;
     int weapon0Count;//爆弾を投げられる時間
     int weapon1Count;//攻撃力強化できる時間
-    int weapon2Count;//laser
+    int weapon2Count;//laserR=item
+    int weapon3Count;//laserG=flick
+    int weapon4Count;//laserB=item & flick?
     int defense0Count;//barrier
     int defense1Count;
     int transparancyCount;
@@ -46,12 +49,15 @@
     Boolean isAlive;
     UIImageView *iv;
     CGRect rect;
-    UIImageView *ivLaser;
+    UIImageView *ivLaserR;
+    UIImageView *ivLaserG;
+    UIImageView *ivLaserB;
     NSMutableArray *beamArray;
     ExplodeParticleView *explodeParticle;
     DamageParticleView *damageParticle;
     
     ViewExplode *viewExplode;
+    ViewKira *viewKira;
     
     NSMutableDictionary *status;//可変ステータス
 }

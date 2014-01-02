@@ -92,16 +92,30 @@ UIView *viewKiraParticle;
         
         
         //次にimageView:beam描画
-        ivBeforeBeam = [CreateComponentClass
-                        createImageView:viewBeforeLevel.bounds
-                        image:[NSString stringWithFormat:@"%02d.png", blv]];
+//        ivBeforeBeam = [CreateComponentClass
+//                        createImageView:viewBeforeLevel.bounds
+//                        image:[NSString stringWithFormat:@"%02d.png", blv]];
+        ivBeforeBeam = [[[OrdinaryBeamClass alloc]
+                         init:viewBeforeLevel.bounds.size.width/2
+                         y_init:viewBeforeLevel.bounds.size.height/2
+                         width:viewBeforeLevel.bounds.size.width
+                         height:viewBeforeLevel.bounds.size.height
+                         level:blv]
+                        getImageView];
         ivBeforeBeam.center = CGPointMake(viewBeforeLevel.bounds.size.width/2,
                                           viewBeforeLevel.bounds.size.height/2);
         [viewBeforeLevel addSubview:ivBeforeBeam];
         
-        ivAfterBeam = [CreateComponentClass
-                       createImageView:viewAfterLevel.bounds
-                       image:[NSString stringWithFormat:@"%02d.png", alv]];
+//        ivAfterBeam = [CreateComponentClass
+//                       createImageView:viewAfterLevel.bounds
+//                       image:[NSString stringWithFormat:@"%02d.png", alv]];
+        ivAfterBeam = [[[OrdinaryBeamClass alloc]
+                       init:viewAfterLevel.bounds.size.width/2
+                       y_init:viewAfterLevel.bounds.size.height/2
+                       width:viewAfterLevel.bounds.size.width
+                       height:viewAfterLevel.bounds.size.height
+                       level:alv]
+                       getImageView];
         ivAfterBeam.center = CGPointMake(viewAfterLevel.bounds.size.width/2,
                                          viewAfterLevel.bounds.size.height/2);
         [viewAfterLevel addSubview:ivAfterBeam];

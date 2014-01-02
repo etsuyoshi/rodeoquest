@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "rodeoquest/MyMachineClass.h"
-            timestampString = "410260090.191366"
+            timestampString = "410332159.411114"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "-getIsAlive"
             landmarkType = "4">
          </BreakpointContent>
