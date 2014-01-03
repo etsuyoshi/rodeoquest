@@ -1413,8 +1413,8 @@ int sensitivity;
                     //ビーム左端が敵右端より左側
                     //ビーム上端が敵上端より下側
                     //ビーム下端が敵下端より上側
-                    if(_xBeam + _sBeam * 0 >= _xEnemy - _sEnemy * 0.4 &&
-                       _xBeam - _sBeam * 0 <= _xEnemy + _sEnemy * 0.4 &&
+                    if(_xBeam + _sBeam * 0 >= _xEnemy - _sEnemy * 0.5 &&
+                       _xBeam - _sBeam * 0 <= _xEnemy + _sEnemy * 0.5 &&
                        _yBeam - _sBeam * 0.5 >= _yEnemy - _sEnemy * 0.5 &&
                        _yBeam + _sBeam * 0.5 <= _yEnemy + _sEnemy * 0.5 ){
                         
@@ -1712,7 +1712,8 @@ int sensitivity;
     /*
      *ゲーム進行と共にdifficultyを上げていく
      */
-    int difficulty = gameSecond/10;//20秒経過するごとにdifficulty++//easy:0, 1, ... difficult
+    int stageInterval = 5;//本番10sec?
+    int difficulty = gameSecond/stageInterval;//stageInterval秒経過するごとにdifficulty++//easy:0, 1, ... difficult
     
     
     
@@ -1855,7 +1856,6 @@ int sensitivity;
          
          [NSArray arrayWithObjects:@0, @0, @0, @1, @9 ,nil],
          
-         [NSArray arrayWithObjects:@0, @0, @0, @0, @10 ,nil],
          nil];
         
         float prob = 0;//分子
@@ -1868,20 +1868,23 @@ int sensitivity;
             //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * (OBJECT_SIZE - 7);
             
-                prob = 0;
-                bunbo = 10;
-                for(EnemyType i = 0 ; i < 5; i++){
-                    for(EnemyType j = 0;j<i;j++){
-                        bunbo -= prob;//残りの確率の分母を計算する
-                    }
-                    if(bunbo < 0)break;
-                    prob = [[[arrEmergentProbability objectAtIndex:difficulty] objectAtIndex:i] floatValue];
-
-                    if(arc4random() % bunbo < prob){
-                        _enemyType = (EnemyType)i;
-                        break;
-                    }
+            
+            difficulty = MIN(difficulty, [arrEmergentProbability count]-1);
+            prob = 0;
+            bunbo = 10;
+            for(EnemyType i = 0 ; i < 5; i++){
+                for(EnemyType j = 0;j<i;j++){
+                    bunbo -= prob;//残りの確率の分母を計算する
                 }
+                if(bunbo < 0)break;
+                prob = [[[arrEmergentProbability objectAtIndex:difficulty] objectAtIndex:i] floatValue];
+                
+                if(arc4random() % bunbo < prob){
+                    _enemyType = (EnemyType)i;
+                    break;
+                }
+            }
+            
 //            switch (difficulty) {
 //                case 0:{
 //                    //all:tanu
@@ -2774,7 +2777,7 @@ int sensitivity;
     
     
     //得点の加算
-    [ScoreBoard setScore:[ScoreBoard getScore] + 5];//+1でよい？！
+    [ScoreBoard setScore:[ScoreBoard getScore] + 5 + [[EnemyArray objectAtIndex:i] getType]];//from 5 to 9
     [self displayScore:ScoreBoard];
     
     enemyDown++;

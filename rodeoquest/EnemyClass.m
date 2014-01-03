@@ -131,6 +131,10 @@ int unique_id;
     isAlive = false;
 }
 
+-(EnemyType)getType{
+    return enemyType;
+}
+
 
 -(int)getHitPoint{
     return hitPoint;

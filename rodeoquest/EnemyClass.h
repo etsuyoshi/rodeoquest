@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
 -(void)setLocation:(CGPoint)loc;
 -(void)setX:(int)x;
 -(void)setY:(int)y;
-
+-(EnemyType)getType;
 -(CGPoint) getLocation;
 -(int) getX;
 -(int) getY;
