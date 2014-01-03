@@ -1712,7 +1712,7 @@ int sensitivity;
     /*
      *ゲーム進行と共にdifficultyを上げていく
      */
-    int difficulty = gameSecond/20;//20秒経過するごとにdifficulty++//easy:0, 1, ... difficult
+    int difficulty = gameSecond/10;//20秒経過するごとにdifficulty++//easy:0, 1, ... difficult
     
     
     
@@ -1782,14 +1782,80 @@ int sensitivity;
         
 //        CGFloat probabilityEmergent[] =
 //        {0.0, middleLocation, 1.0};//how to use??
+//        NSArray *arrEmergentProbability=
+//        [NSArray arrayWithObjects:
+//         [NSArray arrayWithObjects:@10, @0, @0, @0, @0 ,nil],//all:tanu
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu4,musa1
+//         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],//tanu5,musa5
+//         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],//tanu6,musa3,hari1
+//         [NSArray arrayWithObjects:@5, @3, @2, @0, @0 ,nil],//tanu5,musa3,hari2
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu3,musa5,hari2
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu1,musa5,hari4
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+//         //tanu0,musa5,hari5//tanu0,musa7,hari3//tanu0, mura09,hari1
+//         nil];
+        //一次元配列にして各difficultyに応じた敵機出現確率を計算
+//        NSMutableArray *arrEmergentProbability= [NSMutableArray arrayWithObjects:
+//                                                  @0, @0, @0, @0, @0, nil];
+//        int eachProb = 10-difficulty;//difficulty starts from 0 to infinitely
+//        for(EnemyType i = 0 ; i < (EnemyType)5;i ++){
+//            for(int j = 0;j < i;j++){
+//                eachProb -= [arrEmergentProbability[j] intValue];
+//            }
+////            arrEmergentProbability[i] = [NSNumber numberWithInt:eachProb];
+//            [arrEmergentProbability
+//             replaceObjectAtIndex:i
+//             withObject:[NSNumber numberWithInt:eachProb]];
+//            //脱出条件
+//            if([self getSumFromArray:arrEmergentProbability] == 10)break;
+//        }
+        
+        //tanu,musa,pen,hari,zou
         NSArray *arrEmergentProbability=
         [NSArray arrayWithObjects:
          [NSArray arrayWithObjects:@10, @0, @0, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@9, @1, @0, @0, @0 ,nil],
          [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
-         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],
-         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],
-         [NSArray arrayWithObjects:@5, @3, @2, @0, @0 ,nil],
-         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+//         [NSArray arrayWithObjects:@8, @1, @1, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@7, @3, @0, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@7, @2, @1, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@7, @1, @1, @1, @0 ,nil],
+//         [NSArray arrayWithObjects:@6, @4, @0, @0, @0 ,nil],
+//         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],
+//         [NSArray arrayWithObjects:@6, @2, @2, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@6, @2, @1, @1, @0 ,nil],
+         [NSArray arrayWithObjects:@6, @1, @1, @1, @1 ,nil],
+//         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],
+         //...below is sense..
+         [NSArray arrayWithObjects:@5, @1, @1, @2, @1 ,nil],
+         [NSArray arrayWithObjects:@3, @2, @2, @2, @1 ,nil],
+         
+         [NSArray arrayWithObjects:@1, @3, @3, @2, @1 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @5, @2, @2, @1 ,nil],
+         
+         //middle stage
+         [NSArray arrayWithObjects:@0, @2, @5, @2, @1 ,nil],
+         [NSArray arrayWithObjects:@0, @0, @5, @4, @1 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @0, @3, @6, @1 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @0, @1, @8, @1 ,nil],
+         
+         
+         //final stage
+         [NSArray arrayWithObjects:@0, @0, @0, @8, @2 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @0, @0, @6, @4 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @0, @0, @3, @7 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @0, @0, @1, @9 ,nil],
+         
+         [NSArray arrayWithObjects:@0, @0, @0, @0, @10 ,nil],
          nil];
         
         float prob = 0;//分子
@@ -1802,129 +1868,127 @@ int sensitivity;
             //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * (OBJECT_SIZE - 7);
             
-            if([arrEmergentProbability count] > difficulty){
+                prob = 0;
                 bunbo = 10;
                 for(EnemyType i = 0 ; i < 5; i++){
-                    prob = [[[arrEmergentProbability objectAtIndex:difficulty] objectAtIndex:i] floatValue];
                     for(EnemyType j = 0;j<i;j++){
-                        bunbo -= prob;
+                        bunbo -= prob;//残りの確率の分母を計算する
                     }
+                    if(bunbo < 0)break;
+                    prob = [[[arrEmergentProbability objectAtIndex:difficulty] objectAtIndex:i] floatValue];
+
                     if(arc4random() % bunbo < prob){
                         _enemyType = (EnemyType)i;
                         break;
                     }
                 }
-                break;
-            }else {
-                //別対応
-            }
-            switch (difficulty) {
-                case 0:{
-                    //all:tanu
-                    _enemyType = EnemyTypeTanu;
-                    break;
-                }
-                case 1:{
-                    //tanu4,musa1
-                    if(arc4random()%5<4){//80%
-                        _enemyType = EnemyTypeTanu;
-                    }else{
-                        _enemyType = EnemyTypeMusa;
-                    }
-                    break;
-                }
-                case 2:{
-                    //tanu5,musa5
-                    if(arc4random()%2==0){
-                        _enemyType = EnemyTypeMusa;
-                    }else{
-                        _enemyType = EnemyTypeTanu;
-                    }
-                    break;
-                }
-                case 3:{
-                    //tanu6,musa3,hari1
-                    if(arc4random()%5<3){//60%
-                        _enemyType = EnemyTypeTanu;
-                    }else{
-                        if(arc4random()%4==0){//10%
-                            _enemyType = EnemyTypeHari;
-                        }else{//20%
-                            _enemyType = EnemyTypeMusa;
-                        }
-                    }
-
-                    break;
-                }
-                case 4:{
-                    //tanu5,musa3,hari2
-                    if(arc4random()%10<5){
-                        _enemyType = EnemyTypeTanu;
-                    }else{
-                        if(arc4random() % 5 < 3){
-                            _enemyType = EnemyTypeMusa;
-                        }else{
-                            _enemyType = EnemyTypeHari;
-                        }
-                    }
-                    break;
-                }
-                case 5:{
-                    //tanu3,musa5,hari2
-                    if(arc4random() % 10 < 3){
-                        _enemyType = EnemyTypeTanu;
-                    }else{
-                        if(arc4random() % 7 < 5){
-                            _enemyType = EnemyTypeMusa;
-                        }else{
-                            _enemyType = EnemyTypeHari;
-                        }
-                    }
-                    break;
-                }
-                case 6:{
-                    //tanu1,musa5,hari4
-                    if(arc4random() % 10 == 0){
-                        _enemyType = EnemyTypeTanu;
-                    }else if(arc4random() % 9 < 5){
-                        _enemyType = EnemyTypeMusa;
-                    }else{
-                        _enemyType = EnemyTypeHari;
-                    }
-                    break;
-                }
-                case 7:{
-                    //tanu0,musa5,hari5
-                    if(arc4random() % 2 == 0){
-                        _enemyType = EnemyTypeMusa;
-                    }else{
-                        _enemyType = EnemyTypeHari;
-                    }
-                    break;
-                }
-                case 8:{
-                    //tanu0,musa7,hari3
-                    if(arc4random() % 10 < 7){
-                        _enemyType = EnemyTypeMusa;
-                    }else{
-                        _enemyType = EnemyTypeHari;
-                    }
-                    break;
-                }
-                case 9:{
-                    //tanu0, mura09,hari1
-                    if(arc4random() % 10 < 9){
-                        _enemyType = EnemyTypeMusa;
-                    }else{
-                        _enemyType = EnemyTypeHari;
-                    }
-                    break;
-                }
-                default:{
-                    //difficuty > 6
-                    break;
-                }
-            }
+//            switch (difficulty) {
+//                case 0:{
+//                    //all:tanu
+//                    _enemyType = EnemyTypeTanu;
+//                    break;
+//                }
+//                case 1:{
+//                    //tanu4,musa1
+//                    if(arc4random()%5<4){//80%
+//                        _enemyType = EnemyTypeTanu;
+//                    }else{
+//                        _enemyType = EnemyTypeMusa;
+//                    }
+//                    break;
+//                }
+//                case 2:{
+//                    //tanu5,musa5
+//                    if(arc4random()%2==0){
+//                        _enemyType = EnemyTypeMusa;
+//                    }else{
+//                        _enemyType = EnemyTypeTanu;
+//                    }
+//                    break;
+//                }
+//                case 3:{
+//                    //tanu6,musa3,hari1
+//                    if(arc4random()%5<3){//60%
+//                        _enemyType = EnemyTypeTanu;
+//                    }else{
+//                        if(arc4random()%4==0){//10%
+//                            _enemyType = EnemyTypeHari;
+//                        }else{//20%
+//                            _enemyType = EnemyTypeMusa;
+//                        }
+//                    }
+//
+//                    break;
+//                }
+//                case 4:{
+//                    //tanu5,musa3,hari2
+//                    if(arc4random()%10<5){
+//                        _enemyType = EnemyTypeTanu;
+//                    }else{
+//                        if(arc4random() % 5 < 3){
+//                            _enemyType = EnemyTypeMusa;
+//                        }else{
+//                            _enemyType = EnemyTypeHari;
+//                        }
+//                    }
+//                    break;
+//                }
+//                case 5:{
+//                    //tanu3,musa5,hari2
+//                    if(arc4random() % 10 < 3){
+//                        _enemyType = EnemyTypeTanu;
+//                    }else{
+//                        if(arc4random() % 7 < 5){
+//                            _enemyType = EnemyTypeMusa;
+//                        }else{
+//                            _enemyType = EnemyTypeHari;
+//                        }
+//                    }
+//                    break;
+//                }
+//                case 6:{
+//                    //tanu1,musa5,hari4
+//                    if(arc4random() % 10 == 0){
+//                        _enemyType = EnemyTypeTanu;
+//                    }else if(arc4random() % 9 < 5){
+//                        _enemyType = EnemyTypeMusa;
+//                    }else{
+//                        _enemyType = EnemyTypeHari;
+//                    }
+//                    break;
+//                }
+//                case 7:{
+//                    //tanu0,musa5,hari5
+//                    if(arc4random() % 2 == 0){
+//                        _enemyType = EnemyTypeMusa;
+//                    }else{
+//                        _enemyType = EnemyTypeHari;
+//                    }
+//                    break;
+//                }
+//                case 8:{
+//                    //tanu0,musa7,hari3
+//                    if(arc4random() % 10 < 7){
+//                        _enemyType = EnemyTypeMusa;
+//                    }else{
+//                        _enemyType = EnemyTypeHari;
+//                    }
+//                    break;
+//                }
+//                case 9:{
+//                    //tanu0, mura09,hari1
+//                    if(arc4random() % 10 < 9){
+//                        _enemyType = EnemyTypeMusa;
+//                    }else{
+//                        _enemyType = EnemyTypeHari;
+//                    }
+//                    break;
+//                }
+//                default:{
+//                    //difficuty > 6
+//                    break;
+//                }
+//            }
             
             
             //enemy initialize
@@ -3375,9 +3439,21 @@ int sensitivity;
     float min = 0.5f;
     float a = 150;//熱関数
     float val = (max-min)*(1.0f+exp(-1))/(1.0f+exp(_value/a-1.0f))+min;
-    NSLog(@"sigmoid = %f", val);
+//    NSLog(@"sigmoid = %f", val);
     return val;
 //    return 1.665f/(1 + exp(_value/150.0f-1))+0.5f;
+}
+
+-(int)getSumFromArray:(NSArray *)_arr{
+    if([_arr count] == 0){
+        return 0;
+    }else{
+        int _value = 0;
+        for(int i = 0 ; i < [_arr count];i++){
+            _value += [[_arr objectAtIndex:i] intValue];
+        }
+        return _value;
+    }
 }
 
 @end

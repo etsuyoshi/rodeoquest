@@ -60,19 +60,19 @@ int unique_id;
         case EnemyTypePen:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_pen_01.png"];
-            hitPoint = 200;
+            hitPoint = 300;
             break;
         }
         case EnemyTypeHari:{
             bomb_size = 40;
             iv.image = [UIImage imageNamed:@"mob_hari_01.png"];
-            hitPoint = 1000;
+            hitPoint = 700;
             break;
         }
         case EnemyTypeZou:{
             bomb_size = 20;
             iv.image = [UIImage imageNamed:@"mob_zou_01.png"];
-            hitPoint = 3000;
+            hitPoint = 1500;
             break;
         }
     }
