@@ -20,6 +20,7 @@ UITextView *tvBeforeLevel;
 UITextView *tvAfterLevel;
 UIView *viewKiraParticle;
 
+AttrClass *attr;
 - (id)initWithFrame:(CGRect)frame{
     
     self = [self initWithFrame:frame beforeLevel:1 afterLevel:2];
@@ -29,6 +30,8 @@ UIView *viewKiraParticle;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        
+        attr = [[AttrClass alloc] init];
         
         [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0]];
         
@@ -148,7 +151,7 @@ UIView *viewKiraParticle;
                                           viewAfterLevel.bounds.size.height);
         [viewAfterLevel addSubview:tvAfterLevel];
         
-        NSLog(@"b = %@ \n a = %@", tvBeforeLevel, tvAfterLevel);
+//        NSLog(@"b = %@ \n a = %@", tvBeforeLevel, tvAfterLevel);
         
         
         
@@ -227,7 +230,7 @@ UIView *viewKiraParticle;
 
 -(void)dispAttribution{
     
-    AttrClass *attr = [[AttrClass alloc] init];
+    
     
     //dictionaryでは順番を制御できない
 //    NSDictionary *_dictID = @{
@@ -235,7 +238,7 @@ UIView *viewKiraParticle;
 //                              @"score":@"最高得点:",
 //                              @"gold_max":@"最高獲得コイン:",
 //                              @"time_max":@"最高飛行時間:",
-//                              @"gamecnt":@"総ゲーム回数:",
+//                              @"gamecnt":@"ゲーム回数:",
 //                              @"gold":@"現在保有コイン:",
 //                              @"ruby":@"現在保有ルビー:",
 //                              @"exp_accum":@"今までの獲得経験値:",
@@ -270,7 +273,7 @@ UIView *viewKiraParticle;
                         @"最高スコア:",
                         @"最高獲得コイン:",
                         @"最高飛行時間:",
-                        @"総ゲーム回数:",
+                        @"ゲーム回数:",
                         @"現在保有コイン:",
 //                        @"",
                         @"現在保有ルビー:",
@@ -308,6 +311,9 @@ UIView *viewKiraParticle;
                         center:CGPointMake(self.bounds.size.width/4 + self.bounds.size.width/2*col,
                                            viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + row * 20 + 10)
                      alignment:(col==0)?NSTextAlignmentRight:NSTextAlignmentLeft];
+                lblDisplay.adjustsFontSizeToFitWidth = YES;//文字長さが範囲に収まらなくなった時にサイズ調整
+                lblDisplay.minimumScaleFactor = 5;//サイズ調整時の最小サイズ
+                
                 [self addSubview:lblDisplay];
                 [self bringSubviewToFront:lblDisplay];
                 
@@ -345,6 +351,9 @@ UIView *viewKiraParticle;
     
 }
 
+/*
+ *レベルや獲得スコア等を表示するためのラベル専用生成メソッド
+ */
 -(UILabel *)getLabel:(NSString *)_string center:(CGPoint)_center alignment:(NSTextAlignment)_align{
     if([_string isEqual:[NSNull null]] ||
        _string == nil){
@@ -377,13 +386,147 @@ UIView *viewKiraParticle;
     //->経験値は各レベルにおける最高値は自機の半分とする？
     //獲得経験値は倒した敵の数？通常の経験値？
     
+    //装備中のボウガン
+    UILabel *lblSpecialWeapon =
+    [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 20)];
+//    [lblSpecialWeapon sizeToFit];
+    lblSpecialWeapon.center =
+    CGPointMake(viewAfterLevel.frame.origin.x + lblSpecialWeapon.bounds.size.width/2,
+                viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + lblSpecialWeapon.bounds.size.height/2 + 50);
+    lblSpecialWeapon.text = @"装備中のボウガン";
+    lblSpecialWeapon.textColor = [UIColor whiteColor];
+    lblSpecialWeapon.backgroundColor = [UIColor clearColor];
+    lblSpecialWeapon.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
+    lblSpecialWeapon.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:lblSpecialWeapon];
+    
+    //装備中のボウガンのレベル
+    UILabel *lblSpecialWeapon_LV =
+    [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 130, 20)];
+    //    [lblSpecialWeapon_LV sizeToFit];
+    lblSpecialWeapon_LV.center =
+    CGPointMake(viewAfterLevel.frame.origin.x + lblSpecialWeapon_LV.bounds.size.width/2,
+                lblSpecialWeapon.center.y + lblSpecialWeapon.bounds.size.height/2 + lblSpecialWeapon_LV.bounds.size.height/2);
+    lblSpecialWeapon_LV.text = @"LV. --";
+    lblSpecialWeapon_LV.textColor = [UIColor whiteColor];
+    lblSpecialWeapon_LV.backgroundColor = [UIColor clearColor];
+    lblSpecialWeapon_LV.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
+    lblSpecialWeapon_LV.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:lblSpecialWeapon_LV];
+    
+    
+    //frame
     UIView *viewSpecialWeapon = [CreateComponentClass
-                                 createView:CGRectMake(0, 0, 130, 130)];
+                                 createView:CGRectMake(0, 0, 130, 130*2/3)];//width:height=3:2(specialWeapon Image size)
     viewSpecialWeapon.center =
     CGPointMake(viewAfterLevel.frame.origin.x + viewSpecialWeapon.bounds.size.width/2,
-                viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + viewSpecialWeapon.bounds.size.height/2 + 10);
+                lblSpecialWeapon_LV.center.y + lblSpecialWeapon_LV.bounds.size.height/2 + viewSpecialWeapon.bounds.size.height/2);
     [self addSubview:viewSpecialWeapon];
+    
+    int equippedID = [self getEquipWeaponType];
+    //装備がない場合は「no-equipment」文字表示
+    if(equippedID == -1){
+        //weapon[?]-image
+        UIImageView *ivEquippedWeapon =
+        [CreateComponentClass
+         createImageView:viewSpecialWeapon.bounds
+         image:@"NH_WingBow.png"//[?]-image
+         tag:0
+         target:nil
+         selector:nil];
+        //少しだけ縦位置を下げる
+        ivEquippedWeapon.center = CGPointMake(ivEquippedWeapon.center.x,
+                                              ivEquippedWeapon.center.y + 10);
+        [viewSpecialWeapon addSubview:ivEquippedWeapon];
+        
+        
+        //no-equipment-string
+        UILabel *lblNoEquip =
+        [[UILabel alloc]initWithFrame:viewSpecialWeapon.bounds];
+        lblNoEquip.text = @"no-equipment";
+        [lblNoEquip sizeToFit];//viewSpecialWeapon.boundsの左上になる(※必ずtextを入力した後に設定する)
+        lblNoEquip.center = CGPointMake(viewSpecialWeapon.bounds.size.width/2,//横位置だけ中心に揃える
+                                        lblNoEquip.center.y);
+        lblNoEquip.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
+        lblNoEquip.textAlignment = NSTextAlignmentCenter;
+
+        lblNoEquip.textColor = [UIColor whiteColor];
+        lblNoEquip.backgroundColor = [UIColor clearColor];
+        
+//        lblNoEquip.center = CGPointMake(viewSpecialWeapon.bounds.size.width/2, viewSpecialWeapon.bounds.size.height/2)
+        [viewSpecialWeapon addSubview:lblNoEquip];
+    }else{//装備されている場合は当該イメージを表示
+        NSString *strImageName = [self getWeaponImageName:(BowType)equippedID];
+//        UIImage *image = [UIImage imageNamed:strImageName];
+        UIImageView *ivEquippedWeapon =
+        [CreateComponentClass
+         createImageView:viewSpecialWeapon.bounds
+         image:strImageName
+         tag:0
+         target:nil
+         selector:nil];
+        [viewSpecialWeapon addSubview:ivEquippedWeapon];
+        
+        
+        //装備中のボウガンのレベル(上記で定義しているので修正のみ)
+        int lvWeapon = [[attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d_level",equippedID]] intValue];
+        lblSpecialWeapon_LV.text = [NSString stringWithFormat:@"LV. %d", lvWeapon];
+    }
+    
     
     
 }
+-(int)getEquipWeaponType{
+    NSString *_keyID = nil;
+    for(int i = 0;i < 10;i++){
+        _keyID = [NSString stringWithFormat:@"weaponID%d", i];
+        if([[attr getValueFromDevice:_keyID] intValue] == 2){
+            return (BowType)i;
+        }
+    }
+    
+    return -1;
+}
+-(NSString *)getWeaponImageName:(BowType)_bowType{
+    
+    //WeaponBuyListViewControllerと同じ
+//    NSArray *imageArrayWithWhite = [NSArray arrayWithObjects:
+//                           @"W_RockBow.png",
+//                           @"W_FireBow.png",
+//                           @"W_WaterBow.png",
+//                           @"W_IceBow.png",
+//                           @"W_BugBow.png",
+//                           @"W_AnimalBow.png",
+//                           @"W_GrassBow.png",
+//                           @"W_ClothBow.png",
+//                           @"W_SpaceBow.png",
+//                           @"W_WingBow.png",
+//                           nil];
+//    return imageArrayWithWhite[_bowType];//BowTypeの対応の一致がズレた時修正が必要。
+    switch (_bowType) {
+        case BowTypeRock:
+            return @"W_RockBow.png";
+        case BowTypeFire:
+            return @"W_FireBow.png";
+        case BowTypeWater:
+            return @"W_WaterBow.png";
+        case BowTypeIce:
+            return @"W_IceBow.png";
+        case BowTypeBug:
+            return @"W_BugBow.png";
+        case BowTypeAnimal:
+            return @"W_AnimalBow.png";
+        case BowTypeGrass:
+            return @"W_GrassBow.png";
+        case BowTypeCloth:
+            return @"W_ClothBow.png";
+        case BowTypeSpace:
+            return @"W_SpaceBow.png";
+        case BowTypeWing:
+            return @"W_WingBow.png";
+        default:
+            return nil;
+    }
+}
+
 @end

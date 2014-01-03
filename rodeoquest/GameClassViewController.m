@@ -232,6 +232,9 @@ int sensitivity;
                                                  name: @"didEnterBackground"
                                                object: nil];
     
+    //時間計測用
+    startDate = [NSDate date];
+    
     worldType = arc4random() % WorldTypeCount;
     return self;
 }
@@ -2543,7 +2546,6 @@ int sensitivity;
     
     
     DBAccessClass *dbac = [[DBAccessClass alloc]init];
-    //    AttrClass *attr = [[AttrClass alloc]init];
     NSString *_id = [attr getIdFromDevice];
     
     
@@ -2559,6 +2561,32 @@ int sensitivity;
     
     
     
+//exp_accum:今までの獲得経験値
+//break_enemy:今までに倒した敵の数
+//gold_max:今までに最も獲得したコインの数
+//time_max:今までの最高飛行時間
+    
+    int exp_accum = [[attr getValueFromDevice:@"exp_accum"] intValue] + [ScoreBoard getScore];
+    [attr setValueToDevice:@"exp_accum" strValue:[NSString stringWithFormat:@"%d", exp_accum]];
+    
+    int break_enemy = [[attr getValueFromDevice:@"break_enemy"] intValue] + enemyDown;
+    [attr setValueToDevice:@"break_enemy" strValue:[NSString stringWithFormat:@"%d", break_enemy]];
+    
+    int gold_max = [[attr getValueFromDevice:@"gold_max"] intValue];
+    int now_gold = [GoldBoard getScore];
+    if(now_gold > gold_max){
+        [attr setValueToDevice:@"gold_max" strValue:[NSString stringWithFormat:@"%d", now_gold]];
+    }
+    
+    //http://d.hatena.ne.jp/mmasashi/20100524/1286123680
+    int time_max = [[attr getValueFromDevice:@"time_max"] intValue];
+    int time_now = (int)[[NSDate date] timeIntervalSinceDate:startDate];
+    if(time_now > time_max){
+        [attr setValueToDevice:@"time_max" strValue:[NSString stringWithFormat:@"%d", time_now]];
+    }
+    //do something
+//    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
+    NSLog(@"game time is %lf (sec)", [[NSDate date] timeIntervalSinceDate:startDate]);
     
     
     //前回最高得点を取得する
@@ -2573,7 +2601,7 @@ int sensitivity;
         //update
         max_score = [ScoreBoard getScore];
         //        [score_defaults setInteger:max_score forKey:@"max_score"];
-        [attr setValueToDevice:@"score" strValue:[NSString stringWithFormat:@"%d", [ScoreBoard getScore]]];
+        [attr setValueToDevice:@"score" strValue:[NSString stringWithFormat:@"%d", max_score]];
         //        NSLog(@"score update! => %d", [score_defaults integerForKey:@"max_score"]);
         NSLog(@"score update! => %d", [[attr getValueFromDevice:@"score"] intValue]);
         
@@ -3117,7 +3145,7 @@ int sensitivity;
         
         
         /*
-         【以下のbreakは極めて重要！】
+         【以下のbreak(return YES)は極めて重要！】
          強いビームパワーの場合、(一発で倒しても)同じ敵に対して何度もhit(＝enemyDown++)してしまう
          １つの敵に対して複数の玉があたってenemyDownする
          */

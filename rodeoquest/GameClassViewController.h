@@ -25,6 +25,9 @@
     int enemyCount;//発生した敵の数
     int enemyDown;//倒した敵の数
     WorldType worldType;
+    
+    
+    NSDate *startDate;//時間計測用
 }
 //bgm
 @property (nonatomic, retain) AVAudioPlayer *audioPlayer;
