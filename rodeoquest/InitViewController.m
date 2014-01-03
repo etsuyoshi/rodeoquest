@@ -10,7 +10,7 @@
 
 
 #define NoConnectTEST
-#define TestView
+//#define TestView
 
 #ifdef TestView//PaymentTestでテストする場合、TestViewをオンにしたまま以下をコメントイン(コメントアウトを外す)
 //    #define PaymentTest//TestViewの場合にのみPaymentテスト有効

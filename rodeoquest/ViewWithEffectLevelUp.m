@@ -187,8 +187,11 @@ UIView *viewKiraParticle;
                                               initWithTarget:self action:@selector(tappedView)];
         [self addGestureRecognizer:tapGesture];
         
-        
+        //自機各種ステータス
         [self dispAttribution];
+        
+        //特殊武器経験値＆レベル
+        [self dispSpecialWeapon];//未実装
     }
     return self;
 }
@@ -239,7 +242,7 @@ UIView *viewKiraParticle;
                         @"総ゲーム回数:",
                         @"現在保有コイン:",
                         @"現在保有ルビー:",
-//                        @"総プレイ時間:",//ユーザーが認識してしまう可能性
+//                        @"総プレイ時間:",//ユーザーがやり込みを認識してしまう可能性
                         nil];
     for(int i = 0; i < [arrId count]; i++){
         NSString *strValueByID = [attr getValueFromDevice:[arrId objectAtIndex:i]];
@@ -255,7 +258,7 @@ UIView *viewKiraParticle;
         UILabel *lblDisplay =
         [self getLabel:strDisplay
                 center:CGPointMake(self.bounds.size.width/2,
-                                   viewAfterLevel.center.y + viewAfterLevel.bounds.size.height + i * 20)];
+                                   viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + i * 20 + 30)];
         [self addSubview:lblDisplay];
         [self bringSubviewToFront:lblDisplay];
     }
@@ -284,5 +287,16 @@ UIView *viewKiraParticle;
         
     }
     return nil;
+}
+
+//現在装備している特殊武器の表示とレベル
+-(void)dispSpecialWeapon{
+    //枠を表示
+    //枠内に特殊武器のイメージ添付
+    //添付イメージの上にレベル、次までの経験値を記入
+    //->経験値は各レベルにおける最高値は自機の半分とする？
+    //獲得経験値は倒した敵の数？通常の経験値？
+    
+    
 }
 @end

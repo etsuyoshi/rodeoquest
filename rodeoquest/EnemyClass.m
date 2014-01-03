@@ -89,6 +89,7 @@ int unique_id;
 }
 
 -(void)setDamage:(int)damage location:(CGPoint)location{
+    //once damaed, he display damage-mode for 1sec(100count)
     isDamaged = 100;//100count=1sec
     //particleを表示すると動作が重くなる
 //    damageParticle = [[DamageParticleView alloc] initWithFrame:CGRectMake(location.x, location.y, damage, damage)];

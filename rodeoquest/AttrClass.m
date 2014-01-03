@@ -61,15 +61,21 @@
                 nil];
     
     //device-memory-information
-    nameArray = [NSMutableArray arrayWithObjects:@"name",
-                                 @"score",
-                                 @"gold",
-                                 @"login",
-                                 @"lastlogin",
-                                 @"gameCnt",
-                                 @"level",
-                                 @"exp",
-                                 nil];
+    nameArray = [NSMutableArray arrayWithObjects:
+                 @"name",
+                 @"score",
+                 @"exp",
+                 @"gold",
+                 @"login",
+                 @"lastlogin",
+                 @"gameCnt",
+                 @"level",
+                 @"exp_accum",
+                 @"break_enemy",
+                 @"gold_max",
+                 @"time_max",
+                 @"playcount",
+                 nil];
     
     NSLog(@"search in the device");
     
@@ -95,16 +101,22 @@
  */
 -(NSDictionary *)getAttrDict{
     
-    
+    //initial value
 //    NSMutableArray *valueArray = [[NSMutableArray alloc]init];
-    NSMutableArray *valueArray = [NSMutableArray arrayWithObjects:@"no_name",//name
-                           @"0",//score
-                           @"0",//gold
-                           @"0",//login
-                           @"0",//lastlogin
-                           @"0",//gameCnt
-                           @"1",//level
-                           @"0",//exp
+    NSMutableArray *valueArray = [NSMutableArray arrayWithObjects:
+                                  @"no_name",//name
+                                  @"0",//score
+                                  @"0",//exp
+                                  @"0",//gold
+                                  @"0",//login
+                                  @"0",//lastlogin
+                                  @"0",//gameCnt
+                                  @"1",//level
+                                  @"0",//exp_accum",
+                                  @"0",//break_enemy",
+                                  @"0",//gold_max",
+                                  @"0",//@"time_max",
+                                  @"0",//playcount",
                            nil];
 //    attrDict = [NSDictionary dictionaryWithObjects:valueArray forKeys:nameArray];
     

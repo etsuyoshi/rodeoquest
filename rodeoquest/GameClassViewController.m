@@ -1721,46 +1721,46 @@ int sensitivity;
     //5秒間隔で非表示
     if([EnemyArray count] == 0){//画面上に敵がいなければ敵を発生(通常生成)
         isYield = true;
-    }else if(gameSecond < 20){//20秒未満なら
-        if(arc4random() % 300 == 0){//平均2秒に1回=100px程度の間隔(通常生成とは別にゲーム進行と共に高頻度で敵を発生)
-            isYield = true;
-        }
-    }else if(gameSecond < 22){//5秒間隔で非表示
-        //nothing : isYield = false;
-    }else if(gameSecond < 40){//40秒未満
-        if(arc4random() % 300 == 0){//平均１秒に1回
-            isYield = true;
-        }
-    }else if(gameSecond < 42){//5秒間隔で非表示
-        //nothing : isYield = false;
-    }else if(gameSecond < 60){
-        if(arc4random() % 100 == 0){//平均0.5秒に1回出現
-            isYield = true;
-        }
-    }else if(gameSecond < 61){
-        //nothing : isYield = false;
-    }else if(gameSecond < 80){//初級殺し
-        if(arc4random() % 30 == 0){//平均0.3秒に1回出現
-            isYield = true;
-        }
-    }else if(gameSecond < 81){
-        //nothing : is...
-    }else if(gameSecond < 100){
-        if(arc4random() % 30 == 0){
-            isYield = true;
-        }
-    }else if(gameSecond < 140){
-        if(arc4random() % 30 == 0){
-            isYield = true;
-        }
-    }else if(gameSecond < 200){
-        if(arc4random() % 30 == 0){
-            isYield = true;
-        }
-    }else{
-        if(arc4random() % 30 == 0){
-            isYield = true;
-        }
+//    }else if(gameSecond < 20){//20秒未満なら
+//        if(arc4random() % 300 == 0){//平均2秒に1回=100px程度の間隔(通常生成とは別にゲーム進行と共に高頻度で敵を発生)
+//            isYield = true;
+//        }
+//    }else if(gameSecond < 22){//5秒間隔で非表示
+//        //nothing : isYield = false;
+//    }else if(gameSecond < 40){//40秒未満
+//        if(arc4random() % 300 == 0){//平均１秒に1回
+//            isYield = true;
+//        }
+//    }else if(gameSecond < 42){//5秒間隔で非表示
+//        //nothing : isYield = false;
+//    }else if(gameSecond < 60){
+//        if(arc4random() % 100 == 0){//平均0.5秒に1回出現
+//            isYield = true;
+//        }
+//    }else if(gameSecond < 61){
+//        //nothing : isYield = false;
+//    }else if(gameSecond < 80){//初級殺し
+//        if(arc4random() % 30 == 0){//平均0.3秒に1回出現
+//            isYield = true;
+//        }
+//    }else if(gameSecond < 81){
+//        //nothing : is...
+//    }else if(gameSecond < 100){
+//        if(arc4random() % 30 == 0){
+//            isYield = true;
+//        }
+//    }else if(gameSecond < 140){
+//        if(arc4random() % 30 == 0){
+//            isYield = true;
+//        }
+//    }else if(gameSecond < 200){
+//        if(arc4random() % 30 == 0){
+//            isYield = true;
+//        }
+//    }else{
+//        if(arc4random() % 30 == 0){
+//            isYield = true;
+//        }
     }
 #else
     
@@ -1780,13 +1780,44 @@ int sensitivity;
         EnemyType _enemyType = EnemyTypeTanu;
         
         
-        for(int eneCnt = 0; eneCnt < 5 ;eneCnt++){
+//        CGFloat probabilityEmergent[] =
+//        {0.0, middleLocation, 1.0};//how to use??
+        NSArray *arrEmergentProbability=
+        [NSArray arrayWithObjects:
+         [NSArray arrayWithObjects:@10, @0, @0, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@5, @3, @2, @0, @0 ,nil],
+         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+         nil];
+        
+        float prob = 0;//分子
+        int bunbo = 10;//分母
+        for(int eneCnt = 0; eneCnt < 5 ;eneCnt++){//display 5 enemy
             
             enemyCount ++;
             //        NSLog(@"enemyCount %d", enemyCount);
             //            int x = arc4random() % ((int)self.view.bounds.size.width - OBJECT_SIZE);
             //            occurredX = (OBJECT_SIZE-50)/2 + eneCnt * (OBJECT_SIZE-50);
             occurredX = OBJECT_SIZE/2 + eneCnt * (OBJECT_SIZE - 7);
+            
+            if([arrEmergentProbability count] > difficulty){
+                bunbo = 10;
+                for(EnemyType i = 0 ; i < 5; i++){
+                    prob = [[[arrEmergentProbability objectAtIndex:difficulty] objectAtIndex:i] floatValue];
+                    for(EnemyType j = 0;j<i;j++){
+                        bunbo -= prob;
+                    }
+                    if(arc4random() % bunbo < prob){
+                        _enemyType = (EnemyType)i;
+                        break;
+                    }
+                }
+                break;
+            }else {
+                //別対応
+            }
             switch (difficulty) {
                 case 0:{
                     //all:tanu
@@ -1803,8 +1834,8 @@ int sensitivity;
                     break;
                 }
                 case 2:{
-                    //tanu1,musa4
-                    if(arc4random()%5<4){
+                    //tanu5,musa5
+                    if(arc4random()%2==0){
                         _enemyType = EnemyTypeMusa;
                     }else{
                         _enemyType = EnemyTypeTanu;
@@ -1812,51 +1843,82 @@ int sensitivity;
                     break;
                 }
                 case 3:{
-                    //tanu6,musa2,hari2
+                    //tanu6,musa3,hari1
                     if(arc4random()%5<3){//60%
                         _enemyType = EnemyTypeTanu;
                     }else{
-                        if(arc4random()%2==0){//20%
-                            _enemyType = EnemyTypeMusa;
-                        }else{//20%
+                        if(arc4random()%4==0){//10%
                             _enemyType = EnemyTypeHari;
+                        }else{//20%
+                            _enemyType = EnemyTypeMusa;
                         }
                     }
 
                     break;
                 }
                 case 4:{
-                    //tanu3,musa3,hari4
-                    if(arc4random()%10<3){
+                    //tanu5,musa3,hari2
+                    if(arc4random()%10<5){
                         _enemyType = EnemyTypeTanu;
                     }else{
-                        if(arc4random() % 7 < 3){
+                        if(arc4random() % 5 < 3){
                             _enemyType = EnemyTypeMusa;
                         }else{
-                            _enemyType = EnemyTypeMusa;
+                            _enemyType = EnemyTypeHari;
                         }
                     }
                     break;
                 }
                 case 5:{
-                    //tanu0,musa4,hari5,zou1
-                    if(arc4random() % 10 < 4){
-                        _enemyType = EnemyTypeMusa;
+                    //tanu3,musa5,hari2
+                    if(arc4random() % 10 < 3){
+                        _enemyType = EnemyTypeTanu;
                     }else{
-                        if(arc4random() % 6 < 5){
-                            _enemyType = EnemyTypeHari;
+                        if(arc4random() % 7 < 5){
+                            _enemyType = EnemyTypeMusa;
                         }else{
-                            _enemyType = EnemyTypeZou;
+                            _enemyType = EnemyTypeHari;
                         }
                     }
+                    break;
                 }
                 case 6:{
-                    //tanu0,musa0,hari5,zou5
-                    if(arc4random() % 2 == 0){
-                        _enemyType = EnemyTypeHari;
+                    //tanu1,musa5,hari4
+                    if(arc4random() % 10 == 0){
+                        _enemyType = EnemyTypeTanu;
+                    }else if(arc4random() % 9 < 5){
+                        _enemyType = EnemyTypeMusa;
                     }else{
-                        _enemyType = EnemyTypeZou;
+                        _enemyType = EnemyTypeHari;
                     }
+                    break;
+                }
+                case 7:{
+                    //tanu0,musa5,hari5
+                    if(arc4random() % 2 == 0){
+                        _enemyType = EnemyTypeMusa;
+                    }else{
+                        _enemyType = EnemyTypeHari;
+                    }
+                    break;
+                }
+                case 8:{
+                    //tanu0,musa7,hari3
+                    if(arc4random() % 10 < 7){
+                        _enemyType = EnemyTypeMusa;
+                    }else{
+                        _enemyType = EnemyTypeHari;
+                    }
+                    break;
+                }
+                case 9:{
+                    //tanu0, mura09,hari1
+                    if(arc4random() % 10 < 9){
+                        _enemyType = EnemyTypeMusa;
+                    }else{
+                        _enemyType = EnemyTypeHari;
+                    }
+                    break;
                 }
                 default:{
                     //difficuty > 6
@@ -1865,9 +1927,12 @@ int sensitivity;
             }
             
             
+            //enemy initialize
+            //enemy is defined as move ealier for gameSecond/5.0 which gameSecond is increasing 0.01f;
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
                                                    size:OBJECT_SIZE
-                                                   time:MAX(5.0f-(float)gameSecond/50.0f, 0.5f)
+                                                   time:[self getSigmoid:(float)gameSecond]
+//                                                   time:MAX(5.0f-(float)gameSecond/5.0f, 0.5f)
                                               enemyType:_enemyType
                                  ];
             //test用
@@ -3299,6 +3364,20 @@ int sensitivity;
                                    completion:^{
 //                                       [self myInviteFriends:friends];
                                    }];
+}
+
+/*
+ *used for enemy's motion-animation time
+ *sigmoid = (max-min)*(1+1/exp)/(1+exp(x/150-1))+min
+ */
+-(float)getSigmoid:(float)_value{
+    float max = 5.0f;
+    float min = 0.5f;
+    float a = 150;//熱関数
+    float val = (max-min)*(1.0f+exp(-1))/(1.0f+exp(_value/a-1.0f))+min;
+    NSLog(@"sigmoid = %f", val);
+    return val;
+//    return 1.665f/(1 + exp(_value/150.0f-1))+0.5f;
 }
 
 @end
