@@ -61,9 +61,10 @@ UIView *viewKiraParticle;
                    textColor:[UIColor whiteColor]
                    backColor:[UIColor clearColor]
                    isEditable:NO];
+        [tvTitle sizeToFit];
         tvTitle.textAlignment = NSTextAlignmentCenter;
         tvTitle.center = CGPointMake(self.bounds.size.width/2,
-                                     180);
+                                     100);
         [self addSubview:tvTitle];
         
         
@@ -74,18 +75,21 @@ UIView *viewKiraParticle;
          *フレームの中にビームとレベルの数字を表示
         */
         
-        //まず枠
+        //まず枠：タイトルの下に配置
         viewBeforeLevel = [CreateComponentClass
                            createView:CGRectMake(0, 0, 100, 90)];
         [self addSubview:viewBeforeLevel];
         viewBeforeLevel.center = CGPointMake(self.bounds.size.width/2 - viewBeforeLevel.bounds.size.width/2 - 10,
-                                             self.bounds.size.height/2);
+                                             tvTitle.center.y + tvTitle.bounds.size.height/2 +viewBeforeLevel.bounds.size.height/2);
+//                                             self.bounds.size.height/2);
         
+        //viewBeforeLevelの横(同じ高さ)に同じ大きさのフレームを用意
         viewAfterLevel = [CreateComponentClass
                           createView:viewBeforeLevel.bounds];
         [self addSubview:viewAfterLevel];
         viewAfterLevel.center = CGPointMake(self.bounds.size.width/2 + viewAfterLevel.bounds.size.width/2 + 10,
-                                            self.bounds.size.height/2);
+                                            viewBeforeLevel.center.y);
+//                                            self.bounds.size.height/2);
         
         
         //次にimageView:beam描画
@@ -152,32 +156,33 @@ UIView *viewKiraParticle;
         /*
          *effect looks like fire flower
          */
-        ViewFireWorks *viewFire = [[ViewFireWorks alloc]
-                                   initWithFrame:CGRectMake(0, 0, 20, 20)];
-        [self addSubview: viewFire];
+        //test
+//        ViewFireWorks *viewFire = [[ViewFireWorks alloc]
+//                                   initWithFrame:CGRectMake(0, 0, 20, 20)];
+//        [self addSubview: viewFire];
         
         
         /*
          *kira kira
          */
-        for(int i = 0; i < 10;i++){
-            viewKiraParticle = [[KiraParticleView alloc]
-                                initWithFrame:CGRectMake(i * 30, tvTitle.frame.origin.y + tvTitle.frame.size.height/2,
-                                                         50, 50)
-                                particleType:ParticleTypeMoving];
-            [self addSubview:viewKiraParticle];
-        }
-        
-        //whole-frame-effect:kirakira=3x4interval
-        for(int i = 0; i < 3;i++){//width
-            for(int j = 0 ; j < 4 ; j++){//height
-                viewKiraParticle = [[KiraParticleView alloc]
-                                    initWithFrame:CGRectMake((i * 100) % (int)self.bounds.size.width,
-                                                             (j * 120) % (int)self.bounds.size.height, 50, 50)
-                                    particleType:ParticleTypeKilled];
-                [self addSubview:viewKiraParticle];
-            }
-        }
+//        for(int i = 0; i < 10;i++){
+//            viewKiraParticle = [[KiraParticleView alloc]
+//                                initWithFrame:CGRectMake(i * 30, tvTitle.frame.origin.y + tvTitle.frame.size.height/2,
+//                                                         50, 50)
+//                                particleType:ParticleTypeMoving];
+//            [self addSubview:viewKiraParticle];
+//        }
+//        
+//        //whole-frame-effect:kirakira=3x4interval
+//        for(int i = 0; i < 3;i++){//width
+//            for(int j = 0 ; j < 4 ; j++){//height
+//                viewKiraParticle = [[KiraParticleView alloc]
+//                                    initWithFrame:CGRectMake((i * 100) % (int)self.bounds.size.width,
+//                                                             (j * 120) % (int)self.bounds.size.height, 50, 50)
+//                                    particleType:ParticleTypeKilled];
+//                [self addSubview:viewKiraParticle];
+//            }
+//        }
         
         
         
@@ -187,11 +192,13 @@ UIView *viewKiraParticle;
                                               initWithTarget:self action:@selector(tappedView)];
         [self addGestureRecognizer:tapGesture];
         
-        //自機各種ステータス
-        [self dispAttribution];
         
         //特殊武器経験値＆レベル
         [self dispSpecialWeapon];//未実装
+        
+        //自機各種ステータス
+        [self dispAttribution];
+        
     }
     return self;
 }
@@ -221,68 +228,141 @@ UIView *viewKiraParticle;
 -(void)dispAttribution{
     
     AttrClass *attr = [[AttrClass alloc] init];
+    
+    //dictionaryでは順番を制御できない
+//    NSDictionary *_dictID = @{
+//                              @"level":@"レベル",
+//                              @"score":@"最高得点:",
+//                              @"gold_max":@"最高獲得コイン:",
+//                              @"time_max":@"最高飛行時間:",
+//                              @"gamecnt":@"総ゲーム回数:",
+//                              @"gold":@"現在保有コイン:",
+//                              @"ruby":@"現在保有ルビー:",
+//                              @"exp_accum":@"今までの獲得経験値:",
+//                              @"break_enemy":@"今までに倒した敵の数:"};
+//
+//    NSArray *arrId = [_dictID allKeys];
+//    NSArray *arrDisp = [_dictID allValues];
+//    
+//    for(int i = 0;i < [arrId count];i++){
+//        NSLog(@"%@", arrId[i]);
+//    }
+    
+    
     NSArray *arrId = [NSArray arrayWithObjects:
                       @"level",
                       @"score",
-                      @"exp_accum",
-                      @"break_enemy",
                       @"gold_max",
                       @"time_max",
                       @"gamecnt",
                       @"gold",
+//                      @"",
                       @"ruby",
+//                      @"",
+                      @"exp_accum",
+//                      @"",
+                      @"break_enemy",
+                      
                       nil];
+    //画面上に表示するラベル
     NSArray *arrDisp = [NSArray arrayWithObjects:
-                        @"レベル:",
-                        @"最高得点:",
-                        @"今までの獲得経験値",
-                        @"今までに倒した敵の数",
+                        @"現在レベル:",
+                        @"最高スコア:",
                         @"最高獲得コイン:",
                         @"最高飛行時間:",
                         @"総ゲーム回数:",
                         @"現在保有コイン:",
+//                        @"",
                         @"現在保有ルビー:",
+//                        @"",
+                        @"今までの獲得経験値:",
+//                        @"",
+                        @"今までに倒した敵の数:",
+                        
 //                        @"総プレイ時間:",//ユーザーがやり込みを認識してしまう可能性
                         nil];
-    for(int i = 0; i < [arrId count]; i++){
-        NSString *strValueByID = [attr getValueFromDevice:[arrId objectAtIndex:i]];
-
-        if(strValueByID == nil ||
-           [strValueByID isEqual:[NSNull null]]){
-            strValueByID = @"0";
+    //横２列に配置
+    int _no = 0;
+    for(int row = 0;;row++){
+//        for(int col = 0;col < 2;col++){//二列
+        for(int col = 0; col < 1;col++){//一列
+//            NSLog(@"_no = %d, row=%d, col=%d", _no, row, col);
+            if(_no < [arrDisp count]){
+                NSString *strValueByID = [attr getValueFromDevice:[arrId objectAtIndex:_no]];
+                if([[arrId objectAtIndex:_no] isEqualToString:@""]){
+                    _no++;
+//                    break;//改行:next-col
+                    continue;//次の位置へ
+                }
+                if(strValueByID == nil ||
+                   [strValueByID isEqual:[NSNull null]]){
+                    strValueByID = @"0";
+                }
+                
+                NSString *strDisplay = [NSString stringWithFormat:@"%@%@",
+                                        [arrDisp objectAtIndex:_no],
+                                        strValueByID];
+                
+                UILabel *lblDisplay =
+                [self getLabel:strDisplay
+                        center:CGPointMake(self.bounds.size.width/4 + self.bounds.size.width/2*col,
+                                           viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + row * 20 + 10)
+                     alignment:(col==0)?NSTextAlignmentRight:NSTextAlignmentLeft];
+                [self addSubview:lblDisplay];
+                [self bringSubviewToFront:lblDisplay];
+                
+                _no++;
+                
+                
+            }else{
+                break;
+            }
         }
-        NSString *strDisplay = [NSString stringWithFormat:@"%@%@",
-                                [arrDisp objectAtIndex:i],
-                                strValueByID];
         
-        UILabel *lblDisplay =
-        [self getLabel:strDisplay
-                center:CGPointMake(self.bounds.size.width/2,
-                                   viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + i * 20 + 30)];
-        [self addSubview:lblDisplay];
-        [self bringSubviewToFront:lblDisplay];
+        if(_no >= [arrDisp count]){
+            break;
+        }
     }
+//    for(int i = 0; i < [arrId count]; i++){
+//        NSString *strValueByID = [attr getValueFromDevice:[arrId objectAtIndex:i]];
+//
+//        if(strValueByID == nil ||
+//           [strValueByID isEqual:[NSNull null]]){
+//            strValueByID = @"0";
+//        }
+//        NSString *strDisplay = [NSString stringWithFormat:@"%@%@",
+//                                [arrDisp objectAtIndex:i],
+//                                strValueByID];
+//        
+//        UILabel *lblDisplay =
+//        [self getLabel:strDisplay
+//                center:CGPointMake(self.bounds.size.width/2,
+//                                   viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + i/2 * 20 + 30)];
+//        [self addSubview:lblDisplay];
+//        [self bringSubviewToFront:lblDisplay];
+//    }
     
     
 }
 
--(UILabel *)getLabel:(NSString *)_string center:(CGPoint)_center{
+-(UILabel *)getLabel:(NSString *)_string center:(CGPoint)_center alignment:(NSTextAlignment)_align{
     if([_string isEqual:[NSNull null]] ||
        _string == nil){
         return nil;
     }else{
     
         UILabel *lbl =
-        [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width-50, 100)];
-//        [lbl sizeToFit];
+        [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width/2-10, 20)];
 //        NSLog(@"frame=%@", lbl);
         lbl.text = _string;
-        lbl.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:15];
-        lbl.textAlignment = NSTextAlignmentRight;
+        lbl.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
+//        [lbl sizeToFit];//size alter & alignment is invalid..
         lbl.center = _center;
         lbl.textColor = [UIColor whiteColor];
         lbl.backgroundColor = [UIColor clearColor];
-        
+//        lbl.backgroundColor = [UIColor blackColor];
+        lbl.textAlignment = _align;//NSTextAlignmentRight;
+//        NSLog(@"%f, %@", lbl.bounds.size.width, lbl.text);
         return lbl;
         
     }
@@ -296,6 +376,13 @@ UIView *viewKiraParticle;
     //添付イメージの上にレベル、次までの経験値を記入
     //->経験値は各レベルにおける最高値は自機の半分とする？
     //獲得経験値は倒した敵の数？通常の経験値？
+    
+    UIView *viewSpecialWeapon = [CreateComponentClass
+                                 createView:CGRectMake(0, 0, 130, 130)];
+    viewSpecialWeapon.center =
+    CGPointMake(viewAfterLevel.frame.origin.x + viewSpecialWeapon.bounds.size.width/2,
+                viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + viewSpecialWeapon.bounds.size.height/2 + 10);
+    [self addSubview:viewSpecialWeapon];
     
     
 }
