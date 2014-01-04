@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, BowType) {
 -(Boolean)removeAllData;
 -(NSDictionary *)getAttrDict;
 -(Boolean)addExp:(int)addingVal;//自機レベル
--(Boolean)addWeaponExp:(int)addingVal weaponID:(NSString *)_weaponId;//武器レベル
+-(Boolean)addWeaponExp:(int)addingVal weaponID:(int)_weaponId;//武器レベル
 -(Boolean)setValueToDevice:(NSString *)NAME strValue:(NSString *)VALUE;
 -(NSString *)getValueFromDevice:(NSString *)NAME;
 -(NSString *)getIdFromDevice;

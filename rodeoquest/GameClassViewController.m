@@ -872,6 +872,17 @@ int sensitivity;
                             
                             //スイープモードが終わって射程圏内に入ったアイテムを削除したいが、
                             //ここでのindex:iはスイープモードになっているインデックスとはならない。
+                            
+//                            if(!sweepmode)all-item:freefall
+                            if(![MyMachine getStatus:ItemTypeMagnet]){
+                                if(i < [ItemArray count]){
+                                    if([ItemArray[i] getIsAlive]){
+                                        [ItemArray[i] freefall];
+                                    }
+                                }
+                            }
+                            
+                            
                         }else{
                             //途中で何らかの理由で遮られた場合
                             //                            NSLog(@"animation key frame not exit");
@@ -1546,7 +1557,6 @@ int sensitivity;
     //        [MyMachine setLocation:CGPointMake(movedPoint.x, movedPoint.y)];
     //        [MyMachine getImageView].center = movedPoint;
     //        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
-    //
     //
     //        //エフェクト描画用frame
     //        viewMyEffect.center = movedPoint;
@@ -2334,7 +2344,6 @@ int sensitivity;
                    goldCnt < [GoldBoard getScore]-1){//少なくとも一枚以上獲得した場合の通常ループ
                     //                    goldCnt = (goldCnt + goldAdd > [GoldBoard getScore])?[GoldBoard getScore]:(goldCnt + goldAdd);
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", goldCnt];
-                    
                 }else{//最終状態
                     tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
                 }
@@ -2561,10 +2570,10 @@ int sensitivity;
     
     
     
-//exp_accum:今までの獲得経験値
-//break_enemy:今までに倒した敵の数
-//gold_max:今までに最も獲得したコインの数
-//time_max:今までの最高飛行時間
+    //exp_accum:今までの獲得経験値
+    //break_enemy:今までに倒した敵の数
+    //gold_max:今までに最も獲得したコインの数
+    //time_max:今までの最高飛行時間
     
     int exp_accum = [[attr getValueFromDevice:@"exp_accum"] intValue] + [ScoreBoard getScore];
     [attr setValueToDevice:@"exp_accum" strValue:[NSString stringWithFormat:@"%d", exp_accum]];
@@ -2577,6 +2586,8 @@ int sensitivity;
     if(now_gold > gold_max){
         [attr setValueToDevice:@"gold_max" strValue:[NSString stringWithFormat:@"%d", now_gold]];
     }
+    
+    
     
     //http://d.hatena.ne.jp/mmasashi/20100524/1286123680
     int time_max = [[attr getValueFromDevice:@"time_max"] intValue];
@@ -2639,7 +2650,7 @@ int sensitivity;
     int beforeLevel = [[attr getValueFromDevice:@"level"] intValue];
     //経験値とレベルの両方を更新
     [attr addExp:[ScoreBoard getScore]];
-    //上記addExpにより下記setValutToDevice@exp & setValueToDevice@levelを両方同時に実行
+    //上記addExpにより下記setValueToDevice@exp & setValueToDevice@levelを両方同時に実行
     //    [attr setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
     //    [attr setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
     
@@ -2647,6 +2658,21 @@ int sensitivity;
     int afterLevel = [[attr getValueFromDevice:@"level"] intValue];
     NSLog(@"ゲーム前経験値%d, 今回獲得スコア%d => ゲーム後経験値%d", beforeExp, [ScoreBoard getScore], afterExp);
     NSLog(@"ゲーム前レベル%d　=> ゲーム後レベル%d", beforeLevel, afterLevel);
+    
+    
+    //武器レベルの更新
+    int id_weapon = -1;
+    for(BowType bow = 0; bow < 10;bow++){
+        if([[attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d_exp", bow]]
+            isEqualToString:@"2"]){
+            id_weapon = bow;
+        }
+    }
+    if(id_weapon != -1){//何も装備してなければ
+//        NSString *strWeaponIDX_exp = [NSString stringWithFormat:@"weaponID%d_exp", id_weapon];
+//        int beforeWeaponExp = [[attr getValueFromDevice:strWeaponIDX_exp] intValue];
+        [attr addWeaponExp:[ScoreBoard getScore] weaponID:id_weapon];
+    }
     
     
     //_/_/_/_/_/_/端末情報更新完了_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -3070,10 +3096,10 @@ int sensitivity;
            [MyMachine getStatus:ItemTypeBomb] ||
            [MyMachine getStatus:ItemTypeMagnet] ||
            [MyMachine getStatus:ItemTypeWeapon0] ||
-           [MyMachine getStatus:ItemTypeWeapon1] ||
+//           [MyMachine getStatus:ItemTypeWeapon1] ||//複数ビームは何度も２回まで取得可能(制限をかけるなら[MyMachine getNumOfBeam]等)
            [MyMachine getStatus:ItemTypeWeapon2]){
             
-            if(arc4random() % 100 >= 20){
+            if(arc4random() % 100 >= 20){//本番では40(特殊状態でコインが沢山取れる方が嬉しいため)
                 _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 2 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
@@ -3092,13 +3118,13 @@ int sensitivity;
             //アイテム出現、アイテム生成
             if(probabilityt > 40){//60%の確率
                 _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
+            }else if(arc4random() % 3 < 1){//2/3
                 _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeBlueGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){
                 _item = [[ItemClass alloc] init:ItemTypePurpleGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
+            }else if(arc4random() % 5 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeWeapon1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
@@ -3108,7 +3134,7 @@ int sensitivity;
             }else{//
                 
                 //                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
-                if(arc4random() % 2 == 0){
+                if(arc4random() % 2 == 0 && [EnemyArray count] > 5){//もしくは敵の位置が自機に近い時など
                     _item = [[ItemClass alloc] init:ItemTypeBig x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
                 }else if(arc4random() % 2 == 0){
                     _item = [[ItemClass alloc] init:ItemTypeBomb x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];

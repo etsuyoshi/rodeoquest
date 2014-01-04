@@ -80,4 +80,6 @@ typedef NS_ENUM(NSInteger, ItemType) {
 //-(KiraParticleView *)getKilledParticle;
 
 
+-(void)freefall;
+
 @end

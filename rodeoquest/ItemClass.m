@@ -399,55 +399,7 @@ int numCell;
     if(lifetime_count == 0){
 //        NSLog(@"start item animation initialization");
         
-        CGPoint kStartPos = iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
-        CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
-                                      iv.superview.bounds.size.height + height);//480);//
-        [CATransaction begin];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-        [CATransaction setCompletionBlock:^{//終了処理
-            CAAnimation* animationKeyFrame = [iv.layer animationForKey:@"position"];
-            if(animationKeyFrame){
-                //途中で終わらずにアニメーションが全て完了して
-//                [self die];
-//            NSLog(@"animation key frame already exit & die");
-            }else{
-                //途中で何らかの理由で遮られた場合
-                //            NSLog(@"animation key frame not exit");
-            }
-//            NSLog(@"finished item animation initialization");
-            
-        }];
-        
-        {
-            
-            // CAKeyframeAnimationオブジェクトを生成
-            CAKeyframeAnimation *animation;
-            animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-            animation.fillMode = kCAFillModeForwards;
-            animation.removedOnCompletion = NO;
-            animation.duration = 1.0;
-            
-            // 放物線のパスを生成
-            //    CGFloat jumpHeight = kStartPos.y * 0.2;
-            CGPoint peakPos = CGPointMake((kStartPos.x + kEndPos.x)/2, kStartPos.y * 0.05);//test
-            CGMutablePathRef curvedPath = CGPathCreateMutable();
-            CGPathMoveToPoint(curvedPath, NULL, kStartPos.x, kStartPos.y);//始点に移動
-            CGPathAddCurveToPoint(curvedPath, NULL,
-                                  peakPos.x, peakPos.y,
-                                  (peakPos.x + kEndPos.x)/2, (peakPos.y + kEndPos.y)/2,
-                                  kEndPos.x, kEndPos.y);
-            
-            // パスをCAKeyframeAnimationオブジェクトにセット
-            animation.path = curvedPath;
-            
-            // パスを解放
-            CGPathRelease(curvedPath);
-            
-            // レイヤーにアニメーションを追加
-            [iv.layer addAnimation:animation forKey:@"position"];
-            
-        }
-        [CATransaction commit];
+        [self freefall];
     }
     
 //    NSLog(@"count=%d", lifetime_count);
@@ -502,31 +454,34 @@ int numCell;
      *<バグ対策>
      *【具体的事象】
      *スイープモード(sm)でアイテムを引寄せた後、自機位置変更と同時にsm終了により、
-     *アイテムが元の自機位置に停止したまま消去されないことがある
-     *【対策】
+     *アイテムが(元の)自機位置に停止したまま消去されないことがある
+     *【対策1】
      *各アイテムでアニメーション中の時系列位置を記憶し、同じ位置に留まっていれば上記事象が発生したと判断し、
      *当該アイテムを消去([self die])する
      *参考：smにおけるアニメーション時の終了時処理として扱うことは困難である(アイテムに対するインデックス指定が難しいため)。
+     *【対策2】@GameClassViewController.m
+     *アニメーションが終了して、かつ、sm終了した場合、
+     *[item freefall]を実行することで自由落下させている。
      */
     //時系列の位置を格納
-    [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
-                                                                 mLayer.position.y)]
-                   atIndex:0];
-    
-    if(lifetime_count > 10){
-        if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
-           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
-//            NSLog(@"remove item at x=%f, y=%f",
-//                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
-//                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
-            [self die];
-            [iv removeFromSuperview];
-            return isOccurringParticle;
-        }else{
-            
-        }
-        [arrayLoc removeLastObject];
-    }
+//    [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
+//                                                                 mLayer.position.y)]
+//                   atIndex:0];
+//    
+//    if(lifetime_count > 10){
+//        if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
+//           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
+////            NSLog(@"remove item at x=%f, y=%f",
+////                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
+////                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
+//            [self die];
+//            [iv removeFromSuperview];
+//            return isOccurringParticle;
+//        }else{
+//            
+//        }
+//        [arrayLoc removeLastObject];
+//    }
     
     
     
@@ -689,6 +644,58 @@ int numCell;
                          }];
     }
     
+}
+
+-(void)freefall{
+    CGPoint kStartPos = CGPointMake(x_loc, y_loc);//iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
+    CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
+                                  iv.superview.bounds.size.height + height);//480);//
+    [CATransaction begin];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [CATransaction setCompletionBlock:^{//終了処理
+        CAAnimation* animationKeyFrame = [iv.layer animationForKey:@"position"];
+        if(animationKeyFrame){
+            //途中で終わらずにアニメーションが全て完了して
+            //                [self die];
+            //            NSLog(@"animation key frame already exit & die");
+        }else{
+            //途中で何らかの理由で遮られた場合
+            //            NSLog(@"animation key frame not exit");
+        }
+        //            NSLog(@"finished item animation initialization");
+        
+    }];
+    
+    {
+        
+        // CAKeyframeAnimationオブジェクトを生成
+        CAKeyframeAnimation *animation;
+        animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+        animation.fillMode = kCAFillModeForwards;
+        animation.removedOnCompletion = NO;
+        animation.duration = 1.0;
+        
+        // 放物線のパスを生成
+        //    CGFloat jumpHeight = kStartPos.y * 0.2;
+        CGPoint peakPos = CGPointMake((kStartPos.x + kEndPos.x)/2, kStartPos.y * 0.05);//test
+        CGMutablePathRef curvedPath = CGPathCreateMutable();
+        CGPathMoveToPoint(curvedPath, NULL, kStartPos.x, kStartPos.y);//始点に移動
+        CGPathAddCurveToPoint(curvedPath, NULL,
+                              peakPos.x, peakPos.y,
+                              (peakPos.x + kEndPos.x)/2, (peakPos.y + kEndPos.y)/2,
+                              kEndPos.x, kEndPos.y);
+        
+        // パスをCAKeyframeAnimationオブジェクトにセット
+        animation.path = curvedPath;
+        
+        // パスを解放
+        CGPathRelease(curvedPath);
+        
+        // レイヤーにアニメーションを追加
+        [iv.layer addAnimation:animation forKey:@"position"];
+        
+    }
+    [CATransaction commit];
 }
 
 @end

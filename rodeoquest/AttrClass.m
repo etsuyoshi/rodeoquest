@@ -197,7 +197,8 @@
 }
 
 //返り値は意味なし
--(Boolean)addWeaponExp:(int)addingVal weaponID:(NSString *)_weaponId{
+-(Boolean)addWeaponExp:(int)addingVal weaponID:(int)_id{
+    NSString *_weaponId = [NSString stringWithFormat:@"weaponID%d", _id];
     NSString *strID_exp = [NSString stringWithFormat:@"%@_exp", _weaponId];
     NSString *strID_level = [NSString stringWithFormat:@"%@_level", _weaponId];
     int beforeExp = [[self getValueFromDevice:strID_exp] intValue];
@@ -220,7 +221,7 @@
                 [self setValueToDevice:strID_exp strValue:[NSString stringWithFormat:@"%d", afterExp]];
                 return true;
             }else{
-                [self addWeaponExp:afterExp weaponID:_weaponId];
+                [self addWeaponExp:afterExp weaponID:(BowType)_weaponId];
             }
         }
         [self setValueToDevice:strID_exp strValue:[NSString stringWithFormat:@"%d", afterExp]];

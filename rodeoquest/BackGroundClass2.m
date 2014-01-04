@@ -293,7 +293,7 @@ int imageMargin;
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [CATransaction setCompletionBlock:^{
         CAAnimation *animationForKeyFrame = [iv_oscillate1.layer animationForKey:@"position"];
-        NSLog(@"value of iv_oscillate1.layer = %@", animationForKeyFrame);
+//        NSLog(@"value of iv_oscillate1.layer = %@", animationForKeyFrame);
         //        NSLog(@"%d", (int)animationForKeyFrame);
         [iv_oscillate1.layer removeAnimationForKey:@"position"];
         //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
@@ -342,7 +342,7 @@ int imageMargin;
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [CATransaction setCompletionBlock:^{
         CAAnimation *animationForKeyFrame = [iv_oscillate2.layer animationForKey:@"position"];
-        NSLog(@"value of iv_oscillate2.layer = %@", animationForKeyFrame);
+//        NSLog(@"value of iv_oscillate2.layer = %@", animationForKeyFrame);
         //        NSLog(@"%d", (int)animationForKeyFrame);
         [iv_oscillate2.layer removeAnimationForKey:@"position"];
 //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
@@ -661,7 +661,7 @@ int imageMargin;
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [CATransaction setCompletionBlock:^{
         CAAnimation *animationForKeyFrame = [iv_oscillate1.layer animationForKey:@"position"];
-        NSLog(@"value of iv_oscillate1.layer = %@", animationForKeyFrame);
+//        NSLog(@"value of iv_oscillate1.layer = %@", animationForKeyFrame);
         //        NSLog(@"%d", (int)animationForKeyFrame);
         [iv_oscillate1.layer removeAnimationForKey:@"position"];
         //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
@@ -713,7 +713,7 @@ int imageMargin;
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [CATransaction setCompletionBlock:^{
         CAAnimation *animationForKeyFrame = [iv_oscillate2.layer animationForKey:@"position"];
-        NSLog(@"value of iv_oscillate2.layer = %@", animationForKeyFrame);
+//        NSLog(@"value of iv_oscillate2.layer = %@", animationForKeyFrame);
         //        NSLog(@"%d", (int)animationForKeyFrame);
         [iv_oscillate2.layer removeAnimationForKey:@"position"];
         //        [iv_oscillate2.layer removeAnimationForKey:@"position"];
