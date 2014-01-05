@@ -81,5 +81,6 @@ typedef NS_ENUM(NSInteger, ItemType) {
 
 
 -(void)freefall;
+-(void)boundfall;
 
 @end

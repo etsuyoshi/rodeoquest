@@ -399,7 +399,8 @@ int numCell;
     if(lifetime_count == 0){
 //        NSLog(@"start item animation initialization");
         
-        [self freefall];
+//        [self freefall];
+        [self boundfall];
     }
     
 //    NSLog(@"count=%d", lifetime_count);
@@ -412,7 +413,7 @@ int numCell;
     x_loc = mLayer.position.x;//中心座標
     y_loc = mLayer.position.y;//中心座標
     
-    if(y_loc >= iv.superview.bounds.size.height - height/2){//upper-than-destination
+    if(y_loc >= [UIScreen mainScreen].bounds.size.height - height/2){//upper-than-destination
 //    if(y_loc >= iv.superview.bounds.size.height - height*2){//test:die
         [self die];
     }
@@ -464,24 +465,24 @@ int numCell;
      *[item freefall]を実行することで自由落下させている。
      */
     //時系列の位置を格納
-//    [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
-//                                                                 mLayer.position.y)]
-//                   atIndex:0];
-//    
-//    if(lifetime_count > 10){
-//        if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
-//           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
-////            NSLog(@"remove item at x=%f, y=%f",
-////                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
-////                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
-//            [self die];
-//            [iv removeFromSuperview];
-//            return isOccurringParticle;
-//        }else{
-//            
-//        }
-//        [arrayLoc removeLastObject];
-//    }
+    [arrayLoc insertObject:[NSValue valueWithCGPoint:CGPointMake(mLayer.position.x,
+                                                                 mLayer.position.y)]
+                   atIndex:0];
+    
+    if(lifetime_count > 10){
+        if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
+           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
+//            NSLog(@"remove item at x=%f, y=%f",
+//                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
+//                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
+            [self die];
+            [iv removeFromSuperview];
+            return isOccurringParticle;
+        }else{
+            
+        }
+        [arrayLoc removeLastObject];
+    }
     
     
     
@@ -646,10 +647,39 @@ int numCell;
     
 }
 
+
 -(void)freefall{
     CGPoint kStartPos = CGPointMake(x_loc, y_loc);//iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
     CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
-                                  iv.superview.bounds.size.height + height);//480);//
+                                  [UIScreen mainScreen].bounds.size.height + height);//480);//
+    CGPoint kMiddlePos = CGPointMake((kStartPos.x + kEndPos.x)/2,
+                                     (kStartPos.y + kEndPos.y)/2
+                                     );
+    
+    [self moveFrom:kStartPos middlePoint:kMiddlePos endPoint:kEndPos];
+    
+    
+}
+-(void)boundfall{
+    CGPoint kStartPos = CGPointMake(x_loc, y_loc);//iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
+    CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
+                                  [UIScreen mainScreen].bounds.size.height + height);//480);//
+    CGPoint kMiddlePos = CGPointMake((kStartPos.x + kEndPos.x)/2, kStartPos.y * 0.05);//test
+    
+    [self moveFrom:kStartPos middlePoint:kMiddlePos endPoint:kEndPos];
+    
+}
+
+
+-(void)moveFrom:(CGPoint)startPoint
+    middlePoint:(CGPoint)middlePoint
+       endPoint:(CGPoint)endPoint{
+    
+    CGPoint kStartPos = startPoint;
+    CGPoint kEndPos = endPoint;
+    CGPoint kMiddlePos = middlePoint;
+    
+    
     [CATransaction begin];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     [CATransaction setCompletionBlock:^{//終了処理
@@ -673,16 +703,15 @@ int numCell;
         animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         animation.fillMode = kCAFillModeForwards;
         animation.removedOnCompletion = NO;
-        animation.duration = 1.0;
+        animation.duration = 3.0;
         
         // 放物線のパスを生成
         //    CGFloat jumpHeight = kStartPos.y * 0.2;
-        CGPoint peakPos = CGPointMake((kStartPos.x + kEndPos.x)/2, kStartPos.y * 0.05);//test
         CGMutablePathRef curvedPath = CGPathCreateMutable();
         CGPathMoveToPoint(curvedPath, NULL, kStartPos.x, kStartPos.y);//始点に移動
         CGPathAddCurveToPoint(curvedPath, NULL,
-                              peakPos.x, peakPos.y,
-                              (peakPos.x + kEndPos.x)/2, (peakPos.y + kEndPos.y)/2,
+                              kMiddlePos.x, kMiddlePos.y,
+                              (kMiddlePos.x + kEndPos.x)/2, (kMiddlePos.y + kEndPos.y)/2,
                               kEndPos.x, kEndPos.y);
         
         // パスをCAKeyframeAnimationオブジェクトにセット
@@ -697,5 +726,7 @@ int numCell;
     }
     [CATransaction commit];
 }
+
+
 
 @end

@@ -3164,6 +3164,7 @@ int sensitivity;
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
         if([ItemArray count] > 50){
+            NSLog(@"item count = %d so remove last", [ItemArray count]);
             [ItemArray removeLastObject];
         }
         [self.view bringSubviewToFront:[[ItemArray objectAtIndex:0] getImageView]];

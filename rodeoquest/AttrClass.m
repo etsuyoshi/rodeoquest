@@ -74,7 +74,6 @@
                  @"break_enemy",
                  @"gold_max",
                  @"time_max",
-                 @"playcount",
                  nil];
     
     NSLog(@"search in the device");
@@ -116,7 +115,6 @@
                                   @"0",//break_enemy",
                                   @"0",//gold_max",
                                   @"0",//@"time_max",
-                                  @"0",//playcount",
                            nil];
 //    attrDict = [NSDictionary dictionaryWithObjects:valueArray forKeys:nameArray];
     
@@ -171,27 +169,37 @@
         int _maxExp = [[MaxExpArray objectAtIndex:beforeLevel] intValue];
         NSLog(@"beforeExp = %d, beforeLevel = %d, afterExp = %d, _maxExp = %d",
               beforeExp, beforeLevel, afterExp, _maxExp);
-        if (afterExp > _maxExp){
+        if (afterExp >= _maxExp){
             int afterLevel = beforeLevel + 1;
-            [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
-            NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
-            
-            //_maxExpの更新
-            _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
-            
-            afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
-            
-            if(afterExp < _maxExp){
-                [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
-                return true;
+            if(afterLevel < [MaxExpArray count]){
+                [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
+                NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
+                
+                //_maxExpの更新
+                _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
+                
+                afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
+                
+                if(afterExp <= _maxExp){
+                    [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
+                    return true;
+                }else{
+                    [self addExp:afterExp];
+                }
             }else{
-                [self addExp:afterExp];
+                
+                
+                //以下別途対応必要！：レベルが90になったらmaxと表示させる等＠menuviewcon
+                [self setValueToDevice:@"level" strValue:@"90"];
+                [self setValueToDevice:@"exp" strValue:@"9999"];
+                
+                return true;
             }
         }
         [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
         return true;
     }else{
-        NSLog(@"レベルが99以上なのでレベルアップせず");
+        NSLog(@"レベルが89以上なのでレベルアップせず");
         return false;
     }
 }
