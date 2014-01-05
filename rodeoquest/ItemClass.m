@@ -703,7 +703,7 @@ int numCell;
         animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         animation.fillMode = kCAFillModeForwards;
         animation.removedOnCompletion = NO;
-        animation.duration = 3.0;
+        animation.duration = 2.0;
         
         // 放物線のパスを生成
         //    CGFloat jumpHeight = kStartPos.y * 0.2;

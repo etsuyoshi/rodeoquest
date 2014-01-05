@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, BowType) {
 @interface AttrClass : NSObject{
     NSString *myId;
     NSDictionary *attrDict;
-    
+    int maxLevel;
     NSMutableArray *nameArray;
     
     
@@ -50,4 +50,6 @@ typedef NS_ENUM(NSInteger, BowType) {
 -(NSString *)getIdFromDevice;
 -(NSDictionary *)getWeaponDict;
 -(NSDictionary *)getBeamDict;
+
+-(int)getMaxLevel;
 @end

@@ -2144,8 +2144,17 @@ int sensitivity;
                                    go_component_width,
                                    go_height);
     //    [view_go addSubview:[CreateComponentClass createImageView:rect_score image:@"close"]];
-    UITextView *tv_score = [CreateComponentClass createTextView:rect_score
-                                                           text:[NSString stringWithFormat:@"score : %d", beforeExp]];
+    UITextView *tv_score = nil;
+    
+    if(beforeLevel < [attr getMaxLevel]){
+        tv_score = [CreateComponentClass
+                    createTextView:rect_score
+                    text:[NSString stringWithFormat:@"score : %d", beforeExp]];
+    }else{
+        tv_score = [CreateComponentClass
+                    createTextView:rect_score
+                    text:[NSString stringWithFormat:@"score : MAX"]];
+    }
     [tv_score setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_score];
     
@@ -2225,12 +2234,6 @@ int sensitivity;
     
     
     
-    /*
-     テスト
-     */
-    //    [GoldBoard setScore:100];
-    //    [ScoreBoard setScore:10000];
-    
     
     //マルチスレッド
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -2242,14 +2245,17 @@ int sensitivity;
     //三つとも最大値に達したら初期化してゼロからスタート
     //加えるべき値を別途定義してそれぞれ(pv_score等)に加えていく
     //上限まで達したら再度ゼロにして足していくが、次のレベルにおいても上限に達する場合はそこで停止しておく
+    //レベルマックスに達したら経験値上昇動作は実行しない
     dispatch_async(globalQueue, ^{
         NSLog(@"multi-thread start");
         //ここでは情報を取得しておくに留める(更新はdispatch_asyncで実施)
         //        AttrClass *attr = [[AttrClass alloc]init];
         int level = beforeLevel;//[[attr getValueFromDevice:@"level"] intValue];//既に更新済なので古いデータを使う
         int exp = beforeExp;//[[attr getValueFromDevice:@"exp"] intValue];//既に更新済なので古いデータを使う
-        int expTilNextLevel = [attr getMaxExpAtTheLevel:beforeLevel];//非更新データなのでアクセス
-        
+        int expTilNextLevel = 0;
+        if(beforeLevel < [attr getMaxLevel]){
+            expTilNextLevel = [attr getMaxExpAtTheLevel:beforeLevel];//非更新データなのでアクセス
+        }
         
         //        float unit = (float)expTilNextLevel / 100.0f;//progressViewの100分割ユニット＝最初のレベルで固定
         float unit = (float)[ScoreBoard getScore]/100.0f;
@@ -2271,8 +2277,12 @@ int sensitivity;
         //exp初期値
         //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
         //                     animated:NO];
-        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+        if(level < [attr getMaxLevel]){
+            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
                      animated:NO];
+        }else{
+            [pv_score setProgress:1.0f animated:NO];
+        }
         
         for(int cnt = 0;cnt < loopCount ||//必ず100回繰り返す
             goldCnt < [GoldBoard getScore]||//獲得金額を100分割にして100回ループ
@@ -2295,48 +2305,46 @@ int sensitivity;
                     //                    pvScoreValue = expTilNextLevel;
                     //次のレベルに進行
                     level++;
-                    flagLevelUp = true;
-                    expTilNextLevel = [attr getMaxExpAtTheLevel:level];
-                    //                    pvScoreValue = unit-pvScoreValue;//?
-                    pvScoreValue = 0;//(float)[ScoreBoard getScore] - pvScoreValue;//残り：今回取得したスコアから今まで足し上げた値を控除
-                    if(pvScoreValue > expTilNextLevel){//次のレベルのMAXよりも残り経験値が大きい場合
-                        //経験値を沢山取得しても何度もレベル上昇するのは止めて次のレベルで止めておく
-                        pvScoreValue = expTilNextLevel-1;
+                    if(level < [attr getMaxLevel]){
+                        flagLevelUp = true;
+                        expTilNextLevel = [attr getMaxExpAtTheLevel:level];
+                        //                    pvScoreValue = unit-pvScoreValue;//?
+                        pvScoreValue = 0;//(float)[ScoreBoard getScore] - pvScoreValue;//残り：今回取得したスコアから今まで足し上げた値を控除
+                        if(pvScoreValue > expTilNextLevel){//次のレベルのMAXよりも残り経験値が大きい場合
+                            //経験値を沢山取得しても何度もレベル上昇するのは止めて次のレベルで止めておく
+                            pvScoreValue = expTilNextLevel-1;
+                        }
+                    }else{
+                        
                     }
-                    
-                    
-                    //ここでレベルアップエフェクトを追加
-                    
-                    
-                    
-                    
                 }
             }
             
             dispatch_async(mainQueue, ^{
                 //経験値
-                if(cnt < loopCount-1){//通常ループ
-                    tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-                                     ABS(pvScoreValue) , level];
-                    if(!flagLevelUp){
-                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
-                                     animated:NO];
-                    }else{//レベルアップ時には一度ゼロに戻してから値を変更
-                        [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
+                if(level < [attr getMaxLevel]){
+                    if(cnt < loopCount-1){//通常ループ
+                        tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
+                                         ABS(pvScoreValue) , level];
+                        if(!flagLevelUp){
+                            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
+                                         animated:NO];
+                        }else{//level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
+                            [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
+                                         animated:YES];
+                        }
+                        
+                    }else{////最後のループのみ別処理(誤差：unitが無理数の場合、割り切れないので正確な値を示すために最終値をそのまま表示)
+                        //最終状態：初期値＋今回獲得スコア
+                        tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
+                                         ABS(pvScoreValue), level];
+                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
                                      animated:YES];
-                        //level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
-                        //                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-                        //                                     animated:YES];
-                        
-                        
                     }
-                    
-                }else{////最後のループのみ別処理(誤差：unitが無理数の場合、割り切れないので正確な値を示すために最終値をそのまま表示)
-                    //最終状態：初期値＋今回獲得スコア
-                    tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-                                     ABS(pvScoreValue), level];
-                    [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-                                 animated:YES];
+                }else{
+                    //レベルマックスになっている場合
+                    tv_score.text = [NSString stringWithFormat:@"EXP : MAX     level : MAX"];
+                    [pv_score setProgress:1.0f animated:NO];
                 }
                 
                 //gold
@@ -2392,6 +2400,7 @@ int sensitivity;
                         //- (void)friendPickerViewController:(ASFriendPickerViewController *)controllerをオーバーロードする必要がある
                     }
                     
+                    //サーバーにデータ登録
                     [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.001f];
                     
                     

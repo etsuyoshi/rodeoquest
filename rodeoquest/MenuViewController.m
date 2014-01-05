@@ -374,7 +374,11 @@ UIView *viewForDialog;
                                         Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 30,
                                         W_MOST_UPPER_COMPONENT,
                                         H_MOST_UPPER_COMPONENT);
-    NSString *strLevel = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"level"] intValue]];
+    
+    //if level < 89 then display the level, else display "MAX"
+    
+//    NSString *strLevel = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"level"] intValue]];
+    NSString *strLevel = [attr getValueFromDevice:@"level"];
     tvLevelAmount = [CreateComponentClass createTextView:rectLevelAmount
                                                                 text:strLevel
                                                                 font:@"AmericanTypewriter-Bold"
@@ -382,6 +386,7 @@ UIView *viewForDialog;
                                                            textColor:[UIColor whiteColor]
                                                            backColor:[UIColor clearColor]
                                                           isEditable:NO];
+    tvLevelAmount.textAlignment = NSTextAlignmentRight;
     [self.view addSubview:tvLevelAmount];
     
     
@@ -414,9 +419,13 @@ UIView *viewForDialog;
                                         Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 30,
                                         W_MOST_UPPER_COMPONENT,
                                         H_MOST_UPPER_COMPONENT);
-    NSString *strExp = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"exp"]
-                                                            intValue]];
     
+//    NSString *strExp = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"exp"]
+//                                                            intValue]];
+    NSString *strExp = [attr getValueFromDevice:@"exp"];
+    if([strExp isEqualToString:@"9999"]){//レベルがマックスになると経験値は9999にセットした@AttrClass
+        strExp = @"MAX";
+    }
     
     tvScoreAmount = [CreateComponentClass createTextView:rectScoreAmount
                                                                 text:strExp
@@ -726,9 +735,19 @@ UIView *viewForDialog;
      object:nil];
     
     //exp, level, goldの更新
-    tvLevelAmount.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"level"] intValue]];
-    tvGoldAmount_global.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"gold"] intValue]];
-    tvScoreAmount.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"exp"] intValue]];
+//    tvLevelAmount.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"level"] intValue]];
+//    tvGoldAmount_global.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"gold"] intValue]];
+//    tvScoreAmount.text = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"exp"] intValue]];
+    if([[attr getValueFromDevice:@"level"] intValue] < [attr getMaxLevel]){
+        tvLevelAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"level"] intValue]];
+        tvScoreAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"exp"] intValue]];
+    }else{
+        tvLevelAmount.text = @"MAX";
+        tvScoreAmount.text = @"MAX";
+    }
+    
+    tvGoldAmount_global.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"gold"] intValue]];
+
     
     
     //以下の目的：secondForLifeとlifeGameの更新

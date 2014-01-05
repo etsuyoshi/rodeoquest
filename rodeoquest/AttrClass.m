@@ -27,7 +27,8 @@
 //    NSLog(@"aaa");//
     MaxExpArray = [[NSMutableArray alloc]init];
 //    attrDict = [[NSDictionary alloc] init];
-    for(int i = 0; i < 90; i ++){//level 100がマックス
+    maxLevel = 90;
+    for(int i = 0; i < maxLevel; i ++){//level 100がマックス
         [MaxExpArray addObject:[NSNumber numberWithInt:((i+1)*100)]];//100, 200, 300, 400, 500, ・・・
     }
 //    NSLog(@"bbb");//
@@ -162,7 +163,7 @@
     NSLog(@"addExp");
     int beforeExp = [[self getValueFromDevice:@"exp"] intValue];
     int beforeLevel = [[self getValueFromDevice:@"level"] intValue];
-    if(beforeLevel < [MaxExpArray count]){//until-88
+    if(beforeLevel < [MaxExpArray count]){//until-89
         NSLog(@"現在レベル%dの経験値%dに%dを加算", beforeLevel, beforeExp , addingVal);
         
         int afterExp = beforeExp + addingVal;
@@ -187,7 +188,7 @@
                     [self addExp:afterExp];
                 }
             }else{
-                
+                //if become level90=>displayed "MAX"
                 
                 //以下別途対応必要！：レベルが90になったらmaxと表示させる等＠menuviewcon
                 [self setValueToDevice:@"level" strValue:@"90"];
@@ -195,13 +196,16 @@
                 
                 return true;
             }
+        }else{//if (afterExp >= _maxExp)
+            [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
+            return true;
         }
-        [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
-        return true;
+        
     }else{
-        NSLog(@"レベルが89以上なのでレベルアップせず");
+        NSLog(@"レベルが90以上なのでレベルアップせず");
         return false;
-    }
+    }//if(beforeLevel < [MaxExpArray count]){//until-89
+    return false;
 }
 
 //返り値は意味なし
@@ -320,5 +324,9 @@
         NSLog(@"既にセットされています。 : beamType = %@",
               [self getValueFromDevice:@"beamtype"]);
     }
+}
+
+-(int)getMaxLevel{
+    return maxLevel;
 }
 @end
