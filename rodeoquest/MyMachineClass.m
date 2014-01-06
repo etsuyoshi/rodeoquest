@@ -365,7 +365,6 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 
 
 -(void)doNext{
-    NSLog(@"weapon2count= %d", weapon2Count);
     for(int i = 0; i < [beamArray count];i++){//ordinay & special beam
         if([[beamArray objectAtIndex:i] getIsAlive]){
             [(BeamClass *)[beamArray objectAtIndex:i] doNext];

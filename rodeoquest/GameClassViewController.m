@@ -161,11 +161,11 @@ ScoreBoardClass *ScoreBoard;
 GoldBoardClass *GoldBoard;
 
 PowerGaugeClass *powerGauge;//imageviewを内包
-UIImageView *iv_powerGauge;
-UIImageView *iv_pg_ribrary;
-UIImageView *iv_pg_circle;
-UIImageView *iv_pg_cross;
-int x_pg, y_pg, width_pg, height_pg;
+//UIImageView *iv_powerGauge;
+//UIImageView *iv_pg_ribrary;
+//UIImageView *iv_pg_circle;
+//UIImageView *iv_pg_cross;
+
 
 
 NSTimer *timer;
@@ -542,35 +542,19 @@ int sensitivity;
     
     
     //パワーゲージの描画:新機種のframeサイズに応じて変える
-    int devide_frame = 3;
-    x_pg = rect_frame.size.width * (devide_frame - 1)/devide_frame;//左側１／４
-    y_pg = rect_frame.size.height * (devide_frame - 1)/devide_frame;//下側１／４
-    width_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
-    height_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
-    
-    powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:x_pg y_init:y_pg width:width_pg height:height_pg];
-    //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
-    [self.view addSubview:[powerGauge getImageView]];
-    
-    //背景
-    iv_powerGauge = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];//256bitx256bit
-    iv_powerGauge.image = [UIImage imageNamed:@"powerGauge2.png"];
-    iv_powerGauge.alpha = 0.1;
-    [self.view addSubview:iv_powerGauge];
+//    int devide_frame = 3;
+//    int x_pg, y_pg, width_pg, height_pg;
+//    x_pg = rect_frame.size.width * (devide_frame - 1)/devide_frame;//左側１／４
+//    y_pg = rect_frame.size.height * (devide_frame - 1)/devide_frame;//下側１／４
+//    width_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
+//    height_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
+//    
+//    powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:x_pg y_init:y_pg width:width_pg height:height_pg];
+//    //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
+//    [self.view addSubview:[powerGauge getImageView]];
     
     
-    iv_pg_ribrary = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];
-    iv_pg_ribrary.image = [UIImage imageNamed:@"ribrary.png"];
-    [self.view addSubview:iv_pg_ribrary];
-    
-    iv_pg_circle = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];
-    iv_pg_circle.image = [UIImage imageNamed:@"circle_2w_rSmall_128.png"];
-    [self.view addSubview:iv_pg_circle];
-    
-    
-    iv_pg_cross = [[UIImageView alloc]initWithFrame:CGRectMake(x_pg, y_pg, width_pg, height_pg)];
-    iv_pg_cross.image = [UIImage imageNamed:@"cross.png"];
-    [self.view addSubview:iv_pg_cross];
+    //power gauge定義以上。
     
     
     //一時停止ボタン
@@ -2400,11 +2384,17 @@ int sensitivity;
 //                            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
 //                                         animated:NO];
                             pv_score.progress = (float)pvScoreValue/expTilNextLevel;
-                        }else{//level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
+                        }else{
+                            
+                            //[before]level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
 //                            [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
 //                                         animated:YES];
-                            pv_score.progress = 0;
+                            //[after]level-up always 100%
+                            
+                            pv_score.progress = 1.0f;
                         }
+                        
+                        
                         
                     }else{////最後のループのみ別処理(誤差：unitが無理数の場合、割り切れないので正確な値を示すために最終値をそのまま表示)
                         //最終状態：初期値＋今回獲得スコア
@@ -2939,17 +2929,38 @@ int sensitivity;
     bombView.center = [MyMachine getImageView].center;
     CGPoint kStartPos = bombView.center;//((CALayer *)[view.layer presentationLayer]).position;
     
-    //生きているターゲットエネミーを探す
+    //生きているターゲットを探す
     int noTargetEnemy = 0;
+    int counter = 0;
     for(noTargetEnemy = arc4random() % [EnemyArray count];
-        ![EnemyArray[noTargetEnemy] getIsAlive] &&//敵が生きていて
-        [EnemyArray[noTargetEnemy] getY] < [MyMachine getY];//自機位置より前方にいるなら
+        ![EnemyArray[noTargetEnemy] getIsAlive] ||//敵が死んでいればループ継続
+        [EnemyArray[noTargetEnemy] getY] > [MyMachine getY]-100;//自機位置より100px前方にいないならループ継続
         noTargetEnemy = arc4random() % [EnemyArray count]){
         
+        counter++;
+        if(counter > 50){//if not found enemy by 50times loop
+            return;//諦めてメソッド終了
+        }
+
     }
+    
+    
+    //ターゲットにライブラリを付与
+    powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:0 y_init:0 width:OBJECT_SIZE height:OBJECT_SIZE];
+    //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
+    [[EnemyArray[noTargetEnemy] getImageView] addSubview:[powerGauge getImageView]];
+    [[EnemyArray[noTargetEnemy] getImageView] bringSubviewToFront:[powerGauge getImageView]];
+    
+    //target add ribrary effect
+    
+    
     //アニメーション実行中の経過時間を考慮して、敵の現在位置より少し手前に投げる。
     CGPoint kEndPos = CGPointMake([EnemyArray[noTargetEnemy] getX],
                                   [EnemyArray[noTargetEnemy] getY] + 100);//レベル上昇で意図した場所に投げられる？
+    
+    
+    
+    
     [CATransaction begin];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
     //    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
@@ -3255,7 +3266,7 @@ int sensitivity;
         }
         
         //        //test:item
-        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+//        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
