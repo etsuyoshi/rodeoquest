@@ -7,8 +7,8 @@
 //
 
 #import "ItemClass.h"
-#import "UIView+Animation.h"
-#import "KiraParticleView.h"
+
+
 
 @implementation ItemClass
 
@@ -179,6 +179,11 @@ int numCell;
     }
     //中心座標にする
     iv.center = CGPointMake(x_loc, y_loc);
+    
+    
+    
+    
+    
 //    [iv moveBoundDuration:0 option:0];
     
 //    
@@ -469,7 +474,7 @@ int numCell;
                                                                  mLayer.position.y)]
                    atIndex:0];
     
-    if(lifetime_count > 10){
+    if(lifetime_count > 5){//応急処置
         if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
            [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
 //            NSLog(@"remove item at x=%f, y=%f",

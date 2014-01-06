@@ -172,16 +172,19 @@
               beforeExp, beforeLevel, afterExp, _maxExp);
         if (afterExp >= _maxExp){
             int afterLevel = beforeLevel + 1;
-            if(afterLevel < [MaxExpArray count]){
+            if(afterLevel < [MaxExpArray count]){//上昇後レベルが上限(90)未満なら
                 [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
                 NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
                 
-                //_maxExpの更新
-                _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
-                
+                //残っている、追加すべき経験値を計算(beforeLevelにおける最高経験値)
                 afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
                 
-                if(afterExp <= _maxExp){
+                
+                //_maxExpの更新(再取得)
+                _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
+                
+                
+                if(afterExp < _maxExp){
                     [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
                     return true;
                 }else{

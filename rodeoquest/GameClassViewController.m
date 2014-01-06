@@ -86,6 +86,7 @@
 #import <AppSocially/AppSocially.h>
 #import "GameClassViewController.h"
 #import "ViewWithEffectLevelUp.h"
+#import "LDProgressView.h"
 #import "ViewExplode.h"
 #import "ViewKira.h"
 #import "BGMClass.h"
@@ -1220,16 +1221,27 @@ int sensitivity;
                         break;
                     }
                     case ItemTypeDeffense0:{
+                        /*
+                         *バリアー：時間制
+                         *何度当たっても解除されない代わりに、一定時間経過すれば解除される
+                         */
                         if(![MyMachine getStatus:ItemTypeDeffense0]){
-                            if(![MyMachine getStatus:ItemTypeBig]){//巨大化しているときにシールド不要
+                            if(![MyMachine getStatus:ItemTypeBig]){//巨大化しているときにバリア不要
                                 [MyMachine setStatus:@"1" key:ItemTypeDeffense0];
                             }
                         }
                         break;
                     }
                     case ItemTypeDeffense1:{
-                        //追加取得可能なのでステータス判定しない
-                        [MyMachine setStatus:@"1" key:ItemTypeDeffense1];
+                        /*
+                         *シールド：回数制
+                         *永久に解除されない代わりに、一定回数当たれば解除される
+                         */
+                        if(![MyMachine getStatus:ItemTypeDeffense1]){
+                            if(![MyMachine getStatus:ItemTypeBig]){//巨大化しているときにシールド不要
+                                [MyMachine setStatus:@"1" key:ItemTypeDeffense1];
+                            }
+                        }
                         break;
                     }
                     case ItemTypeHeal:{
@@ -2100,6 +2112,12 @@ int sensitivity;
     int go_component_width = 250;
     //全体のフレーム
     UIView *view_go = [CreateComponentClass createView];
+    view_go.frame =
+    CGRectMake(viewScoreField.frame.origin.x+5,
+               viewScoreField.frame.origin.y+viewScoreField.bounds.size.height+3,
+               [UIScreen mainScreen].bounds.size.width-viewScoreField.frame.origin.x-10,
+               [UIScreen mainScreen].bounds.size.height-viewScoreField.frame.origin.y-viewScoreField.bounds.size.height-10);
+    
     [self.view addSubview:view_go];
     [self.view bringSubviewToFront:view_go];
     
@@ -2131,6 +2149,7 @@ int sensitivity;
     //最後にview_goに貼付けているのでview_go上での位置
     label.center = CGPointMake([self.view convertPoint:view_go.center toView:view_go].x,
                                label.frame.size.height/2 + 5);//5はマージン
+    label.textColor = [UIColor whiteColor];
     [view_go addSubview:label];
     
     
@@ -2138,11 +2157,14 @@ int sensitivity;
     
     
     //ScoreBoard
+    //スコアの上端位置
     int score_y = go_y + go_height + 5;
+    int label_h = 30;//表示するテキストの縦(高さ)
+    int pv_h = 25;
     CGRect rect_score = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                                    score_y,
                                    go_component_width,
-                                   go_height);
+                                   label_h);
     //    [view_go addSubview:[CreateComponentClass createImageView:rect_score image:@"close"]];
     UITextView *tv_score = nil;
     
@@ -2158,13 +2180,44 @@ int sensitivity;
     [tv_score setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_score];
     
-    UIProgressView *pv_score = [[UIProgressView alloc]
-                                initWithProgressViewStyle:UIProgressViewStyleBar];
-    pv_score.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                                score_y + go_height,
-                                go_component_width,
-                                10);
-    pv_score.progressTintColor = [UIColor greenColor];
+//    UIProgressView *pv_score = [[UIProgressView alloc]
+//                                initWithProgressViewStyle:UIProgressViewStyleBar];
+//    pv_score.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+//                                score_y + go_height,
+//                                go_component_width,
+//                                10);
+//    pv_score.progressTintColor = [UIColor greenColor];
+
+    LDProgressView *pv_score = [[LDProgressView alloc]
+                                initWithFrame:CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+                                                         score_y + label_h,
+                                                         go_component_width,
+                                                         pv_h)];
+    pv_score.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
+//    pv_score.flat = @YES;
+    pv_score.progress = 0.40;
+    pv_score.animate = @YES;
+
+    
+//    // default color, animated
+//    LDProgressView *progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 130, self.view.frame.size.width-40, 22)];
+//    progressView.progress = 0.40;
+//    [self.progressViews addObject:progressView];
+//    [self.view addSubview:progressView];
+//    
+//    
+//    // flat, green, animated
+//    progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 160, self.view.frame.size.width-40, 22)];
+//    progressView.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
+//    progressView.flat = @YES;
+//    progressView.progress = 0.40;
+//    progressView.animate = @YES;
+//    [self.progressViews addObject:progressView];
+//    [self.view addSubview:progressView];
+
+    
+    
+    
     [view_go addSubview:pv_score];
     
     //GoldBoard
@@ -2172,9 +2225,9 @@ int sensitivity;
     CGRect rect_gold = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                                   gold_y,
                                   go_component_width,
-                                  go_height);
+                                  label_h);
     //    [view_go addSubview:[CreateComponentClass createImageView:rect_gold image:@"close"]];
-    UITextView *tv_gold = [CreateComponentClass createTextView:rect_gold text:@"gold : 0"];
+    UITextView *tv_gold = [CreateComponentClass createTextView:rect_gold text:@"Zeny : 0"];
     [tv_gold setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_gold];
     
@@ -2194,18 +2247,31 @@ int sensitivity;
     CGRect rect_complete = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                                       complete_y,
                                       go_component_width,
-                                      go_height);
+                                      label_h);
     //    [view_go addSubview:[CreateComponentClass createImageView:rect_complete image:@"close"]];
-    UITextView *tv_complete = [CreateComponentClass createTextView:rect_complete text:@"complete : 0"];
+    UITextView *tv_complete = [CreateComponentClass createTextView:rect_complete text:@"complete : "];
     [tv_complete setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_complete];
-    UIProgressView *pv_complete = [[UIProgressView alloc]
-                                   initWithProgressViewStyle:UIProgressViewStyleBar];
-    pv_complete.progressTintColor = [UIColor blueColor];
-    pv_complete.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                                   complete_y + go_height,
-                                   go_component_width,
-                                   10);
+//    UIProgressView *pv_complete = [[UIProgressView alloc]
+//                                   initWithProgressViewStyle:UIProgressViewStyleBar];
+//    pv_complete.progressTintColor = [UIColor blueColor];
+//    pv_complete.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+//                                   complete_y + go_height,
+//                                   go_component_width,
+//                                   10);
+    LDProgressView *pv_complete =
+    [[LDProgressView alloc]
+     initWithFrame:
+     CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+                complete_y + label_h,
+                go_component_width,
+                pv_h)];
+    pv_complete.color = [UIColor colorWithRed:0.73f green:0.10f blue:0.00f alpha:1.00f];
+    pv_complete.progress = 0.40;
+    pv_complete.animate = @YES;
+    pv_complete.type = LDProgressGradient;
+    pv_complete.background = [pv_complete.color colorWithAlphaComponent:0.8];
+
     
     [view_go addSubview:pv_complete];
     
@@ -2258,14 +2324,13 @@ int sensitivity;
         }
         
         //        float unit = (float)expTilNextLevel / 100.0f;//progressViewの100分割ユニット＝最初のレベルで固定
-        float unit = (float)[ScoreBoard getScore]/100.0f;
-        
+        float unit = (float)[ScoreBoard getScore]/100.0f;//experience devided per 100count
         
         //unitは取得スコア[ScoreBoard getScore]の100分割の方がすっきりする(最初のレベルにおけるレベルアップのための必要経験値の100分割にしてしまうと次のレベルに上がった時に１カウント当たりの上昇速度が低下してしまい時間がかかる)
         int loopCount = 100;//(float)(exp + [ScoreBoard getScore])/unit;
         //        int loopCount = (float)(exp + 1000)/unit;//テスト用
         //        int cntInit = 0;//(float)exp / unit;//最初のcntInitの表示はanimateしないようにしたい(現状x)
-        int pvScoreValue = exp;
+        float pvScoreValue = (float)exp;
         //        int goldCnt = 0;
         
         Boolean flagLevelUp = false;
@@ -2278,10 +2343,12 @@ int sensitivity;
         //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
         //                     animated:NO];
         if(level < [attr getMaxLevel]){
-            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-                     animated:NO];
+//            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+//                     animated:NO];
+            pv_score.progress = pvScoreValue/expTilNextLevel;
         }else{
-            [pv_score setProgress:1.0f animated:NO];
+//            [pv_score setProgress:1.0f animated:NO];
+            pv_score.progress = 1.0f;
         }
         
         for(int cnt = 0;cnt < loopCount ||//必ず100回繰り返す
@@ -2298,9 +2365,9 @@ int sensitivity;
                 NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
                       cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
             }
-            if(cnt < 100){
+            if(cnt < loopCount){
                 if(pvScoreValue + unit < expTilNextLevel){
-                    pvScoreValue += (int)unit;//小数点以下の誤差は発生するが
+                    pvScoreValue += unit;//小数点以下の誤差は発生するが
                 }else{
                     //                    pvScoreValue = expTilNextLevel;
                     //次のレベルに進行
@@ -2314,57 +2381,64 @@ int sensitivity;
                             //経験値を沢山取得しても何度もレベル上昇するのは止めて次のレベルで止めておく
                             pvScoreValue = expTilNextLevel-1;
                         }
-                    }else{
-                        
+                    }else{//levelが89から90に達したら
+                        //要対応...
+                        //レベルと累積のスコアを表示するラベルはMAXに、今回取得したスコア(未実装？)は数字を表示する
                     }
                 }
             }
             
+            //上記で設定した値をアニメーションのように表示する
             dispatch_async(mainQueue, ^{
                 //経験値
                 if(level < [attr getMaxLevel]){
                     if(cnt < loopCount-1){//通常ループ
                         tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-                                         ABS(pvScoreValue) , level];
+                                         (int)ABS(pvScoreValue) , level];
                         if(!flagLevelUp){
-                            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
-                                         animated:NO];
+//                            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
+//                                         animated:NO];
+                            pv_score.progress = (float)pvScoreValue/expTilNextLevel;
                         }else{//level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
-                            [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
-                                         animated:YES];
+//                            [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
+//                                         animated:YES];
+                            pv_score.progress = 0;
                         }
                         
                     }else{////最後のループのみ別処理(誤差：unitが無理数の場合、割り切れないので正確な値を示すために最終値をそのまま表示)
                         //最終状態：初期値＋今回獲得スコア
                         tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
-                                         ABS(pvScoreValue), level];
-                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-                                     animated:YES];
+                                         (int)ABS(pvScoreValue), level];
+//                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+//                                     animated:YES];
+                        pv_score.progress = (float)pvScoreValue/expTilNextLevel;
                     }
                 }else{
                     //レベルマックスになっている場合
                     tv_score.text = [NSString stringWithFormat:@"EXP : MAX     level : MAX"];
-                    [pv_score setProgress:1.0f animated:NO];
+//                    [pv_score setProgress:1.0f animated:NO];
+                    pv_score.progress = 1.0f;
                 }
                 
                 //gold
                 if([GoldBoard getScore] > 0 &&
                    goldCnt < [GoldBoard getScore]-1){//少なくとも一枚以上獲得した場合の通常ループ
                     //                    goldCnt = (goldCnt + goldAdd > [GoldBoard getScore])?[GoldBoard getScore]:(goldCnt + goldAdd);
-                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", goldCnt];
+                    tv_gold.text = [NSString stringWithFormat:@"Zeny : %d", goldCnt];
                 }else{//最終状態
-                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
+                    tv_gold.text = [NSString stringWithFormat:@"Zeny : %d", [GoldBoard getScore]];
                 }
                 
                 //complete
                 if(cnt < (float)enemyDown/(float)enemyCount*100){
                     if(enemyDown != enemyCount){
-                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", MIN(cnt, 100)];
+                        //no-update for string(progress is updating...)
+//                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", MIN(cnt, 100)];
                         pv_complete.progress = (float)cnt / 100.0f;
                     }
                 }else{//最終状態：
                     if(enemyDown == enemyCount){
-                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
+//                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
                         pv_complete.progress = 1.0f;
                     }
                 }
@@ -2373,7 +2447,7 @@ int sensitivity;
                 //最後の方で完了したらサーバーにデータ登録
                 if(cnt == loopCount-1){//cntは少なくと99は必ずカウントする(割り切れなかった場合のため)：ちなみに他の条件もあるのでcntは100を超える場合もある
                     //                    //最終状態
-                    //                    tv_gold.text = [NSString stringWithFormat:@"GOLD : %d", [GoldBoard getScore]];
+                    //                    tv_gold.text = [NSString stringWithFormat:@"Zeny : %d", [GoldBoard getScore]];
                     //                    tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
                     //                                     [ScoreBoard getScore] , level];
                     //
@@ -3121,8 +3195,7 @@ int sensitivity;
             }else{
                 _item = [[ItemClass alloc] init:ItemTypeRedGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }
-        }else{
-            
+        }else{//通常時におけるアイテム出現定義
             int probabilityt = arc4random() % 100;
             //アイテム出現、アイテム生成
             if(probabilityt > 40){//60%の確率
@@ -3139,7 +3212,10 @@ int sensitivity;
                 _item = [[ItemClass alloc] init:ItemTypeWeapon1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                
+            }else if(arc4random() % 3 == 0){//barrier
+                _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            }else if(arc4random() % 3 == 0){//shield
+                _item = [[ItemClass alloc] init:ItemTypeDeffense1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else{//
                 
                 //                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
@@ -3288,6 +3364,9 @@ int sensitivity;
         [self.view bringSubviewToFront:ivItemAcq];
     }else{//kiratypeWhite
         //沢山の小さなキラキラを表示
+        //以下要修正：配列でキラを表示させると、ループ順に終了せずに、スタックに残ってしまう
+        //->キラキラを複数貼付けた一つのイメージファイルとして表示する必要がある。
+        /*
         for(int i = 0; i < 10; i++){
 //            UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];
 //            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
@@ -3335,6 +3414,7 @@ int sensitivity;
             [self.view addSubview:ivItemAcq];
             [self.view bringSubviewToFront:ivItemAcq];
         }
+         */
     }
 }
 

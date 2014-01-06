@@ -26,8 +26,10 @@
 //#define PARTICLE_TEST
 //#define KIRA_Test
 //#define EXPLODE_TEST
-#define VIEWWITHEFFECTLEVELUP_TEST
+//#define VIEWWITHEFFECTLEVELUP_TEST
+#define LDPROGRESS_TEST
 
+#import "LDProgressView.h"
 #import "ViewWithEffectLevelUp.h"
 #import "ViewExplode.h"
 #import "ViewKira.h"
@@ -48,7 +50,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface TestViewController ()
-
+#ifdef LDPROGRESS_TEST
+@property (nonatomic, strong) NSMutableArray *progressViews;//progressを格納する配列
+#endif
 @end
 
 @implementation TestViewController
@@ -937,7 +941,24 @@ int tempCount = 0;
                         ];
         [self.view addSubview:vwel];
     }
-
+#elif defined LDPROGRESS_TEST
+    if(counter == 0){
+        // default color, animated
+        LDProgressView *progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 130, self.view.frame.size.width-40, 22)];
+        progressView.progress = 0.40;
+        [self.progressViews addObject:progressView];
+        [self.view addSubview:progressView];
+        
+        
+        // flat, green, animated
+        progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 160, self.view.frame.size.width-40, 22)];
+        progressView.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
+        progressView.flat = @YES;
+        progressView.progress = 0.40;
+        progressView.animate = @YES;
+        [self.progressViews addObject:progressView];
+        [self.view addSubview:progressView];
+    }
 #else
 //    NSLog(@"aaa");
     //nothing

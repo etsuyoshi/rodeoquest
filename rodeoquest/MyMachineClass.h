@@ -34,13 +34,13 @@
     int bomb_size;
     int dead_time;
     int magnetCount;
-    int weapon0Count;//爆弾を投げられる時間
+    int weapon0Count;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的
     int weapon1Count;//攻撃力強化できる時間
     int weapon2Count;//laserR=item
     int weapon3Count;//laserG=flick
     int weapon4Count;//laserB=item & flick?
-    int defense0Count;//barrier
-    int defense1Count;
+    int defense0Count;//barrier:時間性
+    int defense1Count;//shield:被弾回数
     int transparancyCount;
     int bombCount;
     int bigCount;

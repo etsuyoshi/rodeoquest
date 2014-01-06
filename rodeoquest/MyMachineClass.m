@@ -19,8 +19,8 @@ CGPoint _center;
 
 //defense0-relatings
 UIImageView *ivDefense0;
-NSMutableArray *defense0EffectArray;
-NSArray *imgArrayDefense0;
+UIImageView *ivDefense1;
+//NSArray *imgArrayDefense0;
 
 NSArray *arrayLaserRImg;
 NSArray *arrayLaserGImg;
@@ -148,10 +148,10 @@ int healCompleteCount;//1回当たりの回復表示終了判定
                     nil];
     
     //defense0-relatings
-    imgArrayDefense0 = [[NSArray alloc] initWithObjects:
-                        [UIImage imageNamed:@"defense_barrier.png"],//dummy
-                        [UIImage imageNamed:@"defense_shield.png"],
-                        nil];
+//    imgArrayDefense0 = [[NSArray alloc] initWithObjects:
+//                        [UIImage imageNamed:@"defense_barrier.png"],//dummy
+//                        [UIImage imageNamed:@"defense_shield.png"],
+//                        nil];
     
     
 //    machine_type = arc4random() % 3;
@@ -226,10 +226,25 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 -(void)setDamage:(int)damage location:(CGPoint)location{
     int _damage = damage;
-    if(defense0Count > 0){//defense0モードである時
-        _damage = (damage/2==0)?1:damage/2;
+    if(defense0Count > 0){//if barrier is valid
+        _damage = 0;//(damage/2==0)?1:damage/2;
+        return;
     }
-    damageParticle = [[DamageParticleView alloc] initWithFrame:CGRectMake(location.x, location.y, 30, 30)];
+    if(defense1Count > 0){//else if shield is valid
+        _damage = 0;
+        defense1Count = 0;
+//        [self setStatus:<#(NSString *)#> key:<#(ItemType)#>]
+        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
+        
+        //something effect is expected!!
+        
+        
+        return;
+    }
+    damageParticle =
+    [[DamageParticleView alloc]
+     initWithFrame:CGRectMake(location.x, location.y, 30, 30)];
+    
     [UIView animateWithDuration:0.5f
                      animations:^{
                          [damageParticle setAlpha:0.0f];//徐々に薄く
@@ -428,6 +443,13 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     }else{
         [ivDefense0 removeFromSuperview];
         [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense0]];
+    }
+    
+    if(defense1Count > 0){
+        //donthind
+    }else{
+        [ivDefense1 removeFromSuperview];
+        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
     }
     
     if(healCount > 0){
@@ -728,6 +750,12 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             break;
         }
         case ItemTypeDeffense1:{
+            if([statusValue integerValue]){
+                defense1Count = 1;//時間で減らずに被弾時に減少する
+                [self defense1Effect];
+            }else{
+                defense1Count = 0;
+            }
             break;
         }
         case ItemTypeHeal:{//tlHeal
@@ -808,15 +836,28 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //    NSLog(@"defense0 mode");
     ivDefense0 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mySize, mySize)];
     ivDefense0.center = CGPointMake(mySize/2, mySize/2);
-    ivDefense0.animationImages = imgArrayDefense0;
+//    ivDefense0.animationImages = imgArrayDefense0;
+    ivDefense0.image = [UIImage imageNamed:@"defense_barrier.png"];
     ivDefense0.alpha = 0.5f;
-    ivDefense0.animationDuration = 1.0f;
-    ivDefense0.animationRepeatCount = 0;
-    [ivDefense0 startAnimating];
+//    ivDefense0.animationDuration = 1.0f;
+//    ivDefense0.animationRepeatCount = 0;
+//    [ivDefense0 startAnimating];
     
     [iv addSubview:ivDefense0];
     
 //    NSLog(@"defense0 mode complete");
+}
+
+-(void)defense1Effect{
+    ivDefense1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mySize, mySize)];
+    ivDefense1.center = CGPointMake(mySize/2, mySize/2);
+//    ivDefense1.animationImages = imgArrayDefense0;
+    ivDefense1.image = [UIImage imageNamed:@"defense_shield.png"];
+    ivDefense1.alpha = 0.5f;
+//    ivDefense1.animationDuration = 1.0f;
+//    [ivDefense1 startAnimating];
+    
+    [iv addSubview:ivDefense1];
 }
 
 
@@ -827,19 +868,20 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     for(int i = 0;i < numCell;i++){
         viewKira =
         [[ViewKira alloc]
-         initWithFrame:CGRectMake(mySize/4 + (arc4random() % originalSize),
-                                  arc4random() % originalSize,
+         initWithFrame:CGRectMake(0,0,
                                   originalSize/30, originalSize/30)
          type:KiraTypeRed];
-        [iv addSubview:viewExplode];
+        viewKira.center = CGPointMake(mySize/4 + arc4random() % mySize/2,
+                                      arc4random() % mySize/4);
+        [iv addSubview:viewKira];
         [iv bringSubviewToFront:viewKira];
         
         [UIView animateWithDuration:0.5f
                               delay:0.0
                             options:UIViewAnimationOptionCurveLinear
                          animations:^{
-                             viewKira.center = CGPointMake(viewKira.center.x + arc4random()%originalSize,
-                                                           viewKira.center.y + originalSize*4/5+arc4random()%originalSize/2);
+                             viewKira.center = CGPointMake(viewKira.center.x + arc4random()%originalSize/2,
+                                                           viewKira.center.y + mySize*4/5+arc4random()%mySize/2);
                              viewKira.alpha = 0.7f;
                              CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
                              viewKira.transform = transform;//...ok?

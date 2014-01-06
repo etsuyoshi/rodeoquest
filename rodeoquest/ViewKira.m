@@ -4,7 +4,7 @@
 //
 //  Created by 遠藤 豪 on 2013/12/26.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
-//
+// img11.pngを中心に描画して、背景に淡い色を表示する
 
 #import "ViewKira.h"
 
@@ -134,6 +134,7 @@
     CGContextRestoreGState(context);
     
     
+    //キラキラを中心に表示
     CGRect _rectImg=CGRectMake(0, 0, self.bounds.size.width*5,
                                self.bounds.size.height*5);
     UIImageView *_img = [[UIImageView alloc]initWithFrame:_rectImg];
