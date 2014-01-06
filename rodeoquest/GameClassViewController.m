@@ -2938,8 +2938,18 @@ int sensitivity;
     
     bombView.center = [MyMachine getImageView].center;
     CGPoint kStartPos = bombView.center;//((CALayer *)[view.layer presentationLayer]).position;
-    CGPoint kEndPos = CGPointMake(arc4random() % ((int)self.view.bounds.size.width),
-                                  bombView.center.y * 0.5f);
+    
+    //生きているターゲットエネミーを探す
+    int noTargetEnemy = 0;
+    for(noTargetEnemy = arc4random() % [EnemyArray count];
+        ![EnemyArray[noTargetEnemy] getIsAlive] &&//敵が生きていて
+        [EnemyArray[noTargetEnemy] getY] < [MyMachine getY];//自機位置より前方にいるなら
+        noTargetEnemy = arc4random() % [EnemyArray count]){
+        
+    }
+    //アニメーション実行中の経過時間を考慮して、敵の現在位置より少し手前に投げる。
+    CGPoint kEndPos = CGPointMake([EnemyArray[noTargetEnemy] getX],
+                                  [EnemyArray[noTargetEnemy] getY] + 100);//レベル上昇で意図した場所に投げられる？
     [CATransaction begin];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
     //    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
@@ -3245,9 +3255,7 @@ int sensitivity;
         }
         
         //        //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-//        _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-//        _item = [[ItemClass alloc] init:ItemTypeDeffense1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去

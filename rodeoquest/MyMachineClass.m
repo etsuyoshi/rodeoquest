@@ -6,6 +6,9 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
+//defense0:barrier
+//defense1:shield
+
 #import "MyMachineClass.h"
 
 @implementation MyMachineClass
@@ -34,6 +37,9 @@ NSArray *imgArrayHeal;
 CGRect rectHeal;
 int healCompleteCount;//1回当たりの回復表示終了判定
 
+int shieldLife;//シールドの被弾耐用回数
+int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
+
 
 -(id) init:(int)x_init size:(int)size{
     return [self init:x_init size:size level:1];
@@ -49,6 +55,9 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     effectDuration = 10;//10回アニメーション
     wingStatus = 0;//翼の状態
     unique_id++;
+    shieldLifeMax = 1;//一度設定したら変更しない
+    shieldLife = 0;
+    
     y_loc = [[UIScreen mainScreen] bounds].size.height - 100;//center of mymachine's location
     //test:loc
 //    x_loc = x_init;
@@ -70,6 +79,33 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     bombCount = 0;
     healCount = 0;
     defense0Count = 0;
+    defense1Count = 0;
+    
+    
+    magnetCountMax = 200;
+    weapon0CountMax = 500;
+    weapon1CountMax = 500;
+    weapon2CountMax = 500;
+    weapon3CountMax = 500;
+    weapon4CountMax = 500;
+    defense0CountMax = 500;
+    defense1CountMax = 500;
+    transparancyCountMax = 500;
+    bigCountMax = 500;
+    bombCountMax = 500;
+    healCountMax = 500;
+    
+    
+    
+    
+    //defense1(shield)のみ他のカウンターと異なる：被弾してから(shieldLife回のみ)次にシールドを張るまでの時間
+    //シールドは被弾した回数だけ減る(shieldLife)
+    //被弾して100カウント(1秒間)はダメージを受けない
+    //100カウント超過したらshieldLifeを１減らす
+    defense1CountMax = 100;//被弾して100カウント(1秒間)はダメージを受けない
+
+    
+    
     numOfBeam = 1;//通常時、最初はビームの数は1つ(１列)
     isAlive = true;
     explodeParticle = nil;
@@ -226,23 +262,31 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 -(void)setDamage:(int)damage location:(CGPoint)location{
     int _damage = damage;
-    
+
     //シールド(defense0Count)を優先して判断
     if(defense0Count > 0){//if barrier is valid
         _damage = 0;//(damage/2==0)?1:damage/2;
+        [self barrierValidEffect];
+        
         return;
-    }else if(defense1Count > 0){//else if shield is valid
-        
-        //something effect is expected!!
-//        [self healEffectWithViewKira:0.5f];
-        [self destroySheildEffect];
-        
+    }else if(shieldLife > 0 &&
+             defense1Count > 0 &&
+             defense1Count != INT_MAX)
+    {//else if shield is valid
+        //shieldが有効でdefense1Countによるカウントダウン中：全ての攻撃は無効
         _damage = 0;
-        defense1Count = 0;
-        [ivDefense1 removeFromSuperview];
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
-
         
+        return;
+    }else if(defense1Count == INT_MAX){
+        //defense1(shield)のみ他のカウンターと異なる：被弾してから(shieldLife回のみ)次にシールドを張るまでの時間
+        //シールドは被弾した回数だけ減る(shieldLife)
+        //被弾して100カウント(1秒間)はダメージを受けない
+        //100カウント超過したらshieldLifeを１減らす
+        
+        //カウントダウンモードへの移行
+        [self destroySheildEffect];//シールド解除されたことを示すためのエフェクト
+        defense1Count = defense1CountMax;//これによりdonextでカウントダウンが始まる
+        _damage = 0;
         return;
     }
     damageParticle =
@@ -271,7 +315,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //            [self die:location];
         }
 //    }else{
-//        defensePower --;
+//        defensePower--;
 //    }
 }
 
@@ -321,8 +365,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 
 -(void)doNext{
-//    NSLog(@"donext at mymachine , count = %d", [beamArray count]);
-    
+    NSLog(@"weapon2count= %d", weapon2Count);
     for(int i = 0; i < [beamArray count];i++){//ordinay & special beam
         if([[beamArray objectAtIndex:i] getIsAlive]){
             [(BeamClass *)[beamArray objectAtIndex:i] doNext];
@@ -397,14 +440,14 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     }
     
     if(weapon0Count > 0){
-        weapon0Count --;
+        weapon0Count--;
         if(weapon0Count == 0){
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon0]];//bomb
         }
     }
     
     if(weapon1Count > 0){
-        weapon1Count --;
+        weapon1Count--;
         if(weapon1Count == 0){
             numOfBeam = 1;
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon1]];
@@ -420,8 +463,8 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             [self healEffectWithViewKira:0.5f];
             //            }
         }
-        weapon2Count --;
-        if(weapon2Count == 0){
+        weapon2Count--;
+        if(weapon2Count <= 0){
             numOfBeam = 1;
             [ivLaserR stopAnimating];
             [ivLaserR removeFromSuperview];
@@ -430,7 +473,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     }
     
     if(bigCount > 0){
-        bigCount --;
+        bigCount--;
         if(bigCount == 0){
             mySize = originalSize;
             iv.frame = CGRectMake(x_loc-mySize/2, y_loc-mySize/2, mySize, mySize);
@@ -439,7 +482,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     }
     
     if(bombCount > 0){
-        bombCount --;
+        bombCount--;
         if(bombCount == 0){
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeBomb]];
         }
@@ -448,20 +491,32 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     }
     
     if(defense0Count > 0){
-        defense0Count --;
+        defense0Count--;
         if(defense0Count == 0){
             [ivDefense0 removeFromSuperview];
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense0]];
         }
     }
 
-    //shieldは一度敵に当たれば破壊されるため、setDamageで解除設定を実行するため、以下コメントアウト
-//    if(defense1Count > 0){
-//        //donthind
-//    }else{
-//        [ivDefense1 removeFromSuperview];
-//        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
-//    }
+    //shieldは一度敵に当たれば破壊されるため、setDamageで解除設定を実行
+    //shield取得後、defense1Countをint_maxに設定
+    //ダメージ被弾時(setDamage:)において、ダメージ耐用回数(アイテム購入により変更可能)までは被弾してもダメージを受けない
+    //耐用回数を超えて被弾したらdestroyShieldEffectを実行して、以下のコードによりshieldを解除
+    if(defense1Count == INT_MAX){//シールドモード(着弾なし)
+//    if(defense1Count == INT_MAX){
+        //do nothing
+    }else if(defense1Count > 0 && defense1Count <= defense1CountMax){//シールドモード(着弾後、シールド解除までのカウントダウン中)
+        defense1Count--;
+        if(defense1Count == 0){
+            shieldLife--;
+            if(shieldLife == 0){
+                [ivDefense1 removeFromSuperview];
+                [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
+            }else{
+                defense1Count = defense1CountMax;
+            }
+        }
+    }
     
     if(healCount > 0){
         //gameView側で実行
@@ -477,14 +532,14 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         if(hitPoint < maxHitPoint){
             hitPoint++;
         }
-        healCount --;
+        healCount--;
     }else{
 //        [ivHealEffect removeFromSuperview];
         [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeHeal]];
     }
     
     if(transparancyCount > 0){
-        transparancyCount --;
+        transparancyCount--;
         if(transparancyCount == 300){//3sec
             //点滅
             [self flashImageView:0.3 repeatCount:5];
@@ -717,7 +772,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             
         case ItemTypeMagnet:{
             if([statusValue integerValue]){
-                magnetCount = 500;
+                magnetCount = magnetCountMax;
             }else{
                 magnetCount = 0;
             }
@@ -727,7 +782,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             if([statusValue integerValue]){
                 
                 //bigger
-                bigCount = 500;
+                bigCount = bigCountMax;
                 mySize = bigSize;
                 iv.frame = CGRectMake(x_loc-mySize/2, y_loc-mySize/2, mySize, mySize);
             }else{
@@ -746,7 +801,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         }
         case ItemTypeBomb:{
             if([statusValue integerValue]){
-                bombCount = 100;//爆弾アイテムを取得した瞬間に爆発(連続して取得できないようにステータス時間は短め)
+                bombCount = bombCountMax;//爆弾アイテムを取得した瞬間に爆発(連続して取得できないようにステータス時間は短め)
             }else{
                 bombCount = 0;
             }
@@ -754,7 +809,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         }
         case ItemTypeDeffense0:{
             if([statusValue integerValue]){
-                defense0Count = 1000;
+                defense0Count = defense0CountMax;
                 [self defense0Effect];//addSubview simultaneously
             }else{
                 defense0Count = 0;
@@ -763,16 +818,18 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         }
         case ItemTypeDeffense1:{
             if([statusValue integerValue]){
-                defense1Count = 1;//時間で減らずに被弾時に減少する
+                shieldLife = shieldLifeMax;
+                defense1Count = INT_MAX;//時間で減らずに被弾時に減少する
                 [self defense1Effect];
             }else{
+                shieldLife = 0;
                 defense1Count = 0;
             }
             break;
         }
         case ItemTypeHeal:{//tlHeal
             if([statusValue integerValue]){
-                healCount = 600;
+                healCount = healCountMax;
             }else{
                 healCount = 0;
             }
@@ -783,7 +840,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         }
         case ItemTypeTransparency:{
             if([statusValue integerValue]){
-                transparancyCount = 500;
+                transparancyCount = transparancyCountMax;
                 iv.alpha = 0.2f;
             }else{
                 transparancyCount = 0;
@@ -792,7 +849,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         }
         case ItemTypeWeapon0:{//wpBomb:throwing bomb
             if([statusValue integerValue]){
-                weapon0Count = 500;
+                weapon0Count = weapon0CountMax;
             }else{
                 weapon0Count = 0;
             }
@@ -804,7 +861,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //                NSLog(@"nB=%d", numOfBeam);
                 if(numOfBeam < 3){
 //                    NSLog(@"++ nB=%d", numOfBeam);
-                    weapon1Count = 500;
+                    weapon1Count = weapon1CountMax;
                     numOfBeam++;//max:3
                 }
             }else{
@@ -817,7 +874,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
         case ItemTypeWeapon2:{//wpLaser:red
             
             if([statusValue integerValue]){
-                weapon2Count = 100;
+                weapon2Count = weapon2CountMax;
 //                [self doNext];//?
                 numOfBeam = 0;
                 //弾丸を全て削除
@@ -850,7 +907,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     return numOfBeam;
 }
 -(void)defense0Effect{
-//    NSLog(@"defense0 mode");
+
     ivDefense0 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mySize, mySize)];
     ivDefense0.center = CGPointMake(mySize/2, mySize/2);
 //    ivDefense0.animationImages = imgArrayDefense0;
@@ -1121,19 +1178,20 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 //if shield is destroyed
 -(void)destroySheildEffect{
-    
+    NSLog(@"destroy shield effect");
+    int _sizeEffect = originalSize;
     ViewKira *viewKiraDestroy = [[ViewKira alloc]
-                           initWithFrame:CGRectMake(0, 0, originalSize/2, originalSize/2)
+                           initWithFrame:CGRectMake(0, 0, _sizeEffect/2, _sizeEffect/2)
                            type:KiraTypeYellow];
     viewKiraDestroy.center = CGPointMake(mySize/2, mySize/2);
-    viewKiraDestroy.alpha = 0.0f;
+    viewKiraDestroy.alpha = 1.0f;
     
-    [UIView animateWithDuration:0.5f
+    [UIView animateWithDuration:0.3f
                           delay:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
-                         viewKiraDestroy.frame = CGRectMake(0, 0, originalSize, originalSize);
-                         viewKiraDestroy.center = CGPointMake(originalSize/2, originalSize/2 + originalSize*4/5);//OBJECT_SIZE/2, -OBJECT_SIZE);
+                         viewKiraDestroy.frame = CGRectMake(0, 0, _sizeEffect*5, _sizeEffect*5);
+                         viewKiraDestroy.center = CGPointMake(_sizeEffect/2, _sizeEffect/2 - _sizeEffect*4/5);//OBJECT_SIZE/2, -OBJECT_SIZE);
                          viewKiraDestroy.alpha = 1.0f;
                          CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
                          viewKiraDestroy.transform = transform;//...ok?
@@ -1141,15 +1199,15 @@ int healCompleteCount;//1回当たりの回復表示終了判定
                      completion:^(BOOL finished){
                          
                          if(finished){
-                             [UIView animateWithDuration:0.5f
+                             [UIView animateWithDuration:0.2f
                                                    delay:0.0
                                                  options:UIViewAnimationOptionCurveLinear
                                               animations:^{
                                                   //add rotation
                                                   CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
                                                   viewKiraDestroy.transform = transform;//...ok?
-                                                  viewKiraDestroy.center = CGPointMake(originalSize/2,
-                                                                                       originalSize/2 + originalSize);
+                                                  viewKiraDestroy.center = CGPointMake(_sizeEffect/2,
+                                                                                       _sizeEffect/2 - _sizeEffect);
                                                   viewKiraDestroy.alpha = 0.1f;
                                               }
                                               completion:^(BOOL finished){
@@ -1163,6 +1221,52 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     //上記で設定したUIImageViewを配列格納
     [iv addSubview:viewKiraDestroy];
     [iv bringSubviewToFront:viewKiraDestroy];
+    
+}
+
+-(void)barrierValidEffect{//バリアで攻撃を防いだ時のエフェクト
+    int _sizeEffect = originalSize;
+    ViewKira *viewKiraBarrier = [[ViewKira alloc]
+                                 initWithFrame:CGRectMake(0, 0, _sizeEffect/2, _sizeEffect/2)
+                                 type:KiraTypeBlue];
+    viewKiraBarrier.center = CGPointMake(mySize/2, mySize/2);
+    viewKiraBarrier.alpha = 1.0f;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         viewKiraBarrier.frame = CGRectMake(0, 0, _sizeEffect*5, _sizeEffect*5);
+                         viewKiraBarrier.center = CGPointMake(_sizeEffect/2, _sizeEffect/2 - _sizeEffect*4/5);//OBJECT_SIZE/2, -OBJECT_SIZE);
+                         viewKiraBarrier.alpha = 1.0f;
+                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+                         viewKiraBarrier.transform = transform;//...ok?
+                     }
+                     completion:^(BOOL finished){
+                         
+                         if(finished){
+                             [UIView animateWithDuration:0.2f
+                                                   delay:0.0
+                                                 options:UIViewAnimationOptionCurveLinear
+                                              animations:^{
+                                                  //add rotation
+                                                  CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+                                                  viewKiraBarrier.transform = transform;//...ok?
+                                                  viewKiraBarrier.center = CGPointMake(_sizeEffect/2,
+                                                                                       _sizeEffect/2 - _sizeEffect);
+                                                  viewKiraBarrier.alpha = 0.1f;
+                                              }
+                                              completion:^(BOOL finished){
+                                                  
+                                                  if(finished){
+                                                      [viewKiraBarrier removeFromSuperview];
+                                                  }
+                                              }];
+                         }
+                     }];
+    //上記で設定したUIImageViewを配列格納
+    [iv addSubview:viewKiraBarrier];
+    [iv bringSubviewToFront:viewKiraBarrier];
     
 }
 

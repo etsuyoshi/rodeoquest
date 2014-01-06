@@ -33,6 +33,8 @@
     int lifetime_count;
     int bomb_size;
     int dead_time;
+    
+    //以下アイテムの有効時間
     int magnetCount;
     int weapon0Count;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的
     int weapon1Count;//攻撃力強化できる時間
@@ -45,6 +47,22 @@
     int bombCount;
     int bigCount;
     int healCount;
+    
+    //アイテムの有効最大時間
+    int magnetCountMax;
+    int weapon0CountMax;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的
+    int weapon1CountMax;//攻撃力強化できる時間
+    int weapon2CountMax;//laserR=item
+    int weapon3CountMax;//laserG=flick
+    int weapon4CountMax;//laserB=item & flick?
+    int defense0CountMax;//barrier:時間性
+    int defense1CountMax;//shield:被弾回数
+    int transparancyCountMax;
+    int bombCountMax;
+    int bigCountMax;
+    int healCountMax;
+    
+    
     int numOfBeam;
     Boolean isAlive;
     UIImageView *iv;
