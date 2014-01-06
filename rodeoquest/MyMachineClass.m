@@ -234,7 +234,8 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     }else if(defense1Count > 0){//else if shield is valid
         
         //something effect is expected!!
-        [self healEffectWithViewKira:0.5f];
+//        [self healEffectWithViewKira:0.5f];
+        [self destroySheildEffect];
         
         _damage = 0;
         defense1Count = 0;
@@ -1074,6 +1075,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 }
 
 
+//myMachineクラス内で直接ivにaddsiているため、外部からのアクセス不必要にしたので、以下メソッド使用せず
 -(UIImageView *)getLaserImageView{
     if(weapon2Count > 0){
         return ivLaserR;
@@ -1114,6 +1116,54 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     viewExplode.center = CGPointMake(x_loc, y_loc);
     [viewExplode explode:120 angle:30 x:x_loc y:y_loc];
     return viewExplode;
+}
+
+
+//if shield is destroyed
+-(void)destroySheildEffect{
+    
+    ViewKira *viewKiraDestroy = [[ViewKira alloc]
+                           initWithFrame:CGRectMake(0, 0, originalSize/2, originalSize/2)
+                           type:KiraTypeYellow];
+    viewKiraDestroy.center = CGPointMake(mySize/2, mySize/2);
+    viewKiraDestroy.alpha = 0.0f;
+    
+    [UIView animateWithDuration:0.5f
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         viewKiraDestroy.frame = CGRectMake(0, 0, originalSize, originalSize);
+                         viewKiraDestroy.center = CGPointMake(originalSize/2, originalSize/2 + originalSize*4/5);//OBJECT_SIZE/2, -OBJECT_SIZE);
+                         viewKiraDestroy.alpha = 1.0f;
+                         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+                         viewKiraDestroy.transform = transform;//...ok?
+                     }
+                     completion:^(BOOL finished){
+                         
+                         if(finished){
+                             [UIView animateWithDuration:0.5f
+                                                   delay:0.0
+                                                 options:UIViewAnimationOptionCurveLinear
+                                              animations:^{
+                                                  //add rotation
+                                                  CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+                                                  viewKiraDestroy.transform = transform;//...ok?
+                                                  viewKiraDestroy.center = CGPointMake(originalSize/2,
+                                                                                       originalSize/2 + originalSize);
+                                                  viewKiraDestroy.alpha = 0.1f;
+                                              }
+                                              completion:^(BOOL finished){
+                                                  
+                                                  if(finished){
+                                                      [viewKiraDestroy removeFromSuperview];
+                                                  }
+                                              }];
+                         }
+                     }];
+    //上記で設定したUIImageViewを配列格納
+    [iv addSubview:viewKiraDestroy];
+    [iv bringSubviewToFront:viewKiraDestroy];
+    
 }
 
 @end
