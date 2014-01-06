@@ -117,21 +117,21 @@ int healCompleteCount;//1回当たりの回復表示終了判定
     ivLaserR.animationImages = arrayLaserRImg;
     ivLaserR.animationRepeatCount = 0;
     ivLaserR.animationDuration = 0.3f;
-    [ivLaserR startAnimating];
+//    [ivLaserR startAnimating];
     
     ivLaserG = [[UIImageView alloc] initWithFrame:rectLaser];
     ivLaserG = [[UIImageView alloc] initWithFrame:rectLaser];
     ivLaserG.animationImages = arrayLaserGImg;
     ivLaserG.animationRepeatCount = 0;
     ivLaserG.animationDuration = 0.3f;
-    [ivLaserG startAnimating];
+//    [ivLaserG startAnimating];
     
     ivLaserB = [[UIImageView alloc] initWithFrame:rectLaser];
     ivLaserB = [[UIImageView alloc] initWithFrame:rectLaser];
     ivLaserB.animationImages = arrayLaserBImg;
     ivLaserB.animationRepeatCount = 0;
     ivLaserB.animationDuration = 0.3f;
-    [ivLaserB startAnimating];
+//    [ivLaserB startAnimating];
     
     //heal-relatings
     healEffectArray = [[NSMutableArray alloc]init];//1セル毎に疑似パーティクルセルを格納
@@ -226,18 +226,21 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 -(void)setDamage:(int)damage location:(CGPoint)location{
     int _damage = damage;
+    
+    //シールド(defense0Count)を優先して判断
     if(defense0Count > 0){//if barrier is valid
         _damage = 0;//(damage/2==0)?1:damage/2;
         return;
-    }
-    if(defense1Count > 0){//else if shield is valid
-        _damage = 0;
-        defense1Count = 0;
-//        [self setStatus:<#(NSString *)#> key:<#(ItemType)#>]
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
+    }else if(defense1Count > 0){//else if shield is valid
         
         //something effect is expected!!
+        [self healEffectWithViewKira:0.5f];
         
+        _damage = 0;
+        defense1Count = 0;
+        [ivDefense1 removeFromSuperview];
+        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
+
         
         return;
     }
@@ -382,27 +385,29 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //        }
 //    }
     if(magnetCount > 0){
+        if(magnetCount % 100 == 0){//per 1sec
+            [self healEffectWithViewKira:0.5f];//per 0.5sec
+        }
         magnetCount--;
-    }else{
-//        magnetCount = 0;
-//        [self healEffectWithViewKira:40];
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeMagnet]];
+        if(magnetCount == 0){
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeMagnet]];
+        }
+        
     }
     
     if(weapon0Count > 0){
         weapon0Count --;
-    }else{
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon0]];//bomb
+        if(weapon0Count == 0){
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon0]];//bomb
+        }
     }
     
     if(weapon1Count > 0){
         weapon1Count --;
         if(weapon1Count == 0){
             numOfBeam = 1;
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon1]];
         }
-    }else{
-//        numOfBeam = 1;
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon1]];
     }
     
     if(weapon2Count > 0){
@@ -411,46 +416,51 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             //            for(int i = 0; i < 30;i++){
 //            [self healEffectInit:30];
 //            [self healEffectRepeat];
-            [self healEffectWithViewKira:30];
+            [self healEffectWithViewKira:0.5f];
             //            }
         }
         weapon2Count --;
         if(weapon2Count == 0){
             numOfBeam = 1;
+            [ivLaserR stopAnimating];
+            [ivLaserR removeFromSuperview];
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon2]];
         }
-    }else{
-        
-        [ivLaserR removeFromSuperview];
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeWeapon2]];
     }
     
     if(bigCount > 0){
         bigCount --;
-    }else{
-        mySize = originalSize;
-        iv.frame = CGRectMake(x_loc-mySize/2, y_loc-mySize/2, mySize, mySize);
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeBig]];
+        if(bigCount == 0){
+            mySize = originalSize;
+            iv.frame = CGRectMake(x_loc-mySize/2, y_loc-mySize/2, mySize, mySize);
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeBig]];
+        }
     }
     
     if(bombCount > 0){
         bombCount --;
+        if(bombCount == 0){
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeBomb]];
+        }
     }else{
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeBomb]];
+        
     }
     
     if(defense0Count > 0){
         defense0Count --;
-    }else{
-        [ivDefense0 removeFromSuperview];
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense0]];
+        if(defense0Count == 0){
+            [ivDefense0 removeFromSuperview];
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense0]];
+        }
     }
-    
-    if(defense1Count > 0){
-        //donthind
-    }else{
-        [ivDefense1 removeFromSuperview];
-        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
-    }
+
+    //shieldは一度敵に当たれば破壊されるため、setDamageで解除設定を実行するため、以下コメントアウト
+//    if(defense1Count > 0){
+//        //donthind
+//    }else{
+//        [ivDefense1 removeFromSuperview];
+//        [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
+//    }
     
     if(healCount > 0){
         //gameView側で実行
@@ -460,7 +470,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 //            for(int i = 0; i < 30;i++){
 //            [self healEffectInit:30];
 //            [self healEffectRepeat];
-            [self healEffectWithViewKira:30];
+            [self healEffectWithViewKira:0.5f];
 //            }
         }
         if(hitPoint < maxHitPoint){
@@ -481,8 +491,9 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             //速い点滅
             [self flashImageView:0.1 repeatCount:15];
         }else if(transparancyCount == 50){
-            [self healEffectInit:10];//transparancy-exit
-            [self healEffectRepeat];
+//            [self healEffectInit:10];//transparancy-exit
+//            [self healEffectRepeat];
+            [self healEffectWithViewKira:0.5f];
 
         }
     }else{
@@ -802,7 +813,7 @@ int healCompleteCount;//1回当たりの回復表示終了判定
             //            [self setNumOfBeam:numOfBeam];
             break;
         }
-        case ItemTypeWeapon2:{//wpLaser
+        case ItemTypeWeapon2:{//wpLaser:red
             
             if([statusValue integerValue]){
                 weapon2Count = 100;
@@ -812,6 +823,11 @@ int healCompleteCount;//1回当たりの回復表示終了判定
                 for(int i = 0 ;i < [beamArray count];i++){
                     [[beamArray objectAtIndex:i] die];
                 }
+                
+                [iv addSubview:ivLaserR];
+                [ivLaserR startAnimating];
+//                ivLaserR.center = CGPointMake(viewMyEffect.bounds.size.width/2,-[MyMachine getLaserImageView].bounds.size.height/2 + 40);
+                ivLaserR.center = CGPointMake(mySize/2, -ivLaserR.bounds.size.height/2 + 40);
 //                [self setBeamArrayClear];
             }else{
                 numOfBeam = 1;
@@ -862,41 +878,75 @@ int healCompleteCount;//1回当たりの回復表示終了判定
 
 
 //未使用＝＞healEffectInit＆healEffectRepeatの代用
-//arg:降らせる星の個数
--(void)healEffectWithViewKira:(int)numCell{
-    NSLog(@"healeffectiwithviewkira");
-    for(int i = 0;i < numCell;i++){
-        viewKira =
-        [[ViewKira alloc]
-         initWithFrame:CGRectMake(0,0,
-                                  originalSize/30, originalSize/30)
-         type:KiraTypeRed];
-        viewKira.center = CGPointMake(mySize/4 + arc4random() % mySize/2,
-                                      arc4random() % mySize/4);
-        [iv addSubview:viewKira];
-        [iv bringSubviewToFront:viewKira];
-        
-        [UIView animateWithDuration:0.5f
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^{
-                             viewKira.center = CGPointMake(viewKira.center.x + arc4random()%originalSize/2,
-                                                           viewKira.center.y + mySize*4/5+arc4random()%mySize/2);
-                             viewKira.alpha = 0.7f;
-                             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
-                             viewKira.transform = transform;//...ok?
+//arg:描画タイム
+//-(void)healEffectWithViewKira:(int)numCell{
+-(void)healEffectWithViewKira:(float)_secAnimate{
+    NSLog(@"healeffectiwithviewkira size = %d", mySize);
+    
+    KiraType _kiraType = KiraTypeRed;//デフォルトは青
+    if(magnetCount > 0){//マグネットモードのときは優先的に青
+        _kiraType = KiraTypeBlue;
+    }else if(healCount > 0){//healモードのときは優先的に緑
+        _kiraType = KiraTypeGreen;
+    }else if(defense1Count > 0){
+        _kiraType = KiraTypeYellow;
+    }else if(transparancyCount > 0){
+        _kiraType = KiraTypeBlue;
+    }
+    ViewKira *viewKira =
+    [[ViewKira alloc]
+    initWithFrame:CGRectMake(0, 0, mySize, mySize)
+            type:KiraTypeRed
+            image:@"krkr_many.png"];
+    viewKira.alpha = 1.0f;
+    [iv addSubview:viewKira];
+    [iv bringSubviewToFront:viewKira];
+    [UIView animateWithDuration:_secAnimate
+                     animations:^{
+                         viewKira.center = CGPointMake(viewKira.center.x +
+                                                       pow(-1, arc4random()%2) * (arc4random() % (int)(viewKira.bounds.size.width/4)),
+                                                       viewKira.center.y + viewKira.bounds.size.height/2);
+                         viewKira.alpha = 0.0f;
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             [viewKira removeFromSuperview];
                          }
-                         completion:^(BOOL finished){
-                             
-                             if(finished){
-                                 [viewKira removeFromSuperview];
-                                 NSLog(@"view kira finished : %d", i);
-                             }
-                         }];
+                     }];
+    
+    //検証結果＝メモリリークのため実行してはいけない：描画を何度も実行してremoveできていないviewKiraが存在し、他のアニメーションに影響
+//    for(int i = 0;i < numCell;i++){
+//        viewKira =
+//        [[ViewKira alloc]
+//         initWithFrame:CGRectMake(0,0,
+//                                  originalSize/30, originalSize/30)
+//         type:KiraTypeRed];
+//        viewKira.center = CGPointMake(mySize/4 + arc4random() % mySize/2,
+//                                      arc4random() % mySize/4);
+//        [iv addSubview:viewKira];
+//        [iv bringSubviewToFront:viewKira];
+//        
+//        [UIView animateWithDuration:0.5f
+//                              delay:0.0
+//                            options:UIViewAnimationOptionCurveLinear
+//                         animations:^{
+//                             viewKira.center = CGPointMake(viewKira.center.x + arc4random()%originalSize/2,
+//                                                           viewKira.center.y + mySize*4/5+arc4random()%mySize/2);
+//                             viewKira.alpha = 0.7f;
+//                             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
+//                             viewKira.transform = transform;//...ok?
+//                         }
+//                         completion:^(BOOL finished){
+//                             
+//                             if(finished){
+//                                 [viewKira removeFromSuperview];
+//                                 NSLog(@"view kira finished : %d", i);
+//                             }
+//                         }];
         //上記で設定したUIImageViewを配列格納
 //        [self.view addSubview:ivItemAcq];
 //        [self.view bringSubviewToFront:ivItemAcq];
-    }
+//    }
 }
 
 //arg:降らせる星の数

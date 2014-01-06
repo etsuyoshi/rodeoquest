@@ -1283,8 +1283,8 @@ int sensitivity;
                             
                             [MyMachine setStatus:@"1" key:ItemTypeWeapon2];
                             
-                            [viewMyEffect addSubview:[MyMachine getLaserImageView]];
-                            [MyMachine getLaserImageView].center = CGPointMake(viewMyEffect.bounds.size.width/2,-[MyMachine getLaserImageView].bounds.size.height/2 + 40);
+//                            [viewMyEffect addSubview:[MyMachine getLaserImageView]];
+//                            [MyMachine getLaserImageView].center = CGPointMake(viewMyEffect.bounds.size.width/2,-[MyMachine getLaserImageView].bounds.size.height/2 + 40);
                         }
                         break;
                     }
@@ -1502,10 +1502,10 @@ int sensitivity;
     //          (int)(temp/10));
     
     
-    //    if((int)count % 10 == 0){
-    [self garvageCollection];
-    //    NSLog(@"complete garvageCollection");
-    //    }
+    if((int)gameSecond % 10 == 0){
+        [self garvageCollection];
+        NSLog(@"complete garvageCollection");
+    }
     
     
     //ユーザーインターフェース
@@ -1536,6 +1536,7 @@ int sensitivity;
 //}
 
 -(void)garvageCollection{
+    NSLog(@"garvageCollection");
     for(int i = 0; i < [EnemyArray count]; i++){
         //        NSLog(@"i = %d at Y = %d", i, [[EnemyArray objectAtIndex:i]getY]);
         if([[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height ||
@@ -3245,6 +3246,8 @@ int sensitivity;
         
         //        //test:item
 //        _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+//        _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+//        _item = [[ItemClass alloc] init:ItemTypeDeffense1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
@@ -3484,7 +3487,7 @@ int sensitivity;
     BackGround = [[BackGroundClass2 alloc] init:worldType
                                          width:self.view.bounds.size.width
                                         height:self.view.bounds.size.height
-                                          secs:10.0f];
+                                          secs:20.0f];//homebuttonを押されて途中再開したときのために到達時間は変数にしておく
     [self.view addSubview:[BackGround getImageView1]];
     [self.view addSubview:[BackGround getImageView2]];
     [self.view sendSubviewToBack:[BackGround getImageView1]];

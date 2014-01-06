@@ -106,7 +106,7 @@ int unique_id;
     
 //    damageParticle.center = CGPointMake(x_loc, y_loc);
     hitPoint -= damage;
-    if(hitPoint < 0){//爆発用パーティクルの初期化
+    if(hitPoint <= 0){//爆発用パーティクルの初期化
 //        explodeParticle = [[ExplodeParticleView alloc] initWithFrame:CGRectMake(x_loc, y_loc, bomb_size, bomb_size)];
 //        [UIView animateWithDuration:0.5f
 //                         animations:^{

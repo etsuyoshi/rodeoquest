@@ -22,4 +22,5 @@ typedef NS_ENUM(NSInteger, KiraType) {//order with difficulty of get down
 @interface ViewKira : UIView
 @property(nonatomic) KiraType kiraType;
 -(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType;
+-(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType image:(NSString *)_strImg;
 @end

@@ -2032,7 +2032,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     //ホームボタンが押された時の対応：カウンターのため
     //時間を記憶
-    NSLog(@"view becomes inActive, memorize timer and tm invalidate");
+    NSLog(@"home button pressed and view becomes inActive, memorize timer and tm invalidate");
     [attr setValueToDevice:@"ymdMenuLastOpen"
                   strValue:[self getYYYYMMDD]];
     [attr setValueToDevice:@"hmsMenuLastOpen"

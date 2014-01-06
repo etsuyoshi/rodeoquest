@@ -283,6 +283,7 @@
 		34A8898318542ABA005667B4 /* 29.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A8896518542ABA005667B4 /* 29.png */; };
 		34A8898418542ABA005667B4 /* 30.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A8896618542ABA005667B4 /* 30.png */; };
 		34A8898718542B55005667B4 /* OrdinaryBeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A8898618542B55005667B4 /* OrdinaryBeamClass.m */; };
+		34B35C26187A6D3C00FDEE57 /* krkr_many.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B35C25187A6D3C00FDEE57 /* krkr_many.png */; };
 		34B5FB451857021A00F43531 /* yen_g.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB431857021A00F43531 /* yen_g.png */; };
 		34B5FB461857021A00F43531 /* yen_o.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB441857021A00F43531 /* yen_o.png */; };
 		34B5FB4A18570ED500F43531 /* gunshot-heavy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4718570ED500F43531 /* gunshot-heavy.mp3 */; };
@@ -727,6 +728,7 @@
 		34A8896618542ABA005667B4 /* 30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 30.png; sourceTree = "<group>"; };
 		34A8898518542B55005667B4 /* OrdinaryBeamClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryBeamClass.h; sourceTree = "<group>"; };
 		34A8898618542B55005667B4 /* OrdinaryBeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryBeamClass.m; sourceTree = "<group>"; };
+		34B35C25187A6D3C00FDEE57 /* krkr_many.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = krkr_many.png; sourceTree = "<group>"; };
 		34B5FB431857021A00F43531 /* yen_g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yen_g.png; sourceTree = "<group>"; };
 		34B5FB441857021A00F43531 /* yen_o.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yen_o.png; sourceTree = "<group>"; };
 		34B5FB4718570ED500F43531 /* gunshot-heavy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "gunshot-heavy.mp3"; sourceTree = "<group>"; };
@@ -1234,6 +1236,7 @@
 		3488ACBA183D26D600833F93 /* kira */ = {
 			isa = PBXGroup;
 			children = (
+				34B35C25187A6D3C00FDEE57 /* krkr_many.png */,
 				3488ACBB183D272F00833F93 /* img03.png */,
 				3488ACBC183D272F00833F93 /* img04.png */,
 				3488ACBD183D272F00833F93 /* img05.png */,
@@ -1909,6 +1912,7 @@
 				34F30068182161A30082DCBC /* kira2.png in Resources */,
 				3462DA7D186932F500CFDB14 /* apatite04.png in Resources */,
 				34A8897B18542ABA005667B4 /* 21.png in Resources */,
+				34B35C26187A6D3C00FDEE57 /* krkr_many.png in Resources */,
 				34F53374181BBBD700FB9470 /* ones_hmix.mp3 in Resources */,
 				34C16CD1181C4E9400650A40 /* sabaki_hmix.mp3 in Resources */,
 				34B5FB451857021A00F43531 /* yen_g.png in Resources */,

@@ -57,7 +57,7 @@
     DamageParticleView *damageParticle;
     
     ViewExplode *viewExplode;
-    ViewKira *viewKira;
+
     
     NSMutableDictionary *status;//可変ステータス
 }

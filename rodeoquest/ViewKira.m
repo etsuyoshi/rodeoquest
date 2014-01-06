@@ -10,22 +10,27 @@
 
 @implementation ViewKira
 @synthesize kiraType;
+NSString *strImg;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:frame type:KiraTypeYellow];
-    if(self){
-        
-    }
     return self;
 }
 
--(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType
+-(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType{
+    self = [self initWithFrame:frame type:_kiraType image:@"img11.png"];
+    return self;
+}
+
+-(id)initWithFrame:(CGRect)frame type:(KiraType)_kiraType image:(NSString *)_strImg
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
         kiraType = _kiraType;
+        strImg = _strImg;
     }
     return self;
 }
@@ -135,10 +140,16 @@
     
     
     //キラキラを中心に表示
-    CGRect _rectImg=CGRectMake(0, 0, self.bounds.size.width*5,
+    CGRect _rectImg;
+    if([strImg isEqualToString:@"krkr_many.png"]){//100x100
+        _rectImg = CGRectMake(0, 0, self.bounds.size.width,
+                              self.bounds.size.height);
+    }else{
+        _rectImg = CGRectMake(0, 0, self.bounds.size.width*5,
                                self.bounds.size.height*5);
+    }
     UIImageView *_img = [[UIImageView alloc]initWithFrame:_rectImg];
-    _img.image = [UIImage imageNamed:@"img11.png"];
+    _img.image = [UIImage imageNamed:strImg];
     _img.center = CGPointMake(self.bounds.size.width/2,
                               self.bounds.size.height/2);
     [self addSubview:_img];
