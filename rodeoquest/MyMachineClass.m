@@ -492,6 +492,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     if(defense0Count > 0){
         defense0Count--;
         if(defense0Count == 0){
+            [self barrierValidEffect];
             [ivDefense0 removeFromSuperview];
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense0]];
         }
@@ -1223,19 +1224,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     
 }
 
--(void)barrierValidEffect{//バリアで攻撃を防いだ時のエフェクト
+-(void)barrierValidEffect{//バリアで攻撃を防いだ時&消滅時のエフェクト
     int _sizeEffect = originalSize;
     ViewKira *viewKiraBarrier = [[ViewKira alloc]
                                  initWithFrame:CGRectMake(0, 0, _sizeEffect/2, _sizeEffect/2)
                                  type:KiraTypeBlue];
-    viewKiraBarrier.center = CGPointMake(mySize/2, mySize/2);
+    viewKiraBarrier.center = CGPointMake(_sizeEffect/2, _sizeEffect/2);
     viewKiraBarrier.alpha = 1.0f;
     
     [UIView animateWithDuration:0.3f
                           delay:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
-                         viewKiraBarrier.frame = CGRectMake(0, 0, _sizeEffect*5, _sizeEffect*5);
+                         viewKiraBarrier.frame = CGRectMake(0, 0, _sizeEffect*2, _sizeEffect*2);
                          viewKiraBarrier.center = CGPointMake(_sizeEffect/2, _sizeEffect/2 - _sizeEffect*4/5);//OBJECT_SIZE/2, -OBJECT_SIZE);
                          viewKiraBarrier.alpha = 1.0f;
                          CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);

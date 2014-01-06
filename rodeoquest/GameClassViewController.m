@@ -1114,13 +1114,14 @@ int sensitivity;
                 flagItemTrigger = true;
                 
                 [self dispEffectItemAcq:[_item getType]];
-                
+                NSLog(@"item acquire at %d", i);
                 
                 //                NSLog(@"Item acquired");
                 //                [[[ItemArray objectAtIndex:itemCount] getImageView] removeFromSuperview];
                 //                [[ItemArray objectAtIndex:itemCount] die];
                 [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
                 [[ItemArray objectAtIndex:i] die];
+                [ItemArray removeObjectAtIndex:i];//追加：あったほうがいいよね？
                 
                 //                NSLog(@"num item = %d", [ItemArray count]);
                 //アイテム取得時のパーティクル表示
@@ -1486,7 +1487,7 @@ int sensitivity;
     //          (int)(temp/10));
     
     
-    if((int)gameSecond % 10 == 0){
+    if((int)gameSecond % 10 == 0){//per 10sec
         [self garvageCollection];
         NSLog(@"complete garvageCollection");
     }
@@ -3266,13 +3267,25 @@ int sensitivity;
         }
         
         //        //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+//        _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
         if([ItemArray count] > 50){
-            NSLog(@"item count = %d so remove last", [ItemArray count]);
-            [ItemArray removeLastObject];
+            NSLog(@"item count = %d so remove dead", [ItemArray count]);
+//            for(int i = 0; i < [ItemArray count];i++){
+//                NSLog(@"item %d is %@", i, [ItemArray[i] getIsAlive]?@"alive":@"dead");
+//            }
+            //isDeadなのになぜか格納されているものがあるので削除(画面上には表示されていない)
+            for(int i = [ItemArray count]-1;i >= 0;i--){
+                if(![[ItemArray objectAtIndex:i] getIsAlive]){
+                    NSLog(@"item %d is dead so remove(view & array)", i);
+                    [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
+                    [ItemArray removeObjectAtIndex:i];
+//                    break;
+                }
+            }
+//            [ItemArray removeLastObject];
         }
         [self.view bringSubviewToFront:[[ItemArray objectAtIndex:0] getImageView]];
         [self.view addSubview:[[ItemArray objectAtIndex:0] getImageView]];
@@ -3606,7 +3619,7 @@ int sensitivity;
 -(float)getSigmoid:(float)_value{
     float max = 5.0f;
     float min = 0.5f;
-    float a = 150;//熱関数
+    float a = 30.0f;//熱関数:a秒で定常状態の３分の1
     float val = (max-min)*(1.0f+exp(-1))/(1.0f+exp(_value/a-1.0f))+min;
 //    NSLog(@"sigmoid = %f", val);
     return val;

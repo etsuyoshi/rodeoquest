@@ -88,25 +88,26 @@ void (^actNoForRubyShort)(void) = ^(void) {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+//    myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     
     
-//    lblRubyAmount;
+    //    lblRubyAmount;
     
     CGRect rectRubyAmount = CGRectMake(50, 10, 150, 32);
-    [tvGoldAmount removeFromSuperview];//remove superclass field 
+    [tvGoldAmount removeFromSuperview];//remove superclass field
     myLblRubyAmount = [[UILabel alloc]initWithFrame:rectRubyAmount];
     [myLblRubyAmount setFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:14]];
     myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     myLblRubyAmount.textColor = [UIColor whiteColor];
     myLblRubyAmount.backgroundColor = [UIColor clearColor];//gray?
     [cashView addSubview:myLblRubyAmount];//cashView is defined in superclass
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+
 }
 
 

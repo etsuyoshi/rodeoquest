@@ -656,6 +656,7 @@ int numCell;
 -(void)freefall{
     CGPoint kStartPos = CGPointMake(x_loc, y_loc);//iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
     CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
+//                                  [UIScreen mainScreen].bounds.size.height - height);//for test
                                   [UIScreen mainScreen].bounds.size.height + height);//480);//
     CGPoint kMiddlePos = CGPointMake((kStartPos.x + kEndPos.x)/2,
                                      (kStartPos.y + kEndPos.y)/2
@@ -669,6 +670,7 @@ int numCell;
     CGPoint kStartPos = CGPointMake(x_loc, y_loc);//iv.center;//((CALayer *)[iv.layer presentationLayer]).position;
     CGPoint kEndPos = CGPointMake(kStartPos.x + arc4random() % 100 - 50,//iv.bounds.size.width,
                                   [UIScreen mainScreen].bounds.size.height + height);//480);//
+//                                  [UIScreen mainScreen].bounds.size.height - height);//for test
     CGPoint kMiddlePos = CGPointMake((kStartPos.x + kEndPos.x)/2, kStartPos.y * 0.05);//test
     
     [self moveFrom:kStartPos middlePoint:kMiddlePos endPoint:kEndPos];
@@ -708,7 +710,7 @@ int numCell;
         animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         animation.fillMode = kCAFillModeForwards;
         animation.removedOnCompletion = NO;
-        animation.duration = 2.0;
+        animation.duration = 1.5f;
         
         // 放物線のパスを生成
         //    CGFloat jumpHeight = kStartPos.y * 0.2;
