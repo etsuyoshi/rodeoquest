@@ -214,10 +214,7 @@ int sensitivity;
                                                  name: @"didEnterBackground"
                                                object: nil];
     
-    //時間計測用
-    startDate = [NSDate date];
     
-    worldType = arc4random() % WorldTypeCount;
     return self;
 }
 //ステータスバー非表示の一環
@@ -259,6 +256,11 @@ int sensitivity;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    //時間計測用
+    startDate = [NSDate date];
+    
+    worldType = arc4random() % WorldTypeCount;
     
     //いつでもデータを取り出せるようにグローバルに保存しておく：最初の一度だけにする
     attr = [[AttrClass alloc]init];//実際に使うのは最後のデータ表示部分@sendRequest...

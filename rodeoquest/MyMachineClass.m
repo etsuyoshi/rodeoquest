@@ -58,10 +58,10 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     shieldLifeMax = 1;//一度設定したら変更しない
     shieldLife = 0;
     
-    y_loc = [[UIScreen mainScreen] bounds].size.height - 100;//center of mymachine's location
-    //test:loc
-//    x_loc = x_init;
-    x_loc = 0;
+    //after initialization, mymachine is animated to move 100px bottom
+    y_loc = [[UIScreen mainScreen] bounds].size.height;//center of mymachine's location
+    
+    x_loc = x_init;
     maxHitPoint = 10;
     laserPower = level;
     hitPoint = maxHitPoint;
