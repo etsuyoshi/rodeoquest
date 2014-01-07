@@ -1,79 +1,12 @@
-//クリティカル問題：ビームを消去してないので売ってるとゲーム強制終了。
-
-//問題点：①全てのアイテムがmagnetModeになっていない？＝＞落ちたアイテムのisMagnetModeを確認
-//magnetアイテム取得後、全てのアイテムがisMagnetModeになっていることを確認(取得前はfalseになっていることも確認)
-//ではなぜ、自機の隣を「すれ違って」落ちてしまうのか(前提：magnetModeの状態で)
-//0.01secで全てのアイテムを逐次、magnetModeになっているかサンプリング判定しているから？(サンプリング間隔のもれ？)
-//自由落下をゆっくりにしたが、sweepされない。逐次、distanceの取得と範囲内判定もされている->サンプリング漏れが原因ではない。
-//アニメーション設定はされているけど、実際にアニメーションが実行されていない可能性？
-//トラックするメカニズムは実現できた(testview at CATRANSACTION_TEST)
-//それでも挙動は変わらず(磁石を取得した瞬間に発生したアイテムについてはsweepされる)
-//＝＞タイミングの問題(制御文の記述タイミングではなく、「複数の」アイテム発生と取得の制御のタイミング)
-//testViewにおいて、複数発生した場合の挙動について確認
-//具体的には任意タイミングで発生するアイテムに対して、何らかのトリガーで(発生後すぐ？)uiv.centerに移動アニメーション
-//キーにpositionを設定して移動アニメーションと同値にしたところうまく行く。
-//恐らく(同一キーになっているアニメーションを繋げる機能があるらしいため)アイテム生成時の軌道も同一にする必要があるかもしれない
-//とりあえず現状は大体(？)のsweepアニメが実行されるので、一件落着。
-
-//問題点：②magnetmodeで自機位置に移動したアイテムが取得されない場合がある
-
-//testviewで配列生成、アニメーションで指定位置に動かした時に消去する仕組みを作成
-//問題点：③追跡モード(新規更新必要)
-//現状は「if(isMagnetMode && !([[ItemArray objectAtIndex:i] getIsMagnetMode])){」になっているため。
-
-//現状問題点：衝突判定においてアニメーション中なのでレイヤーの位置が取得できていない。
-//superlayerに貼付けた際に当該レイヤーを保存して、後で参照できるようにしておく(現状の方法：[[ItemArray objectAtIndex:i] getImageview].layer.presentationLayerでは別の新規レイヤーを取り出している可能性？
-
-//アイテム動線上のパーティクル表示
-//アイテム取得時のエフェクト
-/*
- ・m:viewMyEffectにのせる系
- ・m-:MyMachine getImageViewに変更
- ・o:周りに影響する系
- ->各アイテムに対応するpowerGauge2.pngを用意する必要あり
- 
- oスイープ:周りから円半径変更：一定時間ずっと(イメージは後で追加:setbackground)
- ->本来はm系だがアクセス時間節約のためGameClassに実装して判定：マグネットフラグisMagnetMode
- 
- m武器、防具取得：powerGauge2(色はわけた方が良い)
- 武器：beamのiv.imageフィールド変更
- 防具：viewMyEffectにanimated-Viewを追加
- mコイン取得時：kira.png->小さいものを4つ
- o爆発時対応:for([EnemyArray count])die
- m回復；kiraを複数animate
- m-拡大、縮小[MyMachine setSize:xxx];
- m-透明：[[MyMachine getimageview] setAlpha:0.3f]
- ・
- */
-
-//line等のソーシャルプラットフォームがないため、PCエミュレータ上ではプロンプト上に警告が表示される(端末では問題ないので無視)
 //
-//  GameClassViewController.m
-//  ShootingTest
+//  GameClassViewController2.m
+//  Rodeoquest
 //
-//  Created by 遠藤 豪 on 13/09/25.
-//  Copyright (c) 2013年 endo.tuyo. All rights reserved.
-//  敵機がランダムに動く中で、タップすると自機が移動、フリックさせるとビーム発射
-//背景参考：http://dixq.net/rp/20.html
+//  Created by 遠藤 豪 on 2014/01/07.
+//  Copyright (c) 2014年 endo.tuyo. All rights reserved.
+//
 
 
-//アニメーションは以下の方が速いかもしれない。スムーズ(但し逐次位置は把握できない？)
-//http://iphone-tora.sakura.ne.jp/uiview.html
-
-/**
- ・敵機からビーム発射及び自機との接触イベント(敵機と自機の接触イベントも同じように出来れば尚よし)
- ・画面構成：一時停止ボタン：済(再開リアクション：済)、点数表示:済、機数(生き返り数)：ラベルはgradius5.jpg、パワーゲージ(自機耐久力＝死ににくいようにする必要、ビーム強力度)
- ・敵機にhitPoint：済、Beamにpowerを持たせて：済、当たった分だけダメージを与える：済、ダメージ発生時、簡単なparticleを表示：済
- ・敵機と衝突判定、衝突した後の生き返り時のリアクション(alpha修正により半透明にする)
- ・敵機倒した時にアイテムを生成：済、アイテムを精密に→CW
- ・敵機の描画を精密に？！→クラウドワークス
- ・画面タッチ時にビーム発射：済
- ・ビームは単体で削除表示を繰り返す：対象物への接触判定がサンプリング間隔以内で行えないので、単体で進ませていく
- 
- ・敵機をもっと頑丈に(typeによって爆発hit数を変更する):済
- ・自機からのビームはタップ時常時発射:済
- ・自機の移動はpanGesture:済
- */
 
 //#define STATUSBAR_MODE
 //#define ENEMY_TEST
@@ -83,7 +16,7 @@
 
 //#define COUNT_TEST
 
-#import "GameClassViewController.h"
+#import "GameClassViewController2.h"
 
 #define TIMEOVER_SECOND 1000
 #define OBJECT_SIZE 70//自機と敵機のサイズ
@@ -92,6 +25,9 @@
 CGRect rect_frame, rect_myMachine, rect_enemyBeam, rect_beam_launch;
 UIImageView *iv_frame, *iv_myMachine, *iv_enemyBeam, *iv_beam_launch;//, *iv_background1, *iv_background2;
 UIView* viewScoreField;
+
+Boolean flagIsDown1;
+Boolean flagIsDown2;
 
 AttrClass *attr;
 
@@ -151,7 +87,7 @@ PowerGaugeClass *powerGauge;//imageviewを内包
 
 NSTimer *timer;
 BGMClass *bgmClass;
-float gameSecond = 0;//timer->0.01sec
+float gameSecond2 = 0;//timer->0.01sec
 int timeEnemyRowYield = 100;//100countで敵列発生
 int countEnemyRowYield = 0;//上記timeのカウンター
 int countItem = 0;//テスト用
@@ -175,19 +111,19 @@ int _yBeam;
 int _sBeam;
 
 
-int mySize = OBJECT_SIZE;//拡大した時のために変更可能にしておく
+int mySize2 = OBJECT_SIZE;//拡大した時のために変更可能にしておく
 
 UIView *viewMyEffect;
 
 
-@interface GameClassViewController ()
+@interface GameClassViewController2 ()
 <ASFriendPickerViewControllerDelegate>
 @end
 
 
 
 
-@implementation GameClassViewController
+@implementation GameClassViewController2
 
 @synthesize sound_hit_URL;
 @synthesize sound_hit_ID;
@@ -207,17 +143,18 @@ int sensitivity;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        //if home-button is pressed:
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(pressedHomeButton)
+                                                     name: @"didEnterBackground"
+                                                   object: nil];
+        
+        //時間計測用
+        startDate = [NSDate date];
+        
+        worldType = arc4random() % WorldTypeCount;
     }
-    //if home-button is pressed:
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(pressedHomeButton)
-                                                 name: @"didEnterBackground"
-                                               object: nil];
     
-    //時間計測用
-    startDate = [NSDate date];
-    
-    worldType = arc4random() % WorldTypeCount;
     return self;
 }
 //ステータスバー非表示の一環
@@ -231,9 +168,9 @@ int sensitivity;
     
     [super viewWillAppear:animated];
     //background
-//    NSLog(@"background=%@", BackGround);
-//    NSLog(@"background=%d", BackGround == nil);//1
-//    NSLog(@"background=%d", [BackGround isEqual:[NSNull null]]);//0
+    //    NSLog(@"background=%@", BackGround);
+    //    NSLog(@"background=%d", BackGround == nil);//1
+    //    NSLog(@"background=%d", [BackGround isEqual:[NSNull null]]);//0
     
     [self setBackGroundInit];//defined at viewDidLoad called before viewwillappear
     
@@ -415,16 +352,16 @@ int sensitivity;
     //背景インスタンス定義
     NSLog(@"init background instance from game view controller");
     [self setBackGroundInit];//set equals to func below
-//    BackGround = [[BackGroundClass2 alloc]init:worldType
-//                                         width:self.view.bounds.size.width
-//                                        height:self.view.bounds.size.height
-//                                          secs:5.0f];
-//    
-//    
-//    [self.view addSubview:[BackGround getImageView1]];
-//    [self.view addSubview:[BackGround getImageView2]];
-//    [self.view bringSubviewToFront:[BackGround getImageView1]];
-//    [self.view bringSubviewToFront:[BackGround getImageView2]];
+    //    BackGround = [[BackGroundClass2 alloc]init:worldType
+    //                                         width:self.view.bounds.size.width
+    //                                        height:self.view.bounds.size.height
+    //                                          secs:5.0f];
+    //
+    //
+    //    [self.view addSubview:[BackGround getImageView1]];
+    //    [self.view addSubview:[BackGround getImageView2]];
+    //    [self.view bringSubviewToFront:[BackGround getImageView1]];
+    //    [self.view bringSubviewToFront:[BackGround getImageView2]];
     
     
     //    [(UIImageView *)[BackGround getImageView1] moveTo:CGPointMake(0, 400)
@@ -519,20 +456,20 @@ int sensitivity;
     size_machine = 100;
     
     
-    gameSecond = 0;
+    gameSecond2 = 0;
     
     
     //パワーゲージの描画:新機種のframeサイズに応じて変える
-//    int devide_frame = 3;
-//    int x_pg, y_pg, width_pg, height_pg;
-//    x_pg = rect_frame.size.width * (devide_frame - 1)/devide_frame;//左側１／４
-//    y_pg = rect_frame.size.height * (devide_frame - 1)/devide_frame;//下側１／４
-//    width_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
-//    height_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
-//    
-//    powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:x_pg y_init:y_pg width:width_pg height:height_pg];
-//    //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
-//    [self.view addSubview:[powerGauge getImageView]];
+    //    int devide_frame = 3;
+    //    int x_pg, y_pg, width_pg, height_pg;
+    //    x_pg = rect_frame.size.width * (devide_frame - 1)/devide_frame;//左側１／４
+    //    y_pg = rect_frame.size.height * (devide_frame - 1)/devide_frame;//下側１／４
+    //    width_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
+    //    height_pg = MIN(x_pg / devide_frame, y_pg /devide_frame);
+    //
+    //    powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:x_pg y_init:y_pg width:width_pg height:height_pg];
+    //    //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
+    //    [self.view addSubview:[powerGauge getImageView]];
     
     
     //power gauge定義以上。
@@ -560,14 +497,15 @@ int sensitivity;
     
     //以下実行後、0.01秒間隔でtimerメソッドが呼び出されるが、それと並行してこのメソッド(viewDidLoad)も実行される(マルチスレッドのような感じ)
     if(timer != nil){
+        NSLog(@"timer is not nil : %@", timer);
         timer = nil;
         [timer invalidate];
     }
     timer = [NSTimer scheduledTimerWithTimeInterval:0.01f
-                                          target:self
-                                        selector:@selector(time:)//タイマー呼び出し
-                                        userInfo:nil
-                                         repeats:YES];
+                                             target:self
+                                           selector:@selector(time:)//タイマー呼び出し
+                                           userInfo:nil
+                                            repeats:YES];
     
     
 }//viewDidLoad
@@ -578,11 +516,11 @@ int sensitivity;
  */
 - (void)time:(NSTimer*)timer{
 #ifdef COUNT_TEST
-    tvCount.text = [NSString stringWithFormat:@"counter:%f", gameSecond];
+    tvCount.text = [NSString stringWithFormat:@"counter:%f", gameSecond2];
 #endif
     
-//    NSLog(@"timer : %f", gameSecond);
-    //    if(gameSecond == 0){
+    //    NSLog(@"timer : %f", gameSecond2);
+    //    if(gameSecond2 == 0){
     //        //        NSLog(@"start animation from game class view controller");
     //        [BackGround startAnimation];//3sec-Round
     //    }
@@ -597,7 +535,7 @@ int sensitivity;
         //            [self performSelector:@selector(exitProcess) withObject:nil afterDelay:0.1];//自機爆破後、即座に終了させると違和感あるため少しdelay
         //            [self exitProcess];//delayさせるとその間にprogressが進んでしまうので即座に表示
         //        }
-        gameSecond += 0.01f;
+        gameSecond2 += 0.01f;
         
         //終了モードは辞める(ユーザーが努力した分だけ進めるようにする)
         //        if(count >= TIMEOVER_SECOND){
@@ -665,7 +603,9 @@ int sensitivity;
 
 
 - (void)ordinaryAnimationStart{
-    //    NSLog(@"enemy count = %d", [EnemyArray count]);
+    NSLog(@"ordinaryAnimationStart : enemy count = %d", [EnemyArray count]);
+    
+    
     //    NSLog(@"orinary animation start");
     //ユーザーインターフェース
     [self.view bringSubviewToFront:iv_frame];
@@ -693,11 +633,12 @@ int sensitivity;
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/生成_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-    //    NSLog(@"yield enemy");
-    if(gameSecond > 0.3f){//１秒後から敵を開始
+    NSLog(@"yield enemy");
+    if(gameSecond2 > 0.3f){//１秒後から敵を開始
         [self yieldEnemy];
     }
     
+    NSLog(@"[MyMachine getIsAlive] && isTouched");
     //    NSLog(@"detection touch");
     //ビーム生成はタッチ検出場所で実行
     if([MyMachine getIsAlive] && isTouched){
@@ -715,6 +656,7 @@ int sensitivity;
         }
     }
     
+    NSLog(@"if(arc4random() %% 50 == 0 &&//1秒に1回");
     //爆弾投下
     if(arc4random() % 50 == 0 &&//1秒に1回
        [MyMachine getStatus:ItemTypeWeapon0]){
@@ -726,9 +668,9 @@ int sensitivity;
     //_/_/_/_/進行:各オブジェクトのdoNext_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
-    //    NSLog(@"mymachine donext");
+    NSLog(@"mymachine donext");
     
-    if([MyMachine getIsAlive] ||
+    if(//[MyMachine getIsAlive] ||
        [MyMachine getDeadTime] < explosionCycle){
         
         [MyMachine doNext];//設定されたtype、x_loc,y_locプロパティでUIImageViewを作成する
@@ -741,14 +683,14 @@ int sensitivity;
             
             isGameMode = false;
             
-//            [self exitProcess];
+            //            [self exitProcess];
             [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(exitProcess) userInfo:nil repeats:NO];//低スピード再開
             [self showActivityIndicator];
             return;
         }
     }
     
-    //    NSLog(@"enemy donext");
+    NSLog(@"enemy donext loop");
     
     //敵機進行or爆発後のカウント
     for(int i = 0; i < [EnemyArray count] ; i++){
@@ -768,7 +710,7 @@ int sensitivity;
             if([(EnemyClass *)[EnemyArray objectAtIndex: i] getDeadTime] >= explosionCycle ||
                [[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height + OBJECT_SIZE){
                 //爆発パーティクルの消去
-
+                
                 //explodeした場合は既に画面から消去されている
                 [EnemyArray removeObjectAtIndex:i];
             }
@@ -786,19 +728,19 @@ int sensitivity;
     //        }
     //    }
     
-    //    NSLog(@"item judgement start");
+    NSLog(@"item judgement start");
     
     //アイテムの進行=[アイテム自体の移動 & 生成したパーティクルの時間経過:寿命判定は別途]
     for(int i = 0 ; i< [ItemArray count]; i ++){
         if([[ItemArray objectAtIndex:i] getIsAlive]){
             [(ItemClass *)[ItemArray objectAtIndex:i] doNext];
-//            if([(ItemClass *)[ItemArray objectAtIndex:i] doNext]){//移動とパーティクル発生判定：同時実行
-                //                NSLog(@"create particle");
-                //動線上パーティクルの格納と表示
-                //                [self.view addSubview:[[ItemArray objectAtIndex:i] getMovingParticle:0]] ;//生成したparticleは自動消滅
-                //                [KiraArray insertObject:[((ItemClass*)[ItemArray objectAtIndex:i]) getMovingParticle:0] atIndex:0];
-                //                [self.view addSubview:[KiraArray objectAtIndex:0]];
-//            }
+            //            if([(ItemClass *)[ItemArray objectAtIndex:i] doNext]){//移動とパーティクル発生判定：同時実行
+            //                NSLog(@"create particle");
+            //動線上パーティクルの格納と表示
+            //                [self.view addSubview:[[ItemArray objectAtIndex:i] getMovingParticle:0]] ;//生成したparticleは自動消滅
+            //                [KiraArray insertObject:[((ItemClass*)[ItemArray objectAtIndex:i]) getMovingParticle:0] atIndex:0];
+            //                [self.view addSubview:[KiraArray objectAtIndex:0]];
+            //            }
             //            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
             
             //確認用
@@ -839,7 +781,7 @@ int sensitivity;
                             //スイープモードが終わって射程圏内に入ったアイテムを削除したいが、
                             //ここでのindex:iはスイープモードになっているインデックスとはならない。
                             
-//                            if(!sweepmode)all-item:freefall
+                            //                            if(!sweepmode)all-item:freefall
                             if(![MyMachine getStatus:ItemTypeMagnet]){
                                 if(i < [ItemArray count]){
                                     if([ItemArray[i] getIsAlive]){
@@ -1056,7 +998,7 @@ int sensitivity;
                 }
             }
             
-            //            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
+            NSLog(@"itemC=%d, type=%d",[ItemArray count], i);//((ItemClass *)[ItemArray lastObject]).getType
             
             //test
             _item = [ItemArray objectAtIndex:i];
@@ -1084,10 +1026,10 @@ int sensitivity;
                 near_coeff = 2.0f;
             }
             if(
-               _xItem >= [MyMachine getX] - mySize * near_coeff &&
-               _xItem <= [MyMachine getX] + mySize * near_coeff &&
-               _yItem >= [MyMachine getY] - mySize * near_coeff &&
-               _yItem <= [MyMachine getY] + mySize * near_coeff){
+               _xItem >= [MyMachine getX] - mySize2 * near_coeff &&
+               _xItem <= [MyMachine getX] + mySize2 * near_coeff &&
+               _yItem >= [MyMachine getY] - mySize2 * near_coeff &&
+               _yItem <= [MyMachine getY] + mySize2 * near_coeff){
                 
                 //                if(itemCount == 0){
                 //                NSLog(@"collision detect at %d", itemCount);
@@ -1170,7 +1112,7 @@ int sensitivity;
                             [MyMachine setStatus:@"1" key:ItemTypeBig];
                             //                            countBig = 500;
                             //                            isBigMode = true;
-                            //                            mySize = [MyMachine getSize];
+                            //                            mySize2 = [MyMachine getSize];
                         }
                         break;
                     }
@@ -1249,8 +1191,8 @@ int sensitivity;
                             
                             [MyMachine setStatus:@"1" key:ItemTypeWeapon2];
                             
-//                            [viewMyEffect addSubview:[MyMachine getLaserImageView]];
-//                            [MyMachine getLaserImageView].center = CGPointMake(viewMyEffect.bounds.size.width/2,-[MyMachine getLaserImageView].bounds.size.height/2 + 40);
+                            //                            [viewMyEffect addSubview:[MyMachine getLaserImageView]];
+                            //                            [MyMachine getLaserImageView].center = CGPointMake(viewMyEffect.bounds.size.width/2,-[MyMachine getLaserImageView].bounds.size.height/2 + 40);
                         }
                         break;
                     }
@@ -1273,7 +1215,7 @@ int sensitivity;
         }
     }
     
-    //    NSLog(@"敵機衝突判定");
+    NSLog(@"敵機衝突判定");
     
     //敵機の衝突判定:against自機＆ビーム
     for(int i = [EnemyArray count] - 1; i >= 0 ;i-- ) {//全ての生存している敵に対して発生した順番に衝突判定
@@ -1330,10 +1272,10 @@ int sensitivity;
                 
                 
                 //ダメージパーティクル表示
-//                [[MyMachine getDamageParticle] setUserInteractionEnabled: NO];//インタラクション拒否
-//                [[MyMachine getDamageParticle] setIsEmitting:YES];//消去するには数秒後にNOに
-//                [self.view bringSubviewToFront: [MyMachine getDamageParticle]];//最前面に
-//                [self.view addSubview: [MyMachine getDamageParticle]];//表示する
+                //                [[MyMachine getDamageParticle] setUserInteractionEnabled: NO];//インタラクション拒否
+                //                [[MyMachine getDamageParticle] setIsEmitting:YES];//消去するには数秒後にNOに
+                //                [self.view bringSubviewToFront: [MyMachine getDamageParticle]];//最前面に
+                //                [self.view addSubview: [MyMachine getDamageParticle]];//表示する
                 
                 
                 //爆発パーティクル(ダメージ前isAliveがtrueからダメージ後falseになった場合は攻撃によって死んだものとして爆発)
@@ -1352,7 +1294,7 @@ int sensitivity;
                     
                     [[MyMachine getExplodeParticle] setUserInteractionEnabled: NO];//インタラクション拒否
                     [[MyMachine getExplodeParticle] setIsEmitting:YES];//消去するには数秒後にNOに
-
+                    
                     [self.view addSubview: [MyMachine getExplodeParticle]];//表示する
                     [self.view bringSubviewToFront: [MyMachine getExplodeParticle]];//最前面に
                     
@@ -1382,7 +1324,8 @@ int sensitivity;
                 
             }
             
-            //            NSLog(@"beam judgement");
+            
+            NSLog(@"beam judgement");
             
             //敵機とビームの衝突判定
             for(int j = 0 ; j < [MyMachine getBeamCount];j++){
@@ -1423,8 +1366,10 @@ int sensitivity;
                         
                         //攻撃によって敵が死んだらYES:生きてればNO
                         if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy]){
+                            NSLog(@"beam is hit to enemy%d which die", i);
                             break;//当該iへの衝突判定を辞め、別の敵への判定(弾丸は最初から判定)に入る
                         }else{
+                            NSLog(@"beam is hit to enemy%d which alive", i);
                             continue;//no need?:同じ敵iに対して次の弾丸の衝突判定を行う
                         }
                         
@@ -1468,7 +1413,7 @@ int sensitivity;
     //          (int)(temp/10));
     
     
-    if((int)gameSecond % 10 == 0){//per 10sec
+    if((int)gameSecond2 % 10 == 0){//per 10sec
         [self garvageCollection];
         NSLog(@"complete garvageCollection");
     }
@@ -1476,6 +1421,12 @@ int sensitivity;
     
     //ユーザーインターフェース
     //    [self.view bringSubviewToFront:iv_frame];
+    
+    if(flagIsDown1 != flagIsDown2){
+        NSLog(@"flagcheck : ordinaryAnimation loop end after enemyDown");
+    }
+    flagIsDown2 = flagIsDown1;
+    
     
 }
 
@@ -1556,18 +1507,18 @@ int sensitivity;
         
     }
     
-//    if(movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
-//        [MyMachine setLocation:CGPointMake([MyMachine getImageView].center.x,
-//                                           movedPoint.y)];
-//        [MyMachine getImageView].center = CGPointMake([MyMachine getImageView].center.x,
-//                                                      movedPoint.y);
-//        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
-//        
-//        
-//        //エフェクト描画用frame
-//        viewMyEffect.center = [MyMachine getImageView].center;
-//        [gr setTranslation:CGPointZero inView:viewMyEffect];
-//    }
+    //    if(movedPoint.y >= 0 && movedPoint.y <= self.view.bounds.size.height){
+    //        [MyMachine setLocation:CGPointMake([MyMachine getImageView].center.x,
+    //                                           movedPoint.y)];
+    //        [MyMachine getImageView].center = CGPointMake([MyMachine getImageView].center.x,
+    //                                                      movedPoint.y);
+    //        [gr setTranslation:CGPointZero inView:[MyMachine getImageView]];
+    //
+    //
+    //        //エフェクト描画用frame
+    //        viewMyEffect.center = [MyMachine getImageView].center;
+    //        [gr setTranslation:CGPointZero inView:viewMyEffect];
+    //    }
     
     
     
@@ -1705,7 +1656,7 @@ int sensitivity;
      *ゲーム進行と共にdifficultyを上げていく
      */
     int stageInterval = 5;//本番10sec?
-    int difficulty = gameSecond/stageInterval;//stageInterval秒経過するごとにdifficulty++//easy:0, 1, ... difficult
+    int difficulty = gameSecond2/stageInterval;//stageInterval秒経過するごとにdifficulty++//easy:0, 1, ... difficult
     
     
     
@@ -1714,46 +1665,46 @@ int sensitivity;
     //5秒間隔で非表示
     if([EnemyArray count] == 0){//画面上に敵がいなければ敵を発生(通常生成)
         isYield = true;
-//    }else if(gameSecond < 20){//20秒未満なら
-//        if(arc4random() % 300 == 0){//平均2秒に1回=100px程度の間隔(通常生成とは別にゲーム進行と共に高頻度で敵を発生)
-//            isYield = true;
-//        }
-//    }else if(gameSecond < 22){//5秒間隔で非表示
-//        //nothing : isYield = false;
-//    }else if(gameSecond < 40){//40秒未満
-//        if(arc4random() % 300 == 0){//平均１秒に1回
-//            isYield = true;
-//        }
-//    }else if(gameSecond < 42){//5秒間隔で非表示
-//        //nothing : isYield = false;
-//    }else if(gameSecond < 60){
-//        if(arc4random() % 100 == 0){//平均0.5秒に1回出現
-//            isYield = true;
-//        }
-//    }else if(gameSecond < 61){
-//        //nothing : isYield = false;
-//    }else if(gameSecond < 80){//初級殺し
-//        if(arc4random() % 30 == 0){//平均0.3秒に1回出現
-//            isYield = true;
-//        }
-//    }else if(gameSecond < 81){
-//        //nothing : is...
-//    }else if(gameSecond < 100){
-//        if(arc4random() % 30 == 0){
-//            isYield = true;
-//        }
-//    }else if(gameSecond < 140){
-//        if(arc4random() % 30 == 0){
-//            isYield = true;
-//        }
-//    }else if(gameSecond < 200){
-//        if(arc4random() % 30 == 0){
-//            isYield = true;
-//        }
-//    }else{
-//        if(arc4random() % 30 == 0){
-//            isYield = true;
-//        }
+        //    }else if(gameSecond2 < 20){//20秒未満なら
+        //        if(arc4random() % 300 == 0){//平均2秒に1回=100px程度の間隔(通常生成とは別にゲーム進行と共に高頻度で敵を発生)
+        //            isYield = true;
+        //        }
+        //    }else if(gameSecond2 < 22){//5秒間隔で非表示
+        //        //nothing : isYield = false;
+        //    }else if(gameSecond2 < 40){//40秒未満
+        //        if(arc4random() % 300 == 0){//平均１秒に1回
+        //            isYield = true;
+        //        }
+        //    }else if(gameSecond2 < 42){//5秒間隔で非表示
+        //        //nothing : isYield = false;
+        //    }else if(gameSecond2 < 60){
+        //        if(arc4random() % 100 == 0){//平均0.5秒に1回出現
+        //            isYield = true;
+        //        }
+        //    }else if(gameSecond2 < 61){
+        //        //nothing : isYield = false;
+        //    }else if(gameSecond2 < 80){//初級殺し
+        //        if(arc4random() % 30 == 0){//平均0.3秒に1回出現
+        //            isYield = true;
+        //        }
+        //    }else if(gameSecond2 < 81){
+        //        //nothing : is...
+        //    }else if(gameSecond2 < 100){
+        //        if(arc4random() % 30 == 0){
+        //            isYield = true;
+        //        }
+        //    }else if(gameSecond2 < 140){
+        //        if(arc4random() % 30 == 0){
+        //            isYield = true;
+        //        }
+        //    }else if(gameSecond2 < 200){
+        //        if(arc4random() % 30 == 0){
+        //            isYield = true;
+        //        }
+        //    }else{
+        //        if(arc4random() % 30 == 0){
+        //            isYield = true;
+        //        }
     }
 #else
     
@@ -1766,45 +1717,45 @@ int sensitivity;
     
 #endif
     if(isYield){
-//        NSLog(@"gameSec = %f, difficulty = %d",gameSecond, difficulty);
+        //        NSLog(@"gameSec = %f, difficulty = %d",gameSecond2, difficulty);
         
         
         int occurredX = 0;
         EnemyType _enemyType = EnemyTypeTanu;
         
         
-//        CGFloat probabilityEmergent[] =
-//        {0.0, middleLocation, 1.0};//how to use??
-//        NSArray *arrEmergentProbability=
-//        [NSArray arrayWithObjects:
-//         [NSArray arrayWithObjects:@10, @0, @0, @0, @0 ,nil],//all:tanu
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu4,musa1
-//         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],//tanu5,musa5
-//         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],//tanu6,musa3,hari1
-//         [NSArray arrayWithObjects:@5, @3, @2, @0, @0 ,nil],//tanu5,musa3,hari2
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu3,musa5,hari2
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu1,musa5,hari4
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
-//         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
-//         //tanu0,musa5,hari5//tanu0,musa7,hari3//tanu0, mura09,hari1
-//         nil];
+        //        CGFloat probabilityEmergent[] =
+        //        {0.0, middleLocation, 1.0};//how to use??
+        //        NSArray *arrEmergentProbability=
+        //        [NSArray arrayWithObjects:
+        //         [NSArray arrayWithObjects:@10, @0, @0, @0, @0 ,nil],//all:tanu
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu4,musa1
+        //         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],//tanu5,musa5
+        //         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],//tanu6,musa3,hari1
+        //         [NSArray arrayWithObjects:@5, @3, @2, @0, @0 ,nil],//tanu5,musa3,hari2
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu3,musa5,hari2
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],//tanu1,musa5,hari4
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+        //         [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
+        //         //tanu0,musa5,hari5//tanu0,musa7,hari3//tanu0, mura09,hari1
+        //         nil];
         //一次元配列にして各difficultyに応じた敵機出現確率を計算
-//        NSMutableArray *arrEmergentProbability= [NSMutableArray arrayWithObjects:
-//                                                  @0, @0, @0, @0, @0, nil];
-//        int eachProb = 10-difficulty;//difficulty starts from 0 to infinitely
-//        for(EnemyType i = 0 ; i < (EnemyType)5;i ++){
-//            for(int j = 0;j < i;j++){
-//                eachProb -= [arrEmergentProbability[j] intValue];
-//            }
-////            arrEmergentProbability[i] = [NSNumber numberWithInt:eachProb];
-//            [arrEmergentProbability
-//             replaceObjectAtIndex:i
-//             withObject:[NSNumber numberWithInt:eachProb]];
-//            //脱出条件
-//            if([self getSumFromArray:arrEmergentProbability] == 10)break;
-//        }
+        //        NSMutableArray *arrEmergentProbability= [NSMutableArray arrayWithObjects:
+        //                                                  @0, @0, @0, @0, @0, nil];
+        //        int eachProb = 10-difficulty;//difficulty starts from 0 to infinitely
+        //        for(EnemyType i = 0 ; i < (EnemyType)5;i ++){
+        //            for(int j = 0;j < i;j++){
+        //                eachProb -= [arrEmergentProbability[j] intValue];
+        //            }
+        ////            arrEmergentProbability[i] = [NSNumber numberWithInt:eachProb];
+        //            [arrEmergentProbability
+        //             replaceObjectAtIndex:i
+        //             withObject:[NSNumber numberWithInt:eachProb]];
+        //            //脱出条件
+        //            if([self getSumFromArray:arrEmergentProbability] == 10)break;
+        //        }
         
         //tanu,musa,pen,hari,zou
         NSArray *arrEmergentProbability=
@@ -1812,16 +1763,16 @@ int sensitivity;
          [NSArray arrayWithObjects:@10, @0, @0, @0, @0 ,nil],
          [NSArray arrayWithObjects:@9, @1, @0, @0, @0 ,nil],
          [NSArray arrayWithObjects:@8, @2, @0, @0, @0 ,nil],
-//         [NSArray arrayWithObjects:@8, @1, @1, @0, @0 ,nil],
+         //         [NSArray arrayWithObjects:@8, @1, @1, @0, @0 ,nil],
          [NSArray arrayWithObjects:@7, @3, @0, @0, @0 ,nil],
          [NSArray arrayWithObjects:@7, @2, @1, @0, @0 ,nil],
          [NSArray arrayWithObjects:@7, @1, @1, @1, @0 ,nil],
-//         [NSArray arrayWithObjects:@6, @4, @0, @0, @0 ,nil],
-//         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],
-//         [NSArray arrayWithObjects:@6, @2, @2, @0, @0 ,nil],
+         //         [NSArray arrayWithObjects:@6, @4, @0, @0, @0 ,nil],
+         //         [NSArray arrayWithObjects:@6, @3, @1, @0, @0 ,nil],
+         //         [NSArray arrayWithObjects:@6, @2, @2, @0, @0 ,nil],
          [NSArray arrayWithObjects:@6, @2, @1, @1, @0 ,nil],
          [NSArray arrayWithObjects:@6, @1, @1, @1, @1 ,nil],
-//         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],
+         //         [NSArray arrayWithObjects:@5, @5, @0, @0, @0 ,nil],
          //...below is sense..
          [NSArray arrayWithObjects:@5, @1, @1, @2, @1 ,nil],
          [NSArray arrayWithObjects:@3, @2, @2, @2, @1 ,nil],
@@ -1877,121 +1828,121 @@ int sensitivity;
                 }
             }
             
-//            switch (difficulty) {
-//                case 0:{
-//                    //all:tanu
-//                    _enemyType = EnemyTypeTanu;
-//                    break;
-//                }
-//                case 1:{
-//                    //tanu4,musa1
-//                    if(arc4random()%5<4){//80%
-//                        _enemyType = EnemyTypeTanu;
-//                    }else{
-//                        _enemyType = EnemyTypeMusa;
-//                    }
-//                    break;
-//                }
-//                case 2:{
-//                    //tanu5,musa5
-//                    if(arc4random()%2==0){
-//                        _enemyType = EnemyTypeMusa;
-//                    }else{
-//                        _enemyType = EnemyTypeTanu;
-//                    }
-//                    break;
-//                }
-//                case 3:{
-//                    //tanu6,musa3,hari1
-//                    if(arc4random()%5<3){//60%
-//                        _enemyType = EnemyTypeTanu;
-//                    }else{
-//                        if(arc4random()%4==0){//10%
-//                            _enemyType = EnemyTypeHari;
-//                        }else{//20%
-//                            _enemyType = EnemyTypeMusa;
-//                        }
-//                    }
-//
-//                    break;
-//                }
-//                case 4:{
-//                    //tanu5,musa3,hari2
-//                    if(arc4random()%10<5){
-//                        _enemyType = EnemyTypeTanu;
-//                    }else{
-//                        if(arc4random() % 5 < 3){
-//                            _enemyType = EnemyTypeMusa;
-//                        }else{
-//                            _enemyType = EnemyTypeHari;
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 5:{
-//                    //tanu3,musa5,hari2
-//                    if(arc4random() % 10 < 3){
-//                        _enemyType = EnemyTypeTanu;
-//                    }else{
-//                        if(arc4random() % 7 < 5){
-//                            _enemyType = EnemyTypeMusa;
-//                        }else{
-//                            _enemyType = EnemyTypeHari;
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 6:{
-//                    //tanu1,musa5,hari4
-//                    if(arc4random() % 10 == 0){
-//                        _enemyType = EnemyTypeTanu;
-//                    }else if(arc4random() % 9 < 5){
-//                        _enemyType = EnemyTypeMusa;
-//                    }else{
-//                        _enemyType = EnemyTypeHari;
-//                    }
-//                    break;
-//                }
-//                case 7:{
-//                    //tanu0,musa5,hari5
-//                    if(arc4random() % 2 == 0){
-//                        _enemyType = EnemyTypeMusa;
-//                    }else{
-//                        _enemyType = EnemyTypeHari;
-//                    }
-//                    break;
-//                }
-//                case 8:{
-//                    //tanu0,musa7,hari3
-//                    if(arc4random() % 10 < 7){
-//                        _enemyType = EnemyTypeMusa;
-//                    }else{
-//                        _enemyType = EnemyTypeHari;
-//                    }
-//                    break;
-//                }
-//                case 9:{
-//                    //tanu0, mura09,hari1
-//                    if(arc4random() % 10 < 9){
-//                        _enemyType = EnemyTypeMusa;
-//                    }else{
-//                        _enemyType = EnemyTypeHari;
-//                    }
-//                    break;
-//                }
-//                default:{
-//                    //difficuty > 6
-//                    break;
-//                }
-//            }
+            //            switch (difficulty) {
+            //                case 0:{
+            //                    //all:tanu
+            //                    _enemyType = EnemyTypeTanu;
+            //                    break;
+            //                }
+            //                case 1:{
+            //                    //tanu4,musa1
+            //                    if(arc4random()%5<4){//80%
+            //                        _enemyType = EnemyTypeTanu;
+            //                    }else{
+            //                        _enemyType = EnemyTypeMusa;
+            //                    }
+            //                    break;
+            //                }
+            //                case 2:{
+            //                    //tanu5,musa5
+            //                    if(arc4random()%2==0){
+            //                        _enemyType = EnemyTypeMusa;
+            //                    }else{
+            //                        _enemyType = EnemyTypeTanu;
+            //                    }
+            //                    break;
+            //                }
+            //                case 3:{
+            //                    //tanu6,musa3,hari1
+            //                    if(arc4random()%5<3){//60%
+            //                        _enemyType = EnemyTypeTanu;
+            //                    }else{
+            //                        if(arc4random()%4==0){//10%
+            //                            _enemyType = EnemyTypeHari;
+            //                        }else{//20%
+            //                            _enemyType = EnemyTypeMusa;
+            //                        }
+            //                    }
+            //
+            //                    break;
+            //                }
+            //                case 4:{
+            //                    //tanu5,musa3,hari2
+            //                    if(arc4random()%10<5){
+            //                        _enemyType = EnemyTypeTanu;
+            //                    }else{
+            //                        if(arc4random() % 5 < 3){
+            //                            _enemyType = EnemyTypeMusa;
+            //                        }else{
+            //                            _enemyType = EnemyTypeHari;
+            //                        }
+            //                    }
+            //                    break;
+            //                }
+            //                case 5:{
+            //                    //tanu3,musa5,hari2
+            //                    if(arc4random() % 10 < 3){
+            //                        _enemyType = EnemyTypeTanu;
+            //                    }else{
+            //                        if(arc4random() % 7 < 5){
+            //                            _enemyType = EnemyTypeMusa;
+            //                        }else{
+            //                            _enemyType = EnemyTypeHari;
+            //                        }
+            //                    }
+            //                    break;
+            //                }
+            //                case 6:{
+            //                    //tanu1,musa5,hari4
+            //                    if(arc4random() % 10 == 0){
+            //                        _enemyType = EnemyTypeTanu;
+            //                    }else if(arc4random() % 9 < 5){
+            //                        _enemyType = EnemyTypeMusa;
+            //                    }else{
+            //                        _enemyType = EnemyTypeHari;
+            //                    }
+            //                    break;
+            //                }
+            //                case 7:{
+            //                    //tanu0,musa5,hari5
+            //                    if(arc4random() % 2 == 0){
+            //                        _enemyType = EnemyTypeMusa;
+            //                    }else{
+            //                        _enemyType = EnemyTypeHari;
+            //                    }
+            //                    break;
+            //                }
+            //                case 8:{
+            //                    //tanu0,musa7,hari3
+            //                    if(arc4random() % 10 < 7){
+            //                        _enemyType = EnemyTypeMusa;
+            //                    }else{
+            //                        _enemyType = EnemyTypeHari;
+            //                    }
+            //                    break;
+            //                }
+            //                case 9:{
+            //                    //tanu0, mura09,hari1
+            //                    if(arc4random() % 10 < 9){
+            //                        _enemyType = EnemyTypeMusa;
+            //                    }else{
+            //                        _enemyType = EnemyTypeHari;
+            //                    }
+            //                    break;
+            //                }
+            //                default:{
+            //                    //difficuty > 6
+            //                    break;
+            //                }
+            //            }
             
             
             //enemy initialize
-            //enemy is defined as move ealier for gameSecond/5.0 which gameSecond is increasing 0.01f;
+            //enemy is defined as move ealier for gameSecond2/5.0 which gameSecond2 is increasing 0.01f;
             EnemyClass *enemy = [[EnemyClass alloc]init:occurredX
                                                    size:OBJECT_SIZE
-                                                   time:[self getSigmoid:(float)gameSecond]
-//                                                   time:MAX(5.0f-(float)gameSecond/5.0f, 0.5f)
+                                                   time:[self getSigmoid:(float)gameSecond2]
+//                                                   time:MAX(5.0f-(float)gameSecond2/5.0f, 0.5f)
                                               enemyType:_enemyType
                                  ];
             //test用
@@ -2026,8 +1977,8 @@ int sensitivity;
     [timer invalidate];
     timer = nil;
     
-
-
+    
+    
     
     UIView *superView = [CreateComponentClass createViewNoFrame:self.view.bounds
                                                           color:[UIColor clearColor]
@@ -2147,41 +2098,41 @@ int sensitivity;
     [tv_score setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_score];
     
-//    UIProgressView *pv_score = [[UIProgressView alloc]
-//                                initWithProgressViewStyle:UIProgressViewStyleBar];
-//    pv_score.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-//                                score_y + go_height,
-//                                go_component_width,
-//                                10);
-//    pv_score.progressTintColor = [UIColor greenColor];
-
+    //    UIProgressView *pv_score = [[UIProgressView alloc]
+    //                                initWithProgressViewStyle:UIProgressViewStyleBar];
+    //    pv_score.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+    //                                score_y + go_height,
+    //                                go_component_width,
+    //                                10);
+    //    pv_score.progressTintColor = [UIColor greenColor];
+    
     LDProgressView *pv_score = [[LDProgressView alloc]
                                 initWithFrame:CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                                                          score_y + label_h,
                                                          go_component_width,
                                                          pv_h)];
     pv_score.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
-//    pv_score.flat = @YES;
+    //    pv_score.flat = @YES;
     pv_score.progress = 0.40;
     pv_score.animate = @YES;
-
     
-//    // default color, animated
-//    LDProgressView *progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 130, self.view.frame.size.width-40, 22)];
-//    progressView.progress = 0.40;
-//    [self.progressViews addObject:progressView];
-//    [self.view addSubview:progressView];
-//    
-//    
-//    // flat, green, animated
-//    progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 160, self.view.frame.size.width-40, 22)];
-//    progressView.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
-//    progressView.flat = @YES;
-//    progressView.progress = 0.40;
-//    progressView.animate = @YES;
-//    [self.progressViews addObject:progressView];
-//    [self.view addSubview:progressView];
-
+    
+    //    // default color, animated
+    //    LDProgressView *progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 130, self.view.frame.size.width-40, 22)];
+    //    progressView.progress = 0.40;
+    //    [self.progressViews addObject:progressView];
+    //    [self.view addSubview:progressView];
+    //
+    //
+    //    // flat, green, animated
+    //    progressView = [[LDProgressView alloc] initWithFrame:CGRectMake(20, 160, self.view.frame.size.width-40, 22)];
+    //    progressView.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
+    //    progressView.flat = @YES;
+    //    progressView.progress = 0.40;
+    //    progressView.animate = @YES;
+    //    [self.progressViews addObject:progressView];
+    //    [self.view addSubview:progressView];
+    
     
     
     
@@ -2219,13 +2170,13 @@ int sensitivity;
     UITextView *tv_complete = [CreateComponentClass createTextView:rect_complete text:@"complete : "];
     [tv_complete setBackgroundColor:[UIColor clearColor]];
     [view_go addSubview:tv_complete];
-//    UIProgressView *pv_complete = [[UIProgressView alloc]
-//                                   initWithProgressViewStyle:UIProgressViewStyleBar];
-//    pv_complete.progressTintColor = [UIColor blueColor];
-//    pv_complete.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-//                                   complete_y + go_height,
-//                                   go_component_width,
-//                                   10);
+    //    UIProgressView *pv_complete = [[UIProgressView alloc]
+    //                                   initWithProgressViewStyle:UIProgressViewStyleBar];
+    //    pv_complete.progressTintColor = [UIColor blueColor];
+    //    pv_complete.frame = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+    //                                   complete_y + go_height,
+    //                                   go_component_width,
+    //                                   10);
     LDProgressView *pv_complete =
     [[LDProgressView alloc]
      initWithFrame:
@@ -2238,7 +2189,7 @@ int sensitivity;
     pv_complete.animate = @YES;
     pv_complete.type = LDProgressGradient;
     pv_complete.background = [pv_complete.color colorWithAlphaComponent:0.8];
-
+    
     
     [view_go addSubview:pv_complete];
     
@@ -2310,11 +2261,11 @@ int sensitivity;
         //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
         //                     animated:NO];
         if(level < [attr getMaxLevel]){
-//            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-//                     animated:NO];
+            //            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+            //                     animated:NO];
             pv_score.progress = pvScoreValue/expTilNextLevel;
         }else{
-//            [pv_score setProgress:1.0f animated:NO];
+            //            [pv_score setProgress:1.0f animated:NO];
             pv_score.progress = 1.0f;
         }
         
@@ -2363,14 +2314,14 @@ int sensitivity;
                         tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
                                          (int)ABS(pvScoreValue) , level];
                         if(!flagLevelUp){
-//                            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
-//                                         animated:NO];
+                            //                            [pv_score setProgress:(float)pvScoreValue/expTilNextLevel//levelが上がったら一旦初期化
+                            //                                         animated:NO];
                             pv_score.progress = (float)pvScoreValue/expTilNextLevel;
                         }else{
                             
                             //[before]level上がったらcongratビュー表示により見えなくなるのでゼロにしたまま＝＞最終状態でsetProgressしているので進捗しない
-//                            [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
-//                                         animated:YES];
+                            //                            [pv_score setProgress:0//levelが上がったらゼロにしたままにする(congratビュー表示で見えなくなる)
+                            //                                         animated:YES];
                             //[after]level-up always 100%
                             
                             pv_score.progress = 1.0f;
@@ -2382,14 +2333,14 @@ int sensitivity;
                         //最終状態：初期値＋今回獲得スコア
                         tv_score.text = [NSString stringWithFormat:@"EXP : %d     level : %d",
                                          (int)ABS(pvScoreValue), level];
-//                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
-//                                     animated:YES];
+                        //                        [pv_score setProgress:(float)pvScoreValue/expTilNextLevel
+                        //                                     animated:YES];
                         pv_score.progress = (float)pvScoreValue/expTilNextLevel;
                     }
                 }else{
                     //レベルマックスになっている場合
                     tv_score.text = [NSString stringWithFormat:@"EXP : MAX     level : MAX"];
-//                    [pv_score setProgress:1.0f animated:NO];
+                    //                    [pv_score setProgress:1.0f animated:NO];
                     pv_score.progress = 1.0f;
                 }
                 
@@ -2406,12 +2357,12 @@ int sensitivity;
                 if(cnt < (float)enemyDown/(float)enemyCount*100){
                     if(enemyDown != enemyCount){
                         //no-update for string(progress is updating...)
-//                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", MIN(cnt, 100)];
+                        //                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", MIN(cnt, 100)];
                         pv_complete.progress = (float)cnt / 100.0f;
                     }
                 }else{//最終状態：
                     if(enemyDown == enemyCount){
-//                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
+                        //                        tv_complete.text = [NSString stringWithFormat:@"complete : %d%%", 100];
                         pv_complete.progress = 1.0f;
                     }
                 }
@@ -2442,7 +2393,7 @@ int sensitivity;
                         [self.view addSubview:vwel];
                         
                         //上記ビューにボタンを配置して以下のメソッドを実行して自慢する
-//                        [ASInviter showInviteSheetInView:self.view];//test:report
+                        //                        [ASInviter showInviteSheetInView:self.view];//test:report
                         //このメソッドは<ASFriendPickerViewControllerDelegate>を追加し、
                         //- (void)friendPickerViewController:(ASFriendPickerViewController *)controllerをオーバーロードする必要がある
                     }
@@ -2479,7 +2430,7 @@ int sensitivity;
     //ウィンドウ閉じる
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
     //    [BackGround pauseAnimations];
-//    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
+    //    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
     
     GKScore *scoreReporter = [[GKScore alloc] initWithCategory:@"comendo.rodeoquest"];
     scoreReporter.value = [ScoreBoard getScore];        // とりあえずランダム値をスコアに
@@ -2553,10 +2504,11 @@ int sensitivity;
      */
     
     //テキストビュー用
+    /*test
     [[_boardClass getTextView] removeFromSuperview];
     //    [self.view addSubview:[_boardClass getTextView]];
     [viewScoreField addSubview:[_boardClass getTextView]];
-    
+    */
     //textView.text = xxx;の方がスマート。＝＞要修正
 }
 
@@ -2652,7 +2604,7 @@ int sensitivity;
         [attr setValueToDevice:@"time_max" strValue:[NSString stringWithFormat:@"%d", time_now]];
     }
     //do something
-//    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
+    //    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
     NSLog(@"game time is %lf (sec)", [[NSDate date] timeIntervalSinceDate:startDate]);
     
     
@@ -2725,8 +2677,8 @@ int sensitivity;
         }
     }
     if(id_weapon != -1){//何も装備してなければ
-//        NSString *strWeaponIDX_exp = [NSString stringWithFormat:@"weaponID%d_exp", id_weapon];
-//        int beforeWeaponExp = [[attr getValueFromDevice:strWeaponIDX_exp] intValue];
+        //        NSString *strWeaponIDX_exp = [NSString stringWithFormat:@"weaponID%d_exp", id_weapon];
+        //        int beforeWeaponExp = [[attr getValueFromDevice:strWeaponIDX_exp] intValue];
         [attr addWeaponExp:[ScoreBoard getScore] weaponID:id_weapon];
     }
     
@@ -2882,7 +2834,7 @@ int sensitivity;
     //explodeEffect
     ViewExplode *viewExplode = [[EnemyArray objectAtIndex:i] getExplodeEffect];
     [self.view addSubview:viewExplode];
-
+    
     
     
     
@@ -2923,7 +2875,7 @@ int sensitivity;
         if(counter > 50){//if not found enemy by 50times loop, then return
             return;//諦めてメソッド終了
         }
-
+        
     }
     
     
@@ -3183,7 +3135,7 @@ int sensitivity;
            [MyMachine getStatus:ItemTypeBomb] ||
            [MyMachine getStatus:ItemTypeMagnet] ||
            [MyMachine getStatus:ItemTypeWeapon0] ||
-//           [MyMachine getStatus:ItemTypeWeapon1] ||//複数ビームは何度も２回まで取得可能(制限をかけるなら[MyMachine getNumOfBeam]等)
+           //           [MyMachine getStatus:ItemTypeWeapon1] ||//複数ビームは何度も２回まで取得可能(制限をかけるなら[MyMachine getNumOfBeam]等)
            [MyMachine getStatus:ItemTypeWeapon2]){
             
             if(arc4random() % 100 >= 20){//本番では40(特殊状態でコインが沢山取れる方が嬉しいため)
@@ -3248,25 +3200,25 @@ int sensitivity;
         }
         
         //        //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+        //        _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
         if([ItemArray count] > 50){
             NSLog(@"item count = %d so remove dead", [ItemArray count]);
-//            for(int i = 0; i < [ItemArray count];i++){
-//                NSLog(@"item %d is %@", i, [ItemArray[i] getIsAlive]?@"alive":@"dead");
-//            }
+            //            for(int i = 0; i < [ItemArray count];i++){
+            //                NSLog(@"item %d is %@", i, [ItemArray[i] getIsAlive]?@"alive":@"dead");
+            //            }
             //isDeadなのになぜか格納されているものがあるので削除(画面上には表示されていない)
             for(int i = [ItemArray count]-1;i >= 0;i--){
                 if(![[ItemArray objectAtIndex:i] getIsAlive]){
                     NSLog(@"item %d is dead so remove(view & array)", i);
                     [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
                     [ItemArray removeObjectAtIndex:i];
-//                    break;
+                    //                    break;
                 }
             }
-//            [ItemArray removeLastObject];
+            //            [ItemArray removeLastObject];
         }
         [self.view bringSubviewToFront:[[ItemArray objectAtIndex:0] getImageView]];
         [self.view addSubview:[[ItemArray objectAtIndex:0] getImageView]];
@@ -3337,13 +3289,13 @@ int sensitivity;
        _itemType == ItemTypeGreenGold ||
        _itemType == ItemTypeYellowGold){
         
-//        UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE*3, OBJECT_SIZE*3)];
+        //        UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE*3, OBJECT_SIZE*3)];
         ViewKira *ivItemAcq = [[ViewKira alloc]
                                initWithFrame:CGRectMake(0, 0, OBJECT_SIZE/2, OBJECT_SIZE/2)
                                type:_kiraType];
         ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
         
-//        ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
+        //        ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
         
         [UIView animateWithDuration:0.5f
                               delay:0.0
@@ -3383,53 +3335,53 @@ int sensitivity;
         //以下要修正：配列でキラを表示させると、ループ順に終了せずに、スタックに残ってしまう
         //->キラキラを複数貼付けた一つのイメージファイルとして表示する必要がある。
         /*
-        for(int i = 0; i < 10; i++){
-//            UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];
-//            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
-//            ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
-            ViewKira *ivItemAcq =
-            [[ViewKira alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE/5, OBJECT_SIZE/5)
-                                       type:_kiraType];
-            ivItemAcq.center = CGPointMake(x0, y0);
-            
-            ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
-            
-            [UIView animateWithDuration:0.5f
-                                  delay:0.0
-                                options:UIViewAnimationOptionCurveLinear
-                             animations:^{
-                                 ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
-                                                                y0 - OBJECT_SIZE*4/5+arc4random()%OBJECT_SIZE/2);
-                                 ivItemAcq.alpha = 0.7f;
-                                 CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
-                                 ivItemAcq.transform = transform;//...ok?
-                             }
-                             completion:^(BOOL finished){
-                                 
-                                 if(finished){
-                                     [UIView animateWithDuration:0.5f
-                                                           delay:0.0
-                                                         options:UIViewAnimationOptionCurveLinear
-                                                      animations:^{
-                                                          //add rotation
-                                                          CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
-                                                          ivItemAcq.transform = transform;//...ok?
-                                                          ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
-                                                                                         y0 - OBJECT_SIZE+arc4random()%OBJECT_SIZE/2);
-                                                          ivItemAcq.alpha = 0.0f;
-                                                      }
-                                                      completion:^(BOOL finished){
-                                                          
-                                                          if(finished){
-                                                              [ivItemAcq removeFromSuperview];
-                                                          }
-                                                      }];
-                                 }
-                             }];
-            //上記で設定したUIImageViewを配列格納
-            [self.view addSubview:ivItemAcq];
-            [self.view bringSubviewToFront:ivItemAcq];
-        }
+         for(int i = 0; i < 10; i++){
+         //            UIImageView *ivItemAcq = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE, OBJECT_SIZE)];
+         //            ivItemAcq.center = CGPointMake(x0, y0);//OBJECT_SIZE/2, 0);
+         //            ivItemAcq.image = [UIImage imageNamed:@"img11.png"];
+         ViewKira *ivItemAcq =
+         [[ViewKira alloc] initWithFrame:CGRectMake(0, 0, OBJECT_SIZE/5, OBJECT_SIZE/5)
+         type:_kiraType];
+         ivItemAcq.center = CGPointMake(x0, y0);
+         
+         ivItemAcq.alpha = 1.0f;//MIN(exp(((float)(arc4random() % 100))*4.0f / 100.0f - 1),1);//0-1の指数関数(１の確率が４分の３)
+         
+         [UIView animateWithDuration:0.5f
+         delay:0.0
+         options:UIViewAnimationOptionCurveLinear
+         animations:^{
+         ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
+         y0 - OBJECT_SIZE*4/5+arc4random()%OBJECT_SIZE/2);
+         ivItemAcq.alpha = 0.7f;
+         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/4);
+         ivItemAcq.transform = transform;//...ok?
+         }
+         completion:^(BOOL finished){
+         
+         if(finished){
+         [UIView animateWithDuration:0.5f
+         delay:0.0
+         options:UIViewAnimationOptionCurveLinear
+         animations:^{
+         //add rotation
+         CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
+         ivItemAcq.transform = transform;//...ok?
+         ivItemAcq.center = CGPointMake(x0+arc4random()%OBJECT_SIZE,
+         y0 - OBJECT_SIZE+arc4random()%OBJECT_SIZE/2);
+         ivItemAcq.alpha = 0.0f;
+         }
+         completion:^(BOOL finished){
+         
+         if(finished){
+         [ivItemAcq removeFromSuperview];
+         }
+         }];
+         }
+         }];
+         //上記で設定したUIImageViewを配列格納
+         [self.view addSubview:ivItemAcq];
+         [self.view bringSubviewToFront:ivItemAcq];
+         }
          */
     }
 }
@@ -3459,7 +3411,7 @@ int sensitivity;
     
     [self.view sendSubviewToBack:[BackGround getImageView1]];
     [self.view sendSubviewToBack:[BackGround getImageView2]];
-//    [BackGround oscillateEffect:10];
+    //    [BackGround oscillateEffect:10];
     [BackGround gameOver];//振動してから低スピードで進行
 }
 
@@ -3486,7 +3438,7 @@ int sensitivity;
 -(void)setBackGroundInit{
     NSLog(@"set BackGround init at GameView");
     
-
+    
     
     
     if(BackGround != nil &&
@@ -3495,80 +3447,80 @@ int sensitivity;
         [BackGround exitAnimations];//前のアニメーションの停止
     }
     
-//test:worldtype
-//    BackGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
+    //test:worldtype
+    //    BackGround = [[BackGroundClass2 alloc]init:WorldTypeUniverse1
     BackGround = [[BackGroundClass2 alloc] init:worldType
-                                         width:self.view.bounds.size.width
-                                        height:self.view.bounds.size.height
-                                          secs:20.0f];//homebuttonを押されて途中再開したときのために到達時間は変数にしておく
+                                          width:self.view.bounds.size.width
+                                         height:self.view.bounds.size.height
+                                           secs:20.0f];//homebuttonを押されて途中再開したときのために到達時間は変数にしておく
     [self.view addSubview:[BackGround getImageView1]];
     [self.view addSubview:[BackGround getImageView2]];
     [self.view sendSubviewToBack:[BackGround getImageView1]];
     [self.view sendSubviewToBack:[BackGround getImageView2]];
     [self startAnimateBackGround];
-
     
-//    [self.view addSubview:[BackGround getImageView1]];
-//    [self.view addSubview:[BackGround getImageView2]];
-//    [self.view bringSubviewToFront:[BackGround getImageView1]];
-//    [self.view bringSubviewToFront:[BackGround getImageView2]];
-//    [self.view sendSubviewToBack:[BackGround getImageView1]];
-//    [self.view sendSubviewToBack:[BackGround getImageView2]];
+    
+    //    [self.view addSubview:[BackGround getImageView1]];
+    //    [self.view addSubview:[BackGround getImageView2]];
+    //    [self.view bringSubviewToFront:[BackGround getImageView1]];
+    //    [self.view bringSubviewToFront:[BackGround getImageView2]];
+    //    [self.view sendSubviewToBack:[BackGround getImageView1]];
+    //    [self.view sendSubviewToBack:[BackGround getImageView2]];
     NSLog(@"background bring front");
-//    [self startAnimateBackGround];
+    //    [self startAnimateBackGround];
     
     //背景の下地
     UIGraphicsBeginImageContext(self.view.frame.size);
     
     
     
-//    if(viewBackBack == nil){
-//        viewBackBack =
-//        [[UIImageView alloc]initWithFrame:self.view.bounds];
-//    }
+    //    if(viewBackBack == nil){
+    //        viewBackBack =
+    //        [[UIImageView alloc]initWithFrame:self.view.bounds];
+    //    }
     
     switch (worldType) {
         case WorldTypeForest:{
             //            [self.view setBackgroundColor:[UIColor greenColor]];
-//            viewBackBack.image = [UIImage imageNamed:@"backback_forest2.png"];
+            //            viewBackBack.image = [UIImage imageNamed:@"backback_forest2.png"];
             [[UIImage imageNamed:@"backback_forest2.png"] drawInRect:self.view.bounds];
             break;
         }
         case WorldTypeUniverse1:{
             //            [self.view setBackgroundColor:[UIColor blackColor]];
-//            viewBackBack.image = [UIImage imageNamed:@"bacback_univ.png"];
+            //            viewBackBack.image = [UIImage imageNamed:@"bacback_univ.png"];
             [[UIImage imageNamed:@"backback_univ.png"] drawInRect:self.view.bounds];
             break;
         }
         case WorldTypeUniverse2:{
             //            [self.view setBackgroundColor:[UIColor blackColor]];
-//            viewBackBack.image = [UIImage imageNamed:@"backback_univ.png"];
+            //            viewBackBack.image = [UIImage imageNamed:@"backback_univ.png"];
             [[UIImage imageNamed:@"backback_univ.png"] drawInRect:self.view.bounds];
             break;
         }
         case WorldTypeNangoku:{
             //            [self.view setBackgroundColor:[UIColor blueColor]];
-//            viewBackBack.image = [UIImage imageNamed:@"backback_nangoku.png"];
+            //            viewBackBack.image = [UIImage imageNamed:@"backback_nangoku.png"];
             [[UIImage imageNamed:@"backback_nangoku.png"] drawInRect:self.view.bounds];
             break;
         }
         case WorldTypeDesert:{
             //            [self.view setBackgroundColor:[UIColor yellowColor]];
-//            viewBackBack.image = [UIImage imageNamed:@"backback_desert.png"];
+            //            viewBackBack.image = [UIImage imageNamed:@"backback_desert.png"];
             [[UIImage imageNamed:@"backback_desert.png"] drawInRect:self.view.bounds];
             break;
         }
         case WorldTypeSnow:{
             //            [self.view setBackgroundColor:[UIColor whiteColor]];
-//            viewBackBack.image = [UIImage imageNamed:@"backback_snow.png"];
+            //            viewBackBack.image = [UIImage imageNamed:@"backback_snow.png"];
             [[UIImage imageNamed:@"backback_snow.png"] drawInRect:self.view.bounds];
             break;
         }
         default:
             break;
     }
-//    [self.view addSubview:viewBackBack];
-//    [self.view sendSubviewToBack:viewBackBack];
+    //    [self.view addSubview:viewBackBack];
+    //    [self.view sendSubviewToBack:viewBackBack];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -3585,11 +3537,11 @@ int sensitivity;
                   didPickedFriends:(NSArray *)friends
 {
     NSLog(@"friendPickerViewController");
-//    pickedFriends = friends;
+    //    pickedFriends = friends;
     
     [controller dismissViewControllerAnimated:YES
                                    completion:^{
-//                                       [self myInviteFriends:friends];
+                                       //                                       [self myInviteFriends:friends];
                                    }];
 }
 
@@ -3602,9 +3554,9 @@ int sensitivity;
     float min = 0.5f;
     float a = 30.0f;//熱関数:a秒で定常状態の３分の1
     float val = (max-min)*(1.0f+exp(-1))/(1.0f+exp(_value/a-1.0f))+min;
-//    NSLog(@"sigmoid = %f", val);
+    //    NSLog(@"sigmoid = %f", val);
     return val;
-//    return 1.665f/(1 + exp(_value/150.0f-1))+0.5f;
+    //    return 1.665f/(1 + exp(_value/150.0f-1))+0.5f;
 }
 
 -(int)getSumFromArray:(NSArray *)_arr{

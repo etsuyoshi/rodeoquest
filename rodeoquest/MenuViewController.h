@@ -9,7 +9,29 @@
 #import <UIKit/UIKit.h>
 //#import <AVFoundation/AVFoundation.h>
 #import "GADBannerView.h"
+#import "DBAccessClass.h"
+#import "GADBannerView.h"
+#import "BGMClass.h"
+#import "GameClassViewController.h"
+#import "GameClassViewController2.h"
+#import "BackGroundClass2.h"
+#import "WeaponBuyListViewController.h"
+#import "ItemListViewController.h"
+#import "DefenseUpListViewController.h"
+#import "ItemUpListViewController.h"
+#import "SpecialBeamClass.h"
+#import "WeaponUpListViewController.h"
+#import "LifeUpListViewController.h"
+#import "CreateComponentClass.h"
+#import "InviteFriendsViewController.h"
+#import "AppSociallyInviteMainViewController.h"
+#import "PayProductViewController.h"
+#import "CoinProductViewController.h"
+#import "TestViewController.h"
+#import "AttrClass.h"
 #import <GameKit/GameKit.h>
+#import <QuartzCore/QuartzCore.h>
+
 typedef NS_ENUM(NSInteger, MenuTagType) {//未使用？
     MenuTagTypeWeapon0,
     MenuTagTypeWeapon1,

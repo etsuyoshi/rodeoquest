@@ -1,16 +1,15 @@
 //
-//  GameClassViewController.h
-//  ShootingTest
+//  GameClassViewController2.h
+//  Rodeoquest
 //
-//  Created by 遠藤 豪 on 13/09/25.
-//  Copyright (c) 2013年 endo.tuyo. All rights reserved.
+//  Created by 遠藤 豪 on 2014/01/07.
+//  Copyright (c) 2014年 endo.tuyo. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioServices.h>
 #import "BackGroundClass2.h"
-
 
 #import <AppSocially/AppSocially.h>
 #import "ViewWithEffectLevelUp.h"
@@ -33,7 +32,7 @@
 #import <GameKit/GameKit.h>
 
 
-@interface GameClassViewController : UIViewController{
+@interface GameClassViewController2 : UIViewController{
     CFURLRef sound_hit_URL;//敵機撃破
     SystemSoundID sound_hit_ID;
     CFURLRef sound_damage_URL;//敵機ダメージ

@@ -337,6 +337,7 @@
 		34C09EDB18009C5F00E4A4D8 /* blue_item_yuri.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C09ED918009C5E00E4A4D8 /* blue_item_yuri.png */; };
 		34C09EDC18009C5F00E4A4D8 /* yellow_item_thunder.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C09EDA18009C5E00E4A4D8 /* yellow_item_thunder.png */; };
 		34C09EDE18009D0300E4A4D8 /* blue_item_yuri_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C09EDD18009D0300E4A4D8 /* blue_item_yuri_big.png */; };
+		34C0EF26187B7C7B003D5EA9 /* GameClassViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C0EF25187B7C7B003D5EA9 /* GameClassViewController2.m */; };
 		34C16CCF181C2D9000650A40 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C16CCE181C2D9000650A40 /* TestViewController.m */; };
 		34C16CD1181C4E9400650A40 /* sabaki_hmix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34C16CD0181C4E9400650A40 /* sabaki_hmix.mp3 */; };
 		34C75E5C18757146002C27C1 /* kira3.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C75E5B18757146002C27C1 /* kira3.png */; };
@@ -786,6 +787,8 @@
 		34C09ED918009C5E00E4A4D8 /* blue_item_yuri.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_item_yuri.png; sourceTree = "<group>"; };
 		34C09EDA18009C5E00E4A4D8 /* yellow_item_thunder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_item_thunder.png; sourceTree = "<group>"; };
 		34C09EDD18009D0300E4A4D8 /* blue_item_yuri_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_item_yuri_big.png; sourceTree = "<group>"; };
+		34C0EF24187B7C7B003D5EA9 /* GameClassViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameClassViewController2.h; sourceTree = "<group>"; };
+		34C0EF25187B7C7B003D5EA9 /* GameClassViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameClassViewController2.m; sourceTree = "<group>"; };
 		34C16CCD181C2D9000650A40 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		34C16CCE181C2D9000650A40 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		34C16CD0181C4E9400650A40 /* sabaki_hmix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sabaki_hmix.mp3; sourceTree = "<group>"; };
@@ -1667,6 +1670,8 @@
 				34390EE21855E49100D02C54 /* PaymentTestViewController.m */,
 				342057F817F2B8810084E99D /* GameClassViewController.h */,
 				342057F917F2B8810084E99D /* GameClassViewController.m */,
+				34C0EF24187B7C7B003D5EA9 /* GameClassViewController2.h */,
+				34C0EF25187B7C7B003D5EA9 /* GameClassViewController2.m */,
 				344928B018025E6100315F2D /* MenuViewController.h */,
 				344928B118025E6100315F2D /* MenuViewController.m */,
 				3436369A180FDA8B005A5C01 /* FontTestViewController.h */,
@@ -2138,6 +2143,7 @@
 				3419C07B186082A7009BF0D8 /* ScrollViewForItemList.m in Sources */,
 				34E041DF1850B0CC00CA3034 /* LifeUpListViewController.m in Sources */,
 				348AD7ED180A9159007226EC /* DBAccessClass.m in Sources */,
+				34C0EF26187B7C7B003D5EA9 /* GameClassViewController2.m in Sources */,
 				34FA1A31180BC2460011E1CA /* AttrClass.m in Sources */,
 				340C7613180D37E500169658 /* CreateComponentClass.m in Sources */,
 				342640B81879819500AC0CD7 /* LDProgressView.m in Sources */,

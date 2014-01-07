@@ -8,28 +8,9 @@
 
 //#define TEST//TestViewController-transition
 
-#import "DBAccessClass.h"
-#import "GADBannerView.h"
-#import "BGMClass.h"
+
 #import "MenuViewController.h"
-#import "GameClassViewController.h"
-#import "BackGroundClass2.h"
-#import "WeaponBuyListViewController.h"
-#import "ItemListViewController.h"
-#import "DefenseUpListViewController.h"
-#import "ItemUpListViewController.h"
-#import "SpecialBeamClass.h"
-#import "WeaponUpListViewController.h"
-#import "LifeUpListViewController.h"
-#import "CreateComponentClass.h"
-#import "InviteFriendsViewController.h"
-#import "AppSociallyInviteMainViewController.h"
-#import "PayProductViewController.h"
-#import "CoinProductViewController.h"
-#import "TestViewController.h"
-#import "AttrClass.h"
-#import <GameKit/GameKit.h>
-#import <QuartzCore/QuartzCore.h>
+
 
 //#define COMPONENT_00 0
 //#define COMPONENT_01 1
@@ -939,8 +920,10 @@ UIView *viewForDialog;
 
 -(void)gotoGame{
     [backGround exitAnimations];
-    GameClassViewController *gameView = [[GameClassViewController alloc] init];
-    [self presentViewController: gameView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
+//    GameClassViewController *gameView = [[GameClassViewController alloc] init];
+//    [self presentViewController: gameView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
+    GameClassViewController2 *gameView = [[GameClassViewController2 alloc]init];
+    [self presentViewController:gameView animated:NO completion:nil];
 
 //    [backGround exitAnimations];
 
@@ -997,6 +980,8 @@ UIView *viewForDialog;
                 [tm invalidate];
                 tm = nil;
                 [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
+                //遅らせる場合
+//                [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(gotoGame) userInfo:nil repeats:NO];//低スピード
                 [backGround exitAnimations];
                 //button resize
                 

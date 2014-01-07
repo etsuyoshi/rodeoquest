@@ -285,6 +285,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         
         //カウントダウンモードへの移行
         [self destroySheildEffect];//シールド解除されたことを示すためのエフェクト
+        [ivDefense1 removeFromSuperview];//ユーザーからの見た目ではこの瞬間にシールド解除
         defense1Count = defense1CountMax;//これによりdonextでカウントダウンが始まる
         _damage = 0;
         return;
@@ -510,6 +511,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         if(defense1Count == 0){
             shieldLife--;
             if(shieldLife == 0){
+                [self barrierValidEffect];
                 [ivDefense1 removeFromSuperview];
                 [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];
             }else{
