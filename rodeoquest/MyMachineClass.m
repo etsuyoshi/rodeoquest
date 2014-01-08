@@ -1336,35 +1336,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     for(int _valueAttr = 0; _valueAttr < valueBarrier0; _valueAttr++){
         defense0CountMax += 50;
     }
-    NSLog(@"defense0CountMaxを%dに設定しました", defense0CountMax);
+    NSLog(@"defense0CountMaxを%dに設定", defense0CountMax);
     
     
     //itemlistBarrier1の設定=@"1回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。
     NSString *strKeyBarrier1 = @"itemlistBarrier1";
     int valueBarrier1 = [[_attr getValueFromDevice:strKeyBarrier1] integerValue];
-    for(int _valueAttr = 0; _valueAttr < valueBarrier1;_valueAttr++){
+    if(valueBarrier1 > 0){
         defense0CountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyBarrier1
+                       strValue:[NSString stringWithFormat:@"%d", valueBarrier1-1]];
     }
     NSLog(@"defense0CountMaxを%dに設定", defense0CountMax);
-    
-    //以下のようにしたいけど、できないっぽい。=>can not apply nsstring to switch-case statement
-//    NSArray *_array = [NSArray arrayWithObjects:
-//                      @"aaa",
-//                      @"bbb",
-//                      nil];
-//    for(int i = 0 ; i < [_array count];i++){
-//        
-//        switch ((NSString *)_array[i]) {
-//            case @"aaa":{
-//                NSLog([_array[i]);
-//                break;
-//            }
-//            default:
-//                break;
-//        }
-//    }
-    
-    
     
     
 //    @"itemlistBomb0",
@@ -1373,57 +1357,184 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 //    @"itemlistDiffuse1",
 //    @"itemlistLaser0",
 //    @"itemlistLaser1",
-//    
-//    @"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
-//    @"1回のゲームでのみ、通常弾の攻撃力持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+//
 //    @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
 //    @"1回のゲームでのみ、爆弾投下の持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+//    @"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
+//    @"1回のゲームでのみ、通常弾の攻撃力持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
 //    @"次回以降全てのゲームにおいて、レーザー発射持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
 //    @"1回のゲームでのみ、レーザー発射持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
     
     
     
-    //itemlistLaser0の設定＝@"次回以降全てのゲームにおいて、レーザー発射持続時間を0.5秒上乗せする。
+    //itemlistBomb0の設定＝@"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする
     //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
-    NSString *strKeyLaser0 = @"itemlistLaser0";
-    int valueLaser0 = [[_attr getValueFromDevice:strKeyLaser0] integerValue];
-    for(int _valueAttr = 0; _valueAttr < valueLaser0; _valueAttr++){
+    NSString *strKeyWeapon00 = @"itemlistWeapon00";
+    int valueWeapon00 = [[_attr getValueFromDevice:strKeyWeapon00] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueWeapon00; _valueAttr++){
         weapon0CountMax += 50;
     }
     NSLog(@"weapon0CountMaxを%dに設定", weapon0CountMax);
     
     
-    //itemlistLaser1の設定＝@"1回のゲームでのみ、レーザー発射持続時間を現状の２倍に長持ちさせる。
+    //itemlistBomb1の設定＝@"1回のゲームでのみ、爆弾投下の持続時間を現状の２倍に長持ちさせる。
     //attrフィールドの読み込みあり、attrフィールドへの新規設定あり(−１消耗させる)
-    NSString *strKeyLaser1 = @"itemlistLaser1";
-    int valueLaser1 = [[_attr getValueFromDevice:strKeyLaser1] integerValue];
-    if(valueLaser1 > 0){
+    NSString *strKeyWeapon01 = @"itemlistWeapon01";
+    int valueWeapon01 = [[_attr getValueFromDevice:strKeyWeapon01] integerValue];
+    if(valueWeapon01 > 0){
         weapon0CountMax *= 2;
         
         //消耗
-        [_attr setValueToDevice:strKeyLaser1
-                       strValue:[NSString stringWithFormat:@"%d", valueLaser1-1]];
+        [_attr setValueToDevice:strKeyWeapon01
+                       strValue:[NSString stringWithFormat:@"%d", valueWeapon01-1]];
     }
     NSLog(@"weapon0CountMaxを%dに設定", weapon0CountMax);
     
     
-    //itemlistBomb0の設定=@"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。
+    //itemlistDiffuse0の設定=@"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。
     //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
+    NSString *strKeyWeapon10 = @"itemlistWeapon10";
+    int valueWeapon10 = [[_attr getValueFromDevice:strKeyWeapon10] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueWeapon10; _valueAttr++){
+        weapon1CountMax += 50;
+    }
+    NSLog(@"weapon1CountMaxを%dに設定", weapon1CountMax);
+    
+    
+    //itemlistDiffuse1の設定=@"1回のゲームでのみ、通常弾の攻撃力持続時間を現状の２倍に長持ちさせる。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定あり
+    NSString *strKeyWeapon11 = @"itemlistWeapon11";
+    int valueWeapon11 = [[_attr getValueFromDevice:strKeyWeapon11] integerValue];
+    if(valueWeapon11 > 0){
+        weapon1CountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyWeapon11
+                       strValue:[NSString stringWithFormat:@"%d", valueWeapon11-1]];
+    }
+    NSLog(@"weapon1CountMaxを%dに設定", weapon1CountMax);
+    
+    
+    //itemlistLaser0の設定=@"次回以降全てのゲームにおいて、レーザー発射持続時間を0.5秒上乗せする。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
+    NSString *strKeyWeapon20 = @"itemlistWeapon20";
+    int valueWeapon20 = [[_attr getValueFromDevice:strKeyWeapon20] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueWeapon20; _valueAttr++){
+        weapon2CountMax += 50;
+    }
+    NSLog(@"weapon2CountMaxを%dに設定",weapon2CountMax);
+    
+    
+    //itemlistLaser1の設定=@"1回のゲームでのみ、レーザー発射持続時間を現状の２倍に長持ちさせる。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定あり
+    NSString *strKeyWeapon21 = @"itemlistWeapon21";
+    int valueWeapon21 = [[_attr getValueFromDevice:strKeyWeapon21] integerValue];
+    if(valueWeapon21 > 0){
+        weapon2CountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyWeapon21
+                       strValue:[NSString stringWithFormat:@"%d", valueWeapon21-1]];
+    }
+    NSLog(@"weapon2CountMaxを%dに設定", weapon2CountMax);
+    
+    
+    
+//    @"itemlistBig0",
+//    @"itemlistBig1",
+//    @"itemlistTrans0",
+//    @"itemlistTrans1",
+//    @"itemlistBomb0",
+//    @"itemlistBomb1",
+//    @"itemlistMagnet0",
+//    @"itemlistMagnet1",
+//    @"次回以降全てのゲームにおいて、巨大化の持続時間を0.5秒延長します。\n100枚のコインが必要です。",
+//    @"1回のゲームでのみ、巨大化の持続時間を2倍にします。\n100枚のコインが必要です。",
+//    @"次回以降の全てのゲームにおいて、透明化の持続時間を0.5秒延長します。\n100枚のコインが必要です。",
+//    @"1回のゲームにおいてのみ、透明化の持続時間を2倍にします。\n100枚のコインが必要です。",
+//    @"次回以降の全てのゲームにおいて、周囲で爆発が発生する時間を0.5秒延長します。\n100枚のコインが必要です。",
+//    @"1回のゲームにおいてのみ、周囲で爆発が発生する時間を2倍にします。\n100枚のコインが必要です。",
+//    @"次回以降の全てのゲームにおいて、磁石が有効になっている時間を0.5秒延長します。\n100枚のコインが必要です。",
+//    @"1回のゲームにおいてのみ、磁石が有効になっている時間を2倍にします。\n100枚のコインが必要です。",
+    //big0
+    NSString *strKeyBig0 = @"itemlistBig0";
+    int valueBig0 = [[_attr getValueFromDevice:strKeyBig0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueBig0; _valueAttr++){
+        bigCountMax += 50;
+    }
+    NSLog(@"bigCountMax=%d", bigCountMax);
+    
+    //big1
+    NSString *strKeyBig1 = @"itemlistBig1";
+    int valueBig1 = [[_attr getValueFromDevice:strKeyBig1] integerValue];
+    if(valueBig1 > 0){
+        bigCountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyBig1
+                       strValue:[NSString stringWithFormat:@"%d", valueBig1-1]];
+    }
+    NSLog(@"bigCountMax=%d", bigCountMax);
+    
+    
+    //trans0
+    NSString *strKeyTrans0 = @"itemlistTrans0";
+    int valueTrans0 = [[_attr getValueFromDevice:strKeyTrans0] integerValue];
+    for(int _valueAttr = 0;_valueAttr < valueTrans0;_valueAttr++){
+        transparancyCountMax += 50;
+    }
+    NSLog(@"transparancyCountMax=%d", transparancyCountMax);
+    
+    //trans1
+    NSString *strKeyTrans1 = @"itemlistTrans1";
+    int valueTrans1 = [[_attr getValueFromDevice:strKeyTrans1] integerValue];
+    if(valueTrans1 > 0){
+        transparancyCountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyTrans1
+                       strValue:[NSString stringWithFormat:@"%d", valueTrans1-1]];
+    }
+    
+    
+    //bomb0
     NSString *strKeyBomb0 = @"itemlistBomb0";
     int valueBomb0 = [[_attr getValueFromDevice:strKeyBomb0] integerValue];
-    for(int _valueAttr = 0; _valueAttr < valueBomb0; _valueAttr++){
-        defense0CountMax += 50;
+    for(int _valueAttr = 0;_valueAttr < valueBomb0;_valueAttr++){
+        bombCountMax += 50;
     }
-    NSLog(@"defense0CountMaxを%dに設定しました", defense0CountMax);
+    NSLog(@"bombCountMax=%d", bombCountMax);
     
-    
-    //itemlistBomb1の設定=@"1回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。
+    //bomb1
     NSString *strKeyBomb1 = @"itemlistBomb1";
     int valueBomb1 = [[_attr getValueFromDevice:strKeyBomb1] integerValue];
-    for(int _valueAttr = 0; _valueAttr < valueBomb1;_valueAttr++){
-        defense0CountMax *= 2;
+    if(valueBomb1 > 0){
+        bombCountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyBomb1
+                       strValue:[NSString stringWithFormat:@"%d", valueBomb1-1]];
     }
-    NSLog(@"defense0CountMaxを%dに設定", defense0CountMax);
+    NSLog(@"bombCountMax=%d", bombCountMax);
+    
+    
+    
+    //Magnet0
+    NSString *strKeyMagnet0 = @"itemlistMagnet0";
+    int valueMagnet0 = [[_attr getValueFromDevice:strKeyMagnet0] integerValue];
+    for(int _valueAttr = 0;_valueAttr < valueMagnet0;_valueAttr++){
+        magnetCountMax += 50;
+    }
+    NSLog(@"MagnetCountMax=%d", magnetCountMax);
+    
+    //Magnet1
+    NSString *strKeyMagnet1 = @"itemlistMagnet1";
+    int valueMagnet1 = [[_attr getValueFromDevice:strKeyMagnet1] integerValue];
+    if(valueMagnet1 > 0){
+        magnetCountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyMagnet1
+                       strValue:[NSString stringWithFormat:@"%d", valueMagnet1-1]];
+    }
+    NSLog(@"MagnetCountMax=%d", magnetCountMax);
+    
+    
+    
     
     
     

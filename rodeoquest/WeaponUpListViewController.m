@@ -21,20 +21,20 @@
         // Custom initialization
         
         arrIv = [NSMutableArray arrayWithObjects:
-                 @"weapon_laser.png",
-                 @"weapon_laser.png",//krkr
-                 @"weapon_diffuse.png",
-                 @"weapon_diffuse.png",//krkr
                  @"weapon_bomb.png",
                  @"weapon_bomb.png",//krkr
+                 @"weapon_diffuse.png",
+                 @"weapon_diffuse.png",//krkr
+                 @"weapon_laser.png",
+                 @"weapon_laser.png",//krkr
                  nil];
         
         
         arrTv = [NSMutableArray arrayWithObjects:
-                 @"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
-                 @"1回のゲームでのみ、通常弾の攻撃力持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
                  @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
                  @"1回のゲームでのみ、爆弾投下の持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+                 @"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
+                 @"1回のゲームでのみ、通常弾の攻撃力持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
                  @"次回以降全てのゲームにおいて、レーザー発射持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
                  @"1回のゲームでのみ、レーザー発射持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
                  
@@ -63,12 +63,12 @@
                     
         
         itemList = [NSMutableArray arrayWithObjects:
-                    @"itemlistBomb0",
-                    @"itemlistBomb1",
-                    @"itemlistDiffuse0",
-                    @"itemlistDiffuse1",
-                    @"itemlistLaser0",
-                    @"itemlistLaser1",
+                    @"itemlistWeapon00",//bombにするとitemと被ってしまう
+                    @"itemlistWeapon01",
+                    @"itemlistWeapon10",
+                    @"itemlistWeapon11",
+                    @"itemlistWeapon20",
+                    @"itemlistWeapon21",
                     nil];
         
     }
