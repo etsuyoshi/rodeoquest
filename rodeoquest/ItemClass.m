@@ -482,6 +482,7 @@ int numCell;
 //                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
             [self die];
             [iv removeFromSuperview];
+            NSLog(@"item is removed caz same location");
             return isOccurringParticle;
         }else{
             

@@ -25,6 +25,8 @@
 CGRect rect_frame, rect_myMachine, rect_enemyBeam, rect_beam_launch;
 UIImageView *iv_frame, *iv_myMachine, *iv_enemyBeam, *iv_beam_launch;//, *iv_background1, *iv_background2;
 UIView* viewScoreField;
+UILabel *lblScore;
+UILabel *lblGold;
 
 Boolean flagIsDown1;
 Boolean flagIsDown2;
@@ -164,16 +166,7 @@ int sensitivity;
 
 //viewDidLoadの次に呼ばれる
 -(void)viewWillAppear:(BOOL)animated{
-    
-    
     [super viewWillAppear:animated];
-    
-    
-    
-    //background
-    //    NSLog(@"background=%@", BackGround);
-    //    NSLog(@"background=%d", BackGround == nil);//1
-    //    NSLog(@"background=%d", [BackGround isEqual:[NSNull null]]);//0
     
     [self setBackGroundInit];//defined at viewDidLoad called before viewwillappear
     
@@ -199,6 +192,8 @@ int sensitivity;
     [MyMachine setX:[UIScreen mainScreen].bounds.size.width/2];
     [MyMachine setY:[UIScreen mainScreen].bounds.size.height-100];
     
+    
+    //mymachineを定位置にアニメートさせる
     [UIView animateWithDuration:0.5f
                      animations:^{
                          [MyMachine getImageView].center =
@@ -221,9 +216,11 @@ int sensitivity;
                                                                     userInfo:nil
                                                                      repeats:YES];
                              
-                             for(int i = 0 ;i < 10;i++){
+                             for(int i = 0 ;i < 1;i++){
                                  //敵1体生成とビーム1個生成
                                  [self initEnemyBreak];
+                                 enemyCount++;
+                                 enemyDown++;
                              }
                          }
                      }];
@@ -462,6 +459,28 @@ int sensitivity;
     [viewScoreField setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
     [self.view addSubview:viewScoreField];
     
+    lblScore = [[UILabel alloc]init];
+    lblScore.text = @"0";
+    lblScore.textColor = [UIColor whiteColor];
+    lblScore.backgroundColor = [UIColor clearColor];
+    lblScore.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:14];
+    [lblScore sizeToFit];
+    //temporary
+    lblScore.center = CGPointMake(viewScoreField.bounds.size.width-lblScore.bounds.size.width/2-10,
+                                  lblScore.bounds.size.height/2+10);
+    [viewScoreField addSubview:lblScore];
+    
+    lblGold = [[UILabel alloc]init];
+    lblGold.text = @"0";
+    lblGold.textColor = [UIColor whiteColor];
+    lblGold.backgroundColor = [UIColor clearColor];
+    lblGold.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:14];
+    [lblGold sizeToFit];
+    //temporary
+    lblGold.center = CGPointMake(viewScoreField.bounds.size.width-lblGold.bounds.size.width/2-10,
+                                 lblScore.bounds.size.height + lblGold.bounds.size.height/2+20);
+    [viewScoreField addSubview:lblGold];
+    
     
     
     //スコアボードの初期化
@@ -561,11 +580,14 @@ int sensitivity;
     tvCount.text = [NSString stringWithFormat:@"counter:%f", gameSecond2];
 #endif
     
-    
+    //onFlickedFrameを実行出来る
     if(countFirstUserTouchEnable != 0){
         countFirstUserTouchEnable--;
+        if(countFirstUserTouchEnable == 0){
+            //初めてユーザーがタッチ可能になったら
+            [self hideActivityIndicator];
+        }
     }else{
-        [self hideActivityIndicator];
     }
     
     if(isGameMode){
@@ -1558,6 +1580,7 @@ int sensitivity;
             //            NSLog(@"item %d remove , isAlive=%d", i, [[ItemArray objectAtIndex:i] getIsAlive]);
             [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
             [ItemArray removeObjectAtIndex:i];
+            NSLog(@"item%d is removed", i);
         }
     }
 }
@@ -2457,14 +2480,25 @@ int sensitivity;
     //スコアボードの表示
     
     //デジタル表示用
-    /*
+    
      for(int i = 0; i < [[_boardClass getDigitalArray] count]; i++){
      //removeはなくても新しいbackgroundframeの上に表示されるので見た目上は必要ない
      //が、ないとメモリがどんどん増えていくと思う。
      [(UIImageView*)[[_boardClass getDigitalArray] objectAtIndex:i] removeFromSuperview];
      [self.view addSubview:[[_boardClass getDigitalArray] objectAtIndex:i]];
      }
-     */
+    
+    lblScore.text = [NSString stringWithFormat:@"%d",[ScoreBoard getScore]];
+    lblGold.text = [NSString stringWithFormat:@"%d", [GoldBoard getScore]];
+    
+    //temporary
+    [lblScore sizeToFit];
+    [lblGold sizeToFit];
+    lblScore.center = CGPointMake(viewScoreField.bounds.size.width/2,
+                                  lblScore.center.y);
+    lblGold.center = CGPointMake(viewScoreField.bounds.size.width/2,
+                                 lblGold.center.y);
+    
     
     //テキストビュー用
     /*test
@@ -2473,6 +2507,8 @@ int sensitivity;
     [viewScoreField addSubview:[_boardClass getTextView]];
     */
     //textView.text = xxx;の方がスマート。＝＞要修正
+    
+    
 }
 
 //以下参考：http://www.atmarkit.co.jp/fsmart/articles/ios_sensor05/02.html
@@ -3085,14 +3121,12 @@ int sensitivity;
     [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage location:CGPointMake(_xBeam, _yBeam)];
     
     
-    
-    
     //ビームに当たる前に生きていた敵が死んだら＝今回のビームで敵を倒したら
     if(![[EnemyArray objectAtIndex:i] getIsAlive]){
         
         //敵全滅によりcounterを発動
         if([self getCountAliveEnemy] == 0){//生存している敵がいないならカウンターは集う
-            timeIntervalEnemy = timeIntervalEnemyMax;
+            timeIntervalEnemy = timeIntervalEnemyMax;//ゲーム進行とともにインターバルを現象させる
         }
         
         //敵機撃墜時のエフェクト
