@@ -149,4 +149,10 @@
                      onYes:(void (^)(void))onYes
                       onNo:(void (^)(void))onNo;
 
++(UIView *)createAlertView2:(CGRect)_rectFrame
+                 dialogRect:(CGRect)_rectDialog
+                      title:(NSString *)_title
+                    message:(NSString *)_message
+                      onYes:(void (^)(void))onYes
+                       onNo:(void (^)(void))onNo;
 @end

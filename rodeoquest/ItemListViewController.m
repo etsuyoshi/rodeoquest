@@ -112,6 +112,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    nameCurrency = @"ゼニー";
     
     // ステータスバーを非表示にする:plistでの処理はiOS7以降非推奨
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
@@ -327,8 +328,30 @@ void (^actNoForCoinShort)(void) = ^(void) {
  */
 
 -(void)onSelectButton:(id)sender{
+    int _cost = [[arrCost objectAtIndex:[sender tag]] intValue];
+    NSString *_titleView = @"購入手続";
+    NSString *_message = [NSString stringWithFormat:@"このアイテムを購入しますか？\n%d個の%@が必要です", _cost, nameCurrency];
+    viewWantBuy =
+    [CreateComponentClass
+     createAlertView2:self.view.bounds
+     dialogRect:CGRectMake(0, 0,
+                           self.view.bounds.size.width-20,
+                           self.view.bounds.size.width-20)
+     title:_titleView
+     message:_message
+     onYes:^{
+         //購入プロセス
+         [self buyBtnPressed:sender];
+         
+         [viewWantBuy removeFromSuperview];
+         
+     }
+     onNo:^{
+         [viewWantBuy removeFromSuperview];
+     }];
     
-    [self buyBtnPressed:sender];
+    [self.view addSubview:viewWantBuy];
+    
 }
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
     if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){

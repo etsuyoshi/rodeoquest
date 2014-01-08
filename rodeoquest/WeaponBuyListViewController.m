@@ -149,6 +149,9 @@ UIView *superViewForEquipWpn;
 	// Do any additional setup after loading the view.
     [super viewDidLoad];
     
+    
+    nameCurrency = @"ゼニー";
+    
     //閉じるボタンの色を赤に変更
     [closeBtn removeFromSuperview];//remove superclasses'closeBtn
     closeBtn = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault

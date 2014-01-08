@@ -17,9 +17,12 @@
 //サブクラスでボタン追加するときに位置調整のために使用するのでグローバルに。
 UITextView *tvGoldAmount;
 UIButton *closeBtn;
-UIView *viewForCoinShort;
+UIView *viewForCoinShort;//コインがショートしている場合のダイアログビュー
+UIView *viewWantBuy;//購入するか否か確認するダイアログビュー
 NSString *strImgUnit;
 UIView *cashView;
+
+NSString *nameCurrency;
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;

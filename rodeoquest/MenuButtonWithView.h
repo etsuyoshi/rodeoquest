@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+
+typedef void (^ActionBlockInUIV)();
+
 typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
     ButtonMenuImageTypeWeapon,// at menu
     ButtonMenuImageTypeDefense,// at menu
@@ -28,7 +31,9 @@ typedef NS_ENUM(NSInteger, ButtonMenuImageType) {
     ButtonMenuImageTypeBuyProduct2,//at buyItemMenu
     ButtonMenuImageTypeBuyProduct3,//at buyItemMenu
     ButtonMenuImageTypeBuyProduct4,//at buyItemMenu
-    ButtonMenuImageTypeBuyProduct5//at buyItemMenu
+    ButtonMenuImageTypeBuyProduct5,//at buyItemMenu
+    ButtonMenuImageTypeDialogYes,//yes button at dialog
+    ButtonMenuImageTypeDialogNo  //no button at dialog
     
 };
 
@@ -51,6 +56,8 @@ typedef NS_ENUM(NSInteger, ButtonMenuBackType) {
 //    selector *selector;
     NSString *strMethod;
     int tag_img;
+    
+    ActionBlockInUIV _actionBlock;
 }
 
 
@@ -62,5 +69,7 @@ typedef NS_ENUM(NSInteger, ButtonMenuBackType) {
             target:(id)target
           selector:(NSString *)selName
                tag:(int)_tag;
-
+//-(void) handleControlEvent:(UIControlEvents)event
+//                 withBlock:(ActionBlock) action;
+-(void) putBlock:(ActionBlockInUIV) action;
 @end

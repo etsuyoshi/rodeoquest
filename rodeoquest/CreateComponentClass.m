@@ -1037,7 +1037,114 @@
                             onNo:onNo];
 }
 
+/*
+ *選択ボタンを「はい」、「いいえ」の画像にしたダイアログ
+ */
 
++(UIView *)createAlertView2:(CGRect)_rectFrame
+                dialogRect:(CGRect)_rectDialog
+                     title:(NSString *)_title
+                   message:(NSString *)_message
+                     onYes:(void (^)(void))onYes
+                      onNo:(void (^)(void))onNo{
+    //OKボタンとキャンセルボタン：okボタンを押したときの反応は_selector@target
+    UIView *superView = [[UIView alloc] initWithFrame:_rectFrame];
+    UIView *rectDialog = [CreateComponentClass
+                          createView:_rectDialog];
+    //test:
+    [rectDialog
+     setBackgroundColor:
+     [UIColor colorWithRed:0 green:0 blue:0 alpha:0.9]];
+    rectDialog.center =
+    CGPointMake(superView.bounds.size.width/2,
+                superView.bounds.size.height/2);
+    [superView addSubview:rectDialog];
+    
+    //title
+    UITextView *tvTitle = [CreateComponentClass
+                           createTextView:CGRectMake(0, 0, rectDialog.frame.size.width,
+                                                     80)
+                           text:_title
+                           font:@"AmericanTypewriter-Bold"
+                           size:20
+                           textColor:[UIColor whiteColor]
+                           backColor:[UIColor clearColor]
+                           isEditable:NO];
+    tvTitle.textAlignment = NSTextAlignmentCenter;
+    [rectDialog addSubview:tvTitle];
+    
+    //line
+    UIView *viewLine = [CreateComponentClass
+                        createView:CGRectMake(0, tvTitle.frame.size.height + 5,
+                                              rectDialog.frame.size.width,3)];
+    [viewLine setBackgroundColor:[UIColor whiteColor]];
+    [rectDialog addSubview:viewLine];
+    
+    
+    //message
+    UITextView *tvMessage = [CreateComponentClass
+                             createTextView:CGRectMake(0,
+                                                       viewLine.frame.origin.y + 5,
+                                                       rectDialog.frame.size.width,
+                                                       rectDialog.frame.size.height)
+                             text:_message
+                             font:@"AmericanTypewriter-Bold"
+                             size:17
+                             textColor:[UIColor whiteColor]
+                             backColor:[UIColor clearColor]
+                             isEditable:NO];
+    tvMessage.textAlignment = NSTextAlignmentCenter;
+    [rectDialog addSubview:tvMessage];
+    
+    
+    int intervalBtn = 10;
+    int widthBtn = 70;
+    //    MAX(rectDialog.bounds.size.width/2 - intervalBtn/2,
+    //                       100);
+    int heightBtn = 70;
+    
+//    CoolButton *btnYes =
+//    [self
+//     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
+//     text:_titleYes
+//     hue:0.85f saturation:0.63f brightness:0.79f
+//     target:nil selector:nil tag:0];
+    
+//    CoolButton *btnNo =
+//    [self
+//     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
+//     text:_titleNo
+//     hue:0.535f saturation:0.553 brightness:0.535
+//     target:nil selector:nil tag:0];
+    MenuButtonWithView *btnYes =
+    (MenuButtonWithView *)[self createMenuButton:ButtonMenuBackTypeOrange
+                 imageType:ButtonMenuImageTypeDialogYes
+                      rect:CGRectMake(10, 10, widthBtn, heightBtn)
+                    target:Nil selector:nil];
+    MenuButtonWithView *btnNo =
+    (MenuButtonWithView *)[self createMenuButton:ButtonMenuBackTypeBlue
+                 imageType:ButtonMenuImageTypeDialogNo
+                      rect:CGRectMake(10, 10, widthBtn, heightBtn)
+                    target:nil selector:nil];
+    
+    //left
+    btnYes.center = CGPointMake(rectDialog.bounds.size.width/2 - intervalBtn/2 - btnYes.bounds.size.width/2,
+                                rectDialog.bounds.size.height - intervalBtn/2 - btnYes.bounds.size.height/2);
+    //right
+    btnNo.center = CGPointMake(rectDialog.bounds.size.width/2 + intervalBtn/2 + btnNo.bounds.size.width/2,
+                               rectDialog.bounds.size.height - intervalBtn/2 - btnNo.bounds.size.height/2);
+    
+    //独自メソッド
+//    [btnYes handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
+//                     withBlock:(ActionBlock) onYes];
+    [btnYes putBlock:(ActionBlockInUIV)onYes];
+    [btnNo putBlock:(ActionBlockInUIV)onNo];
+//    [btnNo handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
+//                    withBlock:(ActionBlock) onNo];
+    [rectDialog addSubview:btnYes];
+    [rectDialog addSubview:btnNo];
+    return superView;
+}
 
 
 @end

@@ -120,6 +120,9 @@
                      withObject:[NSNumber numberWithInt:tag_img]
                      afterDelay:0.01f];
         
+        if(_actionBlock != nil){
+            [self callActionBlock:self];
+        }
     }
     
     
@@ -260,6 +263,20 @@
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin06.png"];
                 break;
             }
+            case ButtonMenuImageTypeDialogYes:{
+                imgAdd.image = [UIImage imageNamed:@"yes.png"];
+                UIImageView *imgAdd2 = [[UIImageView alloc]initWithFrame:imgAdd.bounds];
+                imgAdd2.image = [UIImage imageNamed:@"yes_.png"];
+                [imgAdd addSubview:imgAdd2];
+                break;
+            }
+            case ButtonMenuImageTypeDialogNo:{
+                imgAdd.image = [UIImage imageNamed:@"no.png"];
+                UIImageView *imgAdd2 = [[UIImageView alloc]initWithFrame:imgAdd.bounds];
+                imgAdd2.image = [UIImage imageNamed:@"no_.png"];
+                [imgAdd addSubview:imgAdd2];
+                break;
+            }
         }
 //    }else{
 //        switch (menuBtnType) {
@@ -278,6 +295,21 @@
 //            }
 //        }
 //    }
+}
+
+-(void) putBlock:(ActionBlockInUIV) action1
+{
+    _actionBlock = action1;//Block_copy(action);
+    
+    
+    
+//    [self addTarget:self action:@selector(callActionBlock:) forControlEvents:event];
+}
+
+-(void) callActionBlock:(id)sender{
+    _actionBlock();
+    //自動的に閉じる
+    //    [self.superview.superview ]
 }
 
 @end
