@@ -264,16 +264,31 @@
                 break;
             }
             case ButtonMenuImageTypeDialogYes:{
-                imgAdd.image = [UIImage imageNamed:@"yes.png"];
-                UIImageView *imgAdd2 = [[UIImageView alloc]initWithFrame:imgAdd.bounds];
-                imgAdd2.image = [UIImage imageNamed:@"yes_.png"];
+                imgAdd.image = [UIImage imageNamed:@"yes_2.png"];//o
+                UIImageView *imgAdd2 =
+                [[UIImageView alloc]
+                 initWithFrame:
+                 CGRectMake(0, 0,
+                            imgAdd.bounds.size.width/2,
+                            imgAdd.bounds.size.height/2)];
+                imgAdd2.center = CGPointMake(imgAdd.bounds.size.width/2,
+                                             imgAdd.bounds.size.height/2);
+                imgAdd2.image = [UIImage imageNamed:@"yes2.png"];
+                
                 [imgAdd addSubview:imgAdd2];
                 break;
             }
             case ButtonMenuImageTypeDialogNo:{
-                imgAdd.image = [UIImage imageNamed:@"no.png"];
-                UIImageView *imgAdd2 = [[UIImageView alloc]initWithFrame:imgAdd.bounds];
-                imgAdd2.image = [UIImage imageNamed:@"no_.png"];
+                imgAdd.image = [UIImage imageNamed:@"no_2.png"];//x
+                UIImageView *imgAdd2 =
+                [[UIImageView alloc]
+                 initWithFrame:
+                 CGRectMake(0, 0,
+                            imgAdd.bounds.size.width/2,
+                            imgAdd.bounds.size.height/2)];
+                imgAdd2.center = CGPointMake(imgAdd.bounds.size.width/2,
+                                             imgAdd.bounds.size.height/2);
+                imgAdd2.image = [UIImage imageNamed:@"no2.png"];//いいえ
                 [imgAdd addSubview:imgAdd2];
                 break;
             }

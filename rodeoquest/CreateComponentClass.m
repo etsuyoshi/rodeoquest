@@ -1071,6 +1071,10 @@
                            backColor:[UIColor clearColor]
                            isEditable:NO];
     tvTitle.textAlignment = NSTextAlignmentCenter;
+    [tvTitle sizeToFit];
+    tvTitle.center =
+    CGPointMake(rectDialog.bounds.size.width/2,
+                tvTitle.bounds.size.height/2);
     [rectDialog addSubview:tvTitle];
     
     //line
@@ -1094,10 +1098,13 @@
                              backColor:[UIColor clearColor]
                              isEditable:NO];
     tvMessage.textAlignment = NSTextAlignmentCenter;
+    [tvMessage sizeToFit];
+    tvMessage.center = CGPointMake(rectDialog.bounds.size.width/2,
+                                   viewLine.frame.origin.y + tvMessage.bounds.size.height/2);
     [rectDialog addSubview:tvMessage];
     
     
-    int intervalBtn = 10;
+    int intervalBtn = 50;
     int widthBtn = 70;
     //    MAX(rectDialog.bounds.size.width/2 - intervalBtn/2,
     //                       100);
@@ -1137,7 +1144,7 @@
     //独自メソッド
 //    [btnYes handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
 //                     withBlock:(ActionBlock) onYes];
-    [btnYes putBlock:(ActionBlockInUIV)onYes];
+    [btnYes putBlock:(ActionBlockInUIV)onYes];//UIImageViewに対して作ったブロック割当
     [btnNo putBlock:(ActionBlockInUIV)onNo];
 //    [btnNo handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
 //                    withBlock:(ActionBlock) onNo];

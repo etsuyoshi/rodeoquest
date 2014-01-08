@@ -336,7 +336,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
      createAlertView2:self.view.bounds
      dialogRect:CGRectMake(0, 0,
                            self.view.bounds.size.width-20,
-                           self.view.bounds.size.width-20)
+                           self.view.bounds.size.width-100)
      title:_titleView
      message:_message
      onYes:^{
