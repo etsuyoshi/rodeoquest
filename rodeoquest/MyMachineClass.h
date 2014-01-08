@@ -37,7 +37,7 @@
     
     //以下アイテムの有効時間
     int magnetCount;
-    int weapon0Count;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的
+    int weapon0Count;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的:済
     int weapon1Count;//攻撃力強化できる時間
     int weapon2Count;//laserR=item
     int weapon3Count;//laserG=flick

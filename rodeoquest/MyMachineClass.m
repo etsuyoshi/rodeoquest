@@ -55,8 +55,6 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     effectDuration = 10;//10回アニメーション
     wingStatus = 0;//翼の状態
     unique_id++;
-    shieldLifeMax = 1;//一度設定したら変更しない
-    shieldLife = 0;
     
     //after initialization, mymachine is animated to move 100px bottom
     y_loc = [[UIScreen mainScreen] bounds].size.height;//center of mymachine's location
@@ -80,32 +78,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     healCount = 0;
     defense0Count = 0;
     defense1Count = 0;
-    
-//    int weapon0CountMax;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的
-//    int weapon1CountMax;//攻撃力強化できる時間
-//    int weapon2CountMax;//laserR=item
-
-    
-    magnetCountMax = 200;
-    weapon0CountMax = 500;//爆弾投下時間
-    weapon1CountMax = 500;//通常弾強化時間
-    weapon2CountMax = 500;//レーザー発射時間
-    weapon3CountMax = 500;
-    weapon4CountMax = 500;
-    defense0CountMax = 500;
-    defense1CountMax = 500;
-    transparancyCountMax = 500;
-    bigCountMax = 500;
-    bombCountMax = 500;
-    healCountMax = 500;
-    
-    
-    //defense1(shield)のみ他のカウンターと異なる：被弾してから(shieldLife回のみ)次にシールドを張るまでの時間
-    //シールドは被弾した回数だけ減る(shieldLife)
-    //被弾して100カウント(1秒間)はダメージを受けない
-    //100カウント超過したらshieldLifeを１減らす
-    defense1CountMax = 100;//被弾して100カウント(1秒間)はダメージを受けない
-
+    shieldLife = 0;
     
     
     numOfBeam = 1;//通常時、最初はビームの数は1つ(１列)
@@ -268,15 +241,15 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 -(void)setDamage:(int)damage location:(CGPoint)location{
     int _damage = damage;
 
-    //シールド(defense0Count)を優先して判断
+    //バリア(defense0Count)を優先して判断
     if(defense0Count > 0){//if barrier is valid
         _damage = 0;//(damage/2==0)?1:damage/2;
         [self barrierValidEffect];
         
         return;
-    }else if(shieldLife > 0 &&
+    }else if(shieldLife > 0 &&//バリアがなければシールドを判断
              defense1Count > 0 &&
-             defense1Count != INT_MAX)
+             defense1Count != INT_MAX)//シールドが有効ならば
     {//else if shield is valid
         //shieldが有効でdefense1Countによるカウントダウン中：全ての攻撃は無効
         _damage = 0;
@@ -287,11 +260,17 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         //シールドは被弾した回数だけ減る(shieldLife)
         //被弾して100カウント(1秒間)はダメージを受けない
         //100カウント超過したらshieldLifeを１減らす
-        
-        //カウントダウンモードへの移行
-        [self destroySheildEffect];//シールド解除されたことを示すためのエフェクト
-        [ivDefense1 removeFromSuperview];//ユーザーからの見た目ではこの瞬間にシールド解除
-        defense1Count = defense1CountMax;//これによりdonextでカウントダウンが始まる
+        if(shieldLife != 0){
+            shieldLife--;
+            if(shieldLife==0){
+                //カウントダウンモードへの移行
+                [self destroySheildEffect];//シールド解除されたことを示すためのエフェクト
+                [ivDefense1 removeFromSuperview];//ユーザーからの見た目ではこの瞬間にシールド解除
+                defense1Count = defense1CountMax;//これによりdonextでカウントダウンが始まる
+            }
+        }else{
+            NSLog(@"error!");
+        }
         _damage = 0;
         return;
     }
@@ -1281,34 +1260,8 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
  *購入アイテムの読み込み
  */
 -(void)readAttrSetMaxCount{
-    AttrClass *_attr = [[AttrClass alloc]init];
     
-    //defense
-//    @"itemlistShield0",
-//    @"itemlistShield1",
-//    @"itemlistBarrier0",
-//    @"itemlistBarrier1",
-//    @"次回以降全てのゲームにおいて、シールドアイテム獲得後の耐久回数を現状に+1上乗せする。\n15枚のコインが必要です。",//1=10coin
-//    @"次回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
-//    @"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。\n24枚のコインが必要です。",//1=8coin
-//    @"次回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。\n28枚のコインが必要です。",//1=7coin
-    
-    defense0CountMax = 500;
-    defense1CountMax = 500;
-    
-    //strKeyShieldは別の場所にグローバルに設定してDefenseUpListViewControllerからも同じ値が読み込まれるように設定すべき
-    NSString *strKeyShield0 = @"itemlistShield0";
-    int valueShield0 = [[_attr getValueFromDevice:strKeyShield0] integerValue];
-    for(int _valueAttr = 0; _valueAttr < valueShield0; _valueAttr++){
-        defense0CountMax *= (_valueAttr + 1);
-    }
-    NSString *strKeyShield1 = @"itemlistShield1";
-    int valueShield1 = [[_attr getValueFromDevice:strKeyShield1] integerValue];
-    
-    
-    
-    
-    
+    //all "Max"-field-initialization
     
     magnetCountMax = 200;
     weapon0CountMax = 500;//爆弾投下時間
@@ -1316,11 +1269,164 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     weapon2CountMax = 500;//レーザー発射時間
     weapon3CountMax = 500;
     weapon4CountMax = 500;
+    defense0CountMax = 500;//barrier
+    //defense1(shield)のみ他のカウンターと異なる：被弾してから(shieldLife回のみ)次にシールドを張るまでの時間
+    //シールドは被弾した回数だけ減る(shieldLife)
+    //被弾して100カウント(1秒間)はダメージを受けない
+    //100カウント超過したらshieldLifeを１減らす
+    defense1CountMax = 100;//被弾して100カウント(1秒間)はダメージを受けない
+    shieldLifeMax = 1;//setting at [self readAttrSetMaxCount]
     transparancyCountMax = 500;
     bigCountMax = 500;
     bombCountMax = 500;
     healCountMax = 500;
+    
+    
+    
 
+    
+    
+    
+    
+    AttrClass *_attr = [[AttrClass alloc]init];
+    
+    //defense
+//    @"itemlistShield0",
+//    @"itemlistShield1",
+//    @"itemlistBarrier0",
+//    @"itemlistBomb1",
+//    @"次回以降全てのゲームにおいて、シールドアイテム獲得後の耐久回数を現状に+1上乗せする。\n15枚のコインが必要です。",//1=10coin
+//    @"1回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+//    @"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。\n24枚のコインが必要です。",//1=8coin
+//    @"1回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。\n28枚のコインが必要です。",//1=7coin
+    
+    
+    //整理：defense0=barrier , defense1=shield
+    
+    //strKeyShieldは別の場所にグローバルに設定してDefenseUpListViewControllerからも同じ値が読み込まれるように設定すべき
+    
+    //itemlistShield0の設定＝@"次回以降全てのゲームにおいて、シールドアイテム(ItemTypeDeffense1)獲得後の耐久回数を現状に+1上乗せ
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
+    NSString *strKeyShield0 = @"itemlistShield0";
+    int valueShield0 = [[_attr getValueFromDevice:strKeyShield0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueShield0; _valueAttr++){
+        shieldLifeMax++;
+    }
+    NSLog(@"shieldLifeMaxを%dに設定", shieldLifeMax);
+    
+    
+    //itemlistShield1の設定＝@"1回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定あり(−１消耗させる)
+    NSString *strKeyShield1 = @"itemlistShield1";
+    int valueShield1 = [[_attr getValueFromDevice:strKeyShield1] integerValue];
+    if(valueShield1 > 0){
+        shieldLifeMax *= 2;
+        
+        //消耗
+        [_attr setValueToDevice:strKeyShield1
+                       strValue:[NSString stringWithFormat:@"%d", valueShield1-1]];
+    }
+    NSLog(@"shieldLifeMaxを%dに設定", shieldLifeMax);
+    
+    
+    //itemlistBarrier0の設定=@"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
+    NSString *strKeyBarrier0 = @"itemlistBarrier0";
+    int valueBarrier0 = [[_attr getValueFromDevice:strKeyBarrier0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueBarrier0; _valueAttr++){
+        defense0CountMax += 50;
+    }
+    NSLog(@"defense0CountMaxを%dに設定しました", defense0CountMax);
+    
+    
+    //itemlistBarrier1の設定=@"1回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。
+    NSString *strKeyBarrier1 = @"itemlistBarrier1";
+    int valueBarrier1 = [[_attr getValueFromDevice:strKeyBarrier1] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueBarrier1;_valueAttr++){
+        defense0CountMax *= 2;
+    }
+    NSLog(@"defense0CountMaxを%dに設定", defense0CountMax);
+    
+    //以下のようにしたいけど、できないっぽい。=>can not apply nsstring to switch-case statement
+//    NSArray *_array = [NSArray arrayWithObjects:
+//                      @"aaa",
+//                      @"bbb",
+//                      nil];
+//    for(int i = 0 ; i < [_array count];i++){
+//        
+//        switch ((NSString *)_array[i]) {
+//            case @"aaa":{
+//                NSLog([_array[i]);
+//                break;
+//            }
+//            default:
+//                break;
+//        }
+//    }
+    
+    
+    
+    
+//    @"itemlistBomb0",
+//    @"itemlistBomb1",
+//    @"itemlistDiffuse0",
+//    @"itemlistDiffuse1",
+//    @"itemlistLaser0",
+//    @"itemlistLaser1",
+//    
+//    @"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
+//    @"1回のゲームでのみ、通常弾の攻撃力持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+//    @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
+//    @"1回のゲームでのみ、爆弾投下の持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+//    @"次回以降全てのゲームにおいて、レーザー発射持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
+//    @"1回のゲームでのみ、レーザー発射持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+    
+    
+    
+    //itemlistLaser0の設定＝@"次回以降全てのゲームにおいて、レーザー発射持続時間を0.5秒上乗せする。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
+    NSString *strKeyLaser0 = @"itemlistLaser0";
+    int valueLaser0 = [[_attr getValueFromDevice:strKeyLaser0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueLaser0; _valueAttr++){
+        weapon0CountMax += 50;
+    }
+    NSLog(@"weapon0CountMaxを%dに設定", weapon0CountMax);
+    
+    
+    //itemlistLaser1の設定＝@"1回のゲームでのみ、レーザー発射持続時間を現状の２倍に長持ちさせる。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定あり(−１消耗させる)
+    NSString *strKeyLaser1 = @"itemlistLaser1";
+    int valueLaser1 = [[_attr getValueFromDevice:strKeyLaser1] integerValue];
+    if(valueLaser1 > 0){
+        weapon0CountMax *= 2;
+        
+        //消耗
+        [_attr setValueToDevice:strKeyLaser1
+                       strValue:[NSString stringWithFormat:@"%d", valueLaser1-1]];
+    }
+    NSLog(@"weapon0CountMaxを%dに設定", weapon0CountMax);
+    
+    
+    //itemlistBomb0の設定=@"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。
+    //attrフィールドの読み込みあり、attrフィールドへの新規設定なし
+    NSString *strKeyBomb0 = @"itemlistBomb0";
+    int valueBomb0 = [[_attr getValueFromDevice:strKeyBomb0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueBomb0; _valueAttr++){
+        defense0CountMax += 50;
+    }
+    NSLog(@"defense0CountMaxを%dに設定しました", defense0CountMax);
+    
+    
+    //itemlistBomb1の設定=@"1回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。
+    NSString *strKeyBomb1 = @"itemlistBomb1";
+    int valueBomb1 = [[_attr getValueFromDevice:strKeyBomb1] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueBomb1;_valueAttr++){
+        defense0CountMax *= 2;
+    }
+    NSLog(@"defense0CountMaxを%dに設定", defense0CountMax);
+    
+    
+    
     
 }
 
