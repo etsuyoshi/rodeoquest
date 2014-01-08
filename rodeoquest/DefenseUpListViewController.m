@@ -20,16 +20,16 @@
     if (self) {
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects:
-                 @"defense_barrier.png",
-                 @"defense_barrier.png",
+                 @"defense_shield.png",
+                 @"defense_shield.png",
                  @"defense_barrier.png",
                  @"defense_barrier.png",
                  nil];
         arrTv = [NSMutableArray arrayWithObjects:
-                 @"シールドが発生する時間を1.5倍に長くします。\n15枚のコインが必要です。",//1=10coin
-                 @"シールドが発生する時間を2倍に長くします。\n18枚のコインが必要です。",//1=9coin
-                 @"シールドが発生する時間を3倍に長くします。\n24枚のコインが必要です。",//1=8coin
-                 @"シールドが発生する時間を4倍に長くします。\n28枚のコインが必要です。",//1=7coin
+                 @"次回以降全てのゲームにおいて、シールドアイテム獲得後の耐久回数を現状に+1上乗せする。\n15枚のコインが必要です。",//1=10coin
+                 @"次回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+                 @"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。\n24枚のコインが必要です。",//1=8coin
+                 @"次回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。\n28枚のコインが必要です。",//1=7coin
                  nil];
         
         arrCost = [NSMutableArray arrayWithObjects:
@@ -40,10 +40,10 @@
                    nil];
         
         itemList = [NSMutableArray arrayWithObjects:
-                    @"itemlistDefenseUp0",
-                    @"itemlistDefenseUp1",
-                    @"itemlistDefenseUp2",
-                    @"itemlistDefenseUp3",
+                    @"itemlistShield0",
+                    @"itemlistShield1",
+                    @"itemlistBarrier0",
+                    @"itemlistBarrier1",
                     nil];
     }
     return self;
@@ -62,3 +62,4 @@
 }
 
 @end
+

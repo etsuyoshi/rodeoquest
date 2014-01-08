@@ -81,11 +81,15 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     defense0Count = 0;
     defense1Count = 0;
     
+//    int weapon0CountMax;//爆弾を投げられる時間->爆弾は敵に当てるように投げた方が効果的
+//    int weapon1CountMax;//攻撃力強化できる時間
+//    int weapon2CountMax;//laserR=item
+
     
     magnetCountMax = 200;
-    weapon0CountMax = 500;
-    weapon1CountMax = 500;
-    weapon2CountMax = 500;
+    weapon0CountMax = 500;//爆弾投下時間
+    weapon1CountMax = 500;//通常弾強化時間
+    weapon2CountMax = 500;//レーザー発射時間
     weapon3CountMax = 500;
     weapon4CountMax = 500;
     defense0CountMax = 500;
@@ -94,8 +98,6 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     bigCountMax = 500;
     bombCountMax = 500;
     healCountMax = 500;
-    
-    
     
     
     //defense1(shield)のみ他のカウンターと異なる：被弾してから(shieldLife回のみ)次にシールドを張るまでの時間
@@ -246,6 +248,9 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
               @"0", [NSNumber numberWithInt:ItemTypeRedGold],
               nil];
     
+    
+    //attr情報を読み込んでフィールドを設定(上限時間)
+    [self readAttrSetMaxCount];
     
     return self;
 }
@@ -1269,6 +1274,53 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     //上記で設定したUIImageViewを配列格納
     [iv addSubview:viewKiraBarrier];
     [iv bringSubviewToFront:viewKiraBarrier];
+    
+}
+
+/*
+ *購入アイテムの読み込み
+ */
+-(void)readAttrSetMaxCount{
+    AttrClass *_attr = [[AttrClass alloc]init];
+    
+    //defense
+//    @"itemlistShield0",
+//    @"itemlistShield1",
+//    @"itemlistBarrier0",
+//    @"itemlistBarrier1",
+//    @"次回以降全てのゲームにおいて、シールドアイテム獲得後の耐久回数を現状に+1上乗せする。\n15枚のコインが必要です。",//1=10coin
+//    @"次回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
+//    @"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。\n24枚のコインが必要です。",//1=8coin
+//    @"次回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。\n28枚のコインが必要です。",//1=7coin
+    
+    defense0CountMax = 500;
+    defense1CountMax = 500;
+    
+    //strKeyShieldは別の場所にグローバルに設定してDefenseUpListViewControllerからも同じ値が読み込まれるように設定すべき
+    NSString *strKeyShield0 = @"itemlistShield0";
+    int valueShield0 = [[_attr getValueFromDevice:strKeyShield0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueShield0; _valueAttr++){
+        defense0CountMax *= (_valueAttr + 1);
+    }
+    NSString *strKeyShield1 = @"itemlistShield1";
+    int valueShield1 = [[_attr getValueFromDevice:strKeyShield1] integerValue];
+    
+    
+    
+    
+    
+    
+    magnetCountMax = 200;
+    weapon0CountMax = 500;//爆弾投下時間
+    weapon1CountMax = 500;//通常弾強化時間
+    weapon2CountMax = 500;//レーザー発射時間
+    weapon3CountMax = 500;
+    weapon4CountMax = 500;
+    transparancyCountMax = 500;
+    bigCountMax = 500;
+    bombCountMax = 500;
+    healCountMax = 500;
+
     
 }
 

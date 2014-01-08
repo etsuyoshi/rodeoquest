@@ -76,6 +76,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
                    @"100",
                    @"100",
                 nil];
+        //AttrClassに書き込むキー値
         itemList = [NSMutableArray arrayWithObjects:
                     @"itemlist0",
                     @"itemlist1",

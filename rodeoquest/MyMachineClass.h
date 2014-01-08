@@ -15,6 +15,7 @@
 #import "ItemClass.h"
 #import "ViewExplode.h"
 #import "ViewKira.h"
+#import "AttrClass.h"
 
 
 @interface MyMachineClass : NSObject{
