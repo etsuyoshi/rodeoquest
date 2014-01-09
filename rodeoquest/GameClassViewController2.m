@@ -758,10 +758,12 @@ int sensitivity;
     NSLog(@"if(arc4random() %% 50 == 0 &&//1秒に1回");
 #endif
     //爆弾投下
-    if(arc4random() % 50 == 0 &&//1秒に1回
-       [MyMachine getStatus:ItemTypeWeapon0]){
-        
-        [self throwBombAnimation];
+    if(arc4random() % 50 == 0 ){//0.5秒に1回
+        if([MyMachine getStatus:ItemTypeWeapon0]){
+            if([EnemyArray count] > 0){
+                [self throwBombAnimation];
+           }
+        }
     }
     
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -2851,7 +2853,7 @@ int sensitivity;
  *レベル上昇で意図した場所に投げられる？
  */
 -(void)throwBombAnimation{
-    
+
     //投下用爆弾
     UIImageView *bombView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
                                                                          ITEM_SIZE*1.5f, ITEM_SIZE)];
@@ -3203,7 +3205,7 @@ int sensitivity;
         }
         
         //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeCookie x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+//        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
