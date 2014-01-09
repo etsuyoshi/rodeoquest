@@ -31,7 +31,18 @@
                  @"tool_cookie.png",
                  @"tool_cookie.png",
                  nil];
-        
+        arrIv2 = [NSMutableArray arrayWithObjects:
+                  nil,
+                  @"krkr_many.png",
+                  nil,
+                  @"krkr_many.png",
+                  nil,
+                  @"krkr_many.png",
+                  nil,
+                  @"krkr_many.png",
+                  nil,
+                  @"krkr_many.png",
+                  nil];
         
         
 //        @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin

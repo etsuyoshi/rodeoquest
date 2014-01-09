@@ -58,18 +58,29 @@ void (^actNoForCoinShort)(void) = ^(void) {
     _self = self;
     if (self) {
         // Custom initialization
+        //アイコン
         arrIv = [NSMutableArray arrayWithObjects:
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  nil];
+        
+        //view over icon:arrIv
+        arrIv2 = [NSMutableArray arrayWithObjects:
+                 nil,
+                 nil,
+                 nil,
+                 nil,
+                 nil];
+        //コメント
         arrTv = [NSMutableArray arrayWithObjects:
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  nil];
+        //価格
         arrCost = [NSMutableArray arrayWithObjects:
                    @"100",
                    @"100",
@@ -245,6 +256,12 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                                    imageFrameWidth,
                                                                    imageFrameHeight)];
         iv.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
+        
+        if([arrIv2 objectAtIndex:i] != nil){
+            UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
+            iv2.image = [UIImage imageNamed:arrIv2[i]];
+            [iv addSubview:iv2];
+        }
 //        [self.view addSubview:iv];
         [uvOnScroll addSubview:iv];
         

@@ -27,6 +27,7 @@ NSString *nameCurrency;
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;
     NSMutableArray *arrIv;
+    NSMutableArray *arrIv2;
     NSMutableArray *arrTv;
     NSMutableArray *arrCost;
     NSMutableArray *arrTitle;

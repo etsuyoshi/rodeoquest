@@ -159,7 +159,6 @@ AttrClass *attr;
         /*
          *effect looks like fire flower
          */
-        //test
 //        ViewFireWorks *viewFire = [[ViewFireWorks alloc]
 //                                   initWithFrame:CGRectMake(0, 0, 20, 20)];
 //        [self addSubview: viewFire];
@@ -197,7 +196,7 @@ AttrClass *attr;
         
         
         //特殊武器経験値＆レベル
-        [self dispSpecialWeapon];//未実装
+        [self dispSpecialWeapon];
         
         //自機各種ステータス
         [self dispAttribution];
@@ -476,6 +475,8 @@ AttrClass *attr;
     
     
 }
+
+//現在装備している特殊武器のIDを返す
 -(int)getEquipWeaponType{
     NSString *_keyID = nil;
     for(int i = 0;i < 10;i++){
@@ -487,6 +488,8 @@ AttrClass *attr;
     
     return -1;
 }
+
+//指定した特殊武器IDの画像名称(文字列)を返す
 -(NSString *)getWeaponImageName:(BowType)_bowType{
     
     //WeaponBuyListViewControllerと同じ

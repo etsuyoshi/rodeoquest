@@ -61,17 +61,45 @@ UIView *superViewForEquipWpn;
 //                 @"close.png",//8
 //                 @"close.png",//9
 //                 
-                 @"Rock.png",
-                 @"Fire.png",
-                 @"Water.png",
-                 @"Ice.png",
-                 @"Bug.png",
-                 @"Animal.png",
-                 @"Grass.png",
-                 @"Cloth.png",
-                 @"Space.png",
-                 @"Wing.png",
+//                 @"Rock.png",
+//                 @"Fire.png",
+//                 @"Water.png",
+//                 @"Ice.png",
+//                 @"Bug.png",
+//                 @"Animal.png",
+//                 @"Grass.png",
+//                 @"Cloth.png",
+//                 @"Space.png",
+//                 @"Wing.png",
+                 
+                 @"NH_RockBow.png",
+                 @"NH_FireBow.png",
+                 @"NH_WaterBow.png",
+                 @"NH_IceBow.png",
+                 @"NH_BugBow.png",
+                 @"NH_AnimalBow.png",
+                 @"NH_GrassBow.png",
+                 @"NH_ClothBow.png",
+                 @"NH_SpaceBow.png",
+                 @"NH_WingBow.png",
+
                  nil];
+        
+        //アイコンに上乗せするビューなし
+        arrIv2 = [NSMutableArray arrayWithObjects:
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil,
+                  nil];
+                  
+                  
         arrTv = [NSMutableArray arrayWithObjects:
                  @"装填に時間がかかる一方、敵に通常弾以上の物理ダメージを与えます。レベルアップにより発射頻度が向上します。",//1rep=100coin
                  @"着弾した瞬間のダメージはわずかでも、その後燃えさかる炎により継続的にダメージを与えることがあります。水属性の敵に大ダメージを与えます。",//1rep=90coin
@@ -165,7 +193,7 @@ UIView *superViewForEquipWpn;
     
     
     
-    //slideShowを表示するメソッド呼出しのためのボタン
+    //コレクションボタン:slideShowを表示するメソッド呼出しのためのボタン
     btnClDispSlide =
     [CreateComponentClass
      createCoolButton:CGRectMake(10, 10, 130, 60)
@@ -176,7 +204,8 @@ UIView *superViewForEquipWpn;
     
     btnClDispSlide.center =
     CGPointMake(btnClDispSlide.bounds.size.width/2+5,
-                tvGoldAmount.center.y);
+                cashView.center.y);
+    
     
     
 }
@@ -197,8 +226,7 @@ UIView *superViewForEquipWpn;
          status:stateHoldWpn];
         
         
-        //textView size
-        
+        //text size adjustment need?
     }
     
 }
@@ -225,7 +253,32 @@ UIView *superViewForEquipWpn;
     
     switch (statusWpn) {
         case 0:{
-            [super buyBtnPressed:sender];
+            //未購入であれば、購入是非を問う
+            int _cost = [[arrCost objectAtIndex:[sender tag]] intValue];
+            NSString *_titleView = @"購入手続";
+            NSString *_message = [NSString stringWithFormat:@"このボウガンを購入しますか？\n%d個の%@が必要です", _cost, nameCurrency];
+            viewWantBuy =
+            [CreateComponentClass
+             createAlertView2:self.view.bounds
+             dialogRect:CGRectMake(0, 0,
+                                   self.view.bounds.size.width-20,
+                                   self.view.bounds.size.width-100)
+             title:_titleView
+             message:_message
+             onYes:^{
+                 //購入プロセス
+                 [self buyBtnPressed:sender];
+                 
+                 [viewWantBuy removeFromSuperview];
+                 
+             }
+             onNo:^{
+                 [viewWantBuy removeFromSuperview];
+             }];
+
+            
+            [self.view addSubview:viewWantBuy];
+            
             break;
         }
         case 1: {

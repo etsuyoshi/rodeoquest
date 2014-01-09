@@ -48,6 +48,14 @@ void (^actNoForRubyShort)(void) = ^(void) {
                  @"tool_heal.png",
                  @"tool_heal.png",
                  nil];
+        
+        arrIv2 = [NSMutableArray arrayWithObjects:
+                  nil,
+                  @"krkr_many.png",
+                  nil,
+                  @"krkr_many.png",
+                  nil];
+
         arrTv = [NSMutableArray arrayWithObjects:
                  @"ドラゴンを1回だけ急速回復します。\n100枚のコインが必要です。",//1rep=100coin
                  @"ドラゴンを2回だけ急速回復します。\n180枚のコインが必要です。",//1rep=90coin
