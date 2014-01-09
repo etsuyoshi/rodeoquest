@@ -20,10 +20,7 @@ int wingStatus;
 int effectDuration;
 CGPoint _center;
 
-//defense0-relatings
-UIImageView *ivDefense0;
-UIImageView *ivDefense1;
-//NSArray *imgArrayDefense0;
+
 
 NSArray *arrayLaserRImg;
 NSArray *arrayLaserGImg;
@@ -78,6 +75,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     healCount = 0;
     defense0Count = 0;
     defense1Count = 0;
+    cookieCount = 0;
     shieldLife = 0;
     
     
@@ -104,6 +102,8 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     iv.animationRepeatCount = 0;
     iv.animationDuration = 1.0f; // アニメーション全体で1秒（＝各間隔は0.5秒）
     [iv startAnimating]; // アニメーション開始
+    
+    ivAnother0 = iv;//分身の作成
     
     arrayLaserRImg = [[NSArray alloc] initWithObjects:
                               [UIImage imageNamed:@"laser_r01.png"],
@@ -212,7 +212,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
               @"0", [NSNumber numberWithInt:ItemTypeBomb],
               @"0", [NSNumber numberWithInt:ItemTypeHeal],
               @"0", [NSNumber numberWithInt:ItemTypeBig],
-              @"0", [NSNumber numberWithInt:ItemTypeSmall],
+              @"0", [NSNumber numberWithInt:ItemTypeCookie],
               @"0", [NSNumber numberWithInt:ItemTypeTransparency],
               @"0", [NSNumber numberWithInt:ItemTypeYellowGold],
               @"0", [NSNumber numberWithInt:ItemTypeGreenGold],
@@ -421,6 +421,14 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeMagnet]];
         }
         
+    }
+    if(cookieCount > 0){
+        cookieCount --;
+        if(cookieCount == 0){
+            [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeCookie]];
+            [ivAnother0 stopAnimating];
+            [ivAnother0 removeFromSuperview];
+        }
     }
     
     if(weapon0Count > 0){
@@ -821,7 +829,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
             }
             break;
         }
-        case ItemTypeSmall:{
+        case ItemTypeCookie:{
+            if([statusValue integerValue]){
+                cookieCount = cookieCountMax;
+                
+                //分身を作成
+                [iv addSubview:ivAnother0];
+                [ivAnother0 startAnimating];
+                ivAnother0.center =
+                CGPointMake(iv.bounds.size.width*2,
+                            iv.bounds.size.height*2);
+            }else{
+                cookieCount = 0;
+            }
             break;
         }
         case ItemTypeTransparency:{
@@ -1534,7 +1554,24 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     NSLog(@"MagnetCountMax=%d", magnetCountMax);
     
     
+    //Cookie0
+    NSString *strKeyCookie0 = @"itemlistCookie0";
+    int valueCookie0 = [[_attr getValueFromDevice:strKeyCookie0] integerValue];
+    for(int _valueAttr = 0; _valueAttr < valueCookie0;_valueAttr++){
+        cookieCountMax += 50;
+    }
+    NSLog(@"CookieCountMax=%d", cookieCountMax);
     
+    //Cookie1
+    NSString *strKeyCookie1 = @"itemlistCookie1";
+    int valueCookie1 = [[_attr getValueFromDevice:strKeyCookie1] integerValue];
+    if(valueCookie1 > 0){
+        cookieCountMax *= 2;
+        //消耗
+        [_attr setValueToDevice:strKeyCookie1
+                       strValue:[NSString stringWithFormat:@"%d", valueCookie1-1]];
+    }
+    NSLog(@"CookieCountMax=%d", cookieCountMax);
     
     
     

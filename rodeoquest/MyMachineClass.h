@@ -48,6 +48,7 @@
     int bombCount;
     int bigCount;
     int healCount;
+    int cookieCount;
     
     //アイテムの有効最大時間
     int magnetCountMax;
@@ -62,15 +63,26 @@
     int bombCountMax;
     int bigCountMax;
     int healCountMax;
+    int cookieCountMax;
     
     
     int numOfBeam;
     Boolean isAlive;
     UIImageView *iv;
     CGRect rect;
+    
+    //laser-relatings
     UIImageView *ivLaserR;
     UIImageView *ivLaserG;
     UIImageView *ivLaserB;
+    
+    //defense0-relatings
+    UIImageView *ivDefense0;//ItemTypeDefense0
+    UIImageView *ivDefense1;//ItemTypeDefense1
+    UIImageView *ivAnother0;//ItemTypeCookie
+    UIImageView *ivAnother1;
+
+    
     NSMutableArray *beamArray;
     ExplodeParticleView *explodeParticle;
     DamageParticleView *damageParticle;

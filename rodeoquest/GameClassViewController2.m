@@ -1266,8 +1266,10 @@ int sensitivity;
                         }
                         break;
                     }
-                    case ItemTypeSmall:{
-                        [MyMachine setStatus:@"1" key:ItemTypeSmall];
+                    case ItemTypeCookie:{
+                        if(![MyMachine getStatus:ItemTypeCookie]){
+                            [MyMachine setStatus:@"1" key:ItemTypeCookie];
+                        }
                         break;
                     }
                     case ItemTypeTransparency:{
@@ -3201,8 +3203,8 @@ int sensitivity;
             //            _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         }
         
-        //        //test:item
-        //        _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+        //test:item
+        _item = [[ItemClass alloc] init:ItemTypeCookie x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
         
         [ItemArray insertObject:_item atIndex:0];
         //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去

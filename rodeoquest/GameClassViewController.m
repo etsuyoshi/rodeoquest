@@ -1218,8 +1218,8 @@ int sensitivity;
                         }
                         break;
                     }
-                    case ItemTypeSmall:{
-                        [MyMachine setStatus:@"1" key:ItemTypeSmall];
+                    case ItemTypeCookie:{
+                        [MyMachine setStatus:@"1" key:ItemTypeCookie];
                         break;
                     }
                     case ItemTypeTransparency:{

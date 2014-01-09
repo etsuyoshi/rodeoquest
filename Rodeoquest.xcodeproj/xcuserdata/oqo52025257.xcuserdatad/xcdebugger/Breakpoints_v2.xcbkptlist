@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "rodeoquest/MyMachineClass.h"
-            timestampString = "410849830.855767"
+            timestampString = "410925125.98746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "@interface MyMachineClass"
             landmarkType = "2">
          </BreakpointContent>

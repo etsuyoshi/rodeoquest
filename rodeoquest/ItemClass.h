@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, ItemType) {
     ItemTypeBomb,//6:done
     ItemTypeHeal,//7:done
     ItemTypeBig,//8:done
-    ItemTypeSmall,//9:not(never?)
+    ItemTypeCookie,//9:done
     ItemTypeTransparency,//10:done
     ItemTypeYellowGold,//11:done
     ItemTypeGreenGold,//12:done

@@ -164,10 +164,10 @@ int numCell;
             iv.image = [UIImage imageNamed:@"tool_big.png"];
             break;
         }
-        case ItemTypeSmall:{
-            rect = CGRectMake(x_loc, y_loc, w, h);//コインは解像度が低いのでサイズを小さくして表示する
+        case ItemTypeCookie:{
+            rect = CGRectMake(x_loc, y_loc, w, h);
             iv = [[UIImageView alloc]initWithFrame:rect];
-            iv.image = [UIImage imageNamed:@"tool_small_cookie.png"];
+            iv.image = [UIImage imageNamed:@"tool_cookie.png"];
             break;
         }
         case ItemTypeTransparency:{
