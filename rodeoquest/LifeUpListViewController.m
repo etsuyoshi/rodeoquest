@@ -50,17 +50,23 @@ void (^actNoForRubyShort)(void) = ^(void) {
                  nil];
         
         arrIv2 = [NSMutableArray arrayWithObjects:
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"krkr_many.png",
                   @"krkr_many.png",
                   nil];
+        arrIvType = [NSMutableArray arrayWithObjects:
+                     @0,
+                     @1,
+                     @2,
+                     @3,
+                     nil];
 
         arrTv = [NSMutableArray arrayWithObjects:
-                 @"ドラゴンを1回だけ急速回復します。\n100枚のコインが必要です。",//1rep=100coin
-                 @"ドラゴンを2回だけ急速回復します。\n180枚のコインが必要です。",//1rep=90coin
-                 @"ドラゴンを3回だけ急速回復します。\n240枚のコインが必要です。",//1rep=80coin
-                 @"ドラゴンを4回だけ急速回復します。\n280枚のコインが必要です。",//1rep=70coin
+                 @"ドラゴンを1回だけ急速回復します。\n100枚のルビーが必要です。",//1rep=100coin
+                 @"ドラゴンを2回だけ急速回復します。\n180枚のルビーが必要です。",//1rep=90coin
+                 @"ドラゴンを3回だけ急速回復します。\n240枚のルビーが必要です。",//1rep=80coin
+                 @"ドラゴンを4回だけ急速回復します。\n280枚のルビーが必要です。",//1rep=70coin
                  nil];
         arrCost = [NSMutableArray arrayWithObjects:
                    @"100",

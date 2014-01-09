@@ -75,6 +75,41 @@
                  @"break_enemy",
                  @"gold_max",
                  @"time_max",
+                 
+                 @"weaponID0",
+                 @"weaponID1",
+                 @"weaponID2",
+                 @"weaponID3",
+                 @"weaponID4",
+                 @"weaponID5",
+                 @"weaponID6",
+                 @"weaponID7",
+                 @"weaponID8",
+                 @"weaponID9",
+                 
+                 
+                 @"weaponID0_exp",
+                 @"weaponID1_exp",
+                 @"weaponID2_exp",
+                 @"weaponID3_exp",
+                 @"weaponID4_exp",
+                 @"weaponID5_exp",
+                 @"weaponID6_exp",
+                 @"weaponID7_exp",
+                 @"weaponID8_exp",
+                 @"weaponID9_exp",
+                 
+                 
+                 @"weaponID0_level",
+                 @"weaponID1_level",
+                 @"weaponID2_level",
+                 @"weaponID3_level",
+                 @"weaponID4_level",
+                 @"weaponID5_level",
+                 @"weaponID6_level",
+                 @"weaponID7_level",
+                 @"weaponID8_level",
+                 @"weaponID9_level",
                  nil];
     
     NSLog(@"search in the device");
@@ -115,7 +150,40 @@
                                   @"0",//exp_accum",
                                   @"0",//break_enemy",
                                   @"0",//gold_max",
-                                  @"0",//@"time_max",
+                                  @"0",//@"time_max,
+                                  @"0",//@"weaponID0",
+                                  @"0",//@"weaponID1",
+                                  @"0",//@"weaponID2",
+                                  @"0",//@"weaponID3",
+                                  @"0",//@"weaponID4",
+                                  @"0",//@"weaponID5",
+                                  @"0",//@"weaponID6",
+                                  @"0",//@"weaponID7",
+                                  @"0",//@"weaponID8",
+                                  @"0",//@"weaponID9",
+                                  
+                                  @"0",//@"weaponID0_exp",
+                                  @"0",//@"weaponID1_exp",
+                                  @"0",//@"weaponID2_exp",
+                                  @"0",//@"weaponID3_exp",
+                                  @"0",//@"weaponID4_exp",
+                                  @"0",//@"weaponID5_exp",
+                                  @"0",//@"weaponID6_exp",
+                                  @"0",//@"weaponID7_exp",
+                                  @"0",//@"weaponID8_exp",
+                                  @"0",//@"weaponID9_exp",
+                                  
+                                  
+                                  @"1",//@"weaponID0_level",
+                                  @"1",//@"weaponID1_level",
+                                  @"1",//@"weaponID2_level",
+                                  @"1",//@"weaponID3_level",
+                                  @"1",//@"weaponID4_level",
+                                  @"1",//@"weaponID5_level",
+                                  @"1",//@"weaponID6_level",
+                                  @"1",//@"weaponID7_level",
+                                  @"1",//@"weaponID8_level",
+                                  @"1",//@"weaponID9_level",
                            nil];
 //    attrDict = [NSDictionary dictionaryWithObjects:valueArray forKeys:nameArray];
     
@@ -218,20 +286,19 @@
     NSString *strID_level = [NSString stringWithFormat:@"%@_level", _weaponId];
     int beforeExp = [[self getValueFromDevice:strID_exp] intValue];
     int beforeLevel = [[self getValueFromDevice:strID_level] intValue];
-    
+    NSLog(@"経験値とレベル更新開始");
     if(beforeLevel < [MaxExpArray count]-1){//until-88
         int afterExp = beforeExp + addingVal;
         int _maxExp = [[MaxExpArray objectAtIndex:beforeLevel] intValue];
         
-        if(afterExp > _maxExp){
+        if(afterExp >= _maxExp){
             int afterLevel = beforeLevel + 1;
             [self setValueToDevice:strID_level strValue:[NSString stringWithFormat:@"%d", afterLevel]];
-            NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
+            NSLog(@"武器レベルアップ!%d->%d", beforeLevel, afterLevel);
             
             //_maxExpの更新
             _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
             
-            afterExp = afterExp - _maxExp;
             if(afterExp < _maxExp){
                 [self setValueToDevice:strID_exp strValue:[NSString stringWithFormat:@"%d", afterExp]];
                 return true;

@@ -32,18 +32,29 @@
                  @"tool_cookie.png",
                  nil];
         arrIv2 = [NSMutableArray arrayWithObjects:
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"",
                   @"krkr_many.png",
                   nil];
-        
+        arrIvType = [NSMutableArray arrayWithObjects:
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     nil];
         
 //        @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin
 //        @"1回のゲームでのみ、爆弾投下の持続時間を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin

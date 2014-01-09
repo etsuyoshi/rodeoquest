@@ -28,6 +28,7 @@ NSString *nameCurrency;
     BackGroundClass2 *background;
     NSMutableArray *arrIv;
     NSMutableArray *arrIv2;
+    NSMutableArray *arrIvType;
     NSMutableArray *arrTv;
     NSMutableArray *arrCost;
     NSMutableArray *arrTitle;

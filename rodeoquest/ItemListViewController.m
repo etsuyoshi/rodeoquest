@@ -68,11 +68,17 @@ void (^actNoForCoinShort)(void) = ^(void) {
         
         //view over icon:arrIv
         arrIv2 = [NSMutableArray arrayWithObjects:
-                 nil,
-                 nil,
-                 nil,
-                 nil,
+                  @"",
+                  @"",
+                  @"",
+                  @"",
                  nil];
+        arrIvType = [NSMutableArray arrayWithObjects:
+                     @0,//min:normal
+                     @1,//static
+                     @2,//animation
+                     @3,//max:static+animation
+                     nil];
         //コメント
         arrTv = [NSMutableArray arrayWithObjects:
                  @"close.png",
@@ -257,10 +263,64 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                                    imageFrameHeight)];
         iv.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
         
-        if([arrIv2 objectAtIndex:i] != nil){
-            UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
-            iv2.image = [UIImage imageNamed:arrIv2[i]];
-            [iv addSubview:iv2];
+        if([arrIv2 count] > 0 && [arrIvType count] > 0){
+            if(![[arrIv2 objectAtIndex:i] isEqualToString:@""]){
+//                NSLog(@"arritType=%d, %d", (int)arrIvType[i], [arrIvType[i] integerValue]);
+                switch ([arrIvType[i] integerValue]) {
+                    case 0:{
+                        //do nothing
+                        break;
+                    }
+                    case 1:{
+                        //static
+                        UIImageView *iv3 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        iv3.image = [UIImage imageNamed:arrIv2[i]];
+                        iv3.alpha = 1.0f;
+                        iv3.transform = CGAffineTransformMakeRotation(15.0f * i * M_PI/180.0f);//適当な角度に回転
+                        [iv addSubview:iv3];
+                        break;
+                    }
+                    case 2:{//anim=>実際にはアニメーション実行Viewとiかiv2は異なるのでcase 3と同じエフェクト
+                        UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        iv2.image = [UIImage imageNamed:arrIv2[i]];
+                        iv2.alpha = 1.0f;
+                        [self effectOnOff:iv2];
+                        [iv addSubview:iv2];
+                        
+                    }
+                    case 3:{//anim+static
+                        //anim
+                        UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        iv2.image = [UIImage imageNamed:arrIv2[i]];
+                        iv2.alpha = 1.0f;
+                        [self effectOnOff:iv2];
+                        [iv addSubview:iv2];
+                        
+                        //static
+                        UIImageView *iv3 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        iv3.image = [UIImage imageNamed:arrIv2[i]];
+                        iv3.alpha = 1.0f;
+                        iv3.transform = CGAffineTransformMakeRotation(15.0f * i * M_PI/180.0f);//適当な角度に回転
+                        [iv addSubview:iv3];
+                        break;
+                    }
+                    default:
+                        break;
+                }
+//                //anim
+//                UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
+//                iv2.image = [UIImage imageNamed:arrIv2[i]];
+//                iv2.alpha = 1.0f;
+//                [self effectOnOff:iv2];
+//                [iv addSubview:iv2];
+//                
+//                //static
+//                UIImageView *iv3 = [[UIImageView alloc] initWithFrame:iv.bounds];
+//                iv3.image = [UIImage imageNamed:arrIv2[i]];
+//                iv3.alpha = 1.0f;
+//                iv3.transform = CGAffineTransformMakeRotation(15.0f * i * M_PI/180.0f);
+//                [iv addSubview:iv3];
+            }
         }
 //        [self.view addSubview:iv];
         [uvOnScroll addSubview:iv];
@@ -325,6 +385,34 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //    NSLog(@"start animation at list view");
 //    [background startAnimation];
 //    NSLog(@"end animation at list view");
+}
+
+-(void)effectOnOff:(UIImageView *)_viewArg{
+//    _viewArg.alpha = 1.0f;
+    [UIView animateWithDuration:MAX(1.0f,(float)(arc4random() % 20)/10.0f)//発火、消火の繰り返し:3秒から1秒
+                     animations:^{
+                         _viewArg.alpha = 1.0;
+//                         _viewArg.center =
+//                         CGPointMake(_viewArg.center.x,
+//                                     _viewArg.center.y + _viewArg.bounds.size.height/2);
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             _viewArg.alpha = 0.0f;
+                             //任意方向に回転
+                             float sizeView = MAX(0.7f,(float)(arc4random()%15)/10.0f);//1.0-1.5
+                             CGAffineTransform t1 = CGAffineTransformMakeRotation(MAX(arc4random()%90, 10) * M_PI / 180.0);//回転
+                             CGAffineTransform t2 = CGAffineTransformMakeScale(sizeView, sizeView);//拡大、縮小
+                             
+                             // 回転と拡大の組み合わせ
+                             _viewArg.transform = CGAffineTransformConcat(t1, t2);
+                             
+                             
+                             NSLog(@"effectOnOff");
+                             [self effectOnOff:_viewArg];
+                         }
+                     }];
+    
 }
 
 -(void)closeBtnClicked{

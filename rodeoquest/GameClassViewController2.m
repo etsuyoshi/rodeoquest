@@ -2097,11 +2097,12 @@ int sensitivity;
                                 initWithFrame:CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                                                          score_y + label_h,
                                                          go_component_width,
-                                                         pv_h)];
-    pv_score.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];
-    //    pv_score.flat = @YES;
+                                                         pv_h)];//default is blue color
+    pv_score.color = [UIColor colorWithRed:0.73f green:0.10f blue:0.00f alpha:1.00f];
     pv_score.progress = 0.40;
     pv_score.animate = @YES;
+    pv_score.type = LDProgressGradient;
+    pv_score.background = [pv_score.color colorWithAlphaComponent:0.8];
     
     
     //    // default color, animated
@@ -2170,12 +2171,12 @@ int sensitivity;
      CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                 complete_y + label_h,
                 go_component_width,
-                pv_h)];
-    pv_complete.color = [UIColor colorWithRed:0.73f green:0.10f blue:0.00f alpha:1.00f];
+                pv_h)];//default is blue color
+    
+    pv_complete.color = [UIColor colorWithRed:0.00f green:0.64f blue:0.00f alpha:1.00f];//green
     pv_complete.progress = 0.40;
     pv_complete.animate = @YES;
-    pv_complete.type = LDProgressGradient;
-    pv_complete.background = [pv_complete.color colorWithAlphaComponent:0.8];
+
     
     
     [view_go addSubview:pv_complete];
@@ -2671,17 +2672,14 @@ int sensitivity;
     //武器レベルの更新
     int id_weapon = -1;
     for(BowType bow = 0; bow < 10;bow++){
-        if([[attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d_exp", bow]]
+        if([[attr getValueFromDevice:[NSString stringWithFormat:@"weaponID%d", bow]]
             isEqualToString:@"2"]){
             id_weapon = bow;
+            
+            [attr addWeaponExp:[ScoreBoard getScore] weaponID:id_weapon];
         }
     }
-    if(id_weapon != -1){//何も装備してなければ
-        //        NSString *strWeaponIDX_exp = [NSString stringWithFormat:@"weaponID%d_exp", id_weapon];
-        //        int beforeWeaponExp = [[attr getValueFromDevice:strWeaponIDX_exp] intValue];
-        [attr addWeaponExp:[ScoreBoard getScore] weaponID:id_weapon];
-    }
-    
+    NSLog(@"端末情報更新完了");
     
     //_/_/_/_/_/_/端末情報更新完了_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     
@@ -3171,6 +3169,8 @@ int sensitivity;
                 _item = [[ItemClass alloc] init:ItemTypeWeapon1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){
                 _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
+            }else if(arc4random() % 3 == 0){
+                _item = [[ItemClass alloc] init:ItemTypeCookie x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){//barrier
                 _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
             }else if(arc4random() % 3 == 0){//shield

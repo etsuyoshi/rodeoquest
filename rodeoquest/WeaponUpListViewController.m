@@ -29,11 +29,21 @@
                  @"weapon_laser.png",//krkr
                  nil];
         arrIv2 = [NSMutableArray arrayWithObjects:
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"",
+                  @"krkr_many.png",
+                  @"",
                   @"krkr_many.png",
                   nil];
+        arrIvType = [NSMutableArray arrayWithObjects:
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     nil];
         
         arrTv = [NSMutableArray arrayWithObjects:
                  @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。\n15枚のコインが必要です。",//1=10coin

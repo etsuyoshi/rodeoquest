@@ -256,7 +256,7 @@ AttrClass *attr;
                       @"score",
                       @"gold_max",
                       @"time_max",
-                      @"gamecnt",
+                      @"gameCnt",
                       @"gold",
 //                      @"",
                       @"ruby",
@@ -270,16 +270,16 @@ AttrClass *attr;
     NSArray *arrDisp = [NSArray arrayWithObjects:
                         @"現在レベル:",
                         @"最高スコア:",
-                        @"最高獲得コイン:",
-                        @"最高飛行時間:",
+                        @"最高獲得ゼニー:",
+                        @"最高飛行時間(秒):",
                         @"ゲーム回数:",
-                        @"現在保有コイン:",
+                        @"保有ゼニー:",
 //                        @"",
-                        @"現在保有ルビー:",
+                        @"保有ルビー:",
 //                        @"",
-                        @"今までの獲得経験値:",
+                        @"総獲得経験値:",
 //                        @"",
-                        @"今までに倒した敵の数:",
+                        @"今まで倒した敵:",
                         
 //                        @"総プレイ時間:",//ユーザーがやり込みを認識してしまう可能性
                         nil];
@@ -304,14 +304,23 @@ AttrClass *attr;
                 NSString *strDisplay = [NSString stringWithFormat:@"%@%@",
                                         [arrDisp objectAtIndex:_no],
                                         strValueByID];
-                
                 UILabel *lblDisplay =
                 [self getLabel:strDisplay
                         center:CGPointMake(self.bounds.size.width/4 + self.bounds.size.width/2*col,
                                            viewAfterLevel.center.y + viewAfterLevel.bounds.size.height/2 + row * 20 + 10)
-                     alignment:(col==0)?NSTextAlignmentRight:NSTextAlignmentLeft];
-                lblDisplay.adjustsFontSizeToFitWidth = YES;//文字長さが範囲に収まらなくなった時にサイズ調整
-                lblDisplay.minimumScaleFactor = 5;//サイズ調整時の最小サイズ
+                     alignment:(col==0)?NSTextAlignmentRight:NSTextAlignmentLeft];//一列目は右寄せ、二列目は左寄せ
+                [lblDisplay sizeToFit];//サイズを確認するために最小サイズに変更＝＞画面の半分以上なら文字の大きさを変更
+                if(lblDisplay.bounds.size.width > [UIScreen mainScreen].bounds.size.width/2){
+                    //文字サイズの変更
+                    lblDisplay.font = [UIFont fontWithName:@"AmericanTypewriter-Bold"
+                                                      size:8];
+                }
+                //フレームを元に戻す(画面の半分の幅)
+                lblDisplay.frame = CGRectMake(5,
+                                              lblDisplay.frame.origin.y,
+                                              [UIScreen mainScreen].bounds.size.width/2,
+                                              lblDisplay.bounds.size.height);
+                lblDisplay.textAlignment = (col==0)?NSTextAlignmentRight:NSTextAlignmentLeft;
                 
                 [self addSubview:lblDisplay];
                 [self bringSubviewToFront:lblDisplay];

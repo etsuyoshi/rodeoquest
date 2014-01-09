@@ -26,8 +26,8 @@
 //#define PARTICLE_TEST
 //#define KIRA_Test
 //#define EXPLODE_TEST
-//#define VIEWWITHEFFECTLEVELUP_TEST
-#define LDPROGRESS_TEST
+#define VIEWWITHEFFECTLEVELUP_TEST
+//#define LDPROGRESS_TEST
 
 #import "LDProgressView.h"
 #import "ViewWithEffectLevelUp.h"

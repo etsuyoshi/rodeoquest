@@ -87,16 +87,16 @@ UIView *superViewForEquipWpn;
         
         //アイコンに上乗せするビューなし
         arrIv2 = [NSMutableArray arrayWithObjects:
-                  nil,
-                  nil,
-                  nil,
-                  nil,
-                  nil,
-                  nil,
-                  nil,
-                  nil,
-                  nil,
-                  nil,
+                  @"",
+                  @"",
+                  @"",
+                  @"",
+                  @"",
+                  @"",
+                  @"",
+                  @"",
+                  @"",
+                  @"",
                   nil];
                   
                   

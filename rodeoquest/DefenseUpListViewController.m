@@ -26,17 +26,25 @@
                  @"defense_barrier.png",
                  nil];
         arrIv2 = [NSMutableArray arrayWithObjects:
-                  nil,
+                  @"",
                   @"krkr_many.png",
-                  nil,
+                  @"",
                   @"krkr_many.png",
                   nil];
+        arrIvType = [NSMutableArray arrayWithObjects:
+                     @0,
+                     @3,
+                     @0,
+                     @3,
+                     nil];
+        NSLog(@"arriV2=%d", [arrIv2 count]);
         arrTv = [NSMutableArray arrayWithObjects:
                  @"次回以降全てのゲームにおいて、シールドアイテム獲得後の耐久回数を現状に+1上乗せする。\n15枚のコインが必要です。",//1=10coin
                  @"次回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる。\n18枚のコインが必要です。",//1=9coin
                  @"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。\n24枚のコインが必要です。",//1=8coin
                  @"次回のゲームにのみ、バリアアイテム獲得後の耐久時間を現状の２倍に長持ちさせる。\n28枚のコインが必要です。",//1=7coin
                  nil];
+        NSLog(@"arrTv=%d", [arrTv count]);
         
         arrCost = [NSMutableArray arrayWithObjects:
                    @"15",
