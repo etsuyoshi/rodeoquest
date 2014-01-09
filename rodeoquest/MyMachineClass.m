@@ -79,6 +79,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     shieldLife = 0;
     
     
+    numOfAnother = 0;
     numOfBeam = 1;//通常時、最初はビームの数は1つ(１列)
     isAlive = true;
     explodeParticle = nil;
@@ -103,7 +104,26 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     iv.animationDuration = 1.0f; // アニメーション全体で1秒（＝各間隔は0.5秒）
     [iv startAnimating]; // アニメーション開始
     
-    ivAnother0 = iv;//分身の作成
+    ivAnother0 = [[UIImageView alloc] initWithFrame:iv.bounds];//分身の作成
+    ivAnother0.animationImages = imgArray;
+    ivAnother0.animationRepeatCount = 0;
+    ivAnother0.animationDuration = 1.0f;
+    ivAnother0.alpha=0.5f;
+    ivAnother0.center = CGPointMake(iv.bounds.size.width,
+                                    iv.bounds.size.height);
+    
+    ivAnother1 = [[UIImageView alloc] initWithFrame:iv.bounds];
+    ivAnother1.animationImages = imgArray;
+    ivAnother1.animationRepeatCount = 0;
+    ivAnother1.animationDuration = 1.0f;
+    ivAnother1.alpha=0.5f;
+    ivAnother1.center = CGPointMake(0, iv.bounds.size.height);
+    arrIvAnother = [NSArray arrayWithObjects:
+                    ivAnother0,
+                    ivAnother1,
+                    nil];
+    
+    //ivanotherの位置(center)はアイテム取得時のsetStatus内で定義
     
     arrayLaserRImg = [[NSArray alloc] initWithObjects:
                               [UIImage imageNamed:@"laser_r01.png"],
@@ -425,9 +445,18 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     if(cookieCount > 0){
         cookieCount --;
         if(cookieCount == 0){
+            numOfAnother = 0;
             [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeCookie]];
-            [ivAnother0 stopAnimating];
-            [ivAnother0 removeFromSuperview];
+            [arrIvAnother[0] removeFromSuperview];
+            [arrIvAnother[1] removeFromSuperview];
+            
+            
+//            NSLog(@"super of 0 = %@",[arrIvAnother[0] superview]);
+//            NSLog(@"super of 0 = %@",[arrIvAnother[1] superview]);
+            
+            [arrIvAnother[0] stopAnimating];
+            [arrIvAnother[1] stopAnimating];
+            
         }
     }
     
@@ -615,15 +644,17 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
          */
         int _beamSize = 50;
         //specialBeam
-        if(spWeapon != -1){//spWeapon = beamType
+        if(spWeapon != -1){//spWeapon=type(-code) of special weapon
             //左側
             [beamArray insertObject:[[SpecialBeamClass alloc] init:x - _beamSize/2 y_init:y width:_beamSize height:_beamSize type:spWeapon] atIndex:0];
             //右側
             [beamArray insertObject:[[SpecialBeamClass alloc] init:x + _beamSize/2 y_init:y width:_beamSize height:_beamSize type:spWeapon] atIndex:0];
         }
     
+        
+        
         //ordinaryBeam
-        switch (numOfBeam) {
+        switch (numOfBeam) {//ビーム列毎にビーム位置を変える
             case 1:{
                 [beamArray insertObject:[[OrdinaryBeamClass alloc] init:x
                                                                  y_init:y
@@ -631,7 +662,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
                                                                  height:_beamSize
                                                                   level:level]
                                 atIndex:0];//全て最初に格納
-                
+                //分身のビーム
+                if(cookieCount > 0){
+                    for(int i = 0; i < numOfAnother;i++){
+                        [beamArray insertObject:
+                         [[OrdinaryBeamClass alloc]
+                          init:x+((UIImageView *)arrIvAnother[i]).center.x-iv.bounds.size.width/2
+                          y_init:y+((UIImageView *)arrIvAnother[i]).center.y-iv.bounds.size.height/2
+                                    width:_beamSize
+                                    height:_beamSize
+                                    level:level]
+                          atIndex:0];
+                    }
+                }
                 break;
             }
             case 2:{
@@ -643,6 +686,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
                                                                      height:_beamSize
                                                                       level:level]
                                     atIndex:0];//全て最初に格納
+                    //分身のビーム
+                    if(cookieCount > 0){
+                        for(int i = 0; i < numOfAnother;i++){
+                            [beamArray insertObject:
+                             [[OrdinaryBeamClass alloc]
+                              init:x+((UIImageView *)arrIvAnother[i]).center.x-iv.bounds.size.width/2+(20*pow(-1,i+1))
+                              y_init:y+((UIImageView *)arrIvAnother[i]).center.y-iv.bounds.size.height/2
+                              width:_beamSize
+                              height:_beamSize
+                              level:level]
+                                            atIndex:0];
+                        }
+                    }
                 }
                 break;
             }
@@ -655,6 +711,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
                                                                      height:_beamSize
                                                                       level:level]
                                     atIndex:0];//全て最初に格納
+                    //分身のビーム
+                    if(cookieCount > 0){
+                        for(int i = 0; i < numOfAnother;i++){
+                            [beamArray insertObject:
+                             [[OrdinaryBeamClass alloc]
+                              init:x+((UIImageView *)arrIvAnother[i]).center.x-iv.bounds.size.width/2+40*(i-1)
+                              y_init:y+((UIImageView *)arrIvAnother[i]).center.y-iv.bounds.size.height/2
+                              width:_beamSize
+                              height:_beamSize
+                              level:level]
+                                            atIndex:0];
+                        }
+                    }
                 }
                 break;
             }
@@ -831,16 +900,17 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         }
         case ItemTypeCookie:{
             if([statusValue integerValue]){
-                cookieCount = cookieCountMax;
+                if(numOfAnother < 2){//0(=ordinary),1=>1,2
+                    cookieCount = cookieCountMax;
+                    numOfAnother++;
+                    //分身を作成
+                    [iv addSubview:arrIvAnother[numOfAnother-1]];
+                    [arrIvAnother[numOfAnother-1] startAnimating];
+                }
                 
-                //分身を作成
-                [iv addSubview:ivAnother0];
-                [ivAnother0 startAnimating];
-                ivAnother0.center =
-                CGPointMake(iv.bounds.size.width*2,
-                            iv.bounds.size.height*2);
             }else{
                 cookieCount = 0;
+                numOfAnother = 0;
             }
             break;
         }
@@ -874,7 +944,6 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
                 weapon1Count = 0;
                 numOfBeam = 1;
             }
-            //            [self setNumOfBeam:numOfBeam];
             break;
         }
         case ItemTypeWeapon2:{//wpLaser:red
@@ -904,14 +973,18 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     }
 }
 
--(void)setNumOfBeam:(int)_numOfBeam{
-    numOfBeam = _numOfBeam;
-}
 
+-(int)getNumOfAnother{
+    return numOfAnother;
+}
+/*
+ *本体のビーム数：分身は含めない
+ */
 -(int)getNumOfBeam{
     
     return numOfBeam;
 }
+
 -(void)defense0Effect{
 
     ivDefense0 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mySize, mySize)];
@@ -1300,7 +1373,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     bigCountMax = 500;
     bombCountMax = 500;
     healCountMax = 500;
-    
+    cookieCountMax=500;
     
     
 

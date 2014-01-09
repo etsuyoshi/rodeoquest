@@ -28,6 +28,8 @@
                  @"tool_bomb.png",
                  @"tool_magnet.png",
                  @"tool_magnet.png",
+                 @"tool_cookie.png",
+                 @"tool_cookie.png",
                  nil];
         
         
@@ -43,6 +45,8 @@
                  @"1回のゲームにおいてのみ、周囲で爆発が発生する時間を2倍にします。\n100枚のコインが必要です。",
                  @"次回以降の全てのゲームにおいて、磁石が有効になっている時間を0.5秒延長します。\n100枚のコインが必要です。",
                  @"1回のゲームにおいてのみ、磁石が有効になっている時間を2倍にします。\n100枚のコインが必要です。",
+                 @"次回以降の全てのゲームにおいて、分身の術が有効になっている時間を0.5秒延長します。\n100枚のコインが必要です。",
+                 @"1回のゲームにおいてのみ、分身の術が有効になっている時間を2倍にします。\n100枚のコインが必要です。",
                  nil];
         
         arrCost = [NSMutableArray arrayWithObjects:
@@ -54,8 +58,12 @@
                    @"100",
                    @"100",
                    @"100",
+                   @"100",
+                   @"100",
                    nil];
         arrTitle = [NSMutableArray arrayWithObjects:
+                    @"buy",
+                    @"buy",
                     @"buy",
                     @"buy",
                     @"buy",
@@ -75,6 +83,8 @@
                     @"itemlistBomb1",
                     @"itemlistMagnet0",
                     @"itemlistMagnet1",
+                    @"itemlistCookie0",
+                    @"itemlistCookie1",
                     nil];
     }
     return self;

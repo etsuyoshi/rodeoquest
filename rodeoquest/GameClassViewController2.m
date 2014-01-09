@@ -1267,9 +1267,8 @@ int sensitivity;
                         break;
                     }
                     case ItemTypeCookie:{
-                        if(![MyMachine getStatus:ItemTypeCookie]){
-                            [MyMachine setStatus:@"1" key:ItemTypeCookie];
-                        }
+                        //追加取得可能：MyMachine内部でnumOfAnotherが3未満なら追加するロジック
+                        [MyMachine setStatus:@"1" key:ItemTypeCookie];
                         break;
                     }
                     case ItemTypeTransparency:{
@@ -3424,17 +3423,27 @@ int sensitivity;
         //ビームはFIFOなので最初のもののみを表示
         //        [self.view addSubview:[[MyMachine getBeam:0] getImageView]];
         //            NSLog(@"after yield beam");
-        for(int i = 0; i < [MyMachine getNumOfBeam];i++){//ordinaryBeam
-            //                NSLog(@"%d", i);
+//        for(int i = 0; i < [MyMachine getNumOfBeam];i++){//ordinaryBeam
+//            //                NSLog(@"%d", i);
+//            for(int j = 0 ;j < [MyMachine getNumOfAnother];j++){
+//                [self.view addSubview:[[MyMachine getBeam:i*(j+i???)] getImageView]];//最初の１〜３個
+//            }
+//        }
+//        
+//        if([MyMachine getSpWeapon] >= 0){//if not specialWeapon :return -1
+//            int numOfOrdinaryBullet = [MyMachine getNumOfBeam];
+//            for(int i = numOfOrdinaryBullet ;i < numOfOrdinaryBullet + 2;i++){//それより前二つの弾丸はspecial弾
+//                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];
+//            }
+//        }
+        
+        //beamの数はgetNumOfBeam*(getNumOfAnother+1)+[numOfSpWeapon]<-最後の項はメソッドがない
+        int beamCnt = [MyMachine getNumOfBeam] * ([MyMachine getNumOfAnother]+1) + (([MyMachine getSpWeapon]>=0)?2:0);
+//        NSLog(@"beamCnt=%d", beamCnt);
+        for(int i = 0; i < beamCnt;i++){
             [self.view addSubview:[[MyMachine getBeam:i] getImageView]];//最初の１〜３個
         }
         
-        if([MyMachine getSpWeapon] >= 0){//if not specialWeapon :return -1
-            int numOfOrdinaryBullet = [MyMachine getNumOfBeam];
-            for(int i = numOfOrdinaryBullet ;i < numOfOrdinaryBullet + 2;i++){//それより前二つの弾丸はspecial弾
-                [self.view addSubview:[[MyMachine getBeam:i] getImageView]];
-            }
-        }
     }
 }
 

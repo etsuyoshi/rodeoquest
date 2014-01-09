@@ -65,7 +65,7 @@
     int healCountMax;
     int cookieCountMax;
     
-    
+    int numOfAnother;
     int numOfBeam;
     Boolean isAlive;
     UIImageView *iv;
@@ -81,6 +81,7 @@
     UIImageView *ivDefense1;//ItemTypeDefense1
     UIImageView *ivAnother0;//ItemTypeCookie
     UIImageView *ivAnother1;
+    NSArray *arrIvAnother;
 
     
     NSMutableArray *beamArray;
@@ -103,7 +104,7 @@
 -(void)setDamage:(int)damage location:(CGPoint)location;
 -(int)getStatus:(ItemType)_statusKey;
 -(void)setStatus:(NSString *)statusValue key:(ItemType)itemType;
--(void)setNumOfBeam:(int)_numOfBeam;
+-(int)getNumOfAnother;
 -(int)getNumOfBeam;
 -(void)die:(CGPoint)loc;
 -(int)getHitPoint;
