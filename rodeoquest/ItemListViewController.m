@@ -253,10 +253,11 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                                 itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),
                                                                 itemFrameWidth,
                                                                 itemFrameHeight)];
+        
 //        [self.view addSubview:eachView];
         [uvOnScroll addSubview:eachView];
         
-        //image(cash)の貼付
+        //image(left-icon)の貼付
         UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
                                                                    imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
                                                                    imageFrameWidth,
@@ -307,19 +308,6 @@ void (^actNoForCoinShort)(void) = ^(void) {
                     default:
                         break;
                 }
-//                //anim
-//                UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
-//                iv2.image = [UIImage imageNamed:arrIv2[i]];
-//                iv2.alpha = 1.0f;
-//                [self effectOnOff:iv2];
-//                [iv addSubview:iv2];
-//                
-//                //static
-//                UIImageView *iv3 = [[UIImageView alloc] initWithFrame:iv.bounds];
-//                iv3.image = [UIImage imageNamed:arrIv2[i]];
-//                iv3.alpha = 1.0f;
-//                iv3.transform = CGAffineTransformMakeRotation(15.0f * i * M_PI/180.0f);
-//                [iv addSubview:iv3];
             }
         }
 //        [self.view addSubview:iv];
@@ -341,6 +329,17 @@ void (^actNoForCoinShort)(void) = ^(void) {
         tv.bounces = NO;//no-bound
 //        [self.view addSubview:tv];
         [uvOnScroll addSubview:tv];
+        
+        
+        //説明文の下に幾つ購入したかを示すスモールアイコン(星かパール)
+        UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+        ivSmallIcon.image = [UIImage imageNamed:@"blue_item_yuri_big2.png"];//in progress
+        int numOfItemBought = [[attr getValueFromDevice:itemList[i]] integerValue];
+        for(int _num = 0; _num < numOfItemBought;_num++){
+            
+        }
+        
+        
         
         //プラスボタンの貼付
         CGRect btnRect = CGRectMake(imageFrameInitX + imageFrameWidth + 10 + itemFrameWidth / 2 + 20,
