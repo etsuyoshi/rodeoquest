@@ -83,7 +83,7 @@
     if(ABS(location.x - touchedX) > 100 ||
        ABS(location.y - touchedY) > 100 ){
         //originalization
-        self.frame = originalFrame;
+        
         kCenterColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0f];
         kMiddleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f];
         kEdgeColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
@@ -92,6 +92,9 @@
         isPressed = false;
 //        [self setBack];
 //        [self switchLight];
+        
+        self.frame = originalFrame;
+        
         
     }else{
         //        isPressed = true;
@@ -103,6 +106,11 @@
     NSLog(@"touches ended");
     if(isPressed){
         self.frame = originalFrame;
+        NSLog(@"originalFrame=%f, %f, %f, %f",
+              originalFrame.origin.x,
+              originalFrame.origin.y,
+              originalFrame.size.width,
+              originalFrame.size.height);
         //        UITouch *touch = [touches anyObject];
         //        CGPoint location = [touch locationInView:self];
         //離れた位置がボタン中心から離れていれば元に戻して何もしない

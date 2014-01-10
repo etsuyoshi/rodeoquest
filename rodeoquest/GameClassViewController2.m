@@ -2854,16 +2854,19 @@ int sensitivity;
     if(time_game > 0){
         //終了ボタンの配置
         
-        
-        
+        int radius = 100;
+        CGRect rectBtn =
+        CGRectMake(self.view.bounds.size.width/2 - radius,
+                   self.view.bounds.size.height - radius,
+                   radius*2, radius*2);
         ClowdButtonWIthView *btnForExit =
         [[ClowdButtonWIthView alloc]
-         initWithFrame:CGRectMake(0,0,100, 100)
+         initWithFrame:rectBtn
          target:self
          method:@"pushExit"];
         
         btnForExit.center =
-        CGPointMake(btnForExit.bounds.size.width/2,
+        CGPointMake(self.view.bounds.size.width/2,
                     self.view.bounds.size.height - btnForExit.bounds.size.height);
         
         [self.view addSubview:btnForExit];
