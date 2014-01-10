@@ -64,12 +64,21 @@
             heightLength = 1.0f;
             break;
         }
+        case ExplodeTypeWhite:{//ゲーム終了後のボタンとして採用
+            middleLocation = 0.8f;
+            centerColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0f];
+            middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f];//lightYellow
+            edgeColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
+            widthLength = 1.0f;
+            heightLength = 1.0f;
+            break;
+        }
         case ExplodeTypeSmallCircle:{//白ー＞明黄ー＞橙
             middleLocation = 0.5;
             centerColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5f];
             middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:224.0f/225.0f alpha:1.0f];//lightYellow
 //            edgeColor = [UIColor colorWithRed:1.0f green:165.0f/255.0f blue:0.0f alpha:1.0f];//orange
-            edgeColor = [UIColor colorWithRed:1 green:1 blue:104.0f/225.0f alpha:1];
+            edgeColor = [UIColor colorWithRed:1 green:1 blue:104.0f/225.0f alpha:1];//light-orange
             widthLength = 1.0f;
             heightLength = 1.0f;
             break;
@@ -239,6 +248,10 @@
             radius = _size;
             duration = 1.2f;//MIN(_duration, 0.3f);
             break;
+        }
+        case ExplodeTypeWhite:{//ゲーム終了画面の最後にボタンとして採用
+            radius = _size;
+            duration = 0.5f;
         }
         case ExplodeTypeFireBomb:{
             radius = _size;

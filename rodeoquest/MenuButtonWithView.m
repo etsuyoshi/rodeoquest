@@ -120,6 +120,7 @@
                      withObject:[NSNumber numberWithInt:tag_img]
                      afterDelay:0.01f];
         
+        //このクラスオブジェクトの生成後にputBlockが実行されている場合ブロックがヒモづけられているのでそのブロックを実行させる
         if(_actionBlock != nil){
             [self callActionBlock:self];
         }

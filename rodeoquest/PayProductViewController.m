@@ -29,78 +29,7 @@ NSArray *arrProductId;
     if (self) {
         // Custom initialization
         
-        //arrProductIdはrubyX.X.Xに変更したいがitunes connect側で実行する必要がある
-        arrProductId = [NSArray arrayWithObjects:
-                        @"coin1.1.1",
-                        @"coin2.1.1",
-                        @"coin3.1.1",
-                        @"coin4.1.1",
-                        @"coin5.1.1",
-                        @"coin6.1.1",
-                        nil];
-        arrAcquired = [NSArray arrayWithObjects:
-                       @"16",//number of ruby when user buy this item
-                       @"48",
-                       @"100",
-                       @"203",
-                       @"339",
-                       @"715",
-                       nil];
-        
-        //ボタン押下時の判定キー
-        arrProductType = [NSArray arrayWithObjects:
-                          [NSArray arrayWithObjects:
-                           [NSNumber numberWithInt:RubyType1],
-                           [NSNumber numberWithInt:RubyType2],
-                           [NSNumber numberWithInt:RubyType3],
-                           nil],
-                          [NSArray arrayWithObjects:
-                           [NSNumber numberWithInt:RubyType4],
-                           [NSNumber numberWithInt:RubyType5],
-                           [NSNumber numberWithInt:RubyType6],
-                           nil],
-                          nil];
-        
-        
-        arrTypeImage = [NSArray arrayWithObjects:
-                        [NSArray arrayWithObjects:
-                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct0],
-                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct1],
-                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct2],
-                         nil],
-                        [NSArray arrayWithObjects:
-                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct3],
-                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct4],
-                         [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct5],
-                         nil],
-                        nil];
-        //price
-        arrPrice = [NSArray arrayWithObjects:
-                    [NSArray arrayWithObjects:
-                     @"200",//yen
-                     @"500",
-                     @"1200",
-                     nil],
-                    [NSArray arrayWithObjects:
-                     @"2500",
-                     @"4100",
-                     @"6300",
-                     nil],
-                    nil];
-        arrTypeBack = [NSArray arrayWithObjects:
-                    [NSArray arrayWithObjects:
-                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                     nil],
-                    [NSArray arrayWithObjects:
-                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                     [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
-                     nil],
-                    nil];
-        
-        strImgUnit = @"icon_yen.png";
+        [self updateData];
         
         attr = [[AttrClass alloc]init];
         
@@ -134,46 +63,67 @@ NSArray *arrProductId;
         return;
     }else{
         NSLog(@"アプリ内課金制限なし：クリアー");
-        SKProductsRequest *request;
-        switch((RubyType)(num.integerValue)){
-            case RubyType1:{
-                
-                request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType1]]];
-                break;
-            }
-            case RubyType2:{
-                request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType2]]];
-                break;
-            }
-            case RubyType3:{
-                request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType3]]];
-                break;
-            }
-            case RubyType4:{
-                request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType4]]];
-                break;
-            }
-            case RubyType5:{
-                request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType5]]];
-                break;
-            }
-            case RubyType6:{
-                request= [[SKProductsRequest alloc]
-                          initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType6]]];
-                break;
-            }
-        }
-        request.delegate = self;
-        [request start];
         
-        [activityIndicator startAnimating];
         
+        viewDialog = [CreateComponentClass
+                      createAlertView2:self.view.bounds
+                      dialogRect:CGRectMake(0, 0,
+                                            self.view.bounds.size.width-50,
+                                            250)
+                      title:@"このルビーを購入しますか？" message:@""
+                      onYes:^{
+                          //購入プロセスへ
+                          [self startRequest:(RubyType)(num.integerValue)];
+                          [viewDialog removeFromSuperview];
+                      }
+                      onNo:^{
+                          [viewDialog removeFromSuperview];
+                      }];
+        [self.view addSubview:viewDialog];
     }
+    
+}
+
+-(void)startRequest:(RubyType)_num{
+    SKProductsRequest *request;
+    switch((RubyType)_num){
+        case RubyType1:{
+            
+            request= [[SKProductsRequest alloc]
+                      initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType1]]];
+            break;
+        }
+        case RubyType2:{
+            request= [[SKProductsRequest alloc]
+                      initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType2]]];
+            break;
+        }
+        case RubyType3:{
+            request= [[SKProductsRequest alloc]
+                      initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType3]]];
+            break;
+        }
+        case RubyType4:{
+            request= [[SKProductsRequest alloc]
+                      initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType4]]];
+            break;
+        }
+        case RubyType5:{
+            request= [[SKProductsRequest alloc]
+                      initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType5]]];
+            break;
+        }
+        case RubyType6:{
+            request= [[SKProductsRequest alloc]
+                      initWithProductIdentifiers: [NSSet setWithObject: [arrProductId objectAtIndex:RubyType6]]];
+            break;
+        }
+    }
+    request.delegate = self;
+    [request start];
+    
+    [activityIndicator startAnimating];
+    
     
 }
 
@@ -348,6 +298,9 @@ NSArray *arrProductId;
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
+    
+    [self updateData];
+    
     
     //動画背景
     //background
@@ -557,4 +510,78 @@ NSArray *arrProductId;
     [background startAnimation];
 }
 
+-(void)updateData{
+    //arrProductIdはrubyX.X.Xに変更したいがitunes connect側で実行する必要がある
+    arrProductId = [NSArray arrayWithObjects:
+                    @"coin1.1.1",
+                    @"coin2.1.1",
+                    @"coin3.1.1",
+                    @"coin4.1.1",
+                    @"coin5.1.1",
+                    @"coin6.1.1",
+                    nil];
+    arrAcquired = [NSArray arrayWithObjects:
+                   @"16",//number of ruby when user buy this item
+                   @"48",
+                   @"100",
+                   @"203",
+                   @"339",
+                   @"715",
+                   nil];
+    
+    //ボタン押下時の判定キー
+    arrProductType = [NSArray arrayWithObjects:
+                      [NSArray arrayWithObjects:
+                       [NSNumber numberWithInt:RubyType1],
+                       [NSNumber numberWithInt:RubyType2],
+                       [NSNumber numberWithInt:RubyType3],
+                       nil],
+                      [NSArray arrayWithObjects:
+                       [NSNumber numberWithInt:RubyType4],
+                       [NSNumber numberWithInt:RubyType5],
+                       [NSNumber numberWithInt:RubyType6],
+                       nil],
+                      nil];
+    
+    
+    arrTypeImage = [NSArray arrayWithObjects:
+                    [NSArray arrayWithObjects:
+                     [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct0],
+                     [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct1],
+                     [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct2],
+                     nil],
+                    [NSArray arrayWithObjects:
+                     [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct3],
+                     [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct4],
+                     [NSNumber numberWithInt:ButtonMenuImageTypeBuyProduct5],
+                     nil],
+                    nil];
+    //price
+    arrPrice = [NSArray arrayWithObjects:
+                [NSArray arrayWithObjects:
+                 @"200",//yen
+                 @"500",
+                 @"1200",
+                 nil],
+                [NSArray arrayWithObjects:
+                 @"2500",
+                 @"4100",
+                 @"6300",
+                 nil],
+                nil];
+    arrTypeBack = [NSArray arrayWithObjects:
+                   [NSArray arrayWithObjects:
+                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                    nil],
+                   [NSArray arrayWithObjects:
+                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                    nil],
+                   nil];
+    
+    strImgUnit = @"icon_yen.png";
+}
 @end

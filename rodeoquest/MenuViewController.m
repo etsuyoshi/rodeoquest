@@ -1239,7 +1239,7 @@ UIView *viewForDialog;
             int wSubject = 60;
             int hSubject = 40;
             int widthForm = viewFrame.frame.size.width - wSubject - 15;
-            int heightForm = 150;
+            int heightForm = 130;
             int heightSubjects = 40;
             //件名
             UILabel *lbSubject = [[UILabel alloc]initWithFrame:CGRectMake(xSubject, ySubject, wSubject, hSubject)];
@@ -1288,9 +1288,9 @@ UIView *viewForDialog;
             int widthButton = 100;
             int heightButton = 50;
             CoolButton *btSend = [CreateComponentClass createCoolButton:CGRectMake(tvDemand.frame.origin.x + tvDemand.frame.size.width - widthButton,//right
-                                                                                   tvDemand.frame.origin.y + tvDemand.frame.size.height + 10,
+                                                                                   tvDemand.frame.origin.y + tvDemand.frame.size.height + 5,
                                                                                    widthButton, heightButton)
-                                                                   text:@"send!"
+                                                                   text:@"送る"
                                                                     hue:0.85f
                                                              saturation:0.63f
                                                              brightness:0.79f
@@ -1302,7 +1302,7 @@ UIView *viewForDialog;
             CoolButton *btClose = [CreateComponentClass createCoolButton:CGRectMake(viewMailSuperForm.frame.size.width - widthButton - 5,//right
                                                                                    10,
                                                                                    widthButton - 20, heightButton + 10)
-                                                                    text:@"close"
+                                                                    text:@"閉じる"
                                                                      hue:0.532f
                                                               saturation:0.553f
                                                               brightness:0.535f

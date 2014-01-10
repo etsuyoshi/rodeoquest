@@ -26,6 +26,7 @@
 #import "MyMachineClass.h"
 #import "ScoreBoardClass.h"
 #import "GoldBoardClass.h"
+#import "ClowdButtonWIthView.h"
 #import "UIView+Animation.h"
 #import "Effect.h"
 #import <QuartzCore/QuartzCore.h>
@@ -46,7 +47,7 @@
     int enemyDown;//倒した敵の数
     WorldType worldType;
     
-    
+    int time_game;//開始してから死ぬまでの時間(死んでから計測した秒数を格納しておく)
     NSDate *startDate;//時間計測用
 }
 //bgm

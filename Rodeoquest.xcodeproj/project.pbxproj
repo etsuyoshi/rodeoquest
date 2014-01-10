@@ -244,6 +244,7 @@
 		3493A03D1869A51A0079452C /* CoinProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493A03C1869A51A0079452C /* CoinProductViewController.m */; };
 		3498259D18143B240043B0C0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3498259C18143B240043B0C0 /* AVFoundation.framework */; };
 		349825A318144F750043B0C0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349825A218144F750043B0C0 /* AudioToolbox.framework */; };
+		349A1B9C18801B9B00B85D24 /* ClowdButtonWIthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 349A1B9B18801B9B00B85D24 /* ClowdButtonWIthView.m */; };
 		349DA9F418695D4D008C9AE6 /* BarColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 349DA9F018695D4D008C9AE6 /* BarColor.png */; };
 		349DA9F518695D4D008C9AE6 /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 349DA9F118695D4D008C9AE6 /* close@2x.png */; };
 		349DA9F618695D4D008C9AE6 /* iconmonstr-x-mark-3-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 349DA9F218695D4D008C9AE6 /* iconmonstr-x-mark-3-icon.png */; };
@@ -696,6 +697,8 @@
 		3493A03C1869A51A0079452C /* CoinProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinProductViewController.m; sourceTree = "<group>"; };
 		3498259C18143B240043B0C0 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		349825A218144F750043B0C0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		349A1B9A18801B9B00B85D24 /* ClowdButtonWIthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClowdButtonWIthView.h; sourceTree = "<group>"; };
+		349A1B9B18801B9B00B85D24 /* ClowdButtonWIthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClowdButtonWIthView.m; sourceTree = "<group>"; };
 		349A7D9D184C586E006C2BD4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		349DA9F018695D4D008C9AE6 /* BarColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BarColor.png; sourceTree = "<group>"; };
 		349DA9F118695D4D008C9AE6 /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
@@ -1744,6 +1747,8 @@
 				3420AB951827AA9200AB0A84 /* UIView+Animation.m */,
 				340D04FF18599E52001DD8EC /* ViewWithEffectLevelUp.h */,
 				340D050018599E52001DD8EC /* ViewWithEffectLevelUp.m */,
+				349A1B9A18801B9B00B85D24 /* ClowdButtonWIthView.h */,
+				349A1B9B18801B9B00B85D24 /* ClowdButtonWIthView.m */,
 			);
 			name = Component;
 			sourceTree = "<group>";
@@ -2149,6 +2154,7 @@
 				342640B91879819500AC0CD7 /* UIColor+RGBValues.m in Sources */,
 				34E041E21850D81500CA3034 /* DefenseUpListViewController.m in Sources */,
 				342057E217F2B34C0084E99D /* AppDelegate.m in Sources */,
+				349A1B9C18801B9B00B85D24 /* ClowdButtonWIthView.m in Sources */,
 				34BDCB7C186943B400C641AF /* Utils.m in Sources */,
 				342057EE17F2B34C0084E99D /* InitViewController.m in Sources */,
 				342057FA17F2B8810084E99D /* GameClassViewController.m in Sources */,

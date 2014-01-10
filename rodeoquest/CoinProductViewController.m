@@ -22,66 +22,7 @@ UIView *viewDialog;
     if (self) {
         // Custom initialization
         
-        arrTypeImage = [NSArray arrayWithObjects:
-                        [NSArray arrayWithObjects:
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin0],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin1],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin2],
-                         nil],
-                        [NSArray arrayWithObjects:
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin3],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin4],
-                         [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin5],
-                         nil],
-                        nil];
-        arrAcquired = [NSArray arrayWithObjects:
-                       @"1500",//number of coin(gold) when user buy this item
-                       @"3500",
-                       @"8000",
-                       @"15000",
-                       @"27500",
-                       @"60000",
-                       nil];
-        arrProductType = [NSArray arrayWithObjects:
-                          [NSArray arrayWithObjects:
-                           [NSNumber numberWithInt:CoinType1],
-                           [NSNumber numberWithInt:CoinType2],
-                           [NSNumber numberWithInt:CoinType3],
-                           nil],
-                          [NSArray arrayWithObjects:
-                           [NSNumber numberWithInt:CoinType4],
-                           [NSNumber numberWithInt:CoinType5],
-                           [NSNumber numberWithInt:CoinType6],
-                           nil],
-                          nil];
-
-        //price
-        arrPrice = [NSArray arrayWithObjects:
-                    [NSArray arrayWithObjects:
-                     @"5",//ruby consumed(need)
-                     @"10",
-                     @"20",
-                     nil],
-                    [NSArray arrayWithObjects:
-                     @"30",
-                     @"50",
-                     @"100",
-                     nil],
-                    nil];
-        arrTypeBack = [NSArray arrayWithObjects:
-                       [NSArray arrayWithObjects:
-                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                        nil],
-                       [NSArray arrayWithObjects:
-                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                        [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
-                        nil],
-                       nil];
-        
-        strImgUnit = @"jewel_small";//購入単位イメージ画像(.png省略)
+        [self updateData];
     }
     return self;
 }
@@ -156,6 +97,8 @@ UIView *viewDialog;
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [self updateData];
     
     myLblRubyAmount.text = [NSString stringWithFormat:@"%d",
                             [[attr getValueFromDevice:@"ruby"] integerValue]];
@@ -317,5 +260,69 @@ UIView *viewDialog;
     [[PayProductViewController alloc] init];
     [self presentViewController:payView animated:YES completion:nil];
 
+}
+
+-(void)updateData{
+    
+    arrTypeImage = [NSArray arrayWithObjects:
+                    [NSArray arrayWithObjects:
+                     [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin0],
+                     [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin1],
+                     [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin2],
+                     nil],
+                    [NSArray arrayWithObjects:
+                     [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin3],
+                     [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin4],
+                     [NSNumber numberWithInteger:ButtonMenuImageTypeBuyCoin5],
+                     nil],
+                    nil];
+    arrAcquired = [NSArray arrayWithObjects:
+                   @"1500",//number of coin(gold) when user buy this item
+                   @"3500",
+                   @"8000",
+                   @"15000",
+                   @"27500",
+                   @"60000",
+                   nil];
+    arrProductType = [NSArray arrayWithObjects:
+                      [NSArray arrayWithObjects:
+                       [NSNumber numberWithInt:CoinType1],
+                       [NSNumber numberWithInt:CoinType2],
+                       [NSNumber numberWithInt:CoinType3],
+                       nil],
+                      [NSArray arrayWithObjects:
+                       [NSNumber numberWithInt:CoinType4],
+                       [NSNumber numberWithInt:CoinType5],
+                       [NSNumber numberWithInt:CoinType6],
+                       nil],
+                      nil];
+    
+    //price
+    arrPrice = [NSArray arrayWithObjects:
+                [NSArray arrayWithObjects:
+                 @"5",//ruby consumed(need)
+                 @"10",
+                 @"20",
+                 nil],
+                [NSArray arrayWithObjects:
+                 @"30",
+                 @"50",
+                 @"100",
+                 nil],
+                nil];
+    arrTypeBack = [NSArray arrayWithObjects:
+                   [NSArray arrayWithObjects:
+                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                    nil],
+                   [NSArray arrayWithObjects:
+                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                    nil],
+                   nil];
+    
+    strImgUnit = @"jewel_small";//購入単位イメージ画像(.png省略)
 }
 @end

@@ -585,7 +585,7 @@ int sensitivity;
         countFirstUserTouchEnable--;
         if(countFirstUserTouchEnable == 0){
             //初めてユーザーがタッチ可能になったら
-            [self hideActivityIndicator];
+            [self hideActivityIndicator];//くるくるを消す
         }
     }else{
     }
@@ -788,6 +788,9 @@ int sensitivity;
             //            [self exitProcess];
             [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(exitProcess) userInfo:nil repeats:NO];//低スピード再開
             [self showActivityIndicator];
+            
+            //startDateからこの時点までの時間をゲーム時間として定義(attr:time_maxと比較、必要に応じて格納)
+            time_game = (int)[[NSDate date] timeIntervalSinceDate:startDate];//時間を計測して格納する
             return;
         }
     }
@@ -2017,6 +2020,11 @@ int sensitivity;
     int beforeLevel = [[attr getValueFromDevice:@"level"] intValue];
     int beforeExp = [[attr getValueFromDevice:@"exp"] intValue];
     int go_component_width = 250;
+    
+    int _score = [ScoreBoard getScore];
+    int _gold = [GoldBoard getScore];
+    int _bonus = 100;//飛行時間(time_game：既に格納済)に応じたボーナス：time_gameを引数とするシグモイド関数を定義
+    
     //全体のフレーム
     UIView *view_go = [CreateComponentClass createView];
     view_go.frame =
@@ -2060,13 +2068,54 @@ int sensitivity;
     [view_go addSubview:label];
     
     
-    //[UIFont fontWithName:@"Noteworthy-Light" size:15];
+    
+    int label_h = 30;//表示するテキストの縦(高さ)
+    //今回獲得したスコア:static
+    UILabel *lbl_nowScore =
+    [[UILabel alloc]initWithFrame:CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+                                             go_y + go_height + 15,
+                                             go_component_width,
+                                             label_h)];
+    lbl_nowScore.text = [NSString stringWithFormat:
+                         @"今回獲得したスコア：%d",
+                         _score];
+    //左端を合わせる
+//    [lbl_nowScore sizeToFit];
+//    lbl_nowScore.center =
+//    CGPointMake(view_go.bounds.size.width/2,
+//                go_y + go_height + 5 + lbl_nowScore.bounds.size.height/2+5);
+    lbl_nowScore.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:14];
+    lbl_nowScore.textColor = [UIColor whiteColor];
+    [view_go addSubview:lbl_nowScore];
+    
+    //ボーナス
+    UILabel *lbl_bonus =
+    [[UILabel alloc]initWithFrame:CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+                                             lbl_nowScore.frame.origin.y + lbl_nowScore.bounds.size.height + 5,
+                                             go_component_width,
+                                             label_h)];
+    lbl_bonus.text = [NSString stringWithFormat:
+                         @"飛行時間によるボーナススコア：%d",
+                         _bonus];
+    //左端を合わせる
+//    [lbl_bonus sizeToFit];
+//    lbl_bonus.center =
+//    CGPointMake(view_go.bounds.size.width/2,
+//                go_y + go_height + 5 +
+//                lbl_nowScore.bounds.size.height +
+//                lbl_bonus.bounds.size.height/2+5);
+    lbl_bonus.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:14];
+    lbl_bonus.textColor = [UIColor whiteColor];
+    [view_go addSubview:lbl_bonus];
+    
+    
+    
+    
     
     
     //ScoreBoard
     //スコアの上端位置
-    int score_y = go_y + go_height + 5;
-    int label_h = 30;//表示するテキストの縦(高さ)
+    int score_y = lbl_bonus.frame.origin.y + lbl_bonus.bounds.size.height + 5;
     int pv_h = 25;
     CGRect rect_score = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
                                    score_y,
@@ -2187,18 +2236,24 @@ int sensitivity;
     //    CreateComponentClass *createComponentClass = [[CreateComponentClass alloc]init];
     
     
-    //ボタン配置=>下から算出
-    CGRect rect_btn = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
-                                 view_go.bounds.size.height - go_height - 10,
-                                 go_component_width,
-                                 go_height);
-    UIButton *qbBtn = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
-                                                      rect:rect_btn
-                                                     image:@"blue_item_yuri_big2.png"
-                                                     title:@"exit"
-                                                    target:self
-                                                  selector:@"pushExit"];
-    [view_go addSubview:qbBtn];
+    //ボタン配置=>下から算出:ボタンではなく、終了したらこのフレームを押せば終了するようにする
+//    CGRect rect_btn = CGRectMake(view_go.bounds.size.width/2 - go_component_width/2,
+//                                 view_go.bounds.size.height - go_height - 10,
+//                                 go_component_width,
+//                                 go_height);
+//    UIButton *qbBtn = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
+//                                                      rect:rect_btn
+//                                                     image:@"blue_item_yuri_big2.png"
+//                                                     title:@"exit"
+//                                                    target:self
+//                                                  selector:@"pushExit"];
+//    [view_go addSubview:qbBtn];
+    
+//    UIView *viewForExit =
+//    [[ViewExplode alloc]initWithFrame:
+
+    
+    //終了ボタンはhideIndicator
     
     //マルチスレッド用の描画コンポーネント初期化完了
     
@@ -2232,7 +2287,7 @@ int sensitivity;
         }
         
         //        float unit = (float)expTilNextLevel / 100.0f;//progressViewの100分割ユニット＝最初のレベルで固定
-        float unit = (float)[ScoreBoard getScore]/100.0f;//experience devided per 100count
+        float unit = (float)_score/100.0f;//experience devided per 100count
         
         //unitは取得スコア[ScoreBoard getScore]の100分割の方がすっきりする(最初のレベルにおけるレベルアップのための必要経験値の100分割にしてしまうと次のレベルに上がった時に１カウント当たりの上昇速度が低下してしまい時間がかかる)
         int loopCount = 100;//(float)(exp + [ScoreBoard getScore])/unit;
@@ -2244,8 +2299,8 @@ int sensitivity;
         Boolean flagLevelUp = false;
         int goldCnt = 0;
         int goldAdd = 0;
-        if([GoldBoard getScore] != 0){
-            goldAdd = ([GoldBoard getScore]/100==0)?1:((float)[GoldBoard getScore]/100);//大体100カウントで終わらせる
+        if(_gold != 0){
+            goldAdd = (_gold/100==0)?1:((float)_gold/100.0f);//大体100カウントで終わらせる
         }
         //exp初期値
         //        [pv_score setProgress:(float)pvScoreValue/100.0f//<-why?????
@@ -2260,18 +2315,18 @@ int sensitivity;
         }
         
         for(int cnt = 0;cnt < loopCount ||//必ず100回繰り返す
-            goldCnt < [GoldBoard getScore]||//獲得金額を100分割にして100回ループ
+            goldCnt < _gold||//獲得金額を100分割にして100回ループ
             cnt < (float)enemyDown/(float)enemyCount*100//倒した敵の数
             ;cnt++){
             
             goldCnt += goldAdd;
-            goldCnt = MIN(goldCnt, [GoldBoard getScore]);
+            goldCnt = MIN(goldCnt, _gold);
             //時間のかかる処理
             //            NSLog(@"cnt = %d", cnt);
             for(int i = 0; i < 10;i++){
                 //                NSLog(@"i = %d to expend time", i);//時間経過
                 NSLog(@"cnt = %d, i = %d, before-exp:%d, acquired:%d, after:%d, gold:%d, unit:%f, expUntileNextLevel:%d, level:%d, complete:%f, down:%d, count:%d",
-                      cnt, i, exp, [ScoreBoard getScore], exp + [ScoreBoard getScore], [GoldBoard getScore], unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
+                      cnt, i, exp, _score, exp + _score, _gold, unit, expTilNextLevel, level, (float)enemyDown/enemyCount, enemyDown, enemyCount);
             }
             if(cnt < loopCount){
                 if(pvScoreValue + unit < expTilNextLevel){
@@ -2335,12 +2390,12 @@ int sensitivity;
                 }
                 
                 //gold
-                if([GoldBoard getScore] > 0 &&
-                   goldCnt < [GoldBoard getScore]-1){//少なくとも一枚以上獲得した場合の通常ループ
+                if(_gold > 0 &&
+                   goldCnt < _gold-1){//少なくとも一枚以上獲得した場合の通常ループ
                     //                    goldCnt = (goldCnt + goldAdd > [GoldBoard getScore])?[GoldBoard getScore]:(goldCnt + goldAdd);
                     tv_gold.text = [NSString stringWithFormat:@"Zeny : %d", goldCnt];
                 }else{//最終状態
-                    tv_gold.text = [NSString stringWithFormat:@"Zeny : %d", [GoldBoard getScore]];
+                    tv_gold.text = [NSString stringWithFormat:@"Zeny : %d", _gold];
                 }
                 
                 //complete
@@ -2444,7 +2499,7 @@ int sensitivity;
 -(void)onClickedSettingButton{
     NSLog(@"clicked setting button");
     isGameMode = false;
-    [self displaySettingFrame];
+    
 }
 
 -(void)displayStoppedFrame{
@@ -2602,9 +2657,9 @@ int sensitivity;
     
     //http://d.hatena.ne.jp/mmasashi/20100524/1286123680
     int time_max = [[attr getValueFromDevice:@"time_max"] intValue];
-    int time_now = (int)[[NSDate date] timeIntervalSinceDate:startDate];
-    if(time_now > time_max){
-        [attr setValueToDevice:@"time_max" strValue:[NSString stringWithFormat:@"%d", time_now]];
+    
+    if(time_game > time_max){//time_gameは既にexitprocessを呼ぶ直前に計測
+        [attr setValueToDevice:@"time_max" strValue:[NSString stringWithFormat:@"%d", time_game]];
     }
     //do something
     //    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
@@ -2749,11 +2804,13 @@ int sensitivity;
     //    _loadingView                 = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
     _loadingView = [[UIView alloc] initWithFrame:self.view.bounds];
     //    _loadingView.backgroundColor = [UIColor blackColor];
-    _loadingView.backgroundColor = [UIColor clearColor];
-//    _loadingView.backgroundColor = [UIColor blackColor];//test
+    _loadingView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
     //    _loadingView.alpha           = 0.5f;//上のビューにも反映
     _indicator                   = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [_indicator setCenter:CGPointMake(_loadingView.bounds.size.width/2, _loadingView.bounds.size.height/2)];
+//    [_indicator setCenter:CGPointMake(_loadingView.bounds.size.width/2, _loadingView.bounds.size.height/2)];
+    _indicator.center =
+    CGPointMake(_loadingView.bounds.size.width/2,
+                _loadingView.bounds.size.height - 100);//下からの相対位置で指定する
     
     
     [_loadingView addSubview:_indicator];
@@ -2766,15 +2823,16 @@ int sensitivity;
     
     
     
-    UITextView *tvWaiting = [CreateComponentClass createTextView:CGRectMake(0, 0, _loadingView.frame.size.width, 50)
-                                                            text:@"now updating..."
-                                                            font:@"AmericanTypewriter-Bold"
-                                                            size:30
-                                                       textColor:[UIColor lightGrayColor]
-                                                       backColor:[UIColor clearColor]
-                                                      isEditable:NO];
+    UITextView *tvWaiting = [CreateComponentClass
+                             createTextView:CGRectMake(0, 0, _loadingView.frame.size.width, 50)
+                             text:@"now loading..."
+                             font:@"AmericanTypewriter-Bold"
+                             size:30
+                             textColor:[UIColor lightGrayColor]
+                             backColor:[UIColor clearColor]
+                             isEditable:NO];
     tvWaiting.center = CGPointMake(_loadingView.frame.size.width/2,
-                                   _loadingView.frame.size.height/2 + 50);//50px under center
+                                   _indicator.center.y + _indicator.bounds.size.height+5);//under indicator
     tvWaiting.textAlignment = NSTextAlignmentCenter;
     tvWaiting.text = @"data updating ...";
     [_loadingView addSubview:tvWaiting];
@@ -2783,6 +2841,7 @@ int sensitivity;
 
 /*
  * インジケーター非表示:メニュー非表示モードなので、画面中心に薄く表示される程度が良い？->rotate-animate?
+ * 開始時と終了時に呼び出される：time_gameで判別可能
  */
 - (void)hideActivityIndicator
 {
@@ -2791,6 +2850,26 @@ int sensitivity;
     [_indicator stopAnimating];
     [_loadingView removeFromSuperview];
     //    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    if(time_game > 0){
+        //終了ボタンの配置
+        
+        
+        
+        ClowdButtonWIthView *btnForExit =
+        [[ClowdButtonWIthView alloc]
+         initWithFrame:CGRectMake(0,0,100, 100)
+         target:self
+         method:@"pushExit"];
+        
+        btnForExit.center =
+        CGPointMake(btnForExit.bounds.size.width/2,
+                    self.view.bounds.size.height - btnForExit.bounds.size.height);
+        
+        [self.view addSubview:btnForExit];
+        [self.view bringSubviewToFront:btnForExit];
+        
+    }
 }
 
 

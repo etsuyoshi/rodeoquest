@@ -31,6 +31,8 @@ NSArray *arrProductType;
 UIImageView *viewYenImage;
 UIView *rubyView;//現在保有ルビーを表示する
 UILabel *lblRubyAmount;
+
+UIView *viewDialog;
 AttrClass *attr;
 
 @interface PayProductViewController : UIViewController<SKProductsRequestDelegate,
