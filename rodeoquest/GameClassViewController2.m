@@ -2857,17 +2857,17 @@ int sensitivity;
         int radius = 100;
         CGRect rectBtn =
         CGRectMake(self.view.bounds.size.width/2 - radius,
-                   self.view.bounds.size.height - radius,
+                   self.view.bounds.size.height - radius*2,
                    radius*2, radius*2);
         ClowdButtonWIthView *btnForExit =
         [[ClowdButtonWIthView alloc]
          initWithFrame:rectBtn
          target:self
-         method:@"pushExit"];
+         method:@"pushExit"];//center調整してはいけない(内部で引数にあるフレームを参照しているため)
         
-        btnForExit.center =
-        CGPointMake(self.view.bounds.size.width/2,
-                    self.view.bounds.size.height - btnForExit.bounds.size.height);
+//        btnForExit.center =
+//        CGPointMake(self.view.bounds.size.width/2,
+//                    self.view.bounds.size.height - btnForExit.bounds.size.height);
         
         [self.view addSubview:btnForExit];
         [self.view bringSubviewToFront:btnForExit];
