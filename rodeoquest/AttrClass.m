@@ -235,23 +235,21 @@
         NSLog(@"現在レベル%dの経験値%dに%dを加算", beforeLevel, beforeExp , addingVal);
         
         int afterExp = beforeExp + addingVal;
-        int _maxExp = [[MaxExpArray objectAtIndex:beforeLevel] intValue];
+        int _maxExp = [[MaxExpArray objectAtIndex:beforeLevel] intValue];//現在レベルでの最高経験値を取得
         NSLog(@"beforeExp = %d, beforeLevel = %d, afterExp = %d, _maxExp = %d",
               beforeExp, beforeLevel, afterExp, _maxExp);
-        if (afterExp >= _maxExp){
-            int afterLevel = beforeLevel + 1;
+        if (afterExp >= _maxExp){//現在レベルの最高経験値を超えたら
+            int afterLevel = beforeLevel + 1;//レベルアップ
             if(afterLevel < [MaxExpArray count]){//上昇後レベルが上限(90)未満なら
-                [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];
+                [self setValueToDevice:@"level" strValue:[NSString stringWithFormat:@"%d", afterLevel]];//レベルアップを反映
                 NSLog(@"レベルアップ!%d->%d", beforeLevel, afterLevel);
                 
-                //残っている、追加すべき経験値を計算(beforeLevelにおける最高経験値)
+                //前のレベルにおける最高経験値を差し引いた後に残っている(次のレベルにおいて)追加すべき経験値を計算(beforeLevelにおける最高経験値)
                 afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
                 
                 
                 //_maxExpの更新(再取得)
                 _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
-                
-                
                 if(afterExp < _maxExp){
                     [self setValueToDevice:@"exp" strValue:[NSString stringWithFormat:@"%d", afterExp]];
                     return true;
@@ -296,13 +294,18 @@
             [self setValueToDevice:strID_level strValue:[NSString stringWithFormat:@"%d", afterLevel]];
             NSLog(@"武器レベルアップ!%d->%d", beforeLevel, afterLevel);
             
-            //_maxExpの更新
-            _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
             
-            if(afterExp < _maxExp){
+            //前のレベルにおける最高経験値を差し引いた後に残っている(次のレベルにおいて)追加すべき経験値を計算(beforeLevelにおける最高経験値)
+            afterExp = afterExp - _maxExp;// - [[MaxExpArray objectAtIndex:afterLevel - 1] intValue];
+            
+            
+            
+            //_maxExp(最高経験値)の更新と現在の(前レベルの差し引き後の)経験値が(更新後)最高経験値よを上回っていれば再起呼出し②、そうでなければ経験値の書き込み
+            _maxExp = [[MaxExpArray objectAtIndex:afterLevel] intValue];
+            if(afterExp < _maxExp){//①
                 [self setValueToDevice:strID_exp strValue:[NSString stringWithFormat:@"%d", afterExp]];
                 return true;
-            }else{
+            }else{//②
                 [self addWeaponExp:afterExp weaponID:(BowType)_weaponId];
             }
         }

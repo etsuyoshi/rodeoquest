@@ -106,7 +106,7 @@ UIView *superViewForEquipWpn;
                  @"発射頻度の高い武器で、通常の敵に中ダメージを与えます。特に水属性以外(火属性？)の敵に中ダメージを与えます。",//1rep=80coin
                  @"発射頻度は中程度ですが、通常の敵に大ダメージを与えます。特に水属性以外(火属性？)の敵に最大のダメージを与えます。",//1rep=70coin
                  @"致死性の毒を持つ虫を発射します。クリティカルヒットにより即死することがあります。",//1rep=90coin
-                 @"武器自体の見た目は可愛い一方で、着弾した瞬間に敵を食い尽くし、大ダメージを与えます。針属性の敵や虫属性の敵にはダメージを与えないことがあります。",//1rep=80coin
+                 @"着弾した瞬間に敵を食い尽くし、大ダメージを与えます。針属性の敵や虫属性の敵にはダメージを与えないことがあります。",//1rep=80coin
                  @"切れ味鋭い針葉を放ちます。クリティカルヒットと継続的なダメージを与えます。",//1rep=70coin
                  @"魔力によりクリティカルヒットすると敵を完全に消し去ります。",//1rep=90coin
                  @"流れ星によるメテオストライク。全ての敵に大ダメージを与えます。",//1rep=80coin
@@ -125,18 +125,32 @@ UIView *superViewForEquipWpn;
                    @"70",
                    nil];
         
+        //attrクラスの武器保有(装備)ステータスのキー値と同値にする必要：displaySmallIcon&displayLevelで使用するため
         itemList = [NSMutableArray arrayWithObjects:
-                    @"itemlistWeaponBuy0",
-                    @"itemlistWeaponBuy1",
-                    @"itemlistWeaponBuy2",
-                    @"itemlistWeaponBuy3",
-                    @"itemlistWeaponBuy4",
-                    @"itemlistWeaponBuy5",
-                    @"itemlistWeaponBuy6",
-                    @"itemlistWeaponBuy7",
-                    @"itemlistWeaponBuy8",
-                    @"itemlistWeaponBuy9",
+                    @"weaponID0",
+                    @"weaponID1",
+                    @"weaponID2",
+                    @"weaponID3",
+                    @"weaponID4",
+                    @"weaponID5",
+                    @"weaponID6",
+                    @"weaponID7",
+                    @"weaponID8",
+                    @"weaponID9",
                     nil];
+                    
+//        itemList = [NSMutableArray arrayWithObjects:
+//                    @"itemlistWeaponBuy0",
+//                    @"itemlistWeaponBuy1",
+//                    @"itemlistWeaponBuy2",
+//                    @"itemlistWeaponBuy3",
+//                    @"itemlistWeaponBuy4",
+//                    @"itemlistWeaponBuy5",
+//                    @"itemlistWeaponBuy6",
+//                    @"itemlistWeaponBuy7",
+//                    @"itemlistWeaponBuy8",
+//                    @"itemlistWeaponBuy9",
+//                    nil];
         
 //        arrTitle = [NSMutableArray array];
         
@@ -168,8 +182,6 @@ UIView *superViewForEquipWpn;
                                @"W_WingBow.png",
                                nil];
         
-        
-        displayPerl = false;
     }
     return self;
 }
@@ -643,4 +655,54 @@ UIView *superViewForEquipWpn;
     }
 }
 
+/*
+ *親クラスでは購入した個数だけuvOnScrollに表示するメソッド
+ *本クラスでは装備している武器にはスターをそれ以外には購入していれば赤のパールを表示する？
+ *他の武器屋と一貫性を持たせるため、個数(１個まで)をパールで表現する
+ */
+-(void)displaySmallIcon:(int)_noOfItemList{
+    /*武器を購入したか否かは武器アイコンに表示されるので不要
+    //itemListがattrクラスの武器保有ステータスのキー値と同値である必要：
+    int numOfItemBought = [[attr getValueFromDevice:itemList[_noOfItemList]] integerValue];//各itemlistの値
+    if(numOfItemBought > 0)numOfItemBought = 1;//保有もしくは装備の状態を一つのパールで表現する(親クラスと異なる)
+    int intervalSmallIcon = smallIconHeight*2/3;//width = height & small icon is too much margin so here needs one of width
+    NSLog(@"itemlist%d=%@, num of item bought = %d", _noOfItemList, itemList[_noOfItemList], numOfItemBought);
+    for(int _num = 0; _num < numOfItemBought;_num++){
+        UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
+        ivSmallIcon.image = [UIImage imageNamed:strSmallIcon];
+        ivSmallIcon.center = CGPointMake(textViewInitX + _num * intervalSmallIcon + 10,
+                                         itemFrameInitY +  _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight+1);
+        //itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),// + 10,
+        [uvOnScroll addSubview:ivSmallIcon];
+    }
+    */
+    
+    //購入済の武器のアイコンを実画像で表示
+    
+    
+    //レベルをスターで表現
+    [self displayLevelByStar:_noOfItemList];
+}
+
+//各武器レベルをスターで表現
+-(void)displayLevelByStar:(int)_noOfItemList{
+    NSString *_strKeyLevel = [NSString stringWithFormat:@"%@_level", itemList[_noOfItemList]];
+    
+    int _numOfStar = 0;
+    
+    //武器を保有していればスターを表示(最初のレベルが１から始まるので、この条件分岐をしないと全ての武器で１から開始されてしまう
+    if([[attr getValueFromDevice:itemList[_noOfItemList]] integerValue] > 0){
+        _numOfStar = [[attr getValueFromDevice:_strKeyLevel] integerValue];
+    }
+    
+    
+    NSLog(@"level of weapon%d = %d",_noOfItemList, _numOfStar);
+    for(int _num = 0; _num < _numOfStar; _num++){
+        UIImageView *ivStar = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
+        ivStar.image = [UIImage imageNamed:@"star2.png"];
+        ivStar.center = CGPointMake(textViewInitX + _num * 7,
+                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval));
+        [uvOnScroll addSubview:ivStar];
+    }
+}
 @end

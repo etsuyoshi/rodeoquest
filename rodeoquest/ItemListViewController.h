@@ -19,9 +19,10 @@ UITextView *tvGoldAmount;
 UIButton *closeBtn;
 UIView *viewForCoinShort;//コインがショートしている場合のダイアログビュー
 UIView *viewWantBuy;//購入するか否か確認するダイアログビュー
+UIView *uvOnScroll;
 NSString *strImgUnit;
 UIView *cashView;
-
+NSString *strSmallIcon;
 NSString *nameCurrency;
 
 @interface ItemListViewController : UIViewController{
@@ -35,8 +36,39 @@ NSString *nameCurrency;
     NSMutableArray *itemList;
     NSMutableArray *arrBtnBuy;//list of UIButton
     
-    Boolean displayPerl;//各アイテムに個数を示すパールを表示するか否か
     
+    
+    
+    //frame-size
+    int itemFrameWidth;
+    int itemFrameHeight;
+    int itemFrameInitX;
+    int itemFrameInitY;
+    int itemFrameInterval;
+    int smallIconHeight;
+    
+    
+    //icon-size
+    int imageFrameWidth;
+    int imageFrameHeight;
+    int imageFrameInitX;
+    int imageFrameInitY;
+    int imageFrameInterval;
+    
+    //text(view)-size
+    int textViewInitX;
+    int textViewHeight;
+    int textViewWidth;
+    
+    //貨幣ビュー
+    int cashFrameWidth;
+    int cashFrameHeight;
+    int cashFrameInitX;
+    int cashFrameInitY;
+    
+    //スクロールビューを載せるスーバービューの位置
+    int init_y;
+    int init_x;
     
 //    void (^actYesForCoinShort)(void);
 //    void (^actNoForCoinShort)(void);

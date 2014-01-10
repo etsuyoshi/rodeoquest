@@ -115,8 +115,38 @@ void (^actNoForCoinShort)(void) = ^(void) {
         
         strImgUnit = @"coin_yellow";//image of unit to buy item.
         
-        displayPerl = true;//サブクラスでパールを表示しないViewCon(WeaponBuyListViewController)がある
         attr = [[AttrClass alloc]init];
+        
+        
+        
+        //ビューの位置
+        //frame-size
+        itemFrameWidth = 300;
+        itemFrameHeight = 75;
+        itemFrameInitX = 5;
+        itemFrameInitY = 10;
+        itemFrameInterval = 10;
+        smallIconHeight = 25;
+        //icon-size
+        imageFrameWidth = itemFrameWidth / 6;
+        imageFrameHeight = itemFrameHeight - 20;
+        imageFrameInitX = itemFrameInitX + 10;
+        imageFrameInitY = itemFrameInitY + 10;
+        imageFrameInterval = itemFrameInterval + 20;
+        //text(view)-size
+        textViewInitX = imageFrameInitX + imageFrameWidth;
+        textViewHeight = itemFrameHeight-smallIconHeight/2;
+        textViewWidth = itemFrameWidth * 5 / 9;//微調整
+        //cash　frame
+        cashFrameWidth = 170;
+        cashFrameHeight = 50;
+        cashFrameInitX = 145;
+        cashFrameInitY = 40;
+        //location of superview which is listing each item-frame
+        init_x = 5;
+        init_y = 95;
+        
+        strSmallIcon = @"blue_item_yuri_big.png";//WeaponBuyListViewControllerのみstar2.pngにする
     }
     return self;
 }
@@ -154,11 +184,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
     self.view.backgroundColor = [UIColor colorWithPatternImage:image];
     
     
-    //cash　frame
-    int cashFrameWidth = 170;
-    int cashFrameHeight = 50;
-    int cashFrameInitX = 145;
-    int cashFrameInitY = 40;
+    
     cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
                                                            cashFrameInitY,
                                                            cashFrameWidth,
@@ -196,26 +222,6 @@ void (^actNoForCoinShort)(void) = ^(void) {
     
     
     
-    
-    
-    
-    
-    //frame
-    int itemFrameWidth = 300;
-    int itemFrameHeight = 75;
-    int itemFrameInitX = 5;
-    int itemFrameInitY = 10;
-    int itemFrameInterval = 10;
-    
-    int imageFrameWidth = itemFrameWidth / 6;
-    int imageFrameHeight = itemFrameHeight - 20;
-    int imageFrameInitX = itemFrameInitX + 10;
-    int imageFrameInitY = itemFrameInitY + 10;
-    int imageFrameInterval = itemFrameInterval + 20;
-    
-    
-    int init_y = 95;
-    int init_x = 5;
     //フレームの枠の長さはアイテムの表示が画面サイズ内に収まればアイテム個数まで。
     //収まらなければ画面サイズ一杯にする
     UIView *viewFrame = [CreateComponentClass
@@ -235,11 +241,11 @@ void (^actNoForCoinShort)(void) = ^(void) {
     sv.bounces = NO;//バウンドさせない
     
     //svの上に貼られるview
-    UIView *uvOnScroll = [[UIView alloc]
-                          initWithFrame:CGRectMake(0,0,
-                                                   sv.bounds.size.width,
-                                                   itemFrameInitY + [arrIv count] * (itemFrameHeight + itemFrameInterval)
-                                                   )];
+    uvOnScroll = [[UIView alloc]
+                  initWithFrame:CGRectMake(0,0,
+                                           sv.bounds.size.width,
+                                           itemFrameInitY + [arrIv count] * (itemFrameHeight + itemFrameInterval)
+                                           )];
     [uvOnScroll setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0f]];
     sv.contentSize = uvOnScroll.bounds.size;
     
@@ -260,12 +266,13 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [uvOnScroll addSubview:eachView];
         
         //image(left-icon)の貼付
-        UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
+        UIImageView *ivIcon = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
                                                                    imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
                                                                    imageFrameWidth,
                                                                    imageFrameHeight)];
-        iv.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
+        ivIcon.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
         
+        //アイコンの上に載せるエフェクト(キラキラ)
         if([arrIv2 count] > 0 && [arrIvType count] > 0){
             if(![[arrIv2 objectAtIndex:i] isEqualToString:@""]){
 //                NSLog(@"arritType=%d, %d", (int)arrIvType[i], [arrIvType[i] integerValue]);
@@ -276,35 +283,35 @@ void (^actNoForCoinShort)(void) = ^(void) {
                     }
                     case 1:{
                         //static
-                        UIImageView *iv3 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        UIImageView *iv3 = [[UIImageView alloc] initWithFrame:ivIcon.bounds];
                         iv3.image = [UIImage imageNamed:arrIv2[i]];
                         iv3.alpha = 1.0f;
                         iv3.transform = CGAffineTransformMakeRotation(15.0f * i * M_PI/180.0f);//適当な角度に回転
-                        [iv addSubview:iv3];
+                        [ivIcon addSubview:iv3];
                         break;
                     }
                     case 2:{//anim=>実際にはアニメーション実行Viewとiかiv2は異なるのでcase 3と同じエフェクト
-                        UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        UIImageView *iv2 = [[UIImageView alloc] initWithFrame:ivIcon.bounds];
                         iv2.image = [UIImage imageNamed:arrIv2[i]];
                         iv2.alpha = 1.0f;
                         [self effectOnOff:iv2];
-                        [iv addSubview:iv2];
+                        [ivIcon addSubview:iv2];
                         
                     }
                     case 3:{//anim+static
                         //anim
-                        UIImageView *iv2 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        UIImageView *iv2 = [[UIImageView alloc] initWithFrame:ivIcon.bounds];
                         iv2.image = [UIImage imageNamed:arrIv2[i]];
                         iv2.alpha = 1.0f;
                         [self effectOnOff:iv2];
-                        [iv addSubview:iv2];
+                        [ivIcon addSubview:iv2];
                         
                         //static
-                        UIImageView *iv3 = [[UIImageView alloc] initWithFrame:iv.bounds];
+                        UIImageView *iv3 = [[UIImageView alloc] initWithFrame:ivIcon.bounds];
                         iv3.image = [UIImage imageNamed:arrIv2[i]];
                         iv3.alpha = 1.0f;
                         iv3.transform = CGAffineTransformMakeRotation(15.0f * i * M_PI/180.0f);//適当な角度に回転
-                        [iv addSubview:iv3];
+                        [ivIcon addSubview:iv3];
                         break;
                     }
                     default:
@@ -313,14 +320,15 @@ void (^actNoForCoinShort)(void) = ^(void) {
             }
         }
 //        [self.view addSubview:iv];
-        [uvOnScroll addSubview:iv];
+        [uvOnScroll addSubview:ivIcon];
         
         //名称、説明文の貼付：配列等にしておく必要あり
-        UITextView *tv = [[TextViewForItemList alloc]initWithFrame:CGRectMake(imageFrameInitX + imageFrameWidth,
+        UITextView *tv = [[TextViewForItemList alloc]initWithFrame:CGRectMake(textViewInitX,
                                                                      itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),// + 10,
-                                                                     itemFrameWidth * 5 / 9,
-                                                                     itemFrameHeight)];
+                                                                     textViewWidth,//微調整
+                                                                     textViewHeight)];//
 //        tv.alpha = 0.5f;//文字色にも適用されてしまう
+//        tv.backgroundColor = [UIColor blueColor];//test
         tv.backgroundColor = [UIColor clearColor];
         tv.font = [UIFont fontWithName:@"Arial" size:10.0f];//12.0f
         tv.textColor = [UIColor whiteColor];
@@ -332,18 +340,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //        [self.view addSubview:tv];
         [uvOnScroll addSubview:tv];
         
-        
-        //説明文の下に幾つ購入したかを示すスモールアイコン(星かパール)
-        if(displayPerl){
-            int numOfItemBought = [[attr getValueFromDevice:itemList[i]] integerValue];
-            for(int _num = 0; _num < numOfItemBought;_num++){
-                UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-                ivSmallIcon.image = [UIImage imageNamed:@"blue_item_yuri_big2.png"];//or star?
-                ivSmallIcon.center = CGPointMake(tv.frame.origin.x + _num * ivSmallIcon.bounds.size.width + 10,
-                                                 tv.frame.origin.y + tv.bounds.size.height+5);
-                [uvOnScroll addSubview:ivSmallIcon];
-            }
-        }
+        //drawing of smallIcon
+        [self displaySmallIcon:i];
         
         
         
@@ -358,10 +356,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                        title:[arrTitle objectAtIndex:i]
                                                       target:self
                                                        selector:@"onSelectButton:"];
-        btnBuy.tag = i;
-//        [uvOnScroll addSubview:btnBuy];
-        
-        [arrBtnBuy addObject:btnBuy];
+        btnBuy.tag = i;//ボタンが押されたときのデータ更新に使用
+        [arrBtnBuy addObject:btnBuy];//サブクラスで使用するためにグローバル配列に格納(ボタン特性を変更するWeaponBuyのため)
         [uvOnScroll addSubview:[arrBtnBuy objectAtIndex:i]];
         
     }
@@ -470,8 +466,10 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - cost];//[attr setValueToDev..
         [self displayCoin];//tv.text = ...
         
-        
+        //データの反映
         [self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
+        //反映されたデータから複数パールを表示
+        [self displaySmallIcon:[sender tag]];//アイテムの購入個数
         
     }else{
         //コインが足りない場合
@@ -512,6 +510,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
        [attr getValueFromDevice:_key] == nil){
         
         [attr setValueToDevice:_key strValue:@"1"];
+        
     }else{
         
         int beforeNum = [[attr getValueFromDevice:_key] intValue];
@@ -548,6 +547,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
     NSLog(@"now coin = %d", [[attr getValueFromDevice:@"gold"] intValue]);
     int gold = [[attr getValueFromDevice:@"gold"] intValue];
     tvGoldAmount.text = [NSString stringWithFormat:@"%d", gold];
+    
 }
 -(void)updateToDeviceCoin:(int)coin{
     [attr setValueToDevice:@"gold" strValue:[NSString stringWithFormat:@"%d", coin]];
@@ -559,6 +559,31 @@ void (^actNoForCoinShort)(void) = ^(void) {
     [[CoinProductViewController alloc] init];
     [self presentViewController:coinView animated:YES completion:nil];
     
+}
+
+
+/*
+ *購入した個数だけuvOnScrollに表示するメソッド
+ *描画する場所はunOnScrollの絶対位置で指定(eachFrameではない点に注意：eachFrameをグローバルにするよりuvOnScrollをグローバルにした方が効率的だった)
+ */
+-(void)displaySmallIcon:(int)_noOfItemList{
+    
+    /*
+     *viewSmallIcon: name of png file
+     */
+    //smallicon:説明文の下に幾つ購入したかを示すスモールアイコン(星かパール)
+    
+    int numOfItemBought = [[attr getValueFromDevice:itemList[_noOfItemList]] integerValue];//各itemlistの値
+    int intervalSmallIcon = smallIconHeight*2/3;//width = height & small icon is too much margin so here needs one of width
+    NSLog(@"itemlist%d=%@, num of item bought = %d", _noOfItemList, itemList[_noOfItemList], numOfItemBought);
+    for(int _num = 0; _num < numOfItemBought;_num++){
+        UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
+        ivSmallIcon.image = [UIImage imageNamed:strSmallIcon];
+        ivSmallIcon.center = CGPointMake(textViewInitX + _num * intervalSmallIcon + 10,
+                                         itemFrameInitY +  _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight+1);
+        //itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),// + 10,
+        [uvOnScroll addSubview:ivSmallIcon];
+    }
 }
 
 @end

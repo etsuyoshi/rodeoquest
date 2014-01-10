@@ -2679,6 +2679,7 @@ int sensitivity;
             id_weapon = bow;
             
             [attr addWeaponExp:[ScoreBoard getScore] weaponID:id_weapon];
+            break;
         }
     }
     NSLog(@"端末情報更新完了");
