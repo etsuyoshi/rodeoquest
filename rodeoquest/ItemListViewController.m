@@ -114,6 +114,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //                                              secs:5.0f];
         
         strImgUnit = @"coin_yellow";//image of unit to buy item.
+        
+        displayPerl = true;//サブクラスでパールを表示しないViewCon(WeaponBuyListViewController)がある
         attr = [[AttrClass alloc]init];
     }
     return self;
@@ -332,11 +334,15 @@ void (^actNoForCoinShort)(void) = ^(void) {
         
         
         //説明文の下に幾つ購入したかを示すスモールアイコン(星かパール)
-        UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-        ivSmallIcon.image = [UIImage imageNamed:@"blue_item_yuri_big2.png"];//in progress
-        int numOfItemBought = [[attr getValueFromDevice:itemList[i]] integerValue];
-        for(int _num = 0; _num < numOfItemBought;_num++){
-            
+        if(displayPerl){
+            int numOfItemBought = [[attr getValueFromDevice:itemList[i]] integerValue];
+            for(int _num = 0; _num < numOfItemBought;_num++){
+                UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+                ivSmallIcon.image = [UIImage imageNamed:@"blue_item_yuri_big2.png"];//or star?
+                ivSmallIcon.center = CGPointMake(tv.frame.origin.x + _num * ivSmallIcon.bounds.size.width + 10,
+                                                 tv.frame.origin.y + tv.bounds.size.height+5);
+                [uvOnScroll addSubview:ivSmallIcon];
+            }
         }
         
         

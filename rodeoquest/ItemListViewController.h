@@ -35,6 +35,8 @@ NSString *nameCurrency;
     NSMutableArray *itemList;
     NSMutableArray *arrBtnBuy;//list of UIButton
     
+    Boolean displayPerl;//各アイテムに個数を示すパールを表示するか否か
+    
     
 //    void (^actYesForCoinShort)(void);
 //    void (^actNoForCoinShort)(void);

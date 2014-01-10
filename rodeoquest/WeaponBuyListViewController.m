@@ -167,8 +167,9 @@ UIView *superViewForEquipWpn;
                                @"W_SpaceBow.png",
                                @"W_WingBow.png",
                                nil];
-
         
+        
+        displayPerl = false;
     }
     return self;
 }
