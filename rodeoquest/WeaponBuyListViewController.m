@@ -182,6 +182,8 @@ UIView *superViewForEquipWpn;
                                @"W_WingBow.png",
                                nil];
         
+        //アイコンのサイズは正方形ではないので調整する(横長）
+        imageFrameHeight *= 0.8f;
     }
     return self;
 }

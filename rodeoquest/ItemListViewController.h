@@ -55,8 +55,13 @@ NSString *nameCurrency;
     int imageFrameInitY;
     int imageFrameInterval;
     
+    //button-size
+    int buttonFrameWidth;
+    int buttonFrameHeight;
+    
     //text(view)-size
     int textViewInitX;
+    int textViewInitY;
     int textViewHeight;
     int textViewWidth;
     

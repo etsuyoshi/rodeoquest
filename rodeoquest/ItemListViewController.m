@@ -129,14 +129,21 @@ void (^actNoForCoinShort)(void) = ^(void) {
         smallIconHeight = 25;
         //icon-size
         imageFrameWidth = itemFrameWidth / 6;
+//        imageFrameWidth  = itemFrameHeight - 20;
         imageFrameHeight = itemFrameHeight - 20;
-        imageFrameInitX = itemFrameInitX + 10;
-        imageFrameInitY = itemFrameInitY + 10;
-        imageFrameInterval = itemFrameInterval + 20;
+        imageFrameInitX = 5;//itemFrameの左から10px
+        imageFrameInitY = 5;//itemFrameの上から10px
+//        imageFrameInterval = itemFrameInterval + 20;
+        
+        //button-size
+        buttonFrameWidth = imageFrameWidth;
+        buttonFrameHeight = imageFrameHeight;
+        
         //text(view)-size
-        textViewInitX = imageFrameInitX + imageFrameWidth;
+        textViewInitX = imageFrameInitX + imageFrameWidth-5;//画像が小さいので右隣のテキストは少し左にずらす
+        textViewInitY = imageFrameInitY;
         textViewHeight = itemFrameHeight-smallIconHeight/2;
-        textViewWidth = itemFrameWidth * 5 / 9;//微調整
+        textViewWidth = itemFrameWidth * 6 / 9;//微調整結果
         //cash　frame
         cashFrameWidth = 170;
         cashFrameHeight = 50;
@@ -146,7 +153,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
         init_x = 5;
         init_y = 95;
         
-        strSmallIcon = @"blue_item_yuri_big.png";//WeaponBuyListViewControllerのみstar2.pngにする
+        strSmallIcon = @"blue_item_yuri_big.png";//アイテムの保有個数：WeaponBuyListViewControllerのみ
     }
     return self;
 }
@@ -266,10 +273,16 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [uvOnScroll addSubview:eachView];
         
         //image(left-icon)の貼付
-        UIImageView *ivIcon = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
-                                                                   imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
-                                                                   imageFrameWidth,
-                                                                   imageFrameHeight)];
+//        UIImageView *ivIcon = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
+//                                                                   imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
+//                                                                   imageFrameWidth,
+//                                                                   imageFrameHeight)];
+        UIImageView *ivIcon = [[UIImageView alloc]
+                               initWithFrame:CGRectMake(imageFrameInitX,
+                                                        itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + imageFrameInitY,
+                                                        imageFrameWidth, imageFrameHeight)];
+        ivIcon.center = CGPointMake(ivIcon.center.x,
+                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + itemFrameHeight/2);//中心に
         ivIcon.image = [UIImage imageNamed:[arrIv objectAtIndex:i]];
         
         //アイコンの上に載せるエフェクト(キラキラ)
@@ -323,10 +336,11 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [uvOnScroll addSubview:ivIcon];
         
         //名称、説明文の貼付：配列等にしておく必要あり
-        UITextView *tv = [[TextViewForItemList alloc]initWithFrame:CGRectMake(textViewInitX,
-                                                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),// + 10,
-                                                                     textViewWidth,//微調整
-                                                                     textViewHeight)];//
+        UITextView *tv = [[TextViewForItemList alloc]
+                          initWithFrame:CGRectMake(textViewInitX,
+                                                   itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + textViewInitY,
+                                                   textViewWidth,
+                                                   textViewHeight)];
 //        tv.alpha = 0.5f;//文字色にも適用されてしまう
 //        tv.backgroundColor = [UIColor blueColor];//test
         tv.backgroundColor = [UIColor clearColor];
@@ -346,16 +360,21 @@ void (^actNoForCoinShort)(void) = ^(void) {
         
         
         //プラスボタンの貼付
-        CGRect btnRect = CGRectMake(imageFrameInitX + imageFrameWidth + 10 + itemFrameWidth / 2 + 20,
-                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
-                                    imageFrameWidth,
-                                    imageFrameHeight);
+//        CGRect btnRect = CGRectMake(imageFrameInitX + imageFrameWidth + 10 + itemFrameWidth / 2 + 20,
+//                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
+//                                    imageFrameWidth,
+//                                    imageFrameHeight);
+        CGRect btnRect = CGRectMake(itemFrameInitX + textViewInitX + textViewWidth-5,//微調整
+                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + textViewInitY,
+                                    buttonFrameWidth, buttonFrameHeight);
         UIButton *btnBuy = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
                                                         rect:btnRect
                                                        image:@"bullet_level6.png"
                                                        title:[arrTitle objectAtIndex:i]
                                                       target:self
                                                        selector:@"onSelectButton:"];
+        btnBuy.center = CGPointMake(btnBuy.center.x,
+                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + itemFrameHeight/2);//中心高さ
         btnBuy.tag = i;//ボタンが押されたときのデータ更新に使用
         [arrBtnBuy addObject:btnBuy];//サブクラスで使用するためにグローバル配列に格納(ボタン特性を変更するWeaponBuyのため)
         [uvOnScroll addSubview:[arrBtnBuy objectAtIndex:i]];
