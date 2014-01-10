@@ -680,7 +680,7 @@ UIView *superViewForEquipWpn;
     */
     
     //購入済の武器のアイコンを実画像で表示
-    
+    [self displayBoughtWeapon:_noOfItemList];
     
     //レベルをスターで表現
     [self displayLevelByStar:_noOfItemList];
@@ -703,8 +703,22 @@ UIView *superViewForEquipWpn;
         UIImageView *ivStar = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
         ivStar.image = [UIImage imageNamed:@"star2.png"];
         ivStar.center = CGPointMake(textViewInitX + _num * 7,
-                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval));
+                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight);
         [uvOnScroll addSubview:ivStar];
+    }
+}
+
+-(void)displayBoughtWeapon:(int)_noOfItemList{
+    //bought-Item
+    if([[attr getValueFromDevice:itemList[_noOfItemList]] integerValue] > 0){
+        UIImageView *ivIcon = [[UIImageView alloc]
+                               initWithFrame:CGRectMake(imageFrameInitX,
+                                                        itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + imageFrameInitY,
+                                                        imageFrameWidth, imageFrameHeight)];
+        ivIcon.center = CGPointMake(ivIcon.center.x,
+                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + itemFrameHeight/2);//中心に
+        ivIcon.image = [UIImage imageNamed:[imageArrayWithWhite objectAtIndex:_noOfItemList]];
+        [uvOnScroll addSubview:ivIcon];
     }
 }
 @end
