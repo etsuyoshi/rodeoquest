@@ -28,8 +28,10 @@
 //#define EXPLODE_TEST
 //#define VIEWWITHEFFECTLEVELUP_TEST
 //#define LDPROGRESS_TEST
-#define PAYPRODUCTBUTTON_TEST
+//#define PAYPRODUCTBUTTON_TEST
+#define LOCATION_TEST
 
+#import <CoreLocation/CoreLocation.h>
 #import "LDProgressView.h"
 #import "ViewWithEffectLevelUp.h"
 #import "ViewExplode.h"
@@ -50,10 +52,17 @@
 #import "BackGroundClass2.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface TestViewController ()
+@interface TestViewController ()<CLLocationManagerDelegate>
 #ifdef LDPROGRESS_TEST
 @property (nonatomic, strong) NSMutableArray *progressViews;//progressを格納する配列
 #endif
+
+
+#ifdef LOCATION_TEST
+@property (strong, nonatomic) CLLocationManager *locationManager;
+#endif
+
+
 @end
 
 @implementation TestViewController
@@ -114,11 +123,16 @@ BackGroundClass2 *BackGround;
 
 int tempCount = 0;
 
+
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        
     }
     return self;
 }
@@ -225,6 +239,40 @@ int tempCount = 0;
                                          repeats:YES];
 }
 
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    
+    
+    
+#ifdef LOCATION_TEST
+    // プロパティではなくクラスメソッドです
+    //        if ([CLLocationManager locationServicesEnabled]) {
+    //            // インスタンスを生成し、デリゲートの設定
+    //            CLLocationManager *_manager = [[CLLocationManager alloc] init];
+    //
+    //            _manager.delegate = self;
+    //
+    ////            // 取得精度
+    ////            _manager.desiredAccuracy = kCLLocationAccuracyBest;
+    ////            // 更新頻度（メートル）
+    ////            _manager.distanceFilter = kCLDistanceFilterNone;
+    //            // サービスの開始
+    //            [_manager startUpdatingLocation];
+    //
+    //            NSLog(@"location service is started");
+    //        }else{
+    //
+    //            NSLog(@"location service is not enabled");
+    //        }
+    [self startLocationService];
+    
+#endif
+    
+    
+    
+}
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -981,6 +1029,33 @@ int tempCount = 0;
         
         [self.view addSubview:button];
     }
+#elif defined LOCATION_TEST
+    
+    if(counter == 0){
+        
+        
+//        // プロパティではなくクラスメソッドです
+//        if ([CLLocationManager locationServicesEnabled]) {
+//            // インスタンスを生成し、デリゲートの設定
+//            CLLocationManager *_manager = [[CLLocationManager alloc] init];
+//            
+//            _manager.delegate = self;
+//            
+//            // 取得精度
+//            _manager.desiredAccuracy = kCLLocationAccuracyBest;
+//            // 更新頻度（メートル）
+//            _manager.distanceFilter = kCLDistanceFilterNone;
+//            // サービスの開始
+//            [_manager startUpdatingLocation];
+//            
+//            NSLog(@"location service is started");
+//        }else{
+//            
+//            NSLog(@"location service is not enabled");
+//        }
+        
+        
+    }
 #else
 //    NSLog(@"aaa");
     //nothing
@@ -993,6 +1068,120 @@ int tempCount = 0;
 #endif
     counter ++;
 }
+
+
+//位置情報の受取り
+
+
+
+- (void)stopLocationService
+{
+    // 位置情報サービスを停止する
+    [self.locationManager stopUpdatingLocation];
+    self.locationManager.delegate = nil;
+    self.locationManager = nil;
+}
+
+#pragma mark - CLLocationManagerDelegate methods
+
+
+// 位置情報サービスへのアクセスが失敗した場合にこのデリゲートメソッドが呼ばれる
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    
+    // 標準位置情報サービス・大幅変更位置情報サービスの取得に失敗した場合
+    NSLog(@"%s | %@", __PRETTY_FUNCTION__, error);
+    
+//    if ([error code] == kCLErrorDenied) {
+//        
+//        [manager startUpdatingLocation];
+//    }
+
+    
+    
+    
+    
+    switch (error.code) {
+        case kCLErrorDenied: // 確認ダイアログで許可しないを選択した(位置情報の利用が拒否されているので停止)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"エラー"
+                                      message:@"このアプリでの位置情報サービスへのアクセスを許可されなかったよ！"
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+            break;
+            
+        default:
+        {
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"エラー"
+                                      message:@"位置情報の取得に失敗したよ！"
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+            break;
+    }
+}
+
+// 位置情報サービスの設定が変更された場合にこのデリゲートメソッドが呼ばれる
+- (void)locationManager:(CLLocationManager *)manager
+didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    switch (status) {
+        case kCLAuthorizationStatusRestricted: // 設定 > 一般 > 機能制限で利用が制限されている
+        {
+            // 位置情報サービスを停止する
+            [self stopLocationService];
+            
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"エラー"
+                                      message:@"設定 > 一般 > 機能制限で利用が制限されてるよ！"
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+            break;
+            
+        case kCLAuthorizationStatusDenied: // ユーザーがこのアプリでの位置情報サービスへのアクセスを許可していない
+        {
+            // 位置情報サービスを停止する
+            [self stopLocationService];
+            
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"エラー"
+                                      message:@"このアプリでの位置情報サービスへのアクセスを許可されていないよ！"
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+
+// 位置情報サービスへのアクセスが許可されていればこのデリゲートメソッドが定期的に実行される
+// 標準位置情報サービス・大幅変更位置情報サービスの取得に成功した場合
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
+{
+    // ここで任意の処理
+    NSLog(@"%s | newLocation=%@, oldLocaiton=%@", __PRETTY_FUNCTION__, newLocation, oldLocation);
+    
+}
+
 
 #ifdef BTNPRESS_TEST
 //-(void)buttonPressed:(id)sender{
@@ -1741,6 +1930,54 @@ int tempCount = 0;
 }
 
 #endif
+
+
+
+
+- (void)startLocationService
+{
+    // このアプリの位置情報サービスへの認証状態を取得する
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    
+    switch (status) {
+        case kCLAuthorizationStatusAuthorized: // 位置情報サービスへのアクセスが許可されている
+        case kCLAuthorizationStatusNotDetermined: // 位置情報サービスへのアクセスを許可するか選択されていない
+        {
+            // 位置情報サービスへのアクセスを許可するか確認するダイアログを表示する
+            self.locationManager = [[CLLocationManager alloc] init];
+            self.locationManager.delegate = self;
+            [self.locationManager startUpdatingLocation];
+        }
+            break;
+            
+        case kCLAuthorizationStatusRestricted: // 設定 > 一般 > 機能制限で利用が制限されている
+        {
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"エラー"
+                                      message:@"設定 > 一般 > 機能制限で利用が制限されてるよ！"
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+            break;
+            
+        case kCLAuthorizationStatusDenied: // ユーザーがこのアプリでの位置情報サービスへのアクセスを許可していない
+        {
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"エラー"
+                                      message:@"このアプリでの位置情報サービスへのアクセスを許可されていないよ！"
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 
 @end
 

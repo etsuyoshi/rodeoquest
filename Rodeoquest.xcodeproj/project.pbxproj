@@ -258,6 +258,7 @@
 		34A087461803F017005458EF /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A087451803F017005458EF /* red.png */; };
 		34A087481803F194005458EF /* coin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A087471803F194005458EF /* coin2.png */; };
 		34A0874A180419CE005458EF /* white_128.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A08749180419CE005458EF /* white_128.png */; };
+		34A14982188169D3008858B0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34A14981188169D2008858B0 /* CoreLocation.framework */; };
 		34A1ED3E181CCDF20007471C /* BugBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A1ED39181CCDF20007471C /* BugBow.png */; };
 		34A1ED3F181CCDF20007471C /* FireBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A1ED3A181CCDF20007471C /* FireBow.png */; };
 		34A1ED40181CCDF20007471C /* GrassBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A1ED3B181CCDF20007471C /* GrassBow.png */; };
@@ -718,6 +719,7 @@
 		34A087451803F017005458EF /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
 		34A087471803F194005458EF /* coin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin2.png; sourceTree = "<group>"; };
 		34A08749180419CE005458EF /* white_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_128.png; sourceTree = "<group>"; };
+		34A14981188169D2008858B0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		34A1ED39181CCDF20007471C /* BugBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BugBow.png; sourceTree = "<group>"; };
 		34A1ED3A181CCDF20007471C /* FireBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FireBow.png; sourceTree = "<group>"; };
 		34A1ED3B181CCDF20007471C /* GrassBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrassBow.png; sourceTree = "<group>"; };
@@ -893,6 +895,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34A14982188169D3008858B0 /* CoreLocation.framework in Frameworks */,
 				3448B5061858533B004EDCA2 /* GameKit.framework in Frameworks */,
 				342DAB0F184CBDA60004D3CB /* StoreKit.framework in Frameworks */,
 				342DAB0E184CBD780004D3CB /* AdSupport.framework in Frameworks */,
@@ -1051,6 +1054,7 @@
 		342057D017F2B34C0084E99D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34A14981188169D2008858B0 /* CoreLocation.framework */,
 				3448B5051858533B004EDCA2 /* GameKit.framework */,
 				344DA25C184CB788004F71EE /* libGoogleAdMobAds.a */,
 				344DA256184CB728004F71EE /* StoreKit.framework */,
