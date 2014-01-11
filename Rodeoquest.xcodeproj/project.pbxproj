@@ -78,6 +78,7 @@
 		341CB870188117EA008A90F1 /* frame02.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB86F188117EA008A90F1 /* frame02.png */; };
 		341CB87218811B05008A90F1 /* back_snow_continue.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB87118811B05008A90F1 /* back_snow_continue.png */; };
 		341CB87418812111008A90F1 /* krkr_many2.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB87318812111008A90F1 /* krkr_many2.png */; };
+		341CB8761881316B008A90F1 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB8751881316B008A90F1 /* pause.png */; };
 		341D9C66182DDE7C009B904E /* kira_img11.png in Resources */ = {isa = PBXBuildFile; fileRef = 341D9C65182DDE7C009B904E /* kira_img11.png */; };
 		341D9C68182DE67E009B904E /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 341D9C67182DE67E009B904E /* smoke.png */; };
 		342057D217F2B34C0084E99D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 342057D117F2B34C0084E99D /* UIKit.framework */; };
@@ -493,6 +494,7 @@
 		341CB86F188117EA008A90F1 /* frame02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame02.png; sourceTree = "<group>"; };
 		341CB87118811B05008A90F1 /* back_snow_continue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_snow_continue.png; sourceTree = "<group>"; };
 		341CB87318812111008A90F1 /* krkr_many2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = krkr_many2.png; sourceTree = "<group>"; };
+		341CB8751881316B008A90F1 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		341D9C65182DDE7C009B904E /* kira_img11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kira_img11.png; sourceTree = "<group>"; };
 		341D9C67182DE67E009B904E /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
 		342057CE17F2B34C0084E99D /* Rodeoquest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rodeoquest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1133,6 +1135,7 @@
 		342231931845A08600055ADF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				341CB8751881316B008A90F1 /* pause.png */,
 				341CB86F188117EA008A90F1 /* frame02.png */,
 				34116424187FC5E50003ABB8 /* star2.png */,
 				3480F63A187D439200EADA7A /* dialog */,
@@ -2097,6 +2100,7 @@
 				34CA558018447A9B00F9657A /* laser_b02.png in Resources */,
 				3488ACCB183D272F00833F93 /* img10.png in Resources */,
 				34A8898018542ABA005667B4 /* 26.png in Resources */,
+				341CB8761881316B008A90F1 /* pause.png in Resources */,
 				34A8897018542ABA005667B4 /* 10.png in Resources */,
 				344BD61D1815936B00387201 /* mob_musa_01.png in Resources */,
 				340012FC186C3CDF00EE6E61 /* BuyCoin04.png in Resources */,

@@ -461,7 +461,7 @@ int sensitivity;
     
     //ornament
     UIImageView *viewOrnament1 =
-    [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
+    [[UIImageView alloc] initWithFrame:CGRectMake(5, 2, 60, 60)];
     viewOrnament1.image = [UIImage imageNamed:@"frame02.png"];
     [viewScoreField addSubview:viewOrnament1];
     UIImageView *viewOrnament2 =
@@ -563,9 +563,10 @@ int sensitivity;
     
     //一時停止ボタン
     int size_pause = 20;
-    CGRect rect_pause = CGRectMake(rect_frame.size.width - size_pause,30 , size_pause, size_pause);
+    CGRect rect_pause = CGRectMake(0, 0 , size_pause, size_pause);
     //    UIImageView *iv_pause = [[UIImageView alloc]initWithFrame:CGRectMake(rect_frame.size.width / 2 - size_pause / 2,0 , size_pause, size_pause)];
-    UIImageView *iv_pause = [CreateComponentClass createImageView:rect_pause image:@"close.png" tag:0 target:self selector:@"onClickedStopButton"];
+    UIImageView *iv_pause = [CreateComponentClass createImageView:rect_pause image:@"pause.png" tag:0 target:self selector:@"onClickedStopButton"];
+    iv_pause.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2,15);
     [iv_frame bringSubviewToFront:iv_pause];//iv_frameの上にボタン配置
     [iv_frame addSubview:iv_pause];
     
