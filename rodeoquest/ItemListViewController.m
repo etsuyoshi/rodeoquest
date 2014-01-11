@@ -191,6 +191,12 @@ void (^actNoForCoinShort)(void) = ^(void) {
     self.view.backgroundColor = [UIColor colorWithPatternImage:image];
     
     
+    //ornament
+    UIImageView *viewOrnament =
+    [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    viewOrnament.image = [UIImage imageNamed:@"frame02.png"];
+    [self.view addSubview:viewOrnament];
+    
     
     cashView = [CreateComponentClass createView:CGRectMake(cashFrameInitX,
                                                            cashFrameInitY,
@@ -255,8 +261,6 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                            )];
     [uvOnScroll setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.0f]];
     sv.contentSize = uvOnScroll.bounds.size;
-    
-    
     [sv addSubview:uvOnScroll];
     [viewFrame addSubview:sv];
     

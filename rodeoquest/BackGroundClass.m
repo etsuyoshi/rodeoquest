@@ -68,8 +68,8 @@ int imageMargin;
         case WorldTypeSnow:{
             
             //雪山バージョン
-            iv_background1.image = [UIImage imageNamed:@"back_snow.png"];
-            iv_background2.image = [UIImage imageNamed:@"back_snow.png"];
+            iv_background1.image = [UIImage imageNamed:@"back_snow_continue.png"];
+            iv_background2.image = [UIImage imageNamed:@"back_snow_continue.png"];
             
             break;
         }

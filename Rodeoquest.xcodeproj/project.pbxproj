@@ -76,6 +76,7 @@
 		3419C41717FD2B3300980E71 /* explode5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3419C41617FD2B3300980E71 /* explode5.png */; };
 		341CB86E1880F20F008A90F1 /* Add_contact_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB86D1880F20F008A90F1 /* Add_contact_user.png */; };
 		341CB870188117EA008A90F1 /* frame02.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB86F188117EA008A90F1 /* frame02.png */; };
+		341CB87218811B05008A90F1 /* back_snow_continue.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB87118811B05008A90F1 /* back_snow_continue.png */; };
 		341D9C66182DDE7C009B904E /* kira_img11.png in Resources */ = {isa = PBXBuildFile; fileRef = 341D9C65182DDE7C009B904E /* kira_img11.png */; };
 		341D9C68182DE67E009B904E /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 341D9C67182DE67E009B904E /* smoke.png */; };
 		342057D217F2B34C0084E99D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 342057D117F2B34C0084E99D /* UIKit.framework */; };
@@ -489,6 +490,7 @@
 		3419C41617FD2B3300980E71 /* explode5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode5.png; sourceTree = "<group>"; };
 		341CB86D1880F20F008A90F1 /* Add_contact_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_contact_user.png; sourceTree = "<group>"; };
 		341CB86F188117EA008A90F1 /* frame02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame02.png; sourceTree = "<group>"; };
+		341CB87118811B05008A90F1 /* back_snow_continue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_snow_continue.png; sourceTree = "<group>"; };
 		341D9C65182DDE7C009B904E /* kira_img11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kira_img11.png; sourceTree = "<group>"; };
 		341D9C67182DE67E009B904E /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
 		342057CE17F2B34C0084E99D /* Rodeoquest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rodeoquest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -933,6 +935,7 @@
 		34008FAE186EB2FE00988C70 /* backOfFront */ = {
 			isa = PBXGroup;
 			children = (
+				341CB87118811B05008A90F1 /* back_snow_continue.png */,
 				34405298182BBC1A0049AE46 /* back_forest2.png */,
 				348AD7EE180ACD52007226EC /* back_desert.png */,
 				348AD7F0180ACD52007226EC /* back_nangoku.png */,
@@ -2025,6 +2028,7 @@
 				340C3B9418549DDD0017BBBE /* Cloth.png in Resources */,
 				348AD7F5180ACD52007226EC /* back_nangoku.png in Resources */,
 				3488ACCA183D272F00833F93 /* img09.png in Resources */,
+				341CB87218811B05008A90F1 /* back_snow_continue.png in Resources */,
 				34008FB5186EB4B500988C70 /* backback_forest2.png in Resources */,
 				344DA253184CB6A6004F71EE /* README.txt in Resources */,
 				341D9C68182DE67E009B904E /* smoke.png in Resources */,
