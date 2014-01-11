@@ -486,18 +486,10 @@ UIView *viewForDialog;
                                                          selector:@"imageTapped:"];
     [self.view addSubview:v_ranking];
     
-    //    UIImageView *iv_ranking = [self createImageView:@"black_128.png"
-    //                                             tag:103
-    //                                           frame:CGRectMake(x_frame_center - W_RANKING_COMPONENT / 2,
-    //                                                            Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING,
-    //                                                            W_RANKING_COMPONENT,
-    //                                                            H_RANKING_COMPONENT)];
-    //    iv_ranking.alpha = ALPHA_COMPONENT;
-    //    [[iv_ranking layer] setCornerRadius:10.0];
-    //    [iv_ranking setClipsToBounds:YES];
-    //    [self.view bringSubviewToFront:iv_ranking];
-    //    [self.view addSubview:iv_ranking];
-    
+    UIImageView *viewOrnament =
+    [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    viewOrnament.image = [UIImage imageNamed:@"frame02.png"];
+    [v_ranking addSubview:viewOrnament];
     
     
     //    NSLog(@"count = %d", [[imageFileArray objectAtIndex:0] count]);
@@ -652,6 +644,17 @@ UIView *viewForDialog;
     CGPointMake(x_frame_center + W_BT_START/2 + MARGIN_UPPER_COMPONENT*2 + H_BT_START/2,
                 bt_start.center.y);
     [self.view addSubview:viewInvite];
+    //invitation mark(View)
+    UIImageView *ivInvite =
+    [[UIImageView alloc]
+     initWithFrame:
+     CGRectMake(0, 0, viewInvite.bounds.size.width/2, viewInvite.bounds.size.height/2)];
+    ivInvite.center =
+    CGPointMake(viewInvite.bounds.size.width/2,
+                viewInvite.bounds.size.height/2);
+    ivInvite.image = [UIImage imageNamed:@"Add_contact_user.png"];
+    [viewInvite addSubview:ivInvite];
+    
 
     
     

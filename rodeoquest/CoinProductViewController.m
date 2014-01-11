@@ -171,13 +171,12 @@ UIView *viewDialog;
         //dialog表示
         viewDialog =
         [CreateComponentClass
-         createAlertView:self.view.bounds
+         createAlertView2:self.view.bounds
          dialogRect:CGRectMake(0, 0,
                                self.view.bounds.size.width-20,
-                               self.view.bounds.size.width-20)
+                               self.view.bounds.size.width-100)
          title:@"ルビーが不足しています。"
          message:@"購入ページへ移動しますか？"
-         titleYes:@"移動" titleNo:@"キャンセル"
          onYes:^{
              //購入ページへ移動
              PayProductViewController *ppvc = [[PayProductViewController alloc]init];
@@ -202,13 +201,12 @@ UIView *viewDialog;
         //dialog表示
         viewDialog =
         [CreateComponentClass
-         createAlertView:self.view.bounds
+         createAlertView2:self.view.bounds
          dialogRect:CGRectMake(0, 0,
                                self.view.bounds.size.width-20,
-                               self.view.bounds.size.width-20)
+                               self.view.bounds.size.width-100)
          title:@"ルビーとコインを交換しますか？"
-         message:@"よろしければ「はい」を押して下さい。"
-         titleYes:@"はい" titleNo:@"キャンセル"
+         message:@"よろしければ\n「はい」を押して下さい。"
          onYes:^{
              int acquiredCoin = [[arrAcquired objectAtIndex:num.integerValue] integerValue];
              [self buyCoin:neededRuby acquiredCoin:acquiredCoin];
@@ -323,6 +321,7 @@ UIView *viewDialog;
                     nil],
                    nil];
     
-    strImgUnit = @"jewel_small";//購入単位イメージ画像(.png省略)
+    strImgCurrency = @"jewel_small";//購入単位イメージ画像(.png省略)
+    strImgAcq = @"coin_yellow.png";
 }
 @end

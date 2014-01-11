@@ -271,7 +271,11 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
              defense1Count > 0 &&
              defense1Count != INT_MAX)//シールドが有効ならば
     {//else if shield is valid
+        //この期間、自機を透明化することで被弾不可状態を明示する
         //shieldが有効でdefense1Countによるカウントダウン中：全ての攻撃は無効
+        //ここで何らかのエフェクトを実行すると連続して発動してしまう
+
+//        [self destroySheildEffect];//透明化の方が分かりやすい
         _damage = 0;
         
         return;
@@ -284,9 +288,12 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
             shieldLife--;
             if(shieldLife==0){
                 //カウントダウンモードへの移行
+                iv.alpha = 1.0f;
                 [self destroySheildEffect];//シールド解除されたことを示すためのエフェクト
                 [ivDefense1 removeFromSuperview];//ユーザーからの見た目ではこの瞬間にシールド解除
                 defense1Count = defense1CountMax;//これによりdonextでカウントダウンが始まる
+            }else{
+                iv.alpha = 0.5f;
             }
         }else{
             NSLog(@"error!");
@@ -521,6 +528,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     }
 
     //shieldは一度敵に当たれば破壊されるため、setDamageで解除設定を実行
+    //本番中では接触判定が0.01secで行われるので一定期間(defense1CountMax)被弾不可状態を維持する必要がある
     //shield取得後、defense1Countをint_maxに設定
     //ダメージ被弾時(setDamage:)において、ダメージ耐用回数(アイテム購入により変更可能)までは被弾してもダメージを受けない
     //耐用回数を超えて被弾したらdestroyShieldEffectを実行して、以下のコードによりshieldを解除
@@ -528,8 +536,15 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 //    if(defense1Count == INT_MAX){
         //do nothing
     }else if(defense1Count > 0 && defense1Count <= defense1CountMax){//シールドモード(着弾後、シールド解除までのカウントダウン中)
+        //現在被弾不可状態であることを示すためシールドの解除少し前まで透明化
+        if(defense1Count == defense1CountMax-1){//処理速度を考慮して何度もalpha設定を繰り返さないために
+            iv.alpha = 0.5f;
+        }else if(defense1Count == 50){
+            iv.alpha = 1.0f;
+        }
         defense1Count--;
         if(defense1Count == 0){
+            iv.alpha = 1.0f;
             shieldLife--;
             if(shieldLife == 0){
                 [self barrierValidEffect];

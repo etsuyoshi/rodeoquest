@@ -20,7 +20,7 @@ UIButton *closeBtn;
 UIView *viewForCoinShort;//コインがショートしている場合のダイアログビュー
 UIView *viewWantBuy;//購入するか否か確認するダイアログビュー
 UIView *uvOnScroll;
-NSString *strImgUnit;
+NSString *strImgCurrency;
 UIView *cashView;
 NSString *strSmallIcon;
 NSString *nameCurrency;

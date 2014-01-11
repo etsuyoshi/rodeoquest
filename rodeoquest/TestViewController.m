@@ -26,8 +26,9 @@
 //#define PARTICLE_TEST
 //#define KIRA_Test
 //#define EXPLODE_TEST
-#define VIEWWITHEFFECTLEVELUP_TEST
+//#define VIEWWITHEFFECTLEVELUP_TEST
 //#define LDPROGRESS_TEST
+#define PAYPRODUCTBUTTON_TEST
 
 #import "LDProgressView.h"
 #import "ViewWithEffectLevelUp.h"
@@ -958,6 +959,27 @@ int tempCount = 0;
         progressView.animate = @YES;
         [self.progressViews addObject:progressView];
         [self.view addSubview:progressView];
+    }
+    
+#elif defined PAYPRODUCTBUTTON_TEST
+    if(counter == 0){
+        UIImageView *button =
+        [CreateComponentClass
+         createMenuButton:ButtonMenuBackTypeBlue
+         imageType:ButtonMenuImageTypeBuyCoin0
+         rect:CGRectMake(100, 100, 60, 60)
+         target:nil selector:nil];
+        
+        UIView *shadowView =
+        [CreateComponentClass
+         createShadowView:CGRectMake(5, 5, button.bounds.size.width-10, button.bounds.size.height/4)
+         viewColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5f]
+         borderColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.5f]
+         text:@"test"
+         textSize:14];
+        [button addSubview:shadowView];
+        
+        [self.view addSubview:button];
     }
 #else
 //    NSLog(@"aaa");

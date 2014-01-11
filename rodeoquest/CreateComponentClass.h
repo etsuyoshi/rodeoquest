@@ -155,4 +155,10 @@
                     message:(NSString *)_message
                       onYes:(void (^)(void))onYes
                        onNo:(void (^)(void))onNo;
+
++(UIView *)createShadowView:(CGRect)frame
+                  viewColor:(UIColor *)colorView
+                borderColor:(UIColor *)colorBorder
+                       text:(NSString *)text
+                   textSize:(int)textSize;
 @end

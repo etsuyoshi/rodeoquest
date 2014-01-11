@@ -1062,11 +1062,10 @@
     
     //title
     UITextView *tvTitle = [CreateComponentClass
-                           createTextView:CGRectMake(0, 0, rectDialog.frame.size.width,
-                                                     80)
+                           createTextView:CGRectMake(0, 0, rectDialog.frame.size.width, 80)
                            text:_title
                            font:@"AmericanTypewriter-Bold"
-                           size:20
+                           size:19
                            textColor:[UIColor whiteColor]
                            backColor:[UIColor clearColor]
                            isEditable:NO];
@@ -1093,7 +1092,7 @@
                                                        rectDialog.frame.size.height)
                              text:_message
                              font:@"AmericanTypewriter-Bold"
-                             size:17
+                             size:18
                              textColor:[UIColor whiteColor]
                              backColor:[UIColor clearColor]
                              isEditable:NO];
@@ -1153,5 +1152,39 @@
     return superView;
 }
 
+
++(UIView *)createShadowView:(CGRect)frame
+                  viewColor:(UIColor *)colorView
+                borderColor:(UIColor *)colorBorder
+                       text:(NSString *)text
+                   textSize:(int)textSize{
+    UIView *viewShadow =
+    [self
+     createView:frame
+     color:colorView
+     cornerRaidus:frame.size.height/2//半径を高さの半分にすることで横側面を円にする
+     borderColor:colorBorder
+     borderWidth:1.0f];
+    
+    UILabel *lbl =
+    [[UILabel alloc]
+     initWithFrame:
+     CGRectMake(0, 0, frame.size.width-7, frame.size.height)];
+    lbl.center =
+    CGPointMake(frame.size.width/2, frame.size.height/2);
+    lbl.textAlignment = NSTextAlignmentRight;
+    lbl.text = text;
+    lbl.textColor = [UIColor whiteColor];
+    lbl.backgroundColor = [UIColor clearColor];
+    lbl.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:textSize];
+    
+    
+    
+    [viewShadow addSubview:lbl];
+    
+    
+    
+    return viewShadow;
+}
 
 @end

@@ -113,7 +113,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //                                            height:self.view.bounds.size.height
 //                                              secs:5.0f];
         
-        strImgUnit = @"coin_yellow";//image of unit to buy item.
+        strImgCurrency = @"coin_yellow";//image of unit to buy item.
         
         attr = [[AttrClass alloc]init];
         
@@ -208,7 +208,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
 //                                                                       cashFrameInitY + 14, 23, 23)];
     UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 14, 23, 23)];
-    cashIV.image = [UIImage imageNamed:strImgUnit];
+    cashIV.image = [UIImage imageNamed:strImgCurrency];
 //    [self.view addSubview:cashIV];
     [cashView addSubview:cashIV];
     

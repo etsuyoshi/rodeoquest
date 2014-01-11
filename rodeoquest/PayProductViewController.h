@@ -22,7 +22,8 @@ typedef NS_ENUM(NSInteger, RubyType) {
     RubyType6
 };
 //サブクラスで変更するためグローバル
-NSString *strImgUnit;//yen-or-ruby
+NSString *strImgCurrency;//yen-or-ruby:支払うもののイメージ
+NSString *strImgAcq;//ruby-or-coin:得るもののイメージ
 NSArray *arrAcquired;
 NSArray *arrPrice;
 NSArray *arrTypeBack;

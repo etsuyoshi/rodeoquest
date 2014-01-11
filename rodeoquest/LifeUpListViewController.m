@@ -92,7 +92,7 @@ void (^actNoForRubyShort)(void) = ^(void) {
                               @"4",
                               nil];
         
-        strImgUnit = @"jewel";//image of unit to buy item.(abbreviate ".png")
+        strImgCurrency = @"jewel";//image of unit to buy item.(abbreviate ".png")
     }
     return self;
 }

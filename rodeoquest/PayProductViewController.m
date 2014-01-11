@@ -69,8 +69,9 @@ NSArray *arrProductId;
                       createAlertView2:self.view.bounds
                       dialogRect:CGRectMake(0, 0,
                                             self.view.bounds.size.width-50,
-                                            250)
-                      title:@"このルビーを購入しますか？" message:@""
+                                            220)
+                      title:@"このルビーを購入しますか？"
+                      message:@"よろしければ\n「はい」を押して下さい。"
                       onYes:^{
                           //購入プロセスへ
                           [self startRequest:(RubyType)(num.integerValue)];
@@ -236,10 +237,64 @@ NSArray *arrProductId;
                                                                tag:[[[arrProductType objectAtIndex:row] objectAtIndex:col] intValue]];
             [eachFrame addSubview:payButtonView];//各フレームに各ボタンに置く
             
+//            UIImageView *button =
+//            [CreateComponentClass
+//             createMenuButton:ButtonMenuBackTypeBlue
+//             imageType:ButtonMenuImageTypeBuyCoin0
+//             rect:CGRectMake(100, 100, 60, 60)
+//             target:nil selector:nil];
+            
+            
+            int intTextSize = 12;//4桁
+            //桁数を判定して大きな数字なら文字サイズも小さくする(min:10)
+            if([arrAcquired[numOfCol * row + col] length] >= 6){
+                intTextSize = 9;//5桁以上
+            }else if([arrAcquired[numOfCol * row + col] length] == 5){
+                intTextSize = 10;//5桁以上
+            }else if([arrAcquired[numOfCol * row + col] length] == 4){
+                intTextSize = 12;//4桁
+            }else if([arrAcquired[numOfCol * row + col] length] <= 3){
+                intTextSize = 13;//3桁以下
+            }
+            
+            //貰えるもの(ここではルビー、サブクラスではコイン)の枚数を表示(on payButtonView)
+            UIView *shadowView =
+            [CreateComponentClass
+             createShadowView:CGRectMake(5, 5,
+                                         payButtonView.bounds.size.width-10,
+                                         payButtonView.bounds.size.height/4)
+             viewColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5f]
+             borderColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.5f]
+             text:arrAcquired[numOfCol * row + col]
+             textSize:intTextSize];//adjustment
+            [payButtonView addSubview:shadowView];
+            
+            /*
+            row, col, value
+             0, 0, 0
+             0, 1, 1
+             0, 2, 2
+             1, 0, 3
+             1, 1, 4
+             1, 2, 5
+             value = 3(=numOfCol) * row + col
+            */
+            
+            //貰えるもののイメージを表示(on payButtonView)
+            UIImageView *ivAcq =
+            [[UIImageView alloc]initWithFrame:
+            CGRectMake(0, 0, 25, 25)];
+            ivAcq.center = CGPointMake(shadowView.frame.origin.x + ivAcq.bounds.size.width/2,
+                                       shadowView.center.y);
+            ivAcq.image = [UIImage imageNamed:strImgAcq];
+            [payButtonView addSubview:ivAcq];
+            
+            
+            
             //yen-mark
             viewYenImage = [CreateComponentClass createImageView:CGRectMake(MARGIN_FRAME_PRODUCT-10,
                                                                             HEIGHT_FRAME_PRODUCT - heightPrice+5, 20, 20)
-                                                           image:strImgUnit];
+                                                           image:strImgCurrency];
             //                viewYenImage.center = CGPointMake(MARGIN_FRAME_PRODUCT, SIZE_BUTTON_PRODUCT + MARGIN_FRAME_PRODUCT*2);
             [eachFrame addSubview:viewYenImage];
             
@@ -510,6 +565,11 @@ NSArray *arrProductId;
     [background startAnimation];
 }
 
+
+/*
+ *init & viewWillAppearで呼ばれる
+ *Zeny や　Rubyの個数も更新した方が良いかも？
+ */
 -(void)updateData{
     //arrProductIdはrubyX.X.Xに変更したいがitunes connect側で実行する必要がある
     arrProductId = [NSArray arrayWithObjects:
@@ -582,6 +642,7 @@ NSArray *arrProductId;
                     nil],
                    nil];
     
-    strImgUnit = @"icon_yen.png";
+    strImgCurrency = @"icon_yen.png";
+    strImgAcq = @"jewel.png";
 }
 @end
