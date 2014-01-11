@@ -460,10 +460,17 @@ int sensitivity;
     [self.view addSubview:viewScoreField];
     
     //ornament
-    UIImageView *viewOrnament =
-    [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-    viewOrnament.image = [UIImage imageNamed:@"frame02.png"];
-    [viewScoreField addSubview:viewOrnament];
+    UIImageView *viewOrnament1 =
+    [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 60, 60)];
+    viewOrnament1.image = [UIImage imageNamed:@"frame02.png"];
+    [viewScoreField addSubview:viewOrnament1];
+    UIImageView *viewOrnament2 =
+    [[UIImageView alloc] initWithFrame:viewOrnament1.bounds];
+    viewOrnament2.image = [UIImage imageNamed:@"frame02.png"];
+    CGAffineTransform t1 =    //アフィン変換：180degree rotate
+    CGAffineTransformMakeTranslation(viewScoreField.bounds.size.width-viewOrnament1.bounds.size.width-5,8);//adjustment
+    viewOrnament2.transform = CGAffineTransformRotate(t1, M_PI);
+    [viewScoreField addSubview:viewOrnament2];
     
     
     lblScore = [[UILabel alloc]init];
@@ -500,7 +507,7 @@ int sensitivity;
     
     //label
     UITextView *tvScoreLabel = [CreateComponentClass
-                                createTextView:CGRectMake(0, 0,80,
+                                createTextView:CGRectMake(10, 0,80,
                                                           [ScoreBoard getTextView].frame.size.height)
                                 text:@"Score"
                                 font:@"AmericanTypewriter-Bold"
@@ -2547,12 +2554,12 @@ int sensitivity;
     
     //デジタル表示用
     
-     for(int i = 0; i < [[_boardClass getDigitalArray] count]; i++){
-     //removeはなくても新しいbackgroundframeの上に表示されるので見た目上は必要ない
-     //が、ないとメモリがどんどん増えていくと思う。
-     [(UIImageView*)[[_boardClass getDigitalArray] objectAtIndex:i] removeFromSuperview];
-     [self.view addSubview:[[_boardClass getDigitalArray] objectAtIndex:i]];
-     }
+//     for(int i = 0; i < [[_boardClass getDigitalArray] count]; i++){
+//     //removeはなくても新しいbackgroundframeの上に表示されるので見た目上は必要ない
+//     //が、ないとメモリがどんどん増えていくと思う。
+//     [(UIImageView*)[[_boardClass getDigitalArray] objectAtIndex:i] removeFromSuperview];
+//     [self.view addSubview:[[_boardClass getDigitalArray] objectAtIndex:i]];
+//     }
     
     lblScore.text = [NSString stringWithFormat:@"%d",[ScoreBoard getScore]];
     lblGold.text = [NSString stringWithFormat:@"%d", [GoldBoard getScore]];
@@ -2560,9 +2567,9 @@ int sensitivity;
     //temporary
     [lblScore sizeToFit];
     [lblGold sizeToFit];
-    lblScore.center = CGPointMake(viewScoreField.bounds.size.width/2,
+    lblScore.center = CGPointMake(viewScoreField.bounds.size.width*2/3,
                                   lblScore.center.y);
-    lblGold.center = CGPointMake(viewScoreField.bounds.size.width/2,
+    lblGold.center = CGPointMake(viewScoreField.bounds.size.width*2/3,
                                  lblGold.center.y);
     
     
