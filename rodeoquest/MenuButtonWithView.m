@@ -214,26 +214,111 @@
             }
             case ButtonMenuImageTypeBuyProduct0:{
                 imgAdd.image = [UIImage imageNamed:@"apatite01.png"];
+                
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/5 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width*3/5),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyProduct1:{
                 imgAdd.image = [UIImage imageNamed:@"apatite02.png"];
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/5 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width*3/5),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyProduct2:{
                 imgAdd.image = [UIImage imageNamed:@"apatite03.png"];
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/5 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width*3/5),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyProduct3:{
                 imgAdd.image = [UIImage imageNamed:@"apatite04.png"];
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/5 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width*3/5),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyProduct4:{
                 imgAdd.image = [UIImage imageNamed:@"apatite05.png"];
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/5 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width*3/5),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyProduct5:{
                 imgAdd.image = [UIImage imageNamed:@"apatite06.png"];
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/5 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width*3/5),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeDemand:{
@@ -242,39 +327,106 @@
             }
             case ButtonMenuImageTypeBuyCoin0:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin01.png"];
-                for(int i = 0 ; i < 5 ; i++){
-                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/10,
-                                               imgAdd.bounds.size.height/10);
+                imgAdd.center = CGPointMake(imgAdd.center.x,
+                                            imgAdd.center.y + 10);//少し上過ぎなので下げる
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/4,
+                                               imgAdd.bounds.size.height/4);
                     UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
-                    imgKr.image = [UIImage imageNamed:@"img03.png"];
-                    imgKr.center = CGPointMake(arc4random() % ((int)imgAdd.bounds.size.width),
-                                               arc4random() % ((int)imgAdd.bounds.size.height));
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width/2),
+                                               imgAdd.bounds.size.height/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height/2));
                     [imgAdd addSubview:imgKr];
                 }
                 break;
             }
             case ButtonMenuImageTypeBuyCoin1:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin02.png"];
+                for(int i = 0 ; i < 10 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width/2),
+                                               imgAdd.bounds.size.height/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height/2));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyCoin2:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin03.png"];
+                for(int i = 0 ; i < 25 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width/2),
+                                               imgAdd.bounds.size.height/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height/2));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyCoin3:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin04.png"];
+                for(int i = 0 ; i < 20 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(arc4random() % ((int)imgAdd.bounds.size.width),
+                                               imgAdd.bounds.size.height/3+
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyCoin4:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin05.png"];
+                for(int i = 0 ; i < 30 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(arc4random() % ((int)imgAdd.bounds.size.width),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyCoin5:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin06.png"];
-                UIImageView *imgKr = [[UIImageView alloc]initWithFrame:
-                CGRectMake(0, 0, imgAdd.bounds.size.width, imgAdd.bounds.size.height)];
-                imgKr.image = [UIImage imageNamed:@"krkr_many2.png"];
-                [imgAdd addSubview:imgKr];
+                for(int i = 0 ; i < 30 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/5,
+                                               imgAdd.bounds.size.height/4);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    NSString *strImageName = [NSString stringWithFormat:@"img%02d.png",
+                                              MAX(3, arc4random()%12)];
+                    imgKr.image = [UIImage imageNamed:strImageName];
+                    imgKr.center = CGPointMake(imgAdd.bounds.size.width/4 +
+                                               arc4random() % ((int)imgAdd.bounds.size.width/2),
+                                               imgAdd.bounds.size.height/3 +
+                                               arc4random() % ((int)imgAdd.bounds.size.height*2/3));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeDialogYes:{
