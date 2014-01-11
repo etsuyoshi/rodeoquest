@@ -77,6 +77,7 @@
 		341CB86E1880F20F008A90F1 /* Add_contact_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB86D1880F20F008A90F1 /* Add_contact_user.png */; };
 		341CB870188117EA008A90F1 /* frame02.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB86F188117EA008A90F1 /* frame02.png */; };
 		341CB87218811B05008A90F1 /* back_snow_continue.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB87118811B05008A90F1 /* back_snow_continue.png */; };
+		341CB87418812111008A90F1 /* krkr_many2.png in Resources */ = {isa = PBXBuildFile; fileRef = 341CB87318812111008A90F1 /* krkr_many2.png */; };
 		341D9C66182DDE7C009B904E /* kira_img11.png in Resources */ = {isa = PBXBuildFile; fileRef = 341D9C65182DDE7C009B904E /* kira_img11.png */; };
 		341D9C68182DE67E009B904E /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 341D9C67182DE67E009B904E /* smoke.png */; };
 		342057D217F2B34C0084E99D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 342057D117F2B34C0084E99D /* UIKit.framework */; };
@@ -491,6 +492,7 @@
 		341CB86D1880F20F008A90F1 /* Add_contact_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_contact_user.png; sourceTree = "<group>"; };
 		341CB86F188117EA008A90F1 /* frame02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame02.png; sourceTree = "<group>"; };
 		341CB87118811B05008A90F1 /* back_snow_continue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_snow_continue.png; sourceTree = "<group>"; };
+		341CB87318812111008A90F1 /* krkr_many2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = krkr_many2.png; sourceTree = "<group>"; };
 		341D9C65182DDE7C009B904E /* kira_img11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kira_img11.png; sourceTree = "<group>"; };
 		341D9C67182DE67E009B904E /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
 		342057CE17F2B34C0084E99D /* Rodeoquest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rodeoquest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1286,6 +1288,7 @@
 		3488ACBA183D26D600833F93 /* kira */ = {
 			isa = PBXGroup;
 			children = (
+				341CB87318812111008A90F1 /* krkr_many2.png */,
 				34B35C25187A6D3C00FDEE57 /* krkr_many.png */,
 				3488ACBB183D272F00833F93 /* img03.png */,
 				3488ACBC183D272F00833F93 /* img04.png */,
@@ -2064,6 +2067,7 @@
 				340C3B9718549DDD0017BBBE /* Ice.png in Resources */,
 				3480F643187D43A700EADA7A /* no_2.png in Resources */,
 				348C445318669D020029D09B /* purchased01.png in Resources */,
+				341CB87418812111008A90F1 /* krkr_many2.png in Resources */,
 				34E216CA181BF74300B939E6 /* kinpaku_hmix.mp3 in Resources */,
 				34BC5CE01872A1A2005534EB /* icon_speaker_on.png in Resources */,
 				344BD6171815936B00387201 /* mob_zou_02.png in Resources */,

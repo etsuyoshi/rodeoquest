@@ -242,6 +242,15 @@
             }
             case ButtonMenuImageTypeBuyCoin0:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin01.png"];
+                for(int i = 0 ; i < 5 ; i++){
+                    CGRect rectKr = CGRectMake(0, 0, imgAdd.bounds.size.width/10,
+                                               imgAdd.bounds.size.height/10);
+                    UIImageView *imgKr = [[UIImageView alloc]initWithFrame:rectKr];
+                    imgKr.image = [UIImage imageNamed:@"img03.png"];
+                    imgKr.center = CGPointMake(arc4random() % ((int)imgAdd.bounds.size.width),
+                                               arc4random() % ((int)imgAdd.bounds.size.height));
+                    [imgAdd addSubview:imgKr];
+                }
                 break;
             }
             case ButtonMenuImageTypeBuyCoin1:{
@@ -262,6 +271,10 @@
             }
             case ButtonMenuImageTypeBuyCoin5:{
                 imgAdd.image = [UIImage imageNamed:@"BuyCoin06.png"];
+                UIImageView *imgKr = [[UIImageView alloc]initWithFrame:
+                CGRectMake(0, 0, imgAdd.bounds.size.width, imgAdd.bounds.size.height)];
+                imgKr.image = [UIImage imageNamed:@"krkr_many2.png"];
+                [imgAdd addSubview:imgKr];
                 break;
             }
             case ButtonMenuImageTypeDialogYes:{

@@ -459,6 +459,13 @@ int sensitivity;
     [viewScoreField setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
     [self.view addSubview:viewScoreField];
     
+    //ornament
+    UIImageView *viewOrnament =
+    [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
+    viewOrnament.image = [UIImage imageNamed:@"frame02.png"];
+    [viewScoreField addSubview:viewOrnament];
+    
+    
     lblScore = [[UILabel alloc]init];
     lblScore.text = @"0";
     lblScore.textColor = [UIColor whiteColor];
