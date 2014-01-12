@@ -102,46 +102,6 @@ UIActivityIndicatorView *_indicator;
     
 	// Do any additional setup after loading the view, typically from a nib.
     
-//    CGRect rect_frame = [[UIScreen mainScreen] bounds];
-//    CGRect rect_main = CGRectMake(-100, -30, 580, 480);
-    CGRect rect_main = CGRectMake(-110, -10, 544, 400);
-    UIImageView *iv_frame = [[UIImageView alloc]initWithFrame:rect_main];
-    iv_frame.image = [UIImage imageNamed:@"chara01.png"];
-    iv_frame.center = CGPointMake(self.view.center.x,
-                                  self.view.center.y * 2);
-    [self.view addSubview:iv_frame];
-    
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         iv_frame.center = self.view.center;
-                     }
-                     completion:^(BOOL finished){
-                         //nothing
-                     }];
-    
-    
-#ifndef NoConnectTEST
-    // インジケーター表示
-    [self showActivityIndicator];
-    //サーバー通信
-    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1];
-#elif defined TestView
-    
-    #ifdef PaymentTest
-        PaymentTestViewController *ptvc = [[PaymentTestViewController alloc]init];
-        [self presentViewController: ptvc animated:YES completion: nil];
-        return;
-    #endif
-    
-    
-    TestViewController *tvc = [[TestViewController alloc]init];
-    [self presentViewController: tvc animated:YES completion: nil];
-#else
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
-    //    NSLog(@"%@", vc);
-    [self presentViewController: vc animated:YES completion: nil];
-#endif
 }
 
 
@@ -222,7 +182,42 @@ UIActivityIndicatorView *_indicator;
         
     }
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    
+    //ornament
+//    UIImageView *viewOrnament =
+//    [[UIImageView alloc] initWithFrame:CGRectMake(20, 80, 150, 150)];
+//    viewOrnament.image = [UIImage imageNamed:@"frame02_black.png"];
+//    [self.view addSubview:viewOrnament];
+    
 
+    
+    
+#ifndef NoConnectTEST
+    // インジケーター表示
+    [self showActivityIndicator];
+    //サーバー通信
+    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1];
+#elif defined TestView
+    
+#ifdef PaymentTest
+    PaymentTestViewController *ptvc = [[PaymentTestViewController alloc]init];
+    [self presentViewController: ptvc animated:YES completion: nil];
+    return;
+#endif
+    
+    
+    TestViewController *tvc = [[TestViewController alloc]init];
+    [self presentViewController: tvc animated:YES completion: nil];
+#else
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
+    //    NSLog(@"%@", vc);
+    [self presentViewController: vc animated:YES completion: nil];
+#endif
+}
 
 -(void)viewDidAppear:(BOOL)animated{
     //viewDidLoadの次に呼び出される
@@ -241,6 +236,23 @@ UIActivityIndicatorView *_indicator;
     [bt addTarget:self action:@selector(pushed_button:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:bt];
      */
+    
+    //    CGRect rect_frame = [[UIScreen mainScreen] bounds];
+    //    CGRect rect_main = CGRectMake(-100, -30, 580, 480);
+    CGRect rect_main = CGRectMake(-110, -10, 544, 400);
+    UIImageView *iv_frame = [[UIImageView alloc]initWithFrame:rect_main];
+    iv_frame.image = [UIImage imageNamed:@"chara01.png"];
+    iv_frame.center = CGPointMake(self.view.center.x,
+                                  self.view.center.y * 2);
+    [self.view addSubview:iv_frame];
+    
+    [UIView animateWithDuration:1.0f
+                     animations:^{
+                         iv_frame.center = self.view.center;
+                     }
+                     completion:^(BOOL finished){
+                         //nothing
+                     }];
     
 }
 

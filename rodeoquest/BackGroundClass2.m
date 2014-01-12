@@ -14,7 +14,10 @@
 float oscillateWidth = 15;
 int imageMargin;
 -(id)init{//引数なしで呼び出された場合のポリモーフィズム
-    self = [self init:0 width:320 height:480 secs:3];
+    self = [self init:0
+                width:[UIScreen mainScreen].bounds.size.width
+               height:[UIScreen mainScreen].bounds.size.height
+                 secs:3];
     
     return self;
 }

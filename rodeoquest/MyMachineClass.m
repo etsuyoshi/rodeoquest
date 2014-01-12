@@ -331,7 +331,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 //    }
 }
 
--(void) die:(CGPoint) location{
+-(int)die:(CGPoint) location{
     //爆発用パーティクルの初期化
     bomb_size = 200;
     //以下生成後、GameClassViewController側で(貼付けてから)透明化
@@ -339,6 +339,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     isAlive = false;
     [iv removeFromSuperview];
     dead_time ++;
+    return -1;
 }
 
 
@@ -969,7 +970,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
                 numOfBeam = 0;
                 //弾丸を全て削除
                 for(int i = 0 ;i < [beamArray count];i++){
-                    [[beamArray objectAtIndex:i] die];
+                    [(BeamClass *)[beamArray objectAtIndex:i] die];
                 }
                 
                 [iv addSubview:ivLaserR];

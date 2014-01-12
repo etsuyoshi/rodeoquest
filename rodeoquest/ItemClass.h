@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, ItemType) {
 
 -(Boolean)doNext;//particle発生時にtrueを返す
 
--(void)die;
+-(int)die;
 -(void)setLocation:(CGPoint)loc;
 -(void)setX:(int)x;
 -(void)setY:(int)y;

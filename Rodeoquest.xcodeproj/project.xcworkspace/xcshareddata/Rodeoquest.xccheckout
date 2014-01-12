@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>AF837FF4-A1EB-4A2F-9031-0C32BE853EC0</string>
+	<string>B7CD5652-ACC5-4F8C-86D1-824EF9EE6C8F</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Rodeoquest</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>38D95719-3BBE-4DB7-B2B2-F2EF9E89E597</key>
-		<string>ssh://github.com/etsuyoshi/rodeoquest.git</string>
+		<key>AD13E7E2-59B1-47EC-9FE7-E5671FE81F25</key>
+		<string>ssh://github.com/etsuyoshi/rodeouqest.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Rodeoquest.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>38D95719-3BBE-4DB7-B2B2-F2EF9E89E597</key>
+		<key>AD13E7E2-59B1-47EC-9FE7-E5671FE81F25</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/etsuyoshi/rodeoquest.git</string>
+	<string>ssh://github.com/etsuyoshi/rodeouqest.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>38D95719-3BBE-4DB7-B2B2-F2EF9E89E597</string>
+	<string>AD13E7E2-59B1-47EC-9FE7-E5671FE81F25</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>38D95719-3BBE-4DB7-B2B2-F2EF9E89E597</string>
+			<string>AD13E7E2-59B1-47EC-9FE7-E5671FE81F25</string>
 			<key>IDESourceControlWCCName</key>
 			<string>rodeoquest</string>
 		</dict>

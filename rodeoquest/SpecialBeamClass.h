@@ -8,6 +8,7 @@
 
 #import "BeamClass.h"
 #import "AttrClass.h"
+#import "ExplodeParticleView.h"
 
 
 typedef NS_ENUM(NSInteger, BeamType) {
@@ -38,4 +39,5 @@ typedef NS_ENUM(NSInteger, BeamType) {
 //-(id)getBowAsKeys:(int)no;
 //-(id)getBeamAsValues:(int)no;
 //-(NSString *)getBowImageFromBeam:(NSString *)strBeamImage;
+
 @end

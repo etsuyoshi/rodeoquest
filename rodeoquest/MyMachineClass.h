@@ -106,7 +106,7 @@
 -(void)setStatus:(NSString *)statusValue key:(ItemType)itemType;
 -(int)getNumOfAnother;
 -(int)getNumOfBeam;
--(void)die:(CGPoint)loc;
+-(int)die:(CGPoint)loc;
 -(int)getHitPoint;
 -(Boolean)getIsAlive;
 -(void)setSize:(int)s;

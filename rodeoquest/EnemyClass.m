@@ -124,11 +124,13 @@ int unique_id;
     }
 }
 
--(void) die{
+-(int) die{
     
     
 //    explodeParticle.center = CGPointMake(x_loc, y_loc);
     isAlive = false;
+    
+    return -1;
 }
 
 -(EnemyType)getType{

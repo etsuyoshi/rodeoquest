@@ -7,7 +7,6 @@
 //
 
 #import "SpecialBeamClass.h"
-//#import "AttrClass.h"
 
 @implementation SpecialBeamClass
 @synthesize beamType;
@@ -63,4 +62,61 @@
 //-(NSString *)getBowImageFromBeam:(NSString *)strBeamImage{
 //    return nil;
 //}
+
+/*
+ *敵機衝突時にエフェクト発動の可否を返す
+ *親クラス、ordinaryBeamは-1(基本的に本クラスにおいてもゼロ)
+ */
+-(int)die{
+    if(arc4random() % 200 == 0){//
+        return beamType;
+    }
+    return beamType;//test:always
+//    return -1;
+}
+
+/*
+ *敵機衝突時のエフェクト
+ *重くない処理
+ */
+-(UIView *)getEffect{
+    UIView *viewEffect = [[UIImageView alloc] initWithFrame:iv.bounds];
+    switch (beamType) {
+        case BeamTypeAnimal:{
+//            viewEffect.image = nil;
+            
+            NSArray *imgArray = [[NSArray alloc] initWithObjects:
+                                 [UIImage imageNamed:@"player.png"],
+                                 [UIImage imageNamed:@"player2.png"],
+                                 [UIImage imageNamed:@"player3.png"],
+                                 [UIImage imageNamed:@"player4.png"],
+                                 [UIImage imageNamed:@"player4.png"],
+                                 [UIImage imageNamed:@"player3.png"],
+                                 [UIImage imageNamed:@"player2.png"],
+                                 [UIImage imageNamed:@"player.png"],
+                                 nil];
+            iv.animationImages = imgArray;
+            iv.animationRepeatCount = 0;
+            iv.animationDuration = 1.0f; // アニメーション全体で1秒（＝各間隔は0.5秒）
+            [iv startAnimating];
+            
+            
+            break;
+        }
+        case BeamTypeFire:{
+            ExplodeParticleView *explode =
+//            viewEffect =
+            (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:iv.bounds];
+            [explode setType:0];//red-fire
+            [viewEffect addSubview:explode];
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+    
+    return viewEffect;
+}
 @end

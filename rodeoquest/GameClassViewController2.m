@@ -1479,14 +1479,11 @@ int sensitivity;
                         AudioServicesPlaySystemSound (sound_damage_ID);
                         
                         //dieと同時にremovefromSuperviewせずに集約する(画面外に出てもdieするため)
-                        //                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
-                        [[MyMachine getBeam:j] die];//衝突したらビームは消去
+                        //dieメソッドはエフェクトを発動する特殊武器がある(発動する場合はBeamTypeを返す)
+                        int _beamType = [[MyMachine getBeam:j] die];//衝突したらビームは消去
                         
                         
-                        //                        NSLog(@"%d", [[MyMachine getBeam:j] getIsAlive]);
-                        //                        NSLog(@"%d is die according to hit enemy at x=%d, y=%d",
-                        //                              j,_xEnemy, _yEnemy);
-                        //                        [[[MyMachine getBeam:j] getImageView] removeFromSuperview];//画面削除
+                        
                         
                         //攻撃によって敵が死んだらYES:生きてればNO
                         if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy]){
@@ -1498,6 +1495,14 @@ int sensitivity;
 #ifdef log
                             NSLog(@"beam is hit to enemy%d which alive", i);
 #endif
+                            
+                            
+                            //beamClassによって発動されたエフェクトを判別して表示
+                            if(_beamType != -1){
+                                
+                                [[[EnemyArray objectAtIndex:i] getImageView]
+                                 addSubview:[[MyMachine getBeam:j] getEffect]];
+                            }
                             continue;//no need?:同じ敵iに対して次の弾丸の衝突判定を行う
                         }
                         

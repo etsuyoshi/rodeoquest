@@ -501,7 +501,7 @@ int numCell;
 }
 
 
--(void) die{
+-(int) die{
     //アイテム消滅時(プレイヤーによる取得時)のパーティクルの初期化
 //    killedParticle = [[KiraParticleView alloc] initWithFrame:CGRectMake(x_loc, y_loc, 40, 40)
 //                                                                  particleType:ParticleTypeKilled];
@@ -530,6 +530,7 @@ int numCell;
     
     
     isAlive = false;
+    return -1;
 }
 -(void) setLocation:(CGPoint)loc{
     x_loc = (int)loc.x;

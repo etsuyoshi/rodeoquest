@@ -31,7 +31,7 @@
 
 -(void)doNext;
 
--(void)die;
+-(int)die;
 -(void)setLocation:(CGPoint)loc;
 -(void)setX:(int)x;
 -(void)setY:(int)y;
@@ -42,5 +42,5 @@
 -(int) getY;
 -(int)getSize;
 -(UIImageView *)getImageView;
-
+-(UIView *)getEffect;//サブクラスのSpecialBeamClassにおいてのみ使用
 @end

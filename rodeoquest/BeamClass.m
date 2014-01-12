@@ -77,9 +77,16 @@
     return power;
 }
 
--(void) die{
+-(int) die{
     isAlive = false;
 //    [iv removeFromSuperview];
+    
+    return -1;//サブクラスのSpecialBeamClassで特殊効果を発動するか否か
+    /*
+     *gameクラスにおいて画面外での消滅時のdieは何もせず、
+     *敵機衝突での消滅時のdieは返り値を拾ってエフェクトを拾う
+     *エフェクトは敵UIViewにaddして継続的に発生：処理が遅くなるのであまり重いものはできない
+     */
 }
 -(void) setLocation:(CGPoint)loc{
     x_loc = (int)loc.x;
@@ -111,6 +118,11 @@
 
 -(UIImageView *)getImageView{
     return iv;
+}
+
+-(UIView *)getEffect{
+    //サブクラスの特殊武器において使用
+    return nil;
 }
 
 @end
