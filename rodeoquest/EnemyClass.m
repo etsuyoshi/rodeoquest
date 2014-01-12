@@ -89,6 +89,30 @@ int unique_id;
 }
 
 -(void)setDamage:(int)damage location:(CGPoint)location{
+    //通常弾での攻撃
+    [self setDamage:damage location:location beamType:-1];
+}
+
+-(void)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
+    if(beamType != -1){
+        switch ((BeamType)beamType) {
+            case BeamTypeAnimal:{
+//                <#statements#>
+                break;
+            }
+            case BeamTypeBug:{
+                
+                break;
+            }
+            case BeamTypeFire:{
+//                iv addSubview:<#(UIView *)#>
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
     //once damaed, he display damage-mode for 1sec(100count)
     isDamaged = 100;//100count=1sec
     //particleを表示すると動作が重くなる
@@ -414,5 +438,9 @@ int unique_id;
     
     return viewExplode;
 }
+
+
+//特殊弾丸を被弾した時のエフェクト
+//-(void)setDa
 
 @end

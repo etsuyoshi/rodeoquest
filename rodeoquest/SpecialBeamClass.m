@@ -10,6 +10,7 @@
 
 @implementation SpecialBeamClass
 @synthesize beamType;
+
 -(id) init:(int)x_init y_init:(int)y_init width:(int)w height:(int)h type:(BeamType)_type{
 //    NSLog(@"special beam occurred");
     
@@ -68,18 +69,24 @@
  *親クラス、ordinaryBeamは-1(基本的に本クラスにおいてもゼロ)
  */
 -(int)die{
+//    [super die];//isAlive=falseと同値(返り値は不要)
+    isAlive = false;
+//    NSLog(@"SpecialBeamclass die" );
     if(arc4random() % 200 == 0){//
+//        NSLog(@"effect drive!");
         return beamType;
     }
-    return beamType;//test:always
+    //test:always
+    return beamType;//beamType;
 //    return -1;
 }
 
 /*
  *敵機衝突時のエフェクト
- *重くない処理
+ *重くない処理にする必要
  */
 -(UIView *)getEffect{
+//    NSLog(@"getEffect");
     UIView *viewEffect = [[UIImageView alloc] initWithFrame:iv.bounds];
     switch (beamType) {
         case BeamTypeAnimal:{
@@ -104,13 +111,37 @@
             break;
         }
         case BeamTypeFire:{
-            ExplodeParticleView *explode =
+//            NSLog(@" beamtypeFire occure" );
+            //通常時爆発(=ViewExplode)と同様の処理を(グラデ、時間を変更して)実行
+//            ViewExplode *viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
+//                                                        type:ExplodeTypeRed];
+//            [viewExplode explode:250 angle:60 x:x_loc y:y_loc];
+//            [NSTimer scheduledTimerWithTimeInterval:0.5f
+//                                             target:viewExplode
+//                                           selector:@selector(explode) userInfo:nil repeats:YES];
+//            return viewExplode;
+            
+            
+            
+            ExplodeParticleView *explode;
+            explode =
 //            viewEffect =
             (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:iv.bounds];
             [explode setType:0];//red-fire
-            [viewEffect addSubview:explode];
+            [explode setOnOffEmitting];//発火と消火の繰り返し
+//            [viewEffect addSubview:explode];
             
-            break;
+            //interval秒後に停止させる
+//            [NSTimer scheduledTimerWithTimeInterval:0.2f
+//                                             target:explode
+//                                           selector:@selector(setOnOffEmitting)
+//                                           userInfo:nil
+//                                            repeats:YES];
+            
+            
+            return explode;
+//
+//            break;
         }
             
         default:
@@ -119,4 +150,5 @@
     
     return viewEffect;
 }
+
 @end

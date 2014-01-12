@@ -18,6 +18,8 @@
     if (self) {
         // Initialization code
         
+        myBirthRate = 300;
+        
 #ifdef DEBUG
 //        NSLog(@"ExplodeParticleView start");
 #endif
@@ -27,7 +29,7 @@
         particleEmitter.renderMode = kCAEmitterLayerAdditive;
         
         CAEmitterCell *particle = [CAEmitterCell emitterCell];
-        particle.birthRate = 500;//火や水に見せるためには数百が必要
+        particle.birthRate = myBirthRate;//火や水に見せるためには数百が必要
         particle.lifetime = 0.5;
         particle.lifetimeRange = 0.5;
         particle.color = [[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.8 alpha: 0.1] CGColor];
@@ -110,6 +112,28 @@
     
 }
 
+//発火と消火の切り替え(現在の状態を判定して切り替え：繰り返し用)
+-(void)setOnOffEmitting{
+//    if(myBirthRate )
+    //myBirthRateで状態を判定し、反転した上で発火と消火を切り替える
+    myBirthRate = (myBirthRate!=0)?0:300;//0でなければ0、0なら300を返す
+    BOOL isEmitting = (myBirthRate>0)?YES:NO;
+    [self setIsEmitting:isEmitting];
+    
+//    NSLog(@"explode=%d" , isEmitting);
+    
+    //1秒間隔で発火と消火を繰り返す
+    [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                     target:self
+                                   selector:@selector(setOnOffEmitting)
+                                   userInfo:nil
+                                    repeats:NO];
+    
+}
+//引数を渡さずに直接停止させる方法
+-(void)setNoEmitting{
+    [self setIsEmitting:NO];
+}
 
 -(void)setIsEmitting:(BOOL)isEmitting
 {
@@ -126,8 +150,8 @@
         isFinished = true;
     }
     
-    
-    [particleEmitter setValue:[NSNumber numberWithInt:isEmitting?30:0]
+    myBirthRate = isEmitting?300:0;
+    [particleEmitter setValue:[NSNumber numberWithInt:myBirthRate]
                    forKeyPath:@"emitterCells.fire.birthRate"];
 
 //    [particleEmitter setValue:[NSNumber numberWithInt:isEmitting?30:0] forKeyPath:@"emitterCells.particle.birthRate"];

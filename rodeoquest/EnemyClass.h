@@ -10,6 +10,7 @@
 #import "ExplodeParticleView.h"
 #import "DamageParticleView.h"
 #import "ViewExplode.h"
+#import "SpecialBeamClass.h"
 
 typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     EnemyTypeTanu,
@@ -49,6 +50,7 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
 
 
 -(void)setDamage:(int)damage location:(CGPoint)location;
+-(void)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType;
 -(int)getHitPoint;
 -(Boolean)getIsAlive;
 -(int)getDeadTime;

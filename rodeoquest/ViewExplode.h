@@ -22,4 +22,5 @@ typedef NS_ENUM(NSInteger, ExplodeType) {//order with difficulty of get down
 -(id)initWithFrame:(CGRect)frame type:(ExplodeType)_explodeType;
 -(void)explode:(int)_size angle:(int)_angle x:(float)_x y:(float)_y times:(int)_times duration:(float)_duration;
 -(void)explode:(int)_size angle:(int)_angle x:(float)_x y:(float)_y;
+-(void)explode;
 @end

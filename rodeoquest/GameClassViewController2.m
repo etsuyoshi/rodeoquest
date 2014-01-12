@@ -828,14 +828,15 @@ int sensitivity;
             
             //            NSLog(@"%d番目敵：y=%d", i, [(EnemyClass *)[EnemyArray objectAtIndex:i] getY]);
             
-            //爆発してから時間が所定時間が経過してる場合 or 画面外に移動した場合、削除
-            if([(EnemyClass *)[EnemyArray objectAtIndex: i] getDeadTime] >= explosionCycle2 ||
-               [[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height + OBJECT_SIZE){
-                //爆発パーティクルの消去
-                
-                //explodeした場合は既に画面から消去されている
-                [EnemyArray removeObjectAtIndex:i];
-            }
+            //爆発してから時間が所定時間が経過してる場合 or 画面外に移動した場合、削除＝＞
+//            if([(EnemyClass *)[EnemyArray objectAtIndex: i] getDeadTime] >= explosionCycle2 ||
+//               [[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height + OBJECT_SIZE){
+//                //爆発パーティクルの消去
+//                
+//                //爆発ビューが表示されたままなので、ここでは消さずに
+//                //explodeした場合は既に画面から消去されているー＞？
+////                [EnemyArray removeObjectAtIndex:i];
+//            }
         }
     }
     
@@ -1481,12 +1482,11 @@ int sensitivity;
                         //dieと同時にremovefromSuperviewせずに集約する(画面外に出てもdieするため)
                         //dieメソッドはエフェクトを発動する特殊武器がある(発動する場合はBeamTypeを返す)
                         int _beamType = [[MyMachine getBeam:j] die];//衝突したらビームは消去
-                        
-                        
+//                        [[MyMachine getBeam:j] die];//衝突したらビームは消去
                         
                         
                         //攻撃によって敵が死んだらYES:生きてればNO
-                        if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy]){
+                        if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy beamType:_beamType]){
 #ifdef log
                             NSLog(@"beam is hit to enemy%d which die", i);
 #endif
@@ -1494,15 +1494,18 @@ int sensitivity;
                         }else{
 #ifdef log
                             NSLog(@"beam is hit to enemy%d which alive", i);
+                            NSLog(@"beamType=%d", _beamType);
 #endif
                             
                             
-                            //beamClassによって発動されたエフェクトを判別して表示
-                            if(_beamType != -1){
-                                
-                                [[[EnemyArray objectAtIndex:i] getImageView]
-                                 addSubview:[[MyMachine getBeam:j] getEffect]];
-                            }
+                            //beamClassによって発動されたエフェクトを判別して表示->setdamageで渡す
+//                            if(_beamType != -1){
+//#ifdef log
+//                                NSLog(@"effect : beamtype = %d", _beamType);
+//#endif
+//                                [[[EnemyArray objectAtIndex:i] getImageView]
+//                                 addSubview:[[MyMachine getBeam:j] getEffect]];
+//                            }
                             continue;//no need?:同じ敵iに対して次の弾丸の衝突判定を行う
                         }
                         
@@ -1547,7 +1550,7 @@ int sensitivity;
     
     
     if((int)gameSecond2 % 10 == 0){//per 10sec
-        [self garvageCollection];
+        [self garbageCollection];
 #ifdef log
         NSLog(@"complete garvageCollection");
 #endif
@@ -1589,12 +1592,13 @@ int sensitivity;
 ////    isTouched = true;
 //}
 
--(void)garvageCollection{
+-(void)garbageCollection{
     NSLog(@"garvageCollection");
     for(int i = 0; i < [EnemyArray count]; i++){
         //        NSLog(@"i = %d at Y = %d", i, [[EnemyArray objectAtIndex:i]getY]);
         if([[EnemyArray objectAtIndex:i] getY] >= self.view.bounds.size.height ||
-           ![[EnemyArray objectAtIndex:i] getIsAlive]){
+//           ![[EnemyArray objectAtIndex:i] getIsAlive]){
+            [(EnemyClass *)[EnemyArray objectAtIndex:i] getDeadTime] >= explosionCycle2){
             //            NSLog(@"remove at %d, %d", i, [[EnemyArray objectAtIndex:i] getY]);
             [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];
             [EnemyArray removeObjectAtIndex:i];
@@ -2946,8 +2950,6 @@ int sensitivity;
     [self displayScore:ScoreBoard];
     
     enemyDown++;
-    //                            NSLog(@"enemyDown: %d", enemyDown);
-    
 }
 
 
@@ -3221,8 +3223,12 @@ int sensitivity;
 }
 
 -(BOOL)giveDamageToEnemy:(int)i damage:(int)_damage x:(int)_xBeam y:(int)_yBeam{
+    return [self giveDamageToEnemy:i damage:_damage x:_xBeam y:_yBeam beamType:-1];//(通常弾もしくはレーザーによる)通常モードでの攻撃
+}
+    
+-(BOOL)giveDamageToEnemy:(int)i damage:(int)_damage x:(int)_xBeam y:(int)_yBeam beamType:(int)beamType{
     //ビームが衝突した位置にdamageParticle表示(damageParticle生成のため位置情報を渡す)
-    [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage location:CGPointMake(_xBeam, _yBeam)];
+    [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage location:CGPointMake(_xBeam, _yBeam) beamType:(int)beamType];
     
     
     //ビームに当たる前に生きていた敵が死んだら＝今回のビームで敵を倒したら

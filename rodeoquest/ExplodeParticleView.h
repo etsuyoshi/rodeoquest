@@ -13,10 +13,13 @@
 //    CAEmitterLayer *fireEmitter;
     CAEmitterLayer *particleEmitter;
     Boolean isFinished;
+    int myBirthRate;
     int type;
 }
 
 //-(void)setEmitterPositionFromTouch: (UITouch*)t;
+-(void)setOnOffEmitting;
+-(void)setNoEmitting;
 -(void)setIsEmitting:(BOOL)isEmitting;
 -(Boolean)getIsFinished;
 -(void)setType:(int)type;

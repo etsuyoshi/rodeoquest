@@ -302,8 +302,13 @@
                      }];
 }
 
+//polymophism
 -(void)explode:(int)_size angle:(int)_angle x:(float)_x y:(float)_y{
-    [self explode:(int)_size angle:(int)_angle x:(float)_x y:(float)_y times:(int)2 duration:(float)0.5f];
+    [self explode:(int)_size angle:(int)_angle x:(float)_x y:(float)_y times:(int)1 duration:(float)0.5f];
+}
+
+-(void)explode{
+    [self explode:(int)250 angle:(int)0 x:(float)0 y:(float)0 times:(int)2 duration:(float)0.5f];
 }
 
 @end
