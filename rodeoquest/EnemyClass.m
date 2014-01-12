@@ -36,6 +36,7 @@ int unique_id;
     dead_time = -1;//死亡したら0にして一秒後にparticleを消去する
     isAlive = true;
     isDamaged = 0;
+    isImpact = -1;
     explodeParticle = nil;
     damageParticle  = nil;
     rect = CGRectMake(x_loc, y_loc, mySize, mySize);
@@ -94,7 +95,10 @@ int unique_id;
 }
 
 -(void)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
-    if(beamType != -1){
+    
+    if(beamType != -1 && isImpact == -1){//初めて特殊攻撃を受けた場合
+        NSLog(@"first impact");
+        isImpact = beamType;
         switch ((BeamType)beamType) {
             case BeamTypeAnimal:{
 //                <#statements#>
@@ -106,6 +110,16 @@ int unique_id;
             }
             case BeamTypeFire:{
 //                iv addSubview:<#(UIView *)#>
+                NSLog(@"fire occurred");
+                ExplodeParticleView *explode =
+                //            viewEffect =
+                (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:iv.bounds];
+                [explode setType:0];//red-fire
+                [explode setOnOffEmitting];//発火と消火の繰り返し
+                [iv addSubview:explode];
+                
+                NSLog(@"damaged in beamTypeFire");
+                
                 break;
             }
             default:

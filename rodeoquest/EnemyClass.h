@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     int bomb_size;
     int dead_time;
     Boolean isAlive;
+    int isImpact;//特殊攻撃による被弾があったかどうか(-1からスタートして被弾されたらその特殊弾丸を代入)
     int isDamaged;
     UIImageView *iv;
     CGRect rect;
