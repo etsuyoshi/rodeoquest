@@ -52,7 +52,10 @@ int world_no;
 
 //NSMutableArray *iv_arr_tokuten;
 int y_background1, y_background2;
-const int explosionCycle2 = 30;//爆発時間
+
+//敵オブジェクト：removeFromSuperviewするため
+//gameClassViewCon:remove from Arrayするため
+const int explosionCycle2 = 30;//爆発時間:敵オブジェクトでも定義
 int max_enemy_in_frame;
 int x_frame, y_frame;
 //int x_myMachine, x_enemyMachine, x_beam;
@@ -822,7 +825,34 @@ int sensitivity;
         if([(EnemyClass *)[EnemyArray objectAtIndex:i] getIsAlive] ||
            [(EnemyClass *)[EnemyArray objectAtIndex:i] getDeadTime] < explosionCycle2){
             
-            //更新(進行位置の更新と爆発後の時間経過)
+            
+            //donext実行(時間と位置の更新)前に、前時刻において死んだ場合はアイテムを生成する：ビーム衝突以外に特殊効果によるsetdamageもあるため
+            if([(EnemyClass *)[EnemyArray objectAtIndex:i] getIsDiedMoment]){
+                
+                //効果音=>別クラスに格納してstatic method化して簡潔に！
+                AudioServicesPlaySystemSound (sound_hit_ID);
+                
+                
+                [self generateItem:-1
+                                 x:[[EnemyArray objectAtIndex:i] getX]
+                                 y:[[EnemyArray objectAtIndex:i] getY]];
+                
+                
+                if([self getCountAliveEnemy] == 0){//生存している敵がいないならカウンターは集う
+                    timeIntervalEnemy = timeIntervalEnemyMax;//ゲーム進行とともにインターバルを現象させる
+                }
+                
+                //得点の加算
+                [ScoreBoard setScore:[ScoreBoard getScore] + 5 + [[EnemyArray objectAtIndex:i] getType]];//from 5 to 9
+                [self displayScore:ScoreBoard];
+                
+                //カウント
+                enemyDown++;
+                
+                //ivはdeadTimeがexplosionCycleになるまでremoveされないので、ivにエフェクトをaddする
+                [[EnemyArray objectAtIndex:i] dispDieEffect];
+            }
+            //更新(進行位置の更新と爆発後の時間経過)：isDiedMomentはfalseに強制設定
             [(EnemyClass *)[EnemyArray objectAtIndex:i] doNext];
             
             
@@ -3242,110 +3272,23 @@ int sensitivity;
     
     
     //ビームに当たる前に生きていた敵が死んだら＝今回のビームで敵を倒したら
+    //dieEffect
     if(![[EnemyArray objectAtIndex:i] getIsAlive]){
         
-        //敵全滅によりcounterを発動
-        if([self getCountAliveEnemy] == 0){//生存している敵がいないならカウンターは集う
-            timeIntervalEnemy = timeIntervalEnemyMax;//ゲーム進行とともにインターバルを現象させる
-        }
+        //敵全滅によりcounterを発動:次のordinaryAnimループで実行される
+//        if([self getCountAliveEnemy] == 0){//生存している敵がいないならカウンターは集う
+//            timeIntervalEnemy = timeIntervalEnemyMax;//ゲーム進行とともにインターバルを現象させる
+//        }
         
         //敵機撃墜時のエフェクト=>enemyClassで記述
-        [self enemyDieEffect:i];
+//        [self enemyDieEffect:i];//雲とかViewExplodeとか。
         
-        //特定ステータスではコインのみ
-        if([MyMachine getStatus:ItemTypeBig] ||
-           [MyMachine getStatus:ItemTypeBomb] ||
-           [MyMachine getStatus:ItemTypeMagnet] ||
-           [MyMachine getStatus:ItemTypeWeapon0] ||
-           //           [MyMachine getStatus:ItemTypeWeapon1] ||//複数ビームは何度も２回まで取得可能(制限をかけるなら[MyMachine getNumOfBeam]等)
-           [MyMachine getStatus:ItemTypeWeapon2]){
-            
-            if(arc4random() % 100 >= 20){//本番では40(特殊状態でコインが沢山取れる方が嬉しいため)
-                _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 2 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeBlueGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypePurpleGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else{
-                _item = [[ItemClass alloc] init:ItemTypeRedGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }
-        }else{//通常時におけるアイテム出現定義
-            int probabilityt = arc4random() % 100;
-            //アイテム出現、アイテム生成
-            if(probabilityt > 40){//60%の確率
-                _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 < 1){//2/3
-                _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeBlueGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypePurpleGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 5 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeWeapon1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){
-                _item = [[ItemClass alloc] init:ItemTypeCookie x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){//barrier
-                _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else if(arc4random() % 3 == 0){//shield
-                _item = [[ItemClass alloc] init:ItemTypeDeffense1 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            }else{//
-                
-                //                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
-                if(arc4random() % 2 == 0 && [EnemyArray count] > 5){//もしくは敵の位置が自機に近い時など
-                    _item = [[ItemClass alloc] init:ItemTypeBig x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                }else if(arc4random() % 2 == 0){
-                    _item = [[ItemClass alloc] init:ItemTypeBomb x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                }else{
-                    _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-                }
-                //                }
-            }
-            //        }else if(arc4random() % 2 == 0){//0.35%
-            //            _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];//bomb
-            //        }else if(arc4random() % 2 == 0){//0.175%
-            //            _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            //        }else if(arc4random() % 2 == 0){//0.03%
-            //            _item = [[ItemClass alloc] init:ItemTypeRedGold x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            //        }else if(arc4random() % 2 == 0){//0.35%
-            //            _item = [[ItemClass alloc] init:ItemTypeTransparency x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            //        }else{
-            //            _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-            //        }
-            //test:item2
-            //            _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-        }
         
-        //test:item
-//        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xBeam y_init:_yBeam width:ITEM_SIZE height:ITEM_SIZE];
-        
-        [ItemArray insertObject:_item atIndex:0];
-        //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
-        if([ItemArray count] > 50){
-            NSLog(@"item count = %d so remove dead", [ItemArray count]);
-            //            for(int i = 0; i < [ItemArray count];i++){
-            //                NSLog(@"item %d is %@", i, [ItemArray[i] getIsAlive]?@"alive":@"dead");
-            //            }
-            //isDeadなのになぜか格納されているものがあるので削除(画面上には表示されていない)
-            for(int i = [ItemArray count]-1;i >= 0;i--){
-                if(![[ItemArray objectAtIndex:i] getIsAlive]){
-                    NSLog(@"item %d is dead so remove(view & array)", i);
-                    [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
-                    [ItemArray removeObjectAtIndex:i];
-                    //                    break;
-                }
-            }
-            //            [ItemArray removeLastObject];
-        }
-        [self.view bringSubviewToFront:[[ItemArray objectAtIndex:0] getImageView]];
-        [self.view addSubview:[[ItemArray objectAtIndex:0] getImageView]];
+//        //アイテムの生成:次のordinaryAnimループで実行される
+//        [self
+//         generateItem:-1
+//         x:[[EnemyArray objectAtIndex:i] getX]
+//         y:[[EnemyArray objectAtIndex:i] getY]];
         
         
         /*
@@ -3373,6 +3316,100 @@ int sensitivity;
         return NO;//continue;//次のビームの衝突判定へ(ビームループ内でこの後何もしなければこのcontinueはなくても良い)
         
     }
+}
+
+
+/*
+ *引数の_typeはシグナル＝＞アイテム指定もしくは生成個数についてのシグナル＝沢山出す等：未定義
+ *他の引数(x、y)は生成位置
+ */
+-(void)generateItem:(int)_type x:(int)_xItem y:(int)_yItem{
+    if(_type != -1){//
+        
+        return;
+    }
+    //特定ステータスではコインのみ
+    if([MyMachine getStatus:ItemTypeBig] ||
+       [MyMachine getStatus:ItemTypeBomb] ||
+       [MyMachine getStatus:ItemTypeMagnet] ||
+       [MyMachine getStatus:ItemTypeWeapon0] ||
+       //           [MyMachine getStatus:ItemTypeWeapon1] ||//複数ビームは何度も２回まで取得可能(制限をかけるなら[MyMachine getNumOfBeam]等)
+       [MyMachine getStatus:ItemTypeWeapon2]){
+        
+        if(arc4random() % 100 >= 20){//本番では40(特殊状態でコインが沢山取れる方が嬉しいため)
+            _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 2 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeBlueGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypePurpleGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else{
+            _item = [[ItemClass alloc] init:ItemTypeRedGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }
+    }else{//通常時におけるアイテム出現定義
+        int probabilityt = arc4random() % 100;
+        //アイテム出現、アイテム生成
+        if(probabilityt > 40){//60%の確率
+            _item = [[ItemClass alloc] init:ItemTypeYellowGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 < 1){//2/3
+            _item = [[ItemClass alloc] init:ItemTypeGreenGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeBlueGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypePurpleGold x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 5 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeMagnet x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeWeapon1 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeWeapon2 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){
+            _item = [[ItemClass alloc] init:ItemTypeCookie x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){//barrier
+            _item = [[ItemClass alloc] init:ItemTypeDeffense0 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else if(arc4random() % 3 == 0){//shield
+            _item = [[ItemClass alloc] init:ItemTypeDeffense1 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+        }else{//
+            
+            //                if([EnemyArray count] > MAX_ENEMY_NUM/2){//ピンチ=敵が多ければ:最大の半分以上
+            if(arc4random() % 2 == 0 && [EnemyArray count] > 5){//もしくは敵の位置が自機に近い時など
+                _item = [[ItemClass alloc] init:ItemTypeBig x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+            }else if(arc4random() % 2 == 0){
+                _item = [[ItemClass alloc] init:ItemTypeBomb x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+            }else{
+                _item = [[ItemClass alloc] init:arc4random() % 16 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+            }
+        }
+    }
+    
+    //test:item
+    //        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+    
+    [ItemArray insertObject:_item atIndex:0];
+    //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去
+    if([ItemArray count] > 50){
+        NSLog(@"item count = %d so remove dead", [ItemArray count]);
+        //            for(int i = 0; i < [ItemArray count];i++){
+        //                NSLog(@"item %d is %@", i, [ItemArray[i] getIsAlive]?@"alive":@"dead");
+        //            }
+        //isDeadなのになぜか格納されているものがあるので削除(画面上には表示されていない)
+        for(int i = [ItemArray count]-1;i >= 0;i--){
+            if(![[ItemArray objectAtIndex:i] getIsAlive]){
+                NSLog(@"item %d is dead so remove(view & array)", i);
+                [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
+                [ItemArray removeObjectAtIndex:i];
+                //                    break;
+            }
+        }
+        //            [ItemArray removeLastObject];
+    }
+    [self.view bringSubviewToFront:[[ItemArray objectAtIndex:0] getImageView]];
+    [self.view addSubview:[[ItemArray objectAtIndex:0] getImageView]];
+    
+    
 }
 
 
@@ -3675,7 +3712,7 @@ int sensitivity;
     
     [controller dismissViewControllerAnimated:YES
                                    completion:^{
-                                       //                                       [self myInviteFriends:friends];
+//                                       [self myInviteFriends:friends];
                                    }];
 }
 

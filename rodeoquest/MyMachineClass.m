@@ -1263,6 +1263,9 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     return spWeapon;
 }
 
+/*
+ *enemyClassと異なり、GameViewCon側で実行するので,x、y指定するところが異なるので注意
+ */
 -(ViewExplode *)getExplodeEffect{
     viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 50, 50)
                                                 type:ExplodeTypeRed];

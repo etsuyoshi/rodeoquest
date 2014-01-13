@@ -12,7 +12,7 @@
 
 @implementation EnemyClass
 @synthesize enemyType;
-
+//const int explosionCycle2 = 30;//爆発時間:GameViewCon側でも定義
 int unique_id;
 
 -(id) init:(int)x_init size:(int)size{
@@ -33,8 +33,10 @@ int unique_id;
     x_loc = x_init;
     
     lifetime_count = 0;
+    isDispEffect = NO;
     dead_time = -1;//死亡したら0にして一秒後にparticleを消去する
     isAlive = true;
+    isDiedMoment = false;
     isDamaged = 0;
     isImpact = -1;
     explodeParticle = nil;
@@ -90,16 +92,16 @@ int unique_id;
 }
 
 //特殊武器による連続攻撃
--(void)setDamageBySpecialWeapon{
-    [self setDamage:10 location:CGPointMake(x_loc, y_loc)];
+-(int)setDamageBySpecialWeapon{
+    return [self setDamage:100 location:CGPointMake(x_loc, y_loc)];
 }
 
--(void)setDamage:(int)damage location:(CGPoint)location{
+-(int)setDamage:(int)damage location:(CGPoint)location{
     //通常弾での攻撃
-    [self setDamage:damage location:location beamType:-1];
+    return [self setDamage:damage location:location beamType:-1];
 }
 
--(void)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
+-(int)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
     
     if(beamType != -1 && isImpact == -1){//初めて特殊攻撃を受けた場合
         NSLog(@"first impact");
@@ -178,7 +180,7 @@ int unique_id;
     }
 
     //once damaed, he display damage-mode for 1sec(100count)
-    isDamaged = 100;//100count=1sec
+    isDamaged = 100;//countdown-start : 100count=1sec
     //particleを表示すると動作が重くなる
 //    damageParticle = [[DamageParticleView alloc] initWithFrame:CGRectMake(location.x, location.y, damage, damage)];
 //    [UIView animateWithDuration:0.5f
@@ -209,7 +211,11 @@ int unique_id;
 //                             [iv removeFromSuperview];
 //                         }];
         [self die];
+        isDiedMoment = YES;
+        return 1;//
     }
+    
+    return 0;
 }
 
 -(int) die{
@@ -240,7 +246,14 @@ int unique_id;
 -(int)getSize{
     return mySize;
 }
+-(Boolean)getIsDiedMoment{
+    return isDiedMoment;
+}
 -(void)doNext{
+    if(isDiedMoment){
+        //ここでfalseになる前にgameViewCon側でアイテムを生成しなくてはいけない
+        isDiedMoment = false;
+    }
     //初動：最初に呼び出される時のみ
     if(lifetime_count == 0){
 //        [iv moveTo:CGPointMake(x_loc - mySize/2, iv.superview.bounds.size.height)
@@ -278,19 +291,24 @@ int unique_id;
     switch(enemyType){
         case EnemyTypeZou:{
             bomb_size = 20;
-            if(!isDamaged){
+            if(isAlive && !isDamaged){
                 iv.image = [UIImage imageNamed:@"mob_zou_01.png"];
-            }else{
+            }else if(isAlive){
                 iv.image = [UIImage imageNamed:@"mob_zou_02.png"];
+            }else{
+                iv.image = nil;
             }
+            
             break;
         }
         case EnemyTypeTanu:{
             bomb_size = 30;
             if(!isDamaged){
                 iv.image = [UIImage imageNamed:@"mob_tanu_01.png"];
-            }else{
+            }else if(isAlive){
                 iv.image = [UIImage imageNamed:@"mob_tanu_02.png"];
+            }else{
+                iv.image = nil;
             }
             break;
         }
@@ -298,8 +316,10 @@ int unique_id;
             bomb_size = 40;
             if(!isDamaged){
                 iv.image = [UIImage imageNamed:@"mob_pen_01.png"];
-            }else{
+            }else if(isAlive){
                 iv.image = [UIImage imageNamed:@"mob_pen_02.png"];
+            }else{
+                iv.image = nil;
             }
             break;
         }
@@ -307,8 +327,10 @@ int unique_id;
             bomb_size = 40;
             if(!isDamaged){
                 iv.image = [UIImage imageNamed:@"mob_musa_01.png"];
-            }else{
+            }else if(isAlive){
                 iv.image = [UIImage imageNamed:@"mob_musa_02.png"];
+            }else{
+                iv.image = nil;
             }
             break;
         }
@@ -316,8 +338,10 @@ int unique_id;
             bomb_size = 40;
             if(!isDamaged){
                 iv.image = [UIImage imageNamed:@"mob_hari_01.png"];
-            }else{
+            }else if(isAlive){
                 iv.image = [UIImage imageNamed:@"mob_hari_02.png"];
+            }else{
+                iv.image = nil;
             }
             break;
         }
@@ -326,6 +350,9 @@ int unique_id;
     lifetime_count ++;//need to animate
     if(!isAlive){
         dead_time ++;
+//        if(dead_time > explosionCycle2){
+//            [iv removeFromSuperview];
+//        }
         return;
     }
     
@@ -408,8 +435,12 @@ int unique_id;
     UIImageView *smoke3;
     
     
-    UIView *sv = [[UIView alloc]initWithFrame:CGRectMake(x_loc, y_loc, 1,1)];//描画しないのでサイズは関係ない
-    sv.center = CGPointMake(x_loc, y_loc);
+//    UIView *sv = [[UIView alloc]initWithFrame:CGRectMake(x_loc, y_loc, 1,1)];//描画しないのでサイズは関係ない
+//    sv.center = CGPointMake(x_loc, y_loc);
+    UIView *sv = [[UIView alloc]initWithFrame:CGRectMake(0,0, 1,1)];//描画しないのでサイズは関係ない
+    sv.center = CGPointMake(iv.bounds.size.width/2,
+                            iv.bounds.size.height/2);
+    
     
     smoke1 = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,
                                                           size_init, size_init)];//初期スモークサイズ
@@ -482,21 +513,21 @@ int unique_id;
 -(ViewExplode *)getExplodeEffect{
     switch (enemyType) {
         case EnemyTypeHari:{
-            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
+            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(0, 0, 1, 1)
                            type:ExplodeType1];
-            [viewExplode explode:250 angle:60 x:x_loc y:y_loc];
+            [viewExplode explode:250 angle:60 x:0 y:0];
             break;
         }
         case EnemyTypeZou:{
-            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
+            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(0, 0, 1, 1)
                                                         type:ExplodeType2];
-            [viewExplode explode:300 angle:60 x:x_loc y:y_loc];
+            [viewExplode explode:300 angle:60 x:0 y:0];
             break;
         }
         default:{
-            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc,y_loc, 1, 1)
+            viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(0, 0, 1, 1)
                                                         type:ExplodeTypeSmallCircle];
-            [viewExplode explode:(int)100 angle:(int)0 x:(float)x_loc y:(float)y_loc];
+            [viewExplode explode:(int)100 angle:(int)0 x:0 y:0];
 
             break;
         }
@@ -636,24 +667,71 @@ int unique_id;
  *BeamTypeFire
  */
 -(void)dispFireEffect{
+    //hitPointが正値であるときのみエフェクト実行するようにすべき。
+    //オンとオフはisDispEffectで判別して発火と消火を繰り返す(HP>0である限り)
+    if(hitPoint > 0){
+        //level-up:orange-red-blue?
+        ExplodeParticleView *viewFireEffect;
+        viewFireEffect =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]
+                                initWithFrame:CGRectMake(0, 0,
+                                                         iv.bounds.size.width,
+                                                         iv.bounds.size.height)];
+        [viewFireEffect setColor:ExplodeParticleTypeRedFire];//orange-fire
+        [viewFireEffect setEmitDirection:-M_PI_2];//後ろ向きに放射
+//        [viewFireEffect setOnOffEmitting];//発火と消火の繰り返し
+        
+        [iv addSubview:viewFireEffect];
+        
+        [self setDamageBySpecialWeapon];
+        
+        //level-up:高頻度=>(iv消去後も存続していないか)メモリリーク確認？
+        
+        [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                         target:self
+                                       selector:@selector(dispFireEffect)
+                                       userInfo:Nil repeats:YES];
+
+//        [NSTimer scheduledTimerWithTimeInterval:1.0f
+//                                         target:self
+//                                       selector:@selector(setDamageBySpecialWeapon)
+//                                       userInfo:Nil repeats:YES];
+    }
+}
+
+
+
+-(void)dispDieEffect{
+    NSLog(@"dispDieEffect");
+    //imageViewだけを消去(爆発パーティクルが描画するためインスタンス自体は残しておく)
+//    [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];
+    iv.image = [UIImage imageNamed:@"nothing.png"];//非表示にする
     
-    //level-up:orange-red-blue?
-    ExplodeParticleView *viewFireEffect;
-    viewFireEffect =
-    (ExplodeParticleView *)[[ExplodeParticleView alloc]
-                            initWithFrame:CGRectMake(0, 0,
-                                                     iv.bounds.size.width,
-                                                     iv.bounds.size.height)];
-    [viewFireEffect setColor:ExplodeParticleTypeRedFire];//orange-fire
-    [viewFireEffect setEmitDirection:-M_PI_2];//後ろ向きに放射
-    [viewFireEffect setOnOffEmitting];//発火と消火の繰り返し
-    [iv addSubview:viewFireEffect];
     
-    //level-up:高頻度=>(iv消去後も存続していないか)メモリリーク確認？
-    [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                 target:self
-                                   selector:@selector(setDamageBySpecialWeapon)
-                                   userInfo:Nil repeats:YES];
+    
+    ////                            NSLog(@"パーティクル = %@", [(EnemyClass *)[EnemyArray objectAtIndex:i] getExplodeParticle]);
+    //爆発パーティクル表示
+    //                            [[(EnemyClass *)[EnemyArray objectAtIndex:i] getExplodeParticle] setUserInteractionEnabled: NO];//インタラクション拒否
+    //                            [[(EnemyClass *)[EnemyArray objectAtIndex:i] getExplodeParticle] setIsEmitting:YES];//消去するには数秒後にNOに
+    //                            [self.view bringSubviewToFront: [(EnemyClass *)[EnemyArray objectAtIndex:i] getExplodeParticle]];//最前面に
+    //                            [self.view addSubview: [(EnemyClass *)[EnemyArray objectAtIndex:i] getExplodeParticle]];//表示する
+    //smoke-effect
+    UIView *smoke = [self getSmokeEffect];
+    [iv bringSubviewToFront:smoke];
+    [iv addSubview:smoke];
+    smoke = [self getSmokeEffect];
+    [iv bringSubviewToFront:smoke];
+    [iv addSubview:smoke];
+    smoke = [self getSmokeEffect];
+    [iv bringSubviewToFront:smoke];
+    [iv addSubview:smoke];
+    
+    
+    //クリティカルヒット及びビーム発射時及び象撃破時のみ→修正要
+    //explodeEffect
+    ViewExplode *_viewExplode = [self getExplodeEffect];
+    [iv addSubview:_viewExplode];
+    
 }
 
 @end

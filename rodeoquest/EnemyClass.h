@@ -29,9 +29,11 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     int mySize;
     float gTime;
     int lifetime_count;
+    Boolean isDispEffect;
     int bomb_size;
     int dead_time;
     Boolean isAlive;
+    Boolean isDiedMoment;//死んだ瞬間のみフラグを立てGameClass側で判別＝＞アイテム生成等
     int isImpact;//特殊攻撃による被弾があったかどうか(-1からスタートして被弾されたらその特殊弾丸を代入)
     int isDamaged;
     UIImageView *iv;
@@ -50,14 +52,14 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
 -(id)init:(int)x_init size:(int)size time:(float)time enemyType:(EnemyType)_enemyType;
 
 
--(void)setDamage:(int)damage location:(CGPoint)location;
--(void)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType;
+-(int)setDamage:(int)damage location:(CGPoint)location;
+-(int)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType;
 -(int)getHitPoint;
 -(Boolean)getIsAlive;
 -(int)getDeadTime;
 -(void)setSize:(int)s;
 -(int)getSize;
-
+-(Boolean)getIsDiedMoment;
 -(void)doNext;
 
 -(int)die;
@@ -73,4 +75,6 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
 -(DamageParticleView *)getDamageParticle;
 -(UIView*)getSmokeEffect;
 -(ViewExplode *)getExplodeEffect;
+
+-(void)dispDieEffect;
 @end
