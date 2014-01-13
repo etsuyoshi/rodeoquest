@@ -127,7 +127,7 @@
             explode =
 //            viewEffect =
             (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:iv.bounds];
-            [explode setType:0];//red-fire
+            [explode setType:3];//orange-fire
             [explode setOnOffEmitting];//発火と消火の繰り返し
 //            [viewEffect addSubview:explode];
             
@@ -143,9 +143,12 @@
 //
 //            break;
         }
+        case BeamTypeWing:{
             
-        default:
-            break;
+        }
+            
+//        default:
+//            break;
     }
     
     return viewEffect;

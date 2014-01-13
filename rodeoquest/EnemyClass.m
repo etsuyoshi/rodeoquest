@@ -122,8 +122,38 @@ int unique_id;
                 
                 break;
             }
-            default:
+            case BeamTypeCloth:{
+                
                 break;
+            }
+            case BeamTypeGrass:{
+                
+                break;
+            }
+            case BeamTypeIce:{
+                
+                break;
+            }
+            case BeamTypeRock:{
+                
+                break;
+            }
+            case BeamTypeSpace:{
+                
+                break;
+            }
+            case BeamTypeWater:{
+                
+                break;
+            }
+            case BeamTypeWing:{
+                
+                break;
+            }
+            default:{
+                NSLog(@"拾えていないアイテムエフェクトがあります。");
+                break;
+            }
         }
     }
 

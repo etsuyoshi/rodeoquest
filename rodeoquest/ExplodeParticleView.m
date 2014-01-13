@@ -13,38 +13,84 @@
 
 -(id)initWithFrame:(CGRect)frame
 {
+    
+    return  [self initWithFrame:frame type:ExplodeParticleTypeRedFire];
+}
+-(id)initWithFrame:(CGRect)frame type:(ExplodeParticleType)_explodeParticleType{
+    
     self = [super initWithFrame:frame];
     isFinished = false;
     if (self) {
         // Initialization code
         
-        myBirthRate = 300;
-        
 #ifdef DEBUG
 //        NSLog(@"ExplodeParticleView start");
 #endif
-        particleEmitter = (CAEmitterLayer *) self.layer;
-        particleEmitter.emitterPosition = CGPointMake(0, 0);//CGPointMake(frame.origin.x, frame.origin.y);//CGPointMake(0, 0);
-        particleEmitter.emitterSize = CGSizeMake(frame.size.width, frame.size.height);
-        particleEmitter.renderMode = kCAEmitterLayerAdditive;
         
-        CAEmitterCell *particle = [CAEmitterCell emitterCell];
-        particle.birthRate = myBirthRate;//火や水に見せるためには数百が必要
-        particle.lifetime = 0.5;
-        particle.lifetimeRange = 0.5;
-        particle.color = [[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.8 alpha: 0.1] CGColor];
-        particle.contents = (id) [[UIImage imageNamed: @"Particles_fire.png"] CGImage];
-        particle.name = @"fire";
-        particle.velocity = 50;
-        particle.velocityRange = 20;
-        particle.emissionLongitude = M_PI_2;
-        particle.emissionRange = M_PI_2;
-        particle.scale = 0.3f;
-        particle.scaleRange = 0;
-        particle.scaleSpeed = 0.5;
-        particle.spin = 0.5;
-
-        particleEmitter.emitterCells = [NSArray arrayWithObject: particle];
+        
+        originalBirthRate = 300;
+        myBirthRate = originalBirthRate;
+        
+        
+//        CAEmitterLayer *particleEmitter;//global
+        switch (_explodeParticleType) {
+            case ExplodeParticleTypeRedFire:
+            case ExplodeParticleTypeBlueFire:
+            case ExplodeParticleTypeOrangeFire:{
+                NSLog(@"fire");
+                
+                particleEmitter = (CAEmitterLayer *) self.layer;
+                particleEmitter.emitterPosition = CGPointMake(0, 0);//CGPointMake(frame.origin.x, frame.origin.y);//CGPointMake(0, 0);
+                particleEmitter.emitterSize = CGSizeMake(frame.size.width, frame.size.height);
+                particleEmitter.renderMode = kCAEmitterLayerAdditive;
+                
+                CAEmitterCell *emitterCell = [CAEmitterCell emitterCell];
+                emitterCell.birthRate = myBirthRate;//火や水に見せるためには数百が必要
+                emitterCell.lifetime = 0.5;
+                emitterCell.lifetimeRange = 0.5;
+                emitterCell.color = [[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.8 alpha: 0.1] CGColor];
+                emitterCell.contents = (id) [[UIImage imageNamed: @"Particles_fire.png"] CGImage];
+                emitterCell.name = @"fire";
+                emitterCell.velocity = 50;
+                emitterCell.velocityRange = 20;
+                emitterCell.emissionLongitude = M_PI_2;
+                emitterCell.emissionRange = M_PI_2;
+                emitterCell.scale = 0.3f;
+                emitterCell.scaleRange = 0;
+                emitterCell.scaleSpeed = 0.5;
+                emitterCell.spin = 0.5;
+                particleEmitter.emitterCells = [NSArray arrayWithObject: emitterCell];
+                break;
+            }
+            case ExplodeParticleTypeWater:{
+                NSLog(@"water");
+                particleEmitter = (CAEmitterLayer *) self.layer;
+                particleEmitter.emitterPosition = CGPointMake(self.bounds.size.width / 2, self.bounds.origin.y); // 2
+                particleEmitter.emitterZPosition = 10; // 3
+                particleEmitter.emitterSize = CGSizeMake(self.bounds.size.width, 0); // 4
+                particleEmitter.emitterShape = kCAEmitterLayerSphere; // 5
+                
+                CAEmitterCell *emitterCell = [CAEmitterCell emitterCell]; // 6
+                emitterCell.scale = 0.1; // 7 : 0.1倍の大きさ
+                emitterCell.scaleRange = 0.2; // 8 : 拡大誤差±0.2倍
+                emitterCell.emissionLongitude = -M_PI_2;//上方向に発射
+                emitterCell.emissionRange = (CGFloat)M_PI_2/4; // 9 : 発射後さは４分の９０度
+                emitterCell.lifetime = 0.3; // 10 : 1秒で消える
+                emitterCell.birthRate = 100; // 11 : 100個生成
+                emitterCell.velocity = 200; // 12 : 秒速平均200px
+                emitterCell.velocityRange = 50; // 13 : 秒速分散±50px
+                emitterCell.yAcceleration = 100; // 14 : 縦軸方向加速度100px/sec^2
+                
+                emitterCell.color = [[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.9 alpha: 0.5] CGColor];
+                
+                emitterCell.contents = (id)[[UIImage imageNamed:@"Particles_fire.png"] CGImage]; // 15
+                emitterCell.name = @"fire";//正確にはwaterだけど、あとで指定する時に統一されている方が楽？
+                particleEmitter.emitterCells = [NSArray arrayWithObject:emitterCell]; // 16
+//                [self.view.layer addSublayer:emitterLayer]; // 17
+                break;
+            }
+        }
+        
         
         
     }
@@ -85,16 +131,17 @@
 //    NSLog(@"setType start");
 #endif
     type = _type;
-    
+    NSLog(@"type=%d" , type);
     switch(type){
-        case 0://自機は赤で前向き
+        case 0:{//自機は赤で前向き
 //            NSLog(@"explode at type = %d", type);
             [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.5 green: 0.1 blue: 0.1 alpha: 0.1] CGColor]
                            forKeyPath:@"emitterCells.fire.color"];
             [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
                            forKeyPath:@"emitterCells.fire.emissionLongitude"];
             break;
-        case 1://敵機は青で後ろ向き
+        }
+        case 1:{//敵機は青で後ろ向き
 //            NSLog(@"explode at type = %d", type);
             [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.1 green: 0.1 blue: 0.5 alpha: 0.1] CGColor]
                            forKeyPath:@"emitterCells.fire.color"];
@@ -102,21 +149,38 @@
                            forKeyPath:@"emitterCells.fire.emissionLongitude"];
 
             break;
+        }
+        case 2:{//高温フレア:white-orange
+            NSLog(@"orange");
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.8 green: 0.4 blue: 0.2 alpha: 0.1] CGColor]
+                           forKeyPath:@"emitterCells.fire.color"];
+            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
+                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
+            break;
+        }
+        case 3:{//青い水？
+            NSLog(@"blue");
+            [particleEmitter setValue:(id)[[UIColor colorWithRed:0 green:0.1 blue:0.8 alpha:0.1] CGColor]
+                           forKeyPath:@"emitterCells.fire.color"];
+            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
+                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
+            break;
+        }
+        default:{
+            NSLog(@"defaults");
+            break;
+        }
     }
-    
-
-    
-    
-    
-//    NSLog(@"setType exit");
+    NSLog(@"setType exit");
     
 }
+
 
 //発火と消火の切り替え(現在の状態を判定して切り替え：繰り返し用)
 -(void)setOnOffEmitting{
 //    if(myBirthRate )
     //myBirthRateで状態を判定し、反転した上で発火と消火を切り替える
-    myBirthRate = (myBirthRate!=0)?0:300;//0でなければ0、0なら300を返す
+    myBirthRate = (myBirthRate!=0)?0:originalBirthRate;//0でなければ0、0なら300を返す
     BOOL isEmitting = (myBirthRate>0)?YES:NO;
     [self setIsEmitting:isEmitting];
     
@@ -150,7 +214,7 @@
         isFinished = true;
     }
     
-    myBirthRate = isEmitting?300:0;
+    myBirthRate = isEmitting?originalBirthRate:0;
     [particleEmitter setValue:[NSNumber numberWithInt:myBirthRate]
                    forKeyPath:@"emitterCells.fire.birthRate"];
 
@@ -169,5 +233,9 @@
     return isFinished;
 }
 
+//生成数を増やす
+-(void)setBirthRate:(int)_birthRate{
+    originalBirthRate = _birthRate;
+}
 
 @end

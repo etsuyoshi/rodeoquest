@@ -29,7 +29,8 @@
 //#define VIEWWITHEFFECTLEVELUP_TEST
 //#define LDPROGRESS_TEST
 //#define PAYPRODUCTBUTTON_TEST
-#define LOCATION_TEST
+//#define LOCATION_TEST
+#define SPWeapon_TEST
 
 #import <CoreLocation/CoreLocation.h>
 #import "LDProgressView.h"
@@ -1029,6 +1030,60 @@ int tempCount = 0;
         
         
     }
+#elif defined SPWeapon_TEST
+    if(counter == 0){
+        
+        
+        //ice-effect
+        UIImageView *iceView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 1, 1)];
+        iceView.image = [UIImage imageNamed:@"ice_icon.png"];
+        [self.view addSubview:iceView];
+        
+        [UIView animateWithDuration:1.0f
+                         animations:^{
+                             iceView.frame = CGRectMake(100, 100, 100, 100);
+                         }
+                         completion:^(BOOL finished){
+                             [iceView removeFromSuperview];
+                         }];
+        
+        
+        //red-fire
+        ExplodeParticleView *explode;
+        explode =
+        //            viewEffect =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 100, 100, 100)];
+        [explode setType:2];//orange-fire
+        [explode setOnOffEmitting];//発火と消火の繰り返し
+        [self.view addSubview:explode];
+        
+        
+        //blue-fire
+        ExplodeParticleView *blueFire;
+        blueFire =
+        //            viewEffect =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 200, 100, 100)];
+        [blueFire setType:3];//blue-fire
+        [blueFire setBirthRate:150];
+        [blueFire setOnOffEmitting];//発火と消火の繰り返し
+        [self.view addSubview:blueFire];
+        
+        
+//        KiraParticleView *water = [[KiraParticleView alloc] initWithFrame:CGRectMake(200, 300, 100, 100)
+//                                                    particleType:ParticleTypeKilled];
+//        [water setParticleType:ParticleTypeMoving];
+//        [self.view addSubview:water];
+        
+        //bubble
+        ExplodeParticleView *water =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 300, 100, 100)
+                                                                    type:ExplodeParticleTypeWater];
+        [water setOnOffEmitting];
+        [self.view addSubview:water];
+
+        
+        
+    }
 #else
 //    NSLog(@"aaa");
     //nothing
@@ -1793,7 +1848,7 @@ int tempCount = 0;
 #endif
 
 
-
+#ifdef LOCATION_TEST
 
 - (void)startLocationService
 {
@@ -2012,7 +2067,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
     
 }
 
-
+#endif
 
 @end
 
