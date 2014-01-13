@@ -30,7 +30,8 @@ typedef NS_ENUM(NSInteger, ExplodeParticleType) {
 -(void)setNoEmitting;
 -(void)setIsEmitting:(BOOL)isEmitting;
 -(Boolean)getIsFinished;
--(void)setType:(int)type;
+-(void)setEmitDirection:(float)_direction;
+-(void)setColor:(ExplodeParticleType)type;
 //-(void)awakeFromNib:(CGPoint)location;
 //-(void)bomb:(CGPoint)location;
 -(void)setBirthRate:(int)birthRate;

@@ -89,6 +89,11 @@ int unique_id;
     return [self init:0 size:50];
 }
 
+//特殊武器による連続攻撃
+-(void)setDamageBySpecialWeapon{
+    [self setDamage:10 location:CGPointMake(x_loc, y_loc)];
+}
+
 -(void)setDamage:(int)damage location:(CGPoint)location{
     //通常弾での攻撃
     [self setDamage:damage location:location beamType:-1];
@@ -100,38 +105,52 @@ int unique_id;
         NSLog(@"first impact");
         isImpact = beamType;
         switch ((BeamType)beamType) {
-            case BeamTypeAnimal:{
+            case BeamTypeAnimal:{//not yet
 //                <#statements#>
                 break;
             }
-            case BeamTypeBug:{
+            case BeamTypeBug:{//not yet
                 
                 break;
             }
-            case BeamTypeFire:{
-//                iv addSubview:<#(UIView *)#>
-                NSLog(@"fire occurred");
-                ExplodeParticleView *explode =
-                //            viewEffect =
-                (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:iv.bounds];
-                [explode setType:0];//red-fire
-                [explode setOnOffEmitting];//発火と消火の繰り返し
-                [iv addSubview:explode];
-                
-                NSLog(@"damaged in beamTypeFire");
-                
-                break;
-            }
-            case BeamTypeCloth:{
-                
-                break;
-            }
-            case BeamTypeGrass:{
+            case BeamTypeFire:{//done
+                [self dispFireEffect];
+////                iv addSubview:<#(UIView *)#>
+//                NSLog(@"fire occurred");
+//                ExplodeParticleView *explode =
+//                //            viewEffect =
+//                (ExplodeParticleView *)[[ExplodeParticleView alloc]
+//                                        initWithFrame:iv.bounds
+//                                        type:ExplodeParticleTypeOrangeFire];
+////                [explode setColor:ExplodeParticleTypeOrangeFire];//red-fire
+//                [explode setOnOffEmitting];//発火と消火の繰り返し
+//                [iv addSubview:explode];
+//                
+//                NSLog(@"damaged in beamTypeFire");
                 
                 break;
             }
-            case BeamTypeIce:{
+            case BeamTypeCloth:{//done->check
                 
+//                //布を広げる前は幅1px
+//                UIImageView *ivCloth = [[UIImageView alloc]initWithFrame:CGRectMake(200,350, 1, 50)];
+//                ivCloth.image = [UIImage imageNamed:@"sozai_maki.png"];
+//                [iv addSubview:ivCloth];
+//                ivCloth.alpha = 0.3f;
+//                [self extendWith:ivCloth times:30];
+                
+                
+                [self dispClothEffect:5];
+                
+                
+                break;
+            }
+            case BeamTypeGrass:{//not yet
+                
+                break;
+            }
+            case BeamTypeIce:{//done->check
+                [self dispIceEffect:10];
                 break;
             }
             case BeamTypeRock:{
@@ -142,14 +161,15 @@ int unique_id;
                 
                 break;
             }
-            case BeamTypeWater:{
-                
+            case BeamTypeWater:{//done->check
+                [self dispWaterEffect];
                 break;
             }
             case BeamTypeWing:{
-                
+                [self dispWindEffect:100];
                 break;
             }
+//                case beamType
             default:{
                 NSLog(@"拾えていないアイテムエフェクトがあります。");
                 break;
@@ -349,9 +369,11 @@ int unique_id;
     return iv;
 }
 
+//現状生成はしていない：
+//本番において(生成していた場合を考慮して)念のためremove時に実行されている。
 -(ExplodeParticleView *)getExplodeParticle{//死亡イフェクト
     //dieしていれば爆発用particleは初期化されているはず=>描画用クラスで描画(self.view addSubview:particle);
-    [explodeParticle setType:1];//敵用パーティクル設定
+//    [explodeParticle setType:1];//敵用パーティクル設定
     return explodeParticle;
 //    return nil;
 }
@@ -485,6 +507,153 @@ int unique_id;
 
 
 //特殊弾丸を被弾した時のエフェクト
-//-(void)setDa
+/*
+ *BemTypeWind:風が回る
+ *風が回るごとに小さなダメージを与える
+ *
+ */
+
+-(void)dispWindEffect:(int)_times{
+    UIImageView *ivWind = [[UIImageView alloc]
+                           initWithFrame:CGRectMake(0,0,1,1)];
+    ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
+    //        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
+    [ivWind setAlpha:0.5f];
+    [iv addSubview:ivWind];
+    
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveLinear
+                     animations: ^{
+                         ivWind.transform = CGAffineTransformRotate(ivWind.transform, M_PI / 2);
+                     }
+                     completion: ^(BOOL finished) {
+                         if (finished) {
+                             //与えるダメージは考慮必要
+                             [self setDamage:hitPoint/3 location:CGPointMake(x_loc, y_loc)];
+                             [ivWind removeFromSuperview];
+                             if (_times > 0) {
+                                 [self dispWindEffect:_times-1];
+                             }
+                         }
+                     }];
+}
+
+/*
+ *BeamTypeCloth:広げる
+ *(繰り返しであれば最後の)広がった瞬間に敵を葬る
+ */
+-(void)dispClothEffect:(int)_times{
+    
+    UIImageView *ivCloth = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, 1, iv.bounds.size.height)];
+    ivCloth.image = [UIImage imageNamed:@"sozai_maki.png"];
+    ivCloth.alpha = 0.3f;
+    [iv addSubview:ivCloth];
+    
+    
+    [UIView animateWithDuration:0.5f
+                     animations:^{
+                         //立て幅と同じになるまで広げる
+                         ivCloth.frame =
+                         CGRectMake(ivCloth.frame.origin.x, ivCloth.frame.origin.y,
+                                    ivCloth.bounds.size.height, ivCloth.bounds.size.height);
+                         ivCloth.alpha = 1.0f;
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             [ivCloth removeFromSuperview];
+                             if(_times > 0){
+//                                 //initializa
+//                                 ivCloth.frame = CGRectMake(ivCloth.frame.origin.x, ivCloth.frame.origin.y,
+//                                                             1, ivCloth.bounds.size.height);
+//                                 ivCloth.alpha = 0.1f;
+                                 //re-display-effect
+                                 [self dispClothEffect:_times-1];
+                             }else{
+                                 //全てのエフェクトが完了したら終了
+                                 [self setDamage:hitPoint+1 location:CGPointMake(x_loc, y_loc)];
+                             }
+                         }
+                     }];
+}
+
+/*
+ *BeamTypeIce
+ */
+-(void)dispIceEffect:(int)times{
+    
+    UIImageView *iceView = [[UIImageView alloc]
+                            initWithFrame:CGRectMake(0, 0, 1, 1)];
+    iceView.image = [UIImage imageNamed:@"ice_icon.png"];
+    [iv addSubview:iceView];
+    
+    [UIView animateWithDuration:1.0f
+                     animations:^{
+                         iceView.frame = CGRectMake(0, 0,
+                                                    iv.bounds.size.width,
+                                                    iv.bounds.size.height);
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             [self setDamage:10 location:CGPointMake(x_loc, y_loc)];
+                             [iceView removeFromSuperview];
+                             if(times > 0){
+                                 [self dispIceEffect:times-1];
+                             }else{
+                                 
+                             }
+                         }
+                     }];
+
+}
+
+
+/*
+ *BeamTypeWater
+ */
+-(void)dispWaterEffect{
+    //bubble
+    ExplodeParticleView *water =
+    (ExplodeParticleView *)[[ExplodeParticleView alloc]
+                            initWithFrame:CGRectMake(0,0,
+                                                     iv.bounds.size.width,
+                                                     iv.bounds.size.height)
+                            type:ExplodeParticleTypeWater];
+    [water setOnOffEmitting];
+    [iv addSubview:water];
+    
+    //level-up:高頻度=>(iv消去後も存続していないか)メモリリーク確認？
+    [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                     target:self
+                                   selector:@selector(setDamageBySpecialWeapon)
+                                   userInfo:nil
+                                    repeats:YES];
+    
+}
+
+/*
+ *BeamTypeFire
+ */
+-(void)dispFireEffect{
+    
+    //level-up:orange-red-blue?
+    ExplodeParticleView *viewFireEffect;
+    viewFireEffect =
+    (ExplodeParticleView *)[[ExplodeParticleView alloc]
+                            initWithFrame:CGRectMake(0, 0,
+                                                     iv.bounds.size.width,
+                                                     iv.bounds.size.height)];
+    [viewFireEffect setColor:ExplodeParticleTypeRedFire];//orange-fire
+    [viewFireEffect setEmitDirection:-M_PI_2];//後ろ向きに放射
+    [viewFireEffect setOnOffEmitting];//発火と消火の繰り返し
+    [iv addSubview:viewFireEffect];
+    
+    //level-up:高頻度=>(iv消去後も存続していないか)メモリリーク確認？
+    [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                 target:self
+                                   selector:@selector(setDamageBySpecialWeapon)
+                                   userInfo:Nil repeats:YES];
+}
 
 @end

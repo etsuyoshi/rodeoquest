@@ -85,73 +85,76 @@
  *敵機衝突時のエフェクト=>ここで定義するのではなく、敵機内(にビームタイプを渡した上)でエフェクト発動
  *重くない処理にする必要
  */
--(UIView *)getEffect{
-//    NSLog(@"getEffect");
-    UIView *viewEffect = [[UIImageView alloc] initWithFrame:iv.bounds];
-    switch (beamType) {
-        case BeamTypeAnimal:{
-//            viewEffect.image = nil;
-            
-            NSArray *imgArray = [[NSArray alloc] initWithObjects:
-                                 [UIImage imageNamed:@"player.png"],
-                                 [UIImage imageNamed:@"player2.png"],
-                                 [UIImage imageNamed:@"player3.png"],
-                                 [UIImage imageNamed:@"player4.png"],
-                                 [UIImage imageNamed:@"player4.png"],
-                                 [UIImage imageNamed:@"player3.png"],
-                                 [UIImage imageNamed:@"player2.png"],
-                                 [UIImage imageNamed:@"player.png"],
-                                 nil];
-            iv.animationImages = imgArray;
-            iv.animationRepeatCount = 0;
-            iv.animationDuration = 1.0f; // アニメーション全体で1秒（＝各間隔は0.5秒）
-            [iv startAnimating];
-            
-            
-            break;
-        }
-        case BeamTypeFire:{
-//            NSLog(@" beamtypeFire occure" );
-            //通常時爆発(=ViewExplode)と同様の処理を(グラデ、時間を変更して)実行
-//            ViewExplode *viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
-//                                                        type:ExplodeTypeRed];
-//            [viewExplode explode:250 angle:60 x:x_loc y:y_loc];
-//            [NSTimer scheduledTimerWithTimeInterval:0.5f
-//                                             target:viewExplode
-//                                           selector:@selector(explode) userInfo:nil repeats:YES];
-//            return viewExplode;
-            
-            
-            
-            ExplodeParticleView *explode;
-            explode =
-//            viewEffect =
-            (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:iv.bounds];
-            [explode setType:3];//orange-fire
-            [explode setOnOffEmitting];//発火と消火の繰り返し
-//            [viewEffect addSubview:explode];
-            
-            //interval秒後に停止させる
-//            [NSTimer scheduledTimerWithTimeInterval:0.2f
-//                                             target:explode
-//                                           selector:@selector(setOnOffEmitting)
-//                                           userInfo:nil
-//                                            repeats:YES];
-            
-            
-            return explode;
-//
+//-(UIView *)getEffect{
+////    NSLog(@"getEffect");
+//    UIView *viewEffect = [[UIImageView alloc] initWithFrame:iv.bounds];
+//    switch (beamType) {
+//        case BeamTypeAnimal:{
+////            viewEffect.image = nil;
+//            
+//            NSArray *imgArray = [[NSArray alloc] initWithObjects:
+//                                 [UIImage imageNamed:@"player.png"],
+//                                 [UIImage imageNamed:@"player2.png"],
+//                                 [UIImage imageNamed:@"player3.png"],
+//                                 [UIImage imageNamed:@"player4.png"],
+//                                 [UIImage imageNamed:@"player4.png"],
+//                                 [UIImage imageNamed:@"player3.png"],
+//                                 [UIImage imageNamed:@"player2.png"],
+//                                 [UIImage imageNamed:@"player.png"],
+//                                 nil];
+//            iv.animationImages = imgArray;
+//            iv.animationRepeatCount = 0;
+//            iv.animationDuration = 1.0f; // アニメーション全体で1秒（＝各間隔は0.5秒）
+//            [iv startAnimating];
+//            
+//            
 //            break;
-        }
-        case BeamTypeWing:{
-            
-        }
-            
-//        default:
-//            break;
-    }
-    
-    return viewEffect;
-}
+//        }
+//        case BeamTypeFire:{
+////            NSLog(@" beamtypeFire occure" );
+//            //通常時爆発(=ViewExplode)と同様の処理を(グラデ、時間を変更して)実行
+////            ViewExplode *viewExplode = [[ViewExplode alloc] initWithFrame:CGRectMake(x_loc, y_loc, 1, 1)
+////                                                        type:ExplodeTypeRed];
+////            [viewExplode explode:250 angle:60 x:x_loc y:y_loc];
+////            [NSTimer scheduledTimerWithTimeInterval:0.5f
+////                                             target:viewExplode
+////                                           selector:@selector(explode) userInfo:nil repeats:YES];
+////            return viewExplode;
+//            
+//            
+//            
+//            ExplodeParticleView *explode;
+//            explode =
+////            viewEffect =
+//            (ExplodeParticleView *)[[ExplodeParticleView alloc]
+//                                    initWithFrame:iv.bounds
+//                                    type:ExplodeParticleTypeOrangeFire];
+////            [explode setType:3];//orange-fire
+//            [explode setOnOffEmitting];//発火と消火の繰り返し
+////            [viewEffect addSubview:explode];
+//            
+//            //interval秒後に停止させる
+////            [NSTimer scheduledTimerWithTimeInterval:0.2f
+////                                             target:explode
+////                                           selector:@selector(setOnOffEmitting)
+////                                           userInfo:nil
+////                                            repeats:YES];
+//            
+//            
+//            return explode;
+////
+////            break;
+//        }
+//        case BeamTypeWing:{
+//            
+//            
+//        }
+//            
+////        default:
+////            break;
+//    }
+//    
+//    return viewEffect;
+//}
 
 @end

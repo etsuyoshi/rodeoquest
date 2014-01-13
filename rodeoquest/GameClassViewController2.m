@@ -3231,6 +3231,16 @@ int sensitivity;
     [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage location:CGPointMake(_xBeam, _yBeam) beamType:(int)beamType];
     
     
+    //エフェクトについて
+    //以下if文内のエフェクトはenemyClassで記述：特殊武器による連蔵ダメージモードで死んだ時にivの消去＆死亡時爆発エフェクトが表示されない
+    
+    
+    //内部処理について
+    //ordinaryAnimation内において全ての敵を常に監視してisDiedフラグ(死亡した瞬間だけフラグが立つ)を見つけたら
+    //それを判別して撃墜カウント、次軍発生までのカウント発動
+    //その場所でアイテムを生成(エフェクト)
+    
+    
     //ビームに当たる前に生きていた敵が死んだら＝今回のビームで敵を倒したら
     if(![[EnemyArray objectAtIndex:i] getIsAlive]){
         
@@ -3239,7 +3249,7 @@ int sensitivity;
             timeIntervalEnemy = timeIntervalEnemyMax;//ゲーム進行とともにインターバルを現象させる
         }
         
-        //敵機撃墜時のエフェクト
+        //敵機撃墜時のエフェクト=>enemyClassで記述
         [self enemyDieEffect:i];
         
         //特定ステータスではコインのみ

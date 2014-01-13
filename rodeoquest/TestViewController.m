@@ -1053,7 +1053,7 @@ int tempCount = 0;
         explode =
         //            viewEffect =
         (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 100, 100, 100)];
-        [explode setType:2];//orange-fire
+        [explode setColor:ExplodeParticleTypeRedFire];//orange-fire
         [explode setOnOffEmitting];//発火と消火の繰り返し
         [self.view addSubview:explode];
         
@@ -1063,7 +1063,8 @@ int tempCount = 0;
         blueFire =
         //            viewEffect =
         (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 200, 100, 100)];
-        [blueFire setType:3];//blue-fire
+//        [blueFire setType:3];//blue-fire
+         [blueFire setColor:ExplodeParticleTypeBlueFire];
         [blueFire setBirthRate:150];
         [blueFire setOnOffEmitting];//発火と消火の繰り返し
         [self.view addSubview:blueFire];
@@ -1081,6 +1082,34 @@ int tempCount = 0;
         [water setOnOffEmitting];
         [self.view addSubview:water];
 
+//        BeamTypeWing
+        //http://jp.123rf.com/photo_7276437_abstract-spiral-galaxy-icon-isolated-on-white.html
+        UIImageView *ivWind = [[UIImageView alloc]initWithFrame:CGRectMake(200, 300, 50, 50)];
+        ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
+//        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
+        [self.view addSubview:ivWind];
+        [ivWind setAlpha:0.5f];
+        [self spinWith:ivWind times:30];
+        
+        
+//        BeamTypeCloth
+        UIImageView *ivCloth = [[UIImageView alloc]initWithFrame:CGRectMake(200,350, 1, 50)];
+        ivCloth.image = [UIImage imageNamed:@"sozai_maki.png"];
+        [self.view addSubview:ivCloth];
+        ivCloth.alpha = 0.3f;
+        [self extendWith:ivCloth times:30];
+        
+//        [UIView animateWithDuration:1.0f
+//                         animations:^{
+//                             ivCloth.alpha = 1.0f;
+//                         }
+//                         completion:^(BOOL finished){
+//                             if(finished){
+//                                 [self extendWith:ivCloth times:30];
+//                             }
+//                         }];
+        
+        
         
         
     }
@@ -1098,6 +1127,53 @@ int tempCount = 0;
 }
 
 
+#ifdef SPWeapon_TEST
+-(void)spinWith:(UIView *)_viewArg times:(int)_times{
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveLinear
+                     animations: ^{
+                         _viewArg.transform = CGAffineTransformRotate(_viewArg.transform, M_PI / 2);
+//                         _viewArg.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         if (finished) {
+                             NSLog(@"times=%d", _times);
+                             if (_times > 0) {
+                                 // if flag still set, keep spinning with constant speed
+//                                 _viewArg.alpha = 0.0f;
+                                 [self spinWith:_viewArg times:_times-1];
+                             }else{
+                                 [_viewArg removeFromSuperview];
+                             }
+                         }
+                     }];
+}
+
+-(void)extendWith:(UIView *)_viewArg times:(int)_times{
+    [UIView animateWithDuration:0.5f
+                     animations:^{
+                         //立て幅と同じになるまで広げる
+                         _viewArg.frame =
+                         CGRectMake(_viewArg.frame.origin.x, _viewArg.frame.origin.y,
+                                    _viewArg.bounds.size.height, _viewArg.bounds.size.height);
+                         _viewArg.alpha = 1.0f;
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             if(_times > 0){
+                                 _viewArg.frame = CGRectMake(_viewArg.frame.origin.x, _viewArg.frame.origin.y,
+                                                             1, _viewArg.bounds.size.height);
+                                 _viewArg.alpha = 0.1f;
+                                 [self extendWith:_viewArg times:_times-1];
+                             }else{
+                                 [_viewArg removeFromSuperview];
+                             }
+                         }
+                     }];
+}
+
+#endif
 
 #ifdef BTNPRESS_TEST
 //-(void)buttonPressed:(id)sender{

@@ -126,44 +126,60 @@
 }
 */
 
--(void)setType:(int)_type{
+/*
+ *放射方向の設定
+ *arg:radian-ex.M_PI_2
+ */
+-(void)setEmitDirection:(float)_direction{
+    //注意：fire指定なのでinit内で他のnameを割り当てた場合は注意が必要
+    [particleEmitter setValue:[NSNumber numberWithDouble:_direction]
+                   forKeyPath:@"emitterCells.fire.emissionLongitude"];
+}
+
+/*
+ *このメソッドは全てのケースを網羅していない。
+ *基本的にはタイプの指定はインスタンス化時のinitWithFrameで設定する
+ *このメソッドだけで全てのタイプを完全に記述しきれない(時間の関係上)
+ *但し、タイプを指定しなかった場合はポリモーフィズムによりTypeRedFire指定となっているので
+ *本メソッドによりTypeRedFireからTypeBlueFireへのセットはできるが、TypeFireXXからTypeWaterへの変更修正は現状できない
+ *完全にするにはエミッター方向、速度、加速度、生成数も追加してやる必要がある。
+ *レンダーモードの設定等をsetValueで変更できない可能性も。
+ */
+-(void)setColor:(ExplodeParticleType)_type{
 #ifdef DEBUG
 //    NSLog(@"setType start");
 #endif
     type = _type;
     NSLog(@"type=%d" , type);
     switch(type){
-        case 0:{//自機は赤で前向き
+        case ExplodeParticleTypeRedFire:{//自機は赤で前向き
 //            NSLog(@"explode at type = %d", type);
             [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.5 green: 0.1 blue: 0.1 alpha: 0.1] CGColor]
                            forKeyPath:@"emitterCells.fire.color"];
-            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
-                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
+//            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
+//                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
             break;
         }
-        case 1:{//敵機は青で後ろ向き
+        case ExplodeParticleTypeBlueFire:{//敵機は青で後ろ向き
 //            NSLog(@"explode at type = %d", type);
             [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.1 green: 0.1 blue: 0.5 alpha: 0.1] CGColor]
                            forKeyPath:@"emitterCells.fire.color"];
-            [particleEmitter setValue:[NSNumber numberWithDouble:M_PI_2]
-                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
+//            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
+//                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
 
             break;
         }
-        case 2:{//高温フレア:white-orange
+        case ExplodeParticleTypeOrangeFire:{//高温フレア:white-orange
             NSLog(@"orange");
             [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.8 green: 0.4 blue: 0.2 alpha: 0.1] CGColor]
                            forKeyPath:@"emitterCells.fire.color"];
-            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
-                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
+//            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
+//                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
             break;
         }
-        case 3:{//青い水？
-            NSLog(@"blue");
-            [particleEmitter setValue:(id)[[UIColor colorWithRed:0 green:0.1 blue:0.8 alpha:0.1] CGColor]
-                           forKeyPath:@"emitterCells.fire.color"];
-            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
-                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
+        case ExplodeParticleTypeWater:{
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.9 alpha: 0.5] CGColor]
+                               forKeyPath:@"emitterCells.fire.color"];
             break;
         }
         default:{

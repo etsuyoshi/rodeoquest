@@ -639,7 +639,8 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 
 -(ExplodeParticleView *)getExplodeParticle{
     //dieしていれば爆発用particleは初期化されているはず=>描画用クラスで描画(self.view addSubview:particle);
-    [explodeParticle setType:0];//自機用パーティクル設定
+//    [explodeParticle setType:0];//自機用パーティクル設定
+    [explodeParticle setColor:ExplodeParticleTypeRedFire];
     
     return explodeParticle;
 }
