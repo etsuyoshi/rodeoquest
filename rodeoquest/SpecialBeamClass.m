@@ -18,8 +18,8 @@
     NSDictionary *dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
                 @"Rock.png",[NSNumber numberWithInt:BeamTypeRock],
                 @"Fire.png",[NSNumber numberWithInt:BeamTypeFire],
-                @"Ice.png",[NSNumber numberWithInt:BeamTypeWater],
-                @"Water.png",[NSNumber numberWithInt:BeamTypeIce],
+                @"Ice.png",[NSNumber numberWithInt:BeamTypeIce],
+                @"Water.png",[NSNumber numberWithInt:BeamTypeWater],
                 @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],
                 @"Animal.png",[NSNumber numberWithInt:BeamTypeAnimal],
                 @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass ],

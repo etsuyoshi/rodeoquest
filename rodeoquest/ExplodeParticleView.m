@@ -36,7 +36,8 @@
         switch (_explodeParticleType) {
             case ExplodeParticleTypeRedFire:
             case ExplodeParticleTypeBlueFire:
-            case ExplodeParticleTypeOrangeFire:{
+            case ExplodeParticleTypeOrangeFire:
+            case ExplodeParticleTypeBlackFire:{
                 NSLog(@"fire");
                 
                 particleEmitter = (CAEmitterLayer *) self.layer;
@@ -48,7 +49,17 @@
                 emitterCell.birthRate = myBirthRate;//火や水に見せるためには数百が必要
                 emitterCell.lifetime = 0.5;
                 emitterCell.lifetimeRange = 0.5;
-                emitterCell.color = [[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.8 alpha: 0.1] CGColor];
+                if(_explodeParticleType == ExplodeParticleTypeOrangeFire){
+                    emitterCell.color = [[UIColor colorWithRed: 0.8 green: 0.4 blue: 0.2 alpha: 0.1] CGColor];
+                }else if(_explodeParticleType == ExplodeParticleTypeRedFire){
+                    emitterCell.color = [[UIColor colorWithRed: 0.5 green: 0.1 blue: 0.1 alpha: 0.1] CGColor];
+                }else if(_explodeParticleType == ExplodeParticleTypeBlueFire){
+                    emitterCell.color = [[UIColor colorWithRed: 0.1 green: 0.1 blue: 0.5 alpha: 0.1] CGColor];
+                }else if(_explodeParticleType == ExplodeParticleTypeBlackFire){
+                    emitterCell.color = [[UIColor colorWithRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.1] CGColor];
+                }else{//default:blue
+                    emitterCell.color = [[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.8 alpha: 0.1] CGColor];
+                }
                 emitterCell.contents = (id) [[UIImage imageNamed: @"Particles_fire.png"] CGImage];
                 emitterCell.name = @"fire";
                 emitterCell.velocity = 50;
@@ -176,6 +187,11 @@
 //            [particleEmitter setValue:[NSNumber numberWithDouble:-M_PI_2]
 //                           forKeyPath:@"emitterCells.fire.emissionLongitude"];
             break;
+        }
+        case ExplodeParticleTypeBlackFire:{
+            NSLog(@"black");
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.1 green: 0.1 blue: 0.2 alpha: 0.1] CGColor]
+                           forKeyPath:@"emitterCells.fire.color"];
         }
         case ExplodeParticleTypeWater:{
             [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.2 green: 0.4 blue: 0.9 alpha: 0.5] CGColor]

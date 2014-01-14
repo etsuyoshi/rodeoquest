@@ -12,6 +12,7 @@ typedef NS_ENUM(NSInteger, ExplodeParticleType) {
     ExplodeParticleTypeRedFire,
     ExplodeParticleTypeOrangeFire,
     ExplodeParticleTypeBlueFire,
+    ExplodeParticleTypeBlackFire,
     ExplodeParticleTypeWater
     
 };

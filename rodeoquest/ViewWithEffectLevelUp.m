@@ -520,10 +520,10 @@ AttrClass *attr;
             return @"W_RockBow.png";
         case BowTypeFire:
             return @"W_FireBow.png";
-        case BowTypeWater:
-            return @"W_WaterBow.png";
         case BowTypeIce:
             return @"W_IceBow.png";
+        case BowTypeWater:
+            return @"W_WaterBow.png";
         case BowTypeBug:
             return @"W_BugBow.png";
         case BowTypeAnimal:

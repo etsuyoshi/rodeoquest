@@ -74,8 +74,8 @@ UIView *superViewForEquipWpn;
                  
                  @"NH_RockBow.png",
                  @"NH_FireBow.png",
-                 @"NH_WaterBow.png",
                  @"NH_IceBow.png",
+                 @"NH_WaterBow.png",
                  @"NH_BugBow.png",
                  @"NH_AnimalBow.png",
                  @"NH_GrassBow.png",
@@ -172,8 +172,8 @@ UIView *superViewForEquipWpn;
         imageArrayWithWhite = [NSArray arrayWithObjects:
                                @"W_RockBow.png",
                                @"W_FireBow.png",
-                               @"W_WaterBow.png",
                                @"W_IceBow.png",
+                               @"W_WaterBow.png",
                                @"W_BugBow.png",
                                @"W_AnimalBow.png",
                                @"W_GrassBow.png",

@@ -638,8 +638,8 @@
     NSArray *_arrNhImage = [NSArray arrayWithObjects:
                             @"NH_RockBow.png",
                             @"NH_FireBow.png",
-                            @"NH_WaterBow.png",
                             @"NH_IceBow.png",
+                            @"NH_WaterBow.png",
                             @"NH_BugBow.png",
                             @"NH_AnimalBow.png",
                             @"NH_GrassBow.png",
