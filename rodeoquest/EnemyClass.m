@@ -91,138 +91,6 @@ int unique_id;
     return [self init:0 size:50];
 }
 
-//特殊武器による連続攻撃
--(int)setDamageBySpecialWeapon{
-    return [self setDamage:100 location:CGPointMake(x_loc, y_loc)];
-}
-
--(int)setDamage:(int)damage location:(CGPoint)location{
-    //通常弾での攻撃
-    return [self setDamage:damage location:location beamType:-1];
-}
-
--(int)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
-    
-    if(beamType != -1 && isImpact == -1){//初めて特殊攻撃を受けた場合
-        NSLog(@"first impact");
-        isImpact = beamType;
-        switch ((BeamType)beamType) {
-            case BeamTypeAnimal:{//not yet
-//                <#statements#>
-                break;
-            }
-            case BeamTypeBug:{//not yet
-                
-                break;
-            }
-            case BeamTypeFire:{//done
-//                [self dispFireEffect];
-                
-                [NSTimer scheduledTimerWithTimeInterval:0.5f
-                                                 target:self
-                                               selector:@selector(dispFireEffect)
-                                               userInfo:nil repeats:YES];
-                
-                break;
-            }
-            case BeamTypeCloth:{//done->check
-                
-//                //布を広げる前は幅1px
-//                UIImageView *ivCloth = [[UIImageView alloc]initWithFrame:CGRectMake(200,350, 1, 50)];
-//                ivCloth.image = [UIImage imageNamed:@"sozai_maki.png"];
-//                [iv addSubview:ivCloth];
-//                ivCloth.alpha = 0.3f;
-//                [self extendWith:ivCloth times:30];
-                
-                
-//                [self dispClothEffect:5];
-                
-                [NSTimer scheduledTimerWithTimeInterval:0.5f
-                                                 target:self
-                                               selector:@selector(dispClothEffect)
-                                               userInfo:nil repeats:YES];
-                
-                break;
-            }
-            case BeamTypeGrass:{//not yet
-                
-                break;
-            }
-            case BeamTypeIce:{//done->check
-//                [self dispIceEffect:10];
-                [NSTimer scheduledTimerWithTimeInterval:0.5f
-                                                 target:self
-                                               selector:@selector(dispIceEffect)
-                                               userInfo:nil repeats:YES];
-                break;
-            }
-            case BeamTypeRock:{
-                
-                break;
-            }
-            case BeamTypeSpace:{
-                
-                break;
-            }
-            case BeamTypeWater:{//done->check
-                [NSTimer scheduledTimerWithTimeInterval:0.5f
-                                                 target:self
-                                               selector:@selector(dispWaterEffect)
-                                               userInfo:nil repeats:YES];
-
-//                [self dispWaterEffect];
-                break;
-            }
-            case BeamTypeWing:{
-                [self dispWindEffect:100];
-                break;
-            }
-//                case beamType
-            default:{
-                NSLog(@"拾えていないアイテムエフェクトがあります。");
-                break;
-            }
-        }
-    }
-
-    //once damaed, he display damage-mode for 1sec(100count)
-    isDamaged = 100;//countdown-start : 100count=1sec
-    //particleを表示すると動作が重くなる
-//    damageParticle = [[DamageParticleView alloc] initWithFrame:CGRectMake(location.x, location.y, damage, damage)];
-//    [UIView animateWithDuration:0.5f
-//                     animations:^{
-//                         [damageParticle setAlpha:0.0f];//徐々に薄く
-//                     }
-//                     completion:^(BOOL finished){
-//                         //終了時処理
-//                         [damageParticle setIsEmitting:NO];
-//                         [damageParticle removeFromSuperview];
-//                         
-//                     }];
-    
-//    damageParticle.center = CGPointMake(x_loc, y_loc);
-    hitPoint -= damage;
-    if(hitPoint <= 0){//爆発用パーティクルの初期化
-//        explodeParticle = [[ExplodeParticleView alloc] initWithFrame:CGRectMake(x_loc, y_loc, bomb_size, bomb_size)];
-//        [UIView animateWithDuration:0.5f
-//                         animations:^{
-//                             [explodeParticle setAlpha:0.0f];//徐々に薄く
-//                         }
-//                         completion:^(BOOL finished){
-//                             //終了時処理
-//                             [explodeParticle setIsEmitting:NO];
-//                             [explodeParticle removeFromSuperview];
-//                             
-//                             //自分自身も削除
-//                             [iv removeFromSuperview];
-//                         }];
-        [self die];
-        isDiedMoment = YES;
-        return 1;//
-    }
-    
-    return 0;
-}
 
 -(int) die{
     
@@ -546,36 +414,46 @@ int unique_id;
 
 //特殊弾丸を被弾した時のエフェクト
 /*
+ *各dispXXXEffectは何度も(新規に)呼ばれることがなく、
+ *初めて特殊攻撃を受けた(後にisImpactフラグが反転した)瞬間にのみ実行され、
+ *NSTimerのschedule関数として繰り返し実行される
+ */
+
+
+
+/*
  *BemTypeWind:風が回る
  *風が回るごとに小さなダメージを与える
- *
+ *呼出し形態はnstimerのschedule関数ではなく、関数自体が再起呼出しを行っている。
  */
 
 -(void)dispWindEffect:(int)_times{
-    UIImageView *ivWind = [[UIImageView alloc]
-                           initWithFrame:CGRectMake(0,0,1,1)];
-    ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
-    //        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
-    [ivWind setAlpha:0.5f];
-    [iv addSubview:ivWind];
-    
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveLinear
-                     animations: ^{
-                         ivWind.transform = CGAffineTransformRotate(ivWind.transform, M_PI / 2);
-                     }
-                     completion: ^(BOOL finished) {
-                         if (finished) {
-                             //与えるダメージは考慮必要
-                             [self setDamage:hitPoint/3 location:CGPointMake(x_loc, y_loc)];
-                             [ivWind removeFromSuperview];
-                             if (_times > 0) {
-                                 [self dispWindEffect:_times-1];
-                             }
+    if(hitPoint > 0){
+        UIImageView *ivWind = [[UIImageView alloc]
+                               initWithFrame:CGRectMake(0,0,1,1)];
+        ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
+        //        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
+        [ivWind setAlpha:0.5f];
+        [iv addSubview:ivWind];
+        
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveLinear
+                         animations: ^{
+                             ivWind.transform = CGAffineTransformRotate(ivWind.transform, M_PI / 2);
                          }
-                     }];
+                         completion: ^(BOOL finished) {
+                             if (finished) {
+                                 //与えるダメージは考慮必要
+                                 [self setDamage:hitPoint/3 location:CGPointMake(x_loc, y_loc)];
+                                 [ivWind removeFromSuperview];
+                                 if (_times > 0 && hitPoint > 0) {
+                                     [self dispWindEffect:_times-1];
+                                 }
+                             }
+                         }];
+    }
 }
 
 /*
@@ -617,6 +495,8 @@ int unique_id;
         UIImageView *iceView = [[UIImageView alloc]
                                 initWithFrame:CGRectMake(0, 0, 1, 1)];
         iceView.image = [UIImage imageNamed:@"ice_icon.png"];
+        iceView.transform =
+        CGAffineTransformMakeRotation(-M_PI_2);
         [iv addSubview:iceView];
         
         [UIView animateWithDuration:1.0f
@@ -624,6 +504,8 @@ int unique_id;
                              iceView.frame = CGRectMake(0, 0,
                                                         iv.bounds.size.width,
                                                         iv.bounds.size.height);
+                             iceView.transform =
+                             CGAffineTransformRotate(iceView.transform, M_PI_2);
                          }
                          completion:^(BOOL finished){
                              if(finished){
@@ -688,8 +570,8 @@ int unique_id;
                                                          iv.bounds.size.height/2,
                                                          iv.bounds.size.width,
                                                          iv.bounds.size.height)
-                                type:ExplodeParticleTypeBlackFire];
-//                                type:ExplodeParticleTypeOrangeFire];
+//                                type:ExplodeParticleTypeBlackFire];
+                                type:ExplodeParticleTypeOrangeFire];
         //            [viewFireEffect setColor:ExplodeParticleTypeRedFire];//orange-fire
         [viewFireEffect setEmitDirection:-M_PI_2];//後ろ向きに放射
         //        [viewFireEffect setOnOffEmitting];//発火と消火の繰り返し
@@ -710,6 +592,35 @@ int unique_id;
     }
 }
 
+
+-(void)dispBugEffect{
+    
+    //hitPointが正値であるときのみエフェクト実行
+    //発火したら0.1秒で消火を繰り返す
+    if(hitPoint > 0){
+        //level-up:orange-red-blue?
+        ExplodeParticleView *viewFireEffect;
+        viewFireEffect =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]
+                                initWithFrame:CGRectMake(iv.bounds.size.width/2,
+                                                         iv.bounds.size.height/2,
+                                                         iv.bounds.size.width,
+                                                         iv.bounds.size.height)
+                                type:ExplodeParticleTypeBlackFire];//black_fire
+        [viewFireEffect setBirthRate:30];//particleの生成数が多くなりすぎて重なった部分が白くならないように。
+        [viewFireEffect setEmitDirection:-M_PI_2];//(前に進むので)後ろ向きに放射
+        [iv addSubview:viewFireEffect];
+        
+        
+        [self setDamageBySpecialWeapon];
+        //0.1秒後に消火
+        [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                         target:viewFireEffect
+                                       selector:@selector(setNoEmitting)
+                                       userInfo:Nil repeats:NO];
+        
+    }
+}
 
 
 -(void)dispDieEffect{
@@ -746,5 +657,274 @@ int unique_id;
     [iv addSubview:_viewExplode];
     
 }
+
+-(void)dispAnimalEffect{
+    if(hitPoint > 0){
+        UIImageView *animalView = [[UIImageView alloc]
+                                initWithFrame:CGRectMake(0, 0, 1, 1)];
+        animalView.image = [UIImage imageNamed:@"icon_lion.png"];
+        animalView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        [iv addSubview:animalView];
+        [self drawScratch:3];
+        [UIView animateWithDuration:0.5f
+                         animations:^{
+                             animalView.frame = CGRectMake(0, 0,
+                                                        iv.bounds.size.width,
+                                                        iv.bounds.size.height);
+                             animalView.transform =
+                             CGAffineTransformRotate(animalView.transform, M_PI_2);
+                         }
+                         completion:^(BOOL finished){
+                             if(finished){
+                                 [self setDamageBySpecialWeapon];
+                                 [animalView removeFromSuperview];
+                             }
+                         }];
+        
+    }
+}
+
+-(void)drawScratch:(int)times{
+    UIImageView *grassView = [[UIImageView alloc]
+                              initWithFrame:CGRectMake(0, 0, 1, iv.bounds.size.height)];
+    grassView.image = [UIImage imageNamed:@"icon_scratch.png"];
+    [iv addSubview:grassView];
+    
+    [UIView animateWithDuration:0.1f
+                     animations:^{
+                         grassView.frame = CGRectMake(0, 0,
+                                                      iv.bounds.size.width,
+                                                      iv.bounds.size.height);
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             
+                             [grassView removeFromSuperview];
+                             if(times > 0){
+                                 [self drawScratch:times-1];
+                             }
+                         }
+                     }];
+}
+
+-(void)dispRockEffect{
+    if(hitPoint > 0){
+        UIImageView *rockView = [[UIImageView alloc]
+                                   initWithFrame:CGRectMake(0, 0, 1, 1)];
+        rockView.image = [UIImage imageNamed:@"bomb_016.png"];
+        rockView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        rockView.center = CGPointMake(iv.bounds.size.width/2,
+                                        iv.bounds.size.height/2);
+        [iv addSubview:rockView];
+        
+        [UIView animateWithDuration:1.0f
+                         animations:^{
+                             rockView.frame = CGRectMake(0, 0,
+                                                           iv.bounds.size.width,
+                                                           iv.bounds.size.height);
+                             rockView.transform =
+                             CGAffineTransformRotate(rockView.transform, M_PI_2);
+                         }
+                         completion:^(BOOL finished){
+                             if(finished){
+                                 [self setDamageBySpecialWeapon];
+                                 [rockView removeFromSuperview];
+                             }
+                         }];
+    }
+}
+
+//drawScratchを３回繰り返す(各0.1秒、合計で0.3秒)
+//0.5秒間隔で呼び出されるので0.2秒の空白がある
+-(void)dispGrassEffect{
+    if(hitPoint > 0){
+        
+        [self setDamageBySpecialWeapon];
+        
+        //左上からスタート
+        UIImageView *grassView1 =
+        [[UIImageView alloc]
+         initWithFrame:CGRectMake(0, 0, 1, 1)];
+        grassView1.image = [UIImage imageNamed:@"leaf01.png"];
+        [iv addSubview:grassView1];
+        
+        //右上からスタート
+        UIImageView *grassView2 =
+        [[UIImageView alloc]
+         initWithFrame:CGRectMake(iv.bounds.size.width,
+                                  iv.bounds.size.height/2,
+                                  1,1)];
+//                                  iv.bounds.size.width,
+//                                  iv.bounds.size.height)];
+        iv.image = [UIImage imageNamed:@"leaf02.png"];
+        [iv addSubview:grassView2];
+        
+        //最下部中心からスタート
+        UIImageView *grassView3 =
+        [[UIImageView alloc]initWithFrame:
+        CGRectMake(iv.bounds.size.width/2,
+                   iv.bounds.size.height,
+                   1, 1)];
+        grassView3.image = [UIImage imageNamed:@"leaf03.png"];
+        [iv addSubview:grassView3];
+        
+        [UIView animateWithDuration:0.1
+                         animations:^{//magic-axis
+                             //leaf01
+                             grassView1.frame =
+                             CGRectMake(0, 0, iv.bounds.size.width,
+                                        iv.bounds.size.height);
+                         }
+                         completion:^(BOOL finished){
+                             if(finished){
+                                 //leaf02
+                                 [UIView
+                                  animateWithDuration:0.1f
+                                  animations:^{
+                                      
+                                      grassView2.frame =
+                                      CGRectMake(0, 0,
+                                                 iv.bounds.size.width,
+                                                 iv.bounds.size.height);
+                                  }
+                                  completion:^(BOOL finished){
+                                      if(finished){
+                                          //leaf03
+                                          [UIView
+                                           animateWithDuration:0.3f
+                                           animations:^{
+                                               grassView3.frame =
+                                               CGRectMake(0, 0,
+                                                          iv.bounds.size.width,
+                                                          iv.bounds.size.height);
+                                           }
+                                           completion:^(BOOL finished){
+                                               if(finished){
+                                                   [grassView1 removeFromSuperview];
+                                                   [grassView2 removeFromSuperview];
+                                                   [grassView3 removeFromSuperview];
+                                               }
+                                           }];
+                                      }
+                                  }];
+                             }
+                         }];
+
+    }
+}
+
+
+//特殊武器による連続攻撃
+-(int)setDamageBySpecialWeapon{
+    return [self setDamage:100 location:CGPointMake(x_loc, y_loc)];
+}
+
+-(int)setDamage:(int)damage location:(CGPoint)location{
+    //通常弾での攻撃
+    return [self setDamage:damage location:location beamType:-1];
+}
+
+-(int)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
+    
+    if(beamType != -1 && isImpact == -1){//初めて特殊攻撃を受けた場合
+        NSLog(@"first impact");
+        isImpact = beamType;//次から特殊攻撃判定をしないようにする
+        switch ((BeamType)beamType) {
+            case BeamTypeAnimal:{//done->check
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispAnimalEffect)
+                                               userInfo:nil
+                                                repeats:YES];
+                break;
+            }
+            case BeamTypeBug:{//done
+                
+                //black fire
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispBugEffect)
+                                               userInfo:nil repeats:YES];
+                
+                break;
+            }
+            case BeamTypeFire:{//done
+                //                [self dispFireEffect];
+                
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispFireEffect)
+                                               userInfo:nil repeats:YES];
+                
+                break;
+            }
+            case BeamTypeCloth:{//done->check
+                
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispClothEffect)
+                                               userInfo:nil repeats:YES];
+                
+                break;
+            }
+            case BeamTypeGrass:{//done->check
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispGrassEffect)
+                                               userInfo:nil
+                                                repeats:YES];
+                
+                break;
+            }
+            case BeamTypeIce:{//done->check
+                //                [self dispIceEffect:10];
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispIceEffect)
+                                               userInfo:nil repeats:YES];
+                break;
+            }
+            case BeamTypeRock:{//
+                [self dispRockEffect];
+                break;
+            }
+            case BeamTypeSpace:{//メテオストライク
+                
+                break;
+            }
+            case BeamTypeWater:{//done->check
+                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                 target:self
+                                               selector:@selector(dispWaterEffect)
+                                               userInfo:nil repeats:YES];
+                
+                //                [self dispWaterEffect];
+                break;
+            }
+            case BeamTypeWing:{
+                [self dispWindEffect:100];//再起呼出し
+                break;
+            }
+                //                case beamType
+            default:{
+                NSLog(@"拾えていないアイテムエフェクトがあります。");
+                break;
+            }
+        }
+    }
+    
+    //once damaed, he display damage-mode for 1sec(100count)
+    isDamaged = 100;//countdown-start : 100count=1sec
+    hitPoint -= damage;
+    if(hitPoint <= 0){//爆発用パーティクルの初期化
+        [self die];
+        isDiedMoment = YES;
+        return 1;//
+    }
+    
+    return 0;
+}
+
+
 
 @end

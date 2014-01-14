@@ -311,6 +311,11 @@
 		34B5FB4C18570ED500F43531 /* synth-sweep1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4918570ED500F43531 /* synth-sweep1.mp3 */; };
 		34B5FB4E185711E100F43531 /* explosion1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4D185711E100F43531 /* explosion1.mp3 */; };
 		34B5FB50185714C900F43531 /* damage3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34B5FB4F185714C900F43531 /* damage3.mp3 */; };
+		34B7A3511884EB6F00E1D960 /* icon_scratch.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B7A3501884EB6F00E1D960 /* icon_scratch.png */; };
+		34B7A3531884F46600E1D960 /* icon_lion.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B7A3521884F46600E1D960 /* icon_lion.png */; };
+		34B7A35B1884FD3600E1D960 /* leaf03.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B7A35A1884FD3600E1D960 /* leaf03.png */; };
+		34B7A35E1884FFD000E1D960 /* leaf01.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B7A35C1884FFCF00E1D960 /* leaf01.png */; };
+		34B7A35F1884FFD000E1D960 /* leaf02.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B7A35D1884FFD000E1D960 /* leaf02.png */; };
 		34B9499B18700A920091688C /* exit_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B9499918700A920091688C /* exit_b.png */; };
 		34B9499C18700A920091688C /* exit_r.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B9499A18700A920091688C /* exit_r.png */; };
 		34B9499F18700AA70091688C /* start_g.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B9499D18700AA70091688C /* start_g.png */; };
@@ -779,6 +784,11 @@
 		34B5FB4918570ED500F43531 /* synth-sweep1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "synth-sweep1.mp3"; sourceTree = "<group>"; };
 		34B5FB4D185711E100F43531 /* explosion1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion1.mp3; sourceTree = "<group>"; };
 		34B5FB4F185714C900F43531 /* damage3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = damage3.mp3; sourceTree = "<group>"; };
+		34B7A3501884EB6F00E1D960 /* icon_scratch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_scratch.png; sourceTree = "<group>"; };
+		34B7A3521884F46600E1D960 /* icon_lion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_lion.png; sourceTree = "<group>"; };
+		34B7A35A1884FD3600E1D960 /* leaf03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leaf03.png; sourceTree = "<group>"; };
+		34B7A35C1884FFCF00E1D960 /* leaf01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leaf01.png; sourceTree = "<group>"; };
+		34B7A35D1884FFD000E1D960 /* leaf02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leaf02.png; sourceTree = "<group>"; };
 		34B9499918700A920091688C /* exit_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_b.png; sourceTree = "<group>"; };
 		34B9499A18700A920091688C /* exit_r.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_r.png; sourceTree = "<group>"; };
 		34B9499D18700AA70091688C /* start_g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = start_g.png; sourceTree = "<group>"; };
@@ -1523,6 +1533,11 @@
 		34A2B1BA181F9DDD00CB97F2 /* gameEffect */ = {
 			isa = PBXGroup;
 			children = (
+				34B7A35C1884FFCF00E1D960 /* leaf01.png */,
+				34B7A35D1884FFD000E1D960 /* leaf02.png */,
+				34B7A35A1884FD3600E1D960 /* leaf03.png */,
+				34B7A3521884F46600E1D960 /* icon_lion.png */,
+				34B7A3501884EB6F00E1D960 /* icon_scratch.png */,
 				34A6358018839ACB00722F81 /* wing_swirl.png */,
 				34A6357E188396E100722F81 /* wind_effect.png */,
 				34A6357C18837B2E00722F81 /* ice_icon.png */,
@@ -1881,6 +1896,7 @@
 				340012F9186C3CDF00EE6E61 /* BuyCoin01.png in Resources */,
 				34D55FD1183CA05400788533 /* bomb017.png in Resources */,
 				3462DA7F186932F500CFDB14 /* apatite06.png in Resources */,
+				34B7A35B1884FD3600E1D960 /* leaf03.png in Resources */,
 				343D9702184F3296000239F4 /* icon_gear_b.png in Resources */,
 				342057E817F2B34C0084E99D /* Default-568h@2x.png in Resources */,
 				34791E3E185D7A8F00440B92 /* ornament.png in Resources */,
@@ -1926,6 +1942,7 @@
 				34BC5CDF1872A1A2005534EB /* icon_speaker_off.png in Resources */,
 				3419C41417FD27E200980E71 /* explode4.png in Resources */,
 				34A8896D18542ABA005667B4 /* 07.png in Resources */,
+				34B7A3531884F46600E1D960 /* icon_lion.png in Resources */,
 				3419C41517FD27E200980E71 /* explode3.png in Resources */,
 				34BC5CDD1872A1A2005534EB /* icon_music_off.png in Resources */,
 				34A8897E18542ABA005667B4 /* 24.png in Resources */,
@@ -2034,6 +2051,7 @@
 				341D9C66182DDE7C009B904E /* kira_img11.png in Resources */,
 				340D04FA18597FEC001DD8EC /* weapon_UP.png in Resources */,
 				34B949A518700CA90091688C /* back_shop02.png in Resources */,
+				34B7A35F1884FFD000E1D960 /* leaf02.png in Resources */,
 				348C442818669C500029D09B /* NH_AnimalBow.png in Resources */,
 				340A4641181E412200D9B005 /* ClothBow.png in Resources */,
 				34A22752182A39ED0050CFDB /* tool_heal.png in Resources */,
@@ -2119,6 +2137,7 @@
 				34616E231859DF8700DE8226 /* sozai_maki.png in Resources */,
 				344BD61B1815936B00387201 /* mob_pen_01.png in Resources */,
 				344BD61C1815936B00387201 /* mob_musa_02.png in Resources */,
+				34B7A35E1884FFD000E1D960 /* leaf01.png in Resources */,
 				348C443118669C500029D09B /* NH_WingBow.png in Resources */,
 				34A8897918542ABA005667B4 /* 19.png in Resources */,
 				34CA558018447A9B00F9657A /* laser_b02.png in Resources */,
@@ -2164,6 +2183,7 @@
 				34B9499B18700A920091688C /* exit_b.png in Resources */,
 				34A8897C18542ABA005667B4 /* 22.png in Resources */,
 				3488ACC6183D272F00833F93 /* img05.png in Resources */,
+				34B7A3511884EB6F00E1D960 /* icon_scratch.png in Resources */,
 				347D277618169B3700498F68 /* small_nine.png in Resources */,
 				347D277718169B3700498F68 /* small_one.png in Resources */,
 				347D277818169B3700498F68 /* small_seven.png in Resources */,

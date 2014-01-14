@@ -65,6 +65,11 @@
 }
 
 
+-(void)setNoEmitting{
+    
+    [particleEmitter setValue:[NSNumber numberWithInt:0]
+                   forKeyPath:@"emitterCells.damage.birthRate"];
+}
 
 -(void)setIsEmitting:(BOOL)isEmitting
 {
