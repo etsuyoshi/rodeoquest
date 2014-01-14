@@ -685,21 +685,21 @@ int unique_id;
 }
 
 -(void)drawScratch:(int)times{
-    UIImageView *grassView = [[UIImageView alloc]
+    UIImageView *scratchView = [[UIImageView alloc]
                               initWithFrame:CGRectMake(0, 0, 1, iv.bounds.size.height)];
-    grassView.image = [UIImage imageNamed:@"icon_scratch.png"];
-    [iv addSubview:grassView];
+    scratchView.image = [UIImage imageNamed:@"icon_scratch.png"];
+    [iv addSubview:scratchView];
     
     [UIView animateWithDuration:0.1f
                      animations:^{
-                         grassView.frame = CGRectMake(0, 0,
+                         scratchView.frame = CGRectMake(0, 0,
                                                       iv.bounds.size.width,
                                                       iv.bounds.size.height);
                      }
                      completion:^(BOOL finished){
                          if(finished){
                              
-                             [grassView removeFromSuperview];
+                             [scratchView removeFromSuperview];
                              if(times > 0){
                                  [self drawScratch:times-1];
                              }
@@ -739,7 +739,7 @@ int unique_id;
 -(void)dispGrassEffect{
     if(hitPoint > 0){
         
-        [self setDamageBySpecialWeapon];
+        
         
         //左上からスタート
         UIImageView *grassView1 =
@@ -754,9 +754,7 @@ int unique_id;
          initWithFrame:CGRectMake(iv.bounds.size.width,
                                   iv.bounds.size.height/2,
                                   1,1)];
-//                                  iv.bounds.size.width,
-//                                  iv.bounds.size.height)];
-        iv.image = [UIImage imageNamed:@"leaf02.png"];
+        grassView2.image = [UIImage imageNamed:@"leaf02.png"];
         [iv addSubview:grassView2];
         
         //最下部中心からスタート
@@ -767,6 +765,8 @@ int unique_id;
                    1, 1)];
         grassView3.image = [UIImage imageNamed:@"leaf03.png"];
         [iv addSubview:grassView3];
+        
+        [self setDamageBySpecialWeapon];
         
         [UIView animateWithDuration:0.1
                          animations:^{//magic-axis
@@ -814,7 +814,7 @@ int unique_id;
 }
 
 
-//特殊武器による連続攻撃
+//特殊武器による継続攻撃
 -(int)setDamageBySpecialWeapon{
     return [self setDamage:100 location:CGPointMake(x_loc, y_loc)];
 }
