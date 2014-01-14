@@ -642,8 +642,8 @@
                             @"NH_WaterBow.png",
                             @"NH_BugBow.png",
                             @"NH_AnimalBow.png",
-                            @"NH_GrassBow.png",
                             @"NH_ClothBow.png",
+                            @"NH_GrassBow.png",
                             @"NH_SpaceBow.png",
                             @"NH_WingBow.png",
                             nil];

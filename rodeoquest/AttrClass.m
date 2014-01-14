@@ -42,8 +42,8 @@
                   @"WaterBow.png",[NSNumber numberWithInt:BowTypeWater],
                   @"BugBow.png",[NSNumber numberWithInt:BowTypeBug],
                   @"AnimalBow.png",[NSNumber numberWithInt:BowTypeAnimal],
-                  @"GrassBow.png",[NSNumber numberWithInt:BowTypeGrass],
                   @"ClothBow.png",[NSNumber numberWithInt:BowTypeCloth],
+                  @"GrassBow.png",[NSNumber numberWithInt:BowTypeGrass],
                   @"SpaceBow.png",[NSNumber numberWithInt:BowTypeSpace],
                   @"WingBow.png",[NSNumber numberWithInt:BowTypeWing],
                   nil];
@@ -55,8 +55,8 @@
                 @"Water.png",[NSNumber numberWithInt:BeamTypeWater],
                 @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],
                 @"Animal.png",[NSNumber numberWithInt:BeamTypeAnimal],
-                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass],
                 @"Cloth.png",[NSNumber numberWithInt:BeamTypeCloth],
+                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass],
                 @"Space.png",[NSNumber numberWithInt:BeamTypeSpace],
                 @"Wing.png",[NSNumber numberWithInt:BeamTypeWing],
                 nil];

@@ -22,8 +22,8 @@
                 @"Water.png",[NSNumber numberWithInt:BeamTypeWater],
                 @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],
                 @"Animal.png",[NSNumber numberWithInt:BeamTypeAnimal],
-                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass ],
                 @"Cloth.png",[NSNumber numberWithInt:BeamTypeCloth],
+                @"Grass.png",[NSNumber numberWithInt:BeamTypeGrass ],
                 @"Space.png",[NSNumber numberWithInt:BeamTypeSpace ],
                 @"Wing.png",[NSNumber numberWithInt:BeamTypeWing ],
                 nil];

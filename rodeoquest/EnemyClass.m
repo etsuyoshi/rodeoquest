@@ -430,23 +430,28 @@ int unique_id;
 -(void)dispWindEffect:(int)_times{
     if(hitPoint > 0){
         UIImageView *ivWind = [[UIImageView alloc]
-                               initWithFrame:CGRectMake(0,0,1,1)];
+                               initWithFrame:CGRectMake(0,0,//1,1)];//拡大縮小させない
+                                                        iv.bounds.size.width,
+                                                        iv.bounds.size.height)];
         ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
         //        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
         [ivWind setAlpha:0.5f];
         [iv addSubview:ivWind];
+        NSLog(@"wind effect");
         
-        
-        [UIView animateWithDuration: 0.5f
+        [UIView animateWithDuration: 0.3f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveLinear
                          animations: ^{
                              ivWind.transform = CGAffineTransformRotate(ivWind.transform, M_PI / 2);
+//                             ivWind.frame = CGRectMake(0, 0, iv.bounds.size.width,
+//                                                       iv.bounds.size.height);
                          }
                          completion: ^(BOOL finished) {
                              if (finished) {
                                  //与えるダメージは考慮必要
-                                 [self setDamage:hitPoint/3 location:CGPointMake(x_loc, y_loc)];
+                                 NSLog(@"wind effect compolete");
+                                 [self setDamage:5 location:CGPointMake(x_loc, y_loc)];
                                  [ivWind removeFromSuperview];
                                  if (_times > 0 && hitPoint > 0) {
                                      [self dispWindEffect:_times-1];
@@ -460,7 +465,7 @@ int unique_id;
  *BeamTypeCloth:広げる
  *(繰り返しであれば最後の)広がった瞬間に敵を葬る
  */
--(void)dispClothEffect:(int)_times{
+-(void)dispClothEffect{
     if(hitPoint > 0){
         UIImageView *ivCloth = [[UIImageView alloc]
                                 initWithFrame:
@@ -688,6 +693,8 @@ int unique_id;
     UIImageView *scratchView = [[UIImageView alloc]
                               initWithFrame:CGRectMake(0, 0, 1, iv.bounds.size.height)];
     scratchView.image = [UIImage imageNamed:@"icon_scratch.png"];
+//    scratchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
+    [scratchView setAlpha:0.8f];
     [iv addSubview:scratchView];
     
     [UIView animateWithDuration:0.1f
@@ -711,13 +718,22 @@ int unique_id;
     if(hitPoint > 0){
         UIImageView *rockView = [[UIImageView alloc]
                                    initWithFrame:CGRectMake(0, 0, 1, 1)];
-        rockView.image = [UIImage imageNamed:@"bomb_016.png"];
+        rockView.image = [UIImage imageNamed:@"bomb016.png"];
         rockView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         rockView.center = CGPointMake(iv.bounds.size.width/2,
                                         iv.bounds.size.height/2);
         [iv addSubview:rockView];
         
-        [UIView animateWithDuration:1.0f
+        UIImageView *smokeView =
+        [[UIImageView alloc]
+        initWithFrame:CGRectMake(0, 0, 1, 1)];
+        smokeView.image = [UIImage imageNamed:@"bomb012.png"];
+        smokeView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        smokeView.center = CGPointMake(iv.bounds.size.width/2,
+                                      iv.bounds.size.height/2);
+        [iv addSubview:smokeView];
+        
+        [UIView animateWithDuration:0.3f
                          animations:^{
                              rockView.frame = CGRectMake(0, 0,
                                                            iv.bounds.size.width,
@@ -729,6 +745,19 @@ int unique_id;
                              if(finished){
                                  [self setDamageBySpecialWeapon];
                                  [rockView removeFromSuperview];
+                                 
+                                 [UIView
+                                  animateWithDuration:0.2f
+                                  animations:^{
+                                     smokeView.frame =
+                                      CGRectMake(0, 0, iv.bounds.size.width,
+                                                 iv.bounds.size.height);
+                                  }
+                                  completion:^(BOOL finished){
+                                      if(finished){
+                                          [smokeView removeFromSuperview];
+                                      }
+                                  }];
                              }
                          }];
     }
@@ -766,7 +795,7 @@ int unique_id;
         grassView3.image = [UIImage imageNamed:@"leaf03.png"];
         [iv addSubview:grassView3];
         
-        [self setDamageBySpecialWeapon];
+        
         
         [UIView animateWithDuration:0.1
                          animations:^{//magic-axis
@@ -789,6 +818,9 @@ int unique_id;
                                   }
                                   completion:^(BOOL finished){
                                       if(finished){
+                                          //ダメージを与えた後に(仮に死んだ場合は特に)その前に草が見えていた方が良い
+                                          [self setDamageBySpecialWeapon];
+                                          
                                           //leaf03
                                           [UIView
                                            animateWithDuration:0.3f
@@ -830,7 +862,7 @@ int unique_id;
         NSLog(@"first impact");
         isImpact = beamType;//次から特殊攻撃判定をしないようにする
         switch ((BeamType)beamType) {
-            case BeamTypeAnimal:{//done->check
+            case BeamTypeAnimal:{//done->check:done
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                  target:self
                                                selector:@selector(dispAnimalEffect)
@@ -838,7 +870,7 @@ int unique_id;
                                                 repeats:YES];
                 break;
             }
-            case BeamTypeBug:{//done
+            case BeamTypeBug:{//done->check:done
                 
                 //black fire
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
@@ -848,9 +880,7 @@ int unique_id;
                 
                 break;
             }
-            case BeamTypeFire:{//done
-                //                [self dispFireEffect];
-                
+            case BeamTypeFire:{//done->check:done
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                  target:self
                                                selector:@selector(dispFireEffect)
@@ -858,7 +888,7 @@ int unique_id;
                 
                 break;
             }
-            case BeamTypeCloth:{//done->check
+            case BeamTypeCloth:{//done->check:done
                 
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                  target:self
@@ -867,7 +897,7 @@ int unique_id;
                 
                 break;
             }
-            case BeamTypeGrass:{//done->check
+            case BeamTypeGrass:{//done->check:done
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                  target:self
                                                selector:@selector(dispGrassEffect)
@@ -876,15 +906,14 @@ int unique_id;
                 
                 break;
             }
-            case BeamTypeIce:{//done->check
-                //                [self dispIceEffect:10];
+            case BeamTypeIce:{//done->check:done
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                  target:self
                                                selector:@selector(dispIceEffect)
                                                userInfo:nil repeats:YES];
                 break;
             }
-            case BeamTypeRock:{//
+            case BeamTypeRock:{//done->check:done
                 [self dispRockEffect];
                 break;
             }
@@ -892,7 +921,7 @@ int unique_id;
                 
                 break;
             }
-            case BeamTypeWater:{//done->check
+            case BeamTypeWater:{//done->check:done
                 [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                  target:self
                                                selector:@selector(dispWaterEffect)

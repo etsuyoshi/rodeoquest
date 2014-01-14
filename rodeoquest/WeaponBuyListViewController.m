@@ -78,8 +78,8 @@ UIView *superViewForEquipWpn;
                  @"NH_WaterBow.png",
                  @"NH_BugBow.png",
                  @"NH_AnimalBow.png",
-                 @"NH_GrassBow.png",
                  @"NH_ClothBow.png",
+                 @"NH_GrassBow.png",
                  @"NH_SpaceBow.png",
                  @"NH_WingBow.png",
 
@@ -176,8 +176,8 @@ UIView *superViewForEquipWpn;
                                @"W_WaterBow.png",
                                @"W_BugBow.png",
                                @"W_AnimalBow.png",
-                               @"W_GrassBow.png",
                                @"W_ClothBow.png",
+                               @"W_GrassBow.png",
                                @"W_SpaceBow.png",
                                @"W_WingBow.png",
                                nil];
@@ -304,13 +304,13 @@ UIView *superViewForEquipWpn;
             };
             superViewForEquipWpn =
             [CreateComponentClass
-             createAlertView:self.view.bounds
+             createAlertView2:self.view.bounds
              dialogRect:CGRectMake(0, 0,
                                    self.view.bounds.size.width-20,
-                                   self.view.bounds.size.width-20)
+                                   self.view.bounds.size.width-100)
              title:@"現在装備可能です。"
              message:@"装備しますか？"
-             titleYes:@"装備" titleNo:@"いいえ"
+//             titleYes:@"装備" titleNo:@"いいえ"
              onYes:^{
                  //ID設定：他のアイテム含めて設定
                  [self processAfterBtnPressed:[itemList objectAtIndex:numSelected]];

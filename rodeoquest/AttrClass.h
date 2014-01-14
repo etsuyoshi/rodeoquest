@@ -15,8 +15,8 @@ typedef NS_ENUM(NSInteger, BowType) {
     BowTypeWater,
     BowTypeBug,
     BowTypeAnimal,
-    BowTypeGrass,
     BowTypeCloth,
+    BowTypeGrass,
     BowTypeSpace,
     BowTypeWing
 };
