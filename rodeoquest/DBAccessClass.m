@@ -37,6 +37,7 @@
     }else{
         
         NSLog(@"登録されたidが存在するのでこのまま続けます。");//=>return true;
+        return true;
     }
     return true;
     

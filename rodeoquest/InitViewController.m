@@ -53,6 +53,7 @@ UIActivityIndicatorView *_indicator;
 {
     [super viewDidLoad];
     
+    isSuccessAccess = false;
     
     //gamecenterログイン
     __weak GKLocalPlayer *localPlayer;
@@ -116,6 +117,7 @@ UIActivityIndicatorView *_indicator;
     if([dbac setIdToDB:_id]){//dbに登録(既存idなら何もしないで)YES、登録に失敗すればNO
         NSLog(@"データベース登録or承認完了");
         
+        isSuccessAccess = true;
         
         //last login
         //最終ゲーム実行時間:http://www.objectivec-iphone.com/foundation/NSDate/components.html
@@ -164,54 +166,115 @@ UIActivityIndicatorView *_indicator;
         [attr setValueToDevice:@"login" strValue:[NSString stringWithFormat:@"%d", login]];
         
         // インジケーター非表示
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
+        
         
         //StoryboardでのID：ItemSelectViewControllerはMenuViewControllerを示す
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-//        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
-//        [self presentViewController: vc animated:NO completion: nil];
+        //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        //        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
+        //        [self presentViewController: vc animated:NO completion: nil];
         //上記ブロックと同値
-        MenuViewController *menuView = [[MenuViewController alloc] init];
-        [self presentViewController: menuView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
+//        MenuViewController *menuView = [[MenuViewController alloc] init];
+//        [self presentViewController: menuView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
         
         
     }else{
         NSLog(@"データベース登録or承認失敗");
-        // インジケーター非表示
-        [self hideActivityIndicator];
+//        // インジケーター非表示
+//        [self hideActivityIndicator];
         
     }
+}
+
+//dbアクセスを停止
+-(void)stopAccess{
+    //インジケーター非表示
+    [self hideActivityIndicator];
+    
+    //取得成功していれば何も表示しない
+    //取得失敗ならdialogで再度取得するか確認
+    //原因：ネット不接続(恐らく。それ以外の可能性は未調査)
+    if(isSuccessAccess){
+        [self transitToMenu];
+    }else{
+        UIView *alertView =nil;
+        alertView =
+        [CreateComponentClass
+         createAlertView2:self.view.bounds
+         dialogRect:CGRectMake(0, 0, 290, 200)
+         title:@"インターネットへの接続が不安定です。"
+         message:@"このまま続けますか？\n続けた場合には記録の保存ができないことがあります。\n接続なしで続ける場合は「はい」を選択して下さい。"
+         onYes:^{
+             [alertView removeFromSuperview];
+             [self transitToMenu];
+         }
+         onNo:^{
+             [alertView removeFromSuperview];
+             //再接続開始
+             [self startAccessDB];
+             
+         }];
+        
+        [self.view addSubview:alertView];
+    }
+    
+}
+
+//menuViewに遷移
+-(void)transitToMenu{
+    NSLog(@"transitToMenu");
+    
+    //MenuViewControllerを呼び出す
+    MenuViewController *menuView = [[MenuViewController alloc] init];
+    [self presentViewController: menuView animated:NO completion: nil];//if "animated"=YES then background perform incorrect
+    
+}
+
+/*
+ *インジケータ表示
+ *DB登録or新規承認を開始
+ *接続成功の可否を問わず、3秒後にstopAccessを実行
+ *参考：stopAccessでは接続成功ならmenuViewCon遷移、失敗なら再度接続開始するかダイアログで確認する。
+ */
+-(void)startAccessDB{
+    [self sendRequestToServer];
+    
+    // インジケーター表示
+    [self showActivityIndicator];
+    
+    //DBアクセス成功の可否にかかわらずMenuViewConに遷移する
+    [self performSelector:@selector(stopAccess)
+               withObject:nil
+               afterDelay:3.0f];
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     
-    //ornament
-//    UIImageView *viewOrnament =
-//    [[UIImageView alloc] initWithFrame:CGRectMake(20, 80, 150, 150)];
-//    viewOrnament.image = [UIImage imageNamed:@"frame02_black.png"];
-//    [self.view addSubview:viewOrnament];
-    
-
-    
     
 #ifndef NoConnectTEST
-    // インジケーター表示
-    [self showActivityIndicator];
-    //サーバー通信
-    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1];
+    //サーバー通信開始
+//    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.1];
+    
+    //インジケータ接続とDB接続開始(＆接続成功の可否を問わず３秒後にstopAccessを実行)
+    [self startAccessDB];
+    
 #elif defined TestView
     
-#ifdef PaymentTest
-    PaymentTestViewController *ptvc = [[PaymentTestViewController alloc]init];
-    [self presentViewController: ptvc animated:YES completion: nil];
-    return;
-#endif
+    #ifdef PaymentTest//
+        PaymentTestViewController *ptvc = [[PaymentTestViewController alloc]init];
+        [self presentViewController: ptvc animated:YES completion: nil];
+        return;
+    #endif
     
     
     TestViewController *tvc = [[TestViewController alloc]init];
     [self presentViewController: tvc animated:YES completion: nil];
 #else
+    
+    
+    //no-connection-modeならばサーバー通信をせずにすぐにmenuviewControllerに遷移
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
     //    NSLog(@"%@", vc);

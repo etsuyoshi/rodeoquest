@@ -10,6 +10,8 @@
 #import <GameKit/GameKit.h>
 
 
-@interface InitViewController : UIViewController
+@interface InitViewController : UIViewController{
+    BOOL isSuccessAccess;
+}
 
 @end
