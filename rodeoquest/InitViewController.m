@@ -36,9 +36,6 @@
 
 
 #import "InitViewController.h"
-#import "MenuViewController.h"
-#import "DBAccessClass.h"
-#import "AttrClass.h"
 
 @interface InitViewController ()
 
@@ -76,6 +73,12 @@ UIActivityIndicatorView *_indicator;
     [super viewDidLoad];
     
     isSuccessAccess = false;
+    
+    attr = [[AttrClass alloc]init];
+    
+    
+    //powersportをゼロに設定：後でxxxモードに移行する時に選択制でyesにする
+    [attr setValueToDevice:@"powerspot" strValue:@"0"];
     
     //gamecenterログイン
     __weak GKLocalPlayer *localPlayer;
@@ -134,7 +137,7 @@ UIActivityIndicatorView *_indicator;
     DBAccessClass *dbac = [[DBAccessClass alloc]init];
     //端末からidを取得してdbと照合(なければdbと端末自体に新規作成)
     //    [dbac setIdToDB:[dbac getIdFromDevice]];
-    AttrClass *attr = [[AttrClass alloc]init];
+    
     NSString *_id = [attr getIdFromDevice];
     if([dbac setIdToDB:_id]){//dbに登録(既存idなら何もしないで)YES、登録に失敗すればNO
         NSLog(@"データベース登録or承認完了");
@@ -503,7 +506,7 @@ UIActivityIndicatorView *_indicator;
           latitude,longitude);
     
     
-    //test
+    //test:label
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width,
                                                               self.view.bounds.size.height)];
     label.center =
@@ -514,7 +517,7 @@ UIActivityIndicatorView *_indicator;
     label.textColor = [UIColor blackColor];
     [self.view addSubview:label];
     [self.view bringSubviewToFront:label];
-    
+    //test:label-finish
     
     //既存の位置情報との照合を開始する
     LocationDataClass *locationData = [[LocationDataClass alloc]init];
@@ -522,6 +525,29 @@ UIActivityIndicatorView *_indicator;
           [locationData getNameNearestLocation:bestEffortAtLocation],
           [locationData getDistanceNearest:bestEffortAtLocation]);
     
+    //誤差が許容範囲内なら処理続行
+    UIView *alertModeView = nil;
+    alertModeView =
+    [CreateComponentClass
+     createAlertView2:self.view.bounds
+     dialogRect:CGRectMake(10, 100, 290, 180)
+     title:@"ドラゴンの回復ポイントの近くにいます。"
+     message:@"xxxモードに変更しますか？"
+     onYes:^{
+         
+         [alertModeView removeFromSuperview];
+         
+         //xxxモードへの移行：常に全回復？弾丸強度1.5倍
+         [attr setValueToDevice:@"powersport" strValue:@"1"];
+     }
+     onNo:^{
+         [alertModeView removeFromSuperview];
+         
+         //xxxモードの解除
+         [attr setValueToDevice:@"powerspot" strValue:@"0"];
+         
+     }];
+    [self.view addSubview:alertModeView];
     
     [self transitToMenu];
     

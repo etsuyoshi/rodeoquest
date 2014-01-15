@@ -7,13 +7,17 @@
 //
 
 #import "LocationDataClass.h"
+#import "AttrClass.h"
+#import "MenuViewController.h"
+#import "DBAccessClass.h"
+
 #import <UIKit/UIKit.h>
 #import <GameKit/GameKit.h>
 #import <CoreLocation/CoreLocation.h>
 
 @interface InitViewController : UIViewController<CLLocationManagerDelegate>{
     BOOL isSuccessAccess;
-    
+    AttrClass *attr;
     CLLocationManager *locationManager;
     CLLocation *bestEffortAtLocation;
 }
