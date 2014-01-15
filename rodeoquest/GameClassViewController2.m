@@ -2052,6 +2052,9 @@ int sensitivity;
         }
     }
     
+    //念のため全てのリソースを解放
+    [self garbageCollection];
+    
     //ItemClassのパーティクルは最後に生成された物(index:0)以外すべて消去
     //    for(int i = 1; i < [KiraArray count];i++){
     //        [[KiraArray objectAtIndex:i] removeFromSuperview];
