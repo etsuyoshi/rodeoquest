@@ -6,12 +6,27 @@
 //  Copyright (c) 2014年 endo.tuyo. All rights reserved.
 //
 
+#define ALLOWED_ERROR 100.0
 #import "LocationDataClass.h"
 
 @implementation LocationDataClass
 
 -(id)init{
     self = [super init];
+        
+    //ランドマーク名称
+    arrName =
+    [NSMutableArray arrayWithObjects:
+     @"三軒茶屋スタバ",
+     @"秋葉原駅",
+     @"渋谷スクランブル交差点",
+     @"新宿アルタ前",
+     @"ディズニーランド",
+     @"ディズニーシー",
+     @"池袋サンシャイン通り",
+     @"ハチ公前",
+     nil];
+     
     
     //latitude, longitude
     arrLatitudeLongitude =
@@ -46,18 +61,58 @@
     return self;
 }
 
--(int)getNearestLocationNo:(CLLocation *)_location{
+//最も近い場所を返す
+-(NSString *)getNameNearestLocation:(CLLocation *)_location{
+    int targetNo = [self getNearestLocationNo:_location];
+    return [arrName objectAtIndex:targetNo];
+}
+
+//最も近いランドマークまでの距離(最初に-1を代入しておく：処理が完了しているかどうかを示す)
+-(double)getDistanceNearest:(CLLocation *)_location{
     double _distance = 0;
-    double _nearrestDist = 99999;
+    double _nearrestDist = 999999;
     int _nearrestNo = -1;
     for(int i = 0; i < [arrLocation count];i++){
         _distance = [self getDistanceFrom:[arrLocation objectAtIndex:i] to:_location];
         NSLog(@"%d : distance = %f", i, _distance);
         
-        if(_nearrestDist > _distance){
-            _nearrestDist = _distance;
-            _nearrestNo = i;
-            NSLog(@"距離が近いので採用 %d", i);
+        if(_distance < ALLOWED_ERROR){//100mまでの範囲なら許容
+            if(_nearrestDist > _distance){
+                _nearrestDist = _distance;
+                _nearrestNo = i;
+                NSLog(@"距離が近いので採用 %d", i);
+            }
+        }
+    }
+    
+    if(_nearrestNo != -1){
+        return  _nearrestDist;
+    }else{
+        if([arrLocation count] == 0){
+            NSLog(@"配列に格納されていません。");
+        }else{
+            NSLog(@"最近接値を取得できませんでした。");
+        }
+        return -1;
+    }
+    return -1;
+}
+
+
+-(int)getNearestLocationNo:(CLLocation *)_location{
+    double _distance = 0;
+    double _nearrestDist = 999999;
+    int _nearrestNo = -1;
+    for(int i = 0; i < [arrLocation count];i++){
+        _distance = [self getDistanceFrom:[arrLocation objectAtIndex:i] to:_location];
+        NSLog(@"%d : distance = %f", i, _distance);
+        
+        if(_distance < ALLOWED_ERROR){//100mまでの範囲なら許容
+            if(_nearrestDist > _distance){
+                _nearrestDist = _distance;
+                _nearrestNo = i;
+                NSLog(@"距離が近いので採用 %d", i);
+            }
         }
     }
     

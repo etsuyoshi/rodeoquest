@@ -12,9 +12,14 @@
 @interface LocationDataClass : NSObject{
     NSMutableArray *arrLocation;
     NSMutableArray *arrLatitudeLongitude;
+    NSMutableArray *arrName;
+    
 }
 
 -(id)init;
 -(int)getNearestLocationNo:(CLLocation *)_location;
 -(float)getDistanceFrom:(CLLocation *)location1 to:(CLLocation *)location2;
+-(NSString *)getNameNearestLocation:(CLLocation *)_location;
+-(double)getDistanceNearest:(CLLocation *)_location;
+
 @end

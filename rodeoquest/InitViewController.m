@@ -518,12 +518,11 @@ UIActivityIndicatorView *_indicator;
     
     //既存の位置情報との照合を開始する
     LocationDataClass *locationData = [[LocationDataClass alloc]init];
-    NSLog(@"最も近い場所は%d", [locationData getNearestLocationNo:bestEffortAtLocation]);
+    NSLog(@"最も近い場所は%@で誤差は%fメートル",
+          [locationData getNameNearestLocation:bestEffortAtLocation],
+          [locationData getDistanceNearest:bestEffortAtLocation]);
     
-    //test
-//    [self performSelector:@selector(transitToMenu)
-//               withObject:nil
-//               afterDelay:1.0f];
+    
     [self transitToMenu];
     
 }
