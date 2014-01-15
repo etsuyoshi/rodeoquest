@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <GameKit/GameKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-
-@interface InitViewController : UIViewController{
+@interface InitViewController : UIViewController<CLLocationManagerDelegate>{
     BOOL isSuccessAccess;
+    
+    CLLocationManager *locationManager;
+    CLLocation *bestEffortAtLocation;
 }
 
 @end

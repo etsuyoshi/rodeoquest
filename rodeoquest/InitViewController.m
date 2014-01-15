@@ -28,6 +28,13 @@
     #import "FontTestViewController.h"
 #endif
 
+
+#define GPS_MEASURING_TIME 3.0
+#define GPS_DESIRED_ACCURACY 100.0
+#define GPS_UNADOPTABLE_ACCURACY 2000.0
+
+
+
 #import "InitViewController.h"
 #import "MenuViewController.h"
 #import "DBAccessClass.h"
@@ -42,6 +49,21 @@
 UIView *_loadingView;
 UIActivityIndicatorView *_indicator;
 
+
+/*
+ init
+ viewDidLoad
+ viewWillAppear:->startAccessDB
+ viewDidAppear:animation
+ 
+ 
+ startAccessDB
+    ->sendRequestToServer
+    ->[after 3sec]stopAccess
+        ->isSuccessAccess:...(transitToMenu or initSpeculateLocation)
+            ->[SPECULATE LOCATION PROCESS]
+        -> ! isSuccessAccess:dialog->re:sendReuqestToServer?
+ */
 
 
 //ステータスバー非表示の一環
@@ -195,7 +217,10 @@ UIActivityIndicatorView *_indicator;
     //取得失敗ならdialogで再度取得するか確認
     //原因：ネット不接続(恐らく。それ以外の可能性は未調査)
     if(isSuccessAccess){
-        [self transitToMenu];
+//        [self transitToMenu];
+        
+        //speculate location test
+        [self initSpeculateLocation];
     }else{
         UIView *alertView =nil;
         alertView =
@@ -206,6 +231,8 @@ UIActivityIndicatorView *_indicator;
          message:@"このまま続けますか？\n続けた場合には記録の保存ができないことがあります。\n接続なしで続ける場合は「はい」を選択して下さい。"
          onYes:^{
              [alertView removeFromSuperview];
+             
+             //位置情報の取得はせずにメニューへ移行
              [self transitToMenu];
          }
          onNo:^{
@@ -275,10 +302,11 @@ UIActivityIndicatorView *_indicator;
     
     
     //no-connection-modeならばサーバー通信をせずにすぐにmenuviewControllerに遷移
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
-    //    NSLog(@"%@", vc);
-    [self presentViewController: vc animated:YES completion: nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+//    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MenuViewController"];
+//    //    NSLog(@"%@", vc);
+//    [self presentViewController: vc animated:YES completion: nil];
+    [self transitToMenu];
 #endif
 }
 
@@ -380,6 +408,123 @@ UIActivityIndicatorView *_indicator;
     [_indicator stopAnimating];
     [_loadingView removeFromSuperview];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+
+
+//以下、位置特定メソッド群
+
+/*
+ *測定環境初期化
+ */
+-(void)initSpeculateLocation{
+    NSLog(@"initSpeculateLocation");
+    
+    //GPS測定開始処理：View表示時に測定開始
+    locationManager = [[CLLocationManager alloc]init];
+    locationManager.delegate = self;
+    
+    bestEffortAtLocation = nil;
+    locationManager.desiredAccuracy = GPS_DESIRED_ACCURACY;
+    
+    //GPS測定開始
+    [locationManager startUpdatingLocation];
+    //GPS_MEASURING_TIME秒後に測定終了(stopUpdatingLocation:)メソッドを実行
+    [self performSelector:@selector(stopUpdatingLocation:)
+               withObject:nil
+               afterDelay:GPS_MEASURING_TIME];
+    
+    [self showActivityIndicator];
+}
+
+
+/*
+ *GPS情報処理。OSからGPS情報取得時に呼び出される
+ */
+-(void)locationManager:(CLLocationManager *)manager
+   didUpdateToLocation:(CLLocation *)newLocation
+          fromLocation:(CLLocation *)oldLocation{
+    
+    //newLocation.descriptionで位置情報の全ての文字列で取得できる
+    NSLog(@"newLoc:%@", newLocation.description);
+    
+    //不要なデータは無視
+    if(-[newLocation.timestamp timeIntervalSinceNow] > 5.0)return;
+    
+    if(newLocation.horizontalAccuracy > GPS_UNADOPTABLE_ACCURACY)return;
+    
+    //一番精度の高い情報を記憶
+    if(bestEffortAtLocation == nil ||
+       newLocation.horizontalAccuracy < bestEffortAtLocation.horizontalAccuracy){
+        
+        bestEffortAtLocation = newLocation;
+    }
+    
+}
+
+/*
+ *GPS測定終了処理
+ */
+-(void)stopUpdatingLocation:(NSObject *)args{
+    [locationManager stopUpdatingLocation];
+    [self hideActivityIndicator];
+    
+    if(bestEffortAtLocation == nil){
+        NSLog(@"GPS取得失敗");
+//        statusLabel.text = @"GPS取得失敗";
+        //失敗しても続ける
+        UIView *failedLocate = nil;
+        failedLocate = [CreateComponentClass
+         createAlertView2:self.view.bounds
+         dialogRect:CGRectMake(10, 100, 290, 200)
+         title:@"GPS情報を取得できませんでした。"
+         message:@"GPS機能をオンにすると日本全国の特定の場所でドラゴンのパワーが強化されます。\nGPS情報を再取得しますか？"
+         onYes:^{
+             [failedLocate removeFromSuperview];
+             
+             //GPS情報の再取得
+             [self initSpeculateLocation];
+             return ;//先に行かずにここで返す
+         }
+         onNo:^{
+             //do nothing：そのまま続ける(NSUserDefaultにGPS不使用の旨を書いておく必要あるかも。)
+             [failedLocate removeFromSuperview];
+         }];
+        
+        [self.view addSubview:failedLocate];
+        
+//        return;
+    }
+    
+    float longitude = bestEffortAtLocation.coordinate.longitude;//経度
+    float latitude = bestEffortAtLocation.coordinate.latitude;//緯度
+    
+    NSLog(@"緯度=%f, 経度=%f",
+          latitude,longitude);
+    
+    
+    //test
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width,
+                                                              self.view.bounds.size.height)];
+    label.center =
+    CGPointMake(self.view.bounds.size.width/2,
+                self.view.bounds.size.height-30);
+    label.text = [NSString stringWithFormat:@"ido=%f,keido=%f",
+                  latitude, longitude];
+    label.textColor = [UIColor blackColor];
+    [self.view addSubview:label];
+    [self.view bringSubviewToFront:label];
+    
+    
+    //既存の位置情報との照合を開始する
+    
+    
+    //test
+//    [self performSelector:@selector(transitToMenu)
+//               withObject:nil
+//               afterDelay:1.0f];
+    [self transitToMenu];
+    
 }
 
 @end

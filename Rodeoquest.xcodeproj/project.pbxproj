@@ -264,6 +264,7 @@
 		34A1ED40181CCDF20007471C /* GrassBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A1ED3B181CCDF20007471C /* GrassBow.png */; };
 		34A1ED41181CCDF20007471C /* IceBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A1ED3C181CCDF20007471C /* IceBow.png */; };
 		34A1ED42181CCDF20007471C /* WaterBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A1ED3D181CCDF20007471C /* WaterBow.png */; };
+		34A1FF8B18867E8600C35B1F /* LocationDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A1FF8A18867E8600C35B1F /* LocationDataClass.m */; };
 		34A22752182A39ED0050CFDB /* tool_heal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A2274E182A39ED0050CFDB /* tool_heal.png */; };
 		34A22753182A39ED0050CFDB /* tool_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A2274F182A39ED0050CFDB /* tool_big.png */; };
 		34A2275D182A4E900050CFDB /* tool_cookie.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A2275C182A4E900050CFDB /* tool_cookie.png */; };
@@ -735,6 +736,8 @@
 		34A1ED3B181CCDF20007471C /* GrassBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrassBow.png; sourceTree = "<group>"; };
 		34A1ED3C181CCDF20007471C /* IceBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IceBow.png; sourceTree = "<group>"; };
 		34A1ED3D181CCDF20007471C /* WaterBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WaterBow.png; sourceTree = "<group>"; };
+		34A1FF8918867E8600C35B1F /* LocationDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDataClass.h; sourceTree = "<group>"; };
+		34A1FF8A18867E8600C35B1F /* LocationDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationDataClass.m; sourceTree = "<group>"; };
 		34A2274E182A39ED0050CFDB /* tool_heal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_heal.png; sourceTree = "<group>"; };
 		34A2274F182A39ED0050CFDB /* tool_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_big.png; sourceTree = "<group>"; };
 		34A2275C182A4E900050CFDB /* tool_cookie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_cookie.png; sourceTree = "<group>"; };
@@ -1278,6 +1281,8 @@
 				347D276718167FA000498F68 /* BGMClass.m */,
 				342057E017F2B34C0084E99D /* AppDelegate.h */,
 				342057E117F2B34C0084E99D /* AppDelegate.m */,
+				34A1FF8918867E8600C35B1F /* LocationDataClass.h */,
+				34A1FF8A18867E8600C35B1F /* LocationDataClass.m */,
 			);
 			name = System;
 			sourceTree = "<group>";
@@ -2261,6 +2266,7 @@
 				34FA1A31180BC2460011E1CA /* AttrClass.m in Sources */,
 				340C7613180D37E500169658 /* CreateComponentClass.m in Sources */,
 				342640B81879819500AC0CD7 /* LDProgressView.m in Sources */,
+				34A1FF8B18867E8600C35B1F /* LocationDataClass.m in Sources */,
 				342231A21845EDAF00055ADF /* BackGroundClass2.m in Sources */,
 				3476D05E180DE6B800839BD8 /* QBFlatButton.m in Sources */,
 				34A6A1A3180EF48F006F26D6 /* ItemListViewController.m in Sources */,

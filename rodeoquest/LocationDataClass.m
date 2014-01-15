@@ -1,0 +1,49 @@
+//
+//  LocationDataClass.m
+//  Rodeoquest
+//
+//  Created by 遠藤 豪 on 2014/01/15.
+//  Copyright (c) 2014年 endo.tuyo. All rights reserved.
+//
+
+#import "LocationDataClass.h"
+
+@implementation LocationDataClass
+
+-(void)initData{
+    arrLatitudeLongitude =
+    [NSMutableArray arrayWithObjects:
+     @35.644302,@139.669769,
+     @35.698683,@139.774219,
+     @35.659888,@139.700315,
+     @35.692723,@139.701309,
+     @35.632547,@139.88133,
+     @35.626188,@139.885832,
+     @35.729534,@139.718055,
+     @35.659094,@139.700765,
+     nil];
+    
+    arrLocation = [[NSMutableArray alloc] init];
+    CLLocation *_location;
+    double _longitude;
+    double _latitude;
+    for(int i = 0; i < [arrLatitudeLongitude count];i+=2){
+        _longitude = [[arrLatitudeLongitude objectAtIndex:i] floatValue];
+        _latitude = [[arrLatitudeLongitude objectAtIndex:i+1] floatValue];
+        _location = [[CLLocation alloc]initWithLatitude:_latitude longitude:_longitude];
+        NSLog(@"cllocation =%@", _location);
+//        arrLocation addObject:
+    }
+     
+    
+    
+    
+    
+}
+
+
+-(float)getDistanceFrom:(CLLocation *)location1 to:(CLLocation *)location2{
+    CLLocationDistance distance = [location1 distanceFromLocation:location2];
+    return distance;
+}
+@end
