@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
+#import "LocationDataClass.h"
 #import <UIKit/UIKit.h>
 #import <GameKit/GameKit.h>
 #import <CoreLocation/CoreLocation.h>

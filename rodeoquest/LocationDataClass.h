@@ -14,4 +14,7 @@
     NSMutableArray *arrLatitudeLongitude;
 }
 
+-(id)init;
+-(int)getNearestLocationNo:(CLLocation *)_location;
+-(float)getDistanceFrom:(CLLocation *)location1 to:(CLLocation *)location2;
 @end

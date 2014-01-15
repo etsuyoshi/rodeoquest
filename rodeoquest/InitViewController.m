@@ -499,7 +499,7 @@ UIActivityIndicatorView *_indicator;
     float longitude = bestEffortAtLocation.coordinate.longitude;//経度
     float latitude = bestEffortAtLocation.coordinate.latitude;//緯度
     
-    NSLog(@"緯度=%f, 経度=%f",
+    NSLog(@"latitude=%f, longitude=%f",
           latitude,longitude);
     
     
@@ -517,7 +517,8 @@ UIActivityIndicatorView *_indicator;
     
     
     //既存の位置情報との照合を開始する
-    
+    LocationDataClass *locationData = [[LocationDataClass alloc]init];
+    NSLog(@"最も近い場所は%d", [locationData getNearestLocationNo:bestEffortAtLocation]);
     
     //test
 //    [self performSelector:@selector(transitToMenu)
