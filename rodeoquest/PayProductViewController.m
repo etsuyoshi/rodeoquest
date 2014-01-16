@@ -375,6 +375,20 @@ NSArray *arrProductId;
      name:UIApplicationDidBecomeActiveNotification
      object:nil];
     
+    
+    
+    //二重課金を防ぐ：http://d.hatena.ne.jp/glass-_-onion/20111201/1322697417
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(applicationDidEnterBackground)
+     name:UIApplicationDidEnterBackgroundNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(applicationWillEnterForeground)
+     name:UIApplicationWillEnterForegroundNotification
+     object:nil];
+    
     //rubyの更新(nullの場合にゼロが表示されるように一度数値に変換した後に文字列に再度変換
     lblRubyAmount.text = [NSString stringWithFormat:@"%d",
                           [[attr getValueFromDevice:@"ruby"] integerValue]];
@@ -387,6 +401,17 @@ NSArray *arrProductId;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+- (void)applicationDidEnterBackground
+{
+    [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
+}
+- (void)applicationWillEnterForeground
+{
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
 }
 
 
@@ -436,22 +461,34 @@ NSArray *arrProductId;
     }
 }
 
-- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
+- (void)paymentQueue:(SKPaymentQueue *)queue
+ updatedTransactions:(NSArray *)transactions
 {
     for (SKPaymentTransaction *transaction in transactions)
     {
         switch (transaction.transactionState)
         {
-            case SKPaymentTransactionStatePurchased:
+            case SKPaymentTransactionStatePurchasing:{
+                
+                break;
+            }
+            case SKPaymentTransactionStatePurchased:{
                 [self completeTransaction:transaction];
                 break;
-            case SKPaymentTransactionStateFailed:
+            }
+            case SKPaymentTransactionStateFailed:{
                 [self failedTransaction:transaction];
+                
                 break;
-            case SKPaymentTransactionStateRestored:
+            }
+            case SKPaymentTransactionStateRestored:{
                 [self restoreTransaction:transaction];
-            default:
                 break;
+            }
+            default:{
+                
+                break;
+            }
         }
     }
 }
@@ -530,7 +567,7 @@ NSArray *arrProductId;
         
         // Display an error here.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Purchase Unsuccessful"
-                                                        message:[NSString stringWithFormat:@"Your purchase failed. reason:%@",[transaction.error description]]
+                                                        message:[NSString stringWithFormat:@"購入処理が失敗しました。Your purchase failed. reason:%@",[transaction.error description]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
