@@ -159,32 +159,32 @@ AttrClass *attr;
         /*
          *effect looks like fire flower
          */
-//        ViewFireWorks *viewFire = [[ViewFireWorks alloc]
-//                                   initWithFrame:CGRectMake(0, 0, 20, 20)];
-//        [self addSubview: viewFire];
+        ViewFireWorks *viewFire = [[ViewFireWorks alloc]
+                                   initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [self addSubview: viewFire];
         
         
         /*
          *kira kira
          */
-//        for(int i = 0; i < 10;i++){
-//            viewKiraParticle = [[KiraParticleView alloc]
-//                                initWithFrame:CGRectMake(i * 30, tvTitle.frame.origin.y + tvTitle.frame.size.height/2,
-//                                                         50, 50)
-//                                particleType:ParticleTypeMoving];
-//            [self addSubview:viewKiraParticle];
-//        }
-//        
-//        //whole-frame-effect:kirakira=3x4interval
-//        for(int i = 0; i < 3;i++){//width
-//            for(int j = 0 ; j < 4 ; j++){//height
-//                viewKiraParticle = [[KiraParticleView alloc]
-//                                    initWithFrame:CGRectMake((i * 100) % (int)self.bounds.size.width,
-//                                                             (j * 120) % (int)self.bounds.size.height, 50, 50)
-//                                    particleType:ParticleTypeKilled];
-//                [self addSubview:viewKiraParticle];
-//            }
-//        }
+        for(int i = 0; i < 10;i++){
+            viewKiraParticle = [[KiraParticleView alloc]
+                                initWithFrame:CGRectMake(i * 30, tvTitle.frame.origin.y + tvTitle.frame.size.height/2,
+                                                         50, 50)
+                                particleType:ParticleTypeMoving];
+            [self addSubview:viewKiraParticle];
+        }
+        
+        //whole-frame-effect:kirakira=3x4interval
+        for(int i = 0; i < 3;i++){//width
+            for(int j = 0 ; j < 4 ; j++){//height
+                viewKiraParticle = [[KiraParticleView alloc]
+                                    initWithFrame:CGRectMake((i * 100) % (int)self.bounds.size.width,
+                                                             (j * 120) % (int)self.bounds.size.height, 50, 50)
+                                    particleType:ParticleTypeKilled];
+                [self addSubview:viewKiraParticle];
+            }
+        }
         
         
         
