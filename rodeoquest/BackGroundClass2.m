@@ -409,7 +409,7 @@ int imageMargin;
             
 //            [self animation1:-2*originalFrameSize];
             //微妙に呼び出し時間がかかって再起呼出しした後の表示場所が2の上端とズレるのでリアルタイムに2の場所を把握して逆算して表示
-            [self animation1:((CALayer *)[iv_background2.layer presentationLayer]).position.y - 2 * originalFrameSize-imageMargin];
+            [self animation1:((CALayer *)[iv_background2.layer presentationLayer]).position.y - 2 * originalFrameSize];//-imageMargin];//test
         }else{
             //ここには制御が移らない
 //            NSLog(@"強制終了");
@@ -456,7 +456,7 @@ int imageMargin;
             [iv_background2.layer removeAnimationForKey:@"position"];
             //recurrent構造にせずにrepeatCount=HUGE_VALにすれば無限ループ
 //            [self animation2:-2 * originalFrameSize];
-            [self animation2:((CALayer *)[iv_background1.layer presentationLayer]).position.y - 2 * originalFrameSize + imageMargin];
+            [self animation2:((CALayer *)[iv_background1.layer presentationLayer]).position.y - 2 * originalFrameSize];// + imageMargin];//test
         }
     }];
     

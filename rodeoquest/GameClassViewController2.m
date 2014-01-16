@@ -1634,13 +1634,15 @@ int sensitivity;
             [EnemyArray removeObjectAtIndex:i];
         }
     }
-    for(int i = 0; i < [ItemArray count]; i++){
-        if([[ItemArray objectAtIndex:i] getY] >= self.view.bounds.size.height ||
-           ![[ItemArray objectAtIndex:i] getIsAlive]){
-            //            NSLog(@"item %d remove , isAlive=%d", i, [[ItemArray objectAtIndex:i] getIsAlive]);
-            [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
-            [ItemArray removeObjectAtIndex:i];
-            NSLog(@"item%d is removed", i);
+    if([ItemArray count] > 30){//アニメーション中にアイテムが消えてしまう現象を回避するため(効力不明？)
+        for(int i = 0; i < [ItemArray count]; i++){
+            if([[ItemArray objectAtIndex:i] getY] >= self.view.bounds.size.height ||
+               ![[ItemArray objectAtIndex:i] getIsAlive]){
+                //            NSLog(@"item %d remove , isAlive=%d", i, [[ItemArray objectAtIndex:i] getIsAlive]);
+                [[[ItemArray objectAtIndex:i] getImageView] removeFromSuperview];
+                [ItemArray removeObjectAtIndex:i];
+                NSLog(@"item%d is removed", i);
+            }
         }
     }
 }

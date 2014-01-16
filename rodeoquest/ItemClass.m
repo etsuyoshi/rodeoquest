@@ -427,7 +427,7 @@ int numCell;
     
 //    NSLog(@"count=%d", lifetime_count);
     //動線上に新規キラキラ発生
-    if(lifetime_count % 50 ==0){//generate every count
+    if(lifetime_count % 20 ==0){//generate every count
 //    if(true){
 //        movingParticle = [[KiraParticleView alloc]initWithFrame:CGRectMake(x_loc, y_loc, 10, 10)
 //                                                   particleType:ParticleTypeMoving];
