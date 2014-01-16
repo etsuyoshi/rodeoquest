@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 endo.tuyo. All rights reserved.
 //
 
-#define ALLOWED_ERROR 100.0
+#define ALLOWED_ERROR 99999.9
 #import "LocationDataClass.h"
 
 @implementation LocationDataClass
@@ -61,10 +61,14 @@
     return self;
 }
 
-//最も近い場所を返す
+//最も近い場所のランドマーク名を返す
 -(NSString *)getNameNearestLocation:(CLLocation *)_location{
     int targetNo = [self getNearestLocationNo:_location];
-    return [arrName objectAtIndex:targetNo];
+    if(targetNo > -1){
+        return [arrName objectAtIndex:targetNo];
+    }else{
+        return nil;
+    }
 }
 
 //最も近いランドマークまでの距離(最初に-1を代入しておく：処理が完了しているかどうかを示す)
@@ -80,7 +84,8 @@
             if(_nearrestDist > _distance){
                 _nearrestDist = _distance;
                 _nearrestNo = i;
-                NSLog(@"距離が近いので採用 %d", i);
+                NSLog(@"現状最も距離が近い:name[%d]=%@, 距離=%fm",
+                      i,arrName[i], _distance);
             }
         }
     }

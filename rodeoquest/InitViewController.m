@@ -519,37 +519,83 @@ UIActivityIndicatorView *_indicator;
     [self.view bringSubviewToFront:label];
     //test:label-finish
     
+    //test:location
+    //高千穂32.71169	131.307787
+    //池袋35.729534	139.718055
+    bestEffortAtLocation = [[CLLocation alloc] initWithLatitude:35.72 longitude:139.71];
+    
     //既存の位置情報との照合を開始する
     LocationDataClass *locationData = [[LocationDataClass alloc]init];
     NSLog(@"最も近い場所は%@で誤差は%fメートル",
           [locationData getNameNearestLocation:bestEffortAtLocation],
           [locationData getDistanceNearest:bestEffortAtLocation]);
     
-    //誤差が許容範囲内なら処理続行
-    UIView *alertModeView = nil;
-    alertModeView =
-    [CreateComponentClass
-     createAlertView2:self.view.bounds
-     dialogRect:CGRectMake(10, 100, 290, 180)
-     title:@"ドラゴンの回復ポイントの近くにいます。"
-     message:@"xxxモードに変更しますか？"
-     onYes:^{
+    //最近接地が誤差の範囲内で取得できなかった場合
+    if([locationData getNameNearestLocation:bestEffortAtLocation] == nil){
+        NSLog(@"最近接地が誤差の範囲内で取得できませんでした");
+        [attr setValueToDevice:@"powerspot" strValue:@"0"];//初期値なので特に上書きは不要
+        
+        //今後聞かない設定にする
+        UIView *viewDontConfirmAnyMore = nil;
+        viewDontConfirmAnyMore =
+        [CreateComponentClass
+         createAlertView2:self.view.bounds
+         dialogRect:CGRectMake(10, 100, 290, 250)
+         title:@"ドラゴンの回復スポットが近くにありません。"
+         message:@"「はい」を押すと通常モードで開始します。「いいえ」を押すと再度GPS情報を取得します。"
+         onYes:^{
+             [viewDontConfirmAnyMore removeFromSuperview];
+             
+             //nsuserDefaultsを設定する
+             [attr setValueToDevice:@"powerspot" strValue:@"0"];
+             [self transitToMenu];
+             return;
+         }
+         onNo:^{
+             
+             [viewDontConfirmAnyMore removeFromSuperview];
+             
+             [self initSpeculateLocation];
+             return;
+         }];
+        
+        [self.view addSubview:viewDontConfirmAnyMore];
          
-         [alertModeView removeFromSuperview];
-         
-         //xxxモードへの移行：常に全回復？弾丸強度1.5倍
-         [attr setValueToDevice:@"powersport" strValue:@"1"];
-     }
-     onNo:^{
-         [alertModeView removeFromSuperview];
-         
-         //xxxモードの解除
-         [attr setValueToDevice:@"powerspot" strValue:@"0"];
-         
-     }];
-    [self.view addSubview:alertModeView];
+        
+    }else{//最近接地が誤差の範囲内で取得できた場合
+        //誤差が許容範囲内なら処理続行
+        NSLog(@"誤差が許容範囲内なのでダイアログ表示");
+        UIView *alertModeView = nil;
+        alertModeView =
+        [CreateComponentClass
+         createAlertView2:self.view.bounds
+         dialogRect:CGRectMake(10, 100, 290, 250)
+         title:@"ドラゴンの回復ポイントの近くにいます。"
+         message:[NSString stringWithFormat:@"最近接地：%@, 距離:%f\nドラゴン全力モードで開始しますか？",
+                  [locationData getNameNearestLocation:bestEffortAtLocation],
+                  [locationData getDistanceNearest:bestEffortAtLocation]]
+         onYes:^{
+             
+             [alertModeView removeFromSuperview];
+             
+             //xxxモードへの移行：常に全回復？弾丸強度1.5倍
+             [attr setValueToDevice:@"powersport" strValue:@"1"];
+             [self transitToMenu];
+             return;
+         }
+         onNo:^{
+             [alertModeView removeFromSuperview];
+             
+             //xxxモードの解除
+             [attr setValueToDevice:@"powerspot" strValue:@"0"];
+             [self transitToMenu];
+             return;
+         }];
+        [self.view addSubview:alertModeView];
+    }
     
-    [self transitToMenu];
+    
+    
     
 }
 
