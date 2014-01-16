@@ -71,7 +71,7 @@ UIActivityIndicatorView *_indicator;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    //DBにアクセス出来たかどうか：sendRequestToServer内で認証or新規登録出来ればYESに設定
     isSuccessAccess = false;
     
     attr = [[AttrClass alloc]init];
@@ -522,7 +522,7 @@ UIActivityIndicatorView *_indicator;
     //test:location
     //高千穂32.71169	131.307787
     //池袋35.729534	139.718055
-//    bestEffortAtLocation = [[CLLocation alloc] initWithLatitude:35.72 longitude:139.71];
+//    bestEffortAtLocation = [[CLLocation alloc] initWithLatitude:35.82 longitude:139.71];
     
     //既存の位置情報との照合を開始する
     LocationDataClass *locationData = [[LocationDataClass alloc]init];
@@ -563,35 +563,52 @@ UIActivityIndicatorView *_indicator;
          
         
     }else{//最近接地が誤差の範囲内で取得できた場合
-        //誤差が許容範囲内なら処理続行
-        NSLog(@"誤差が許容範囲内なのでダイアログ表示");
-        UIView *alertModeView = nil;
-        alertModeView =
-        [CreateComponentClass
-         createAlertView2:self.view.bounds
-         dialogRect:CGRectMake(10, 100, 315, 280)
-         title:@"回復ポイント周辺にいます。"
-         message:[NSString stringWithFormat:@"最近接地:%@\n距離:%.2fメートル\nドラゴン全力モードで開始しますか？",
-                  [locationData getNameNearestLocation:bestEffortAtLocation],
-                  [locationData getDistanceNearest:bestEffortAtLocation]]
-         onYes:^{
-             
-             [alertModeView removeFromSuperview];
-             
-             //xxxモードへの移行：常に全回復？弾丸強度1.5倍
-             [attr setValueToDevice:@"powersport" strValue:@"1"];
-             [self transitToMenu];
-             return;
-         }
-         onNo:^{
-             [alertModeView removeFromSuperview];
-             
-             //xxxモードの解除
-             [attr setValueToDevice:@"powerspot" strValue:@"0"];
-             [self transitToMenu];
-             return;
-         }];
-        [self.view addSubview:alertModeView];
+        if([locationData getDistanceNearest:bestEffortAtLocation] > 0){
+            if([locationData getDistanceNearest:bestEffortAtLocation] < 500){
+                
+                //誤差が許容範囲内なら処理続行
+                NSLog(@"誤差が許容範囲内なのでダイアログ表示");
+                UIView *alertModeView = nil;
+                alertModeView =
+                [CreateComponentClass
+                 createAlertView2:self.view.bounds
+                 dialogRect:CGRectMake(10, 100, 315, 280)
+                 title:@"回復ポイント周辺にいます。"
+                 message:[NSString stringWithFormat:@"最近接地:%@\n距離:%.2fメートル\nドラゴン全力モードで開始しますか？",
+                          [locationData getNameNearestLocation:bestEffortAtLocation],
+                          [locationData getDistanceNearest:bestEffortAtLocation]]
+                 onYes:^{
+                     
+                     [alertModeView removeFromSuperview];
+                     
+                     //xxxモードへの移行：常に全回復？弾丸強度1.5倍
+                     [attr setValueToDevice:@"powersport" strValue:@"1"];
+                     [self transitToMenu];
+                     return;
+                 }
+                 onNo:^{
+                     [alertModeView removeFromSuperview];
+                     
+                     //xxxモードの解除
+                     [attr setValueToDevice:@"powerspot" strValue:@"0"];
+                     [self transitToMenu];
+                     return;
+                 }];
+                [self.view addSubview:alertModeView];
+            }//if([locationData getDistanceNearest:bestEffortAtLocation] < 500){
+            else{//距離が遠い時
+                //case:外国、orどこかのランドマークから99999.9m以下だが500m以上離れている時
+                //action:移動すればドラゴンが回復します、という指示を与える？
+                [self transitToMenu];
+                
+            }
+        }//if([locationData getDistanceNearest:bestEffortAtLocation] > 0){
+        else{//距離がマイナス１を返した時：LocationDataClass内で99999.9m以下の距離でランドマークを取得できなかった場合
+            //case:外国、orどのランドマークからももの凄く遠いところ
+            //そのまま続行
+            [self transitToMenu];
+            
+        }
     }
 }
 
