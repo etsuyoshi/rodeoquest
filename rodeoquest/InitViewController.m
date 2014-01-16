@@ -512,7 +512,7 @@ UIActivityIndicatorView *_indicator;
     label.center =
     CGPointMake(self.view.bounds.size.width/2,
                 self.view.bounds.size.height-30);
-    label.text = [NSString stringWithFormat:@"ido=%f,keido=%f",
+    label.text = [NSString stringWithFormat:@"現在位置=(緯度%.3f,経度%.3f)",
                   latitude, longitude];
     label.textColor = [UIColor blackColor];
     [self.view addSubview:label];
@@ -522,7 +522,7 @@ UIActivityIndicatorView *_indicator;
     //test:location
     //高千穂32.71169	131.307787
     //池袋35.729534	139.718055
-    bestEffortAtLocation = [[CLLocation alloc] initWithLatitude:35.72 longitude:139.71];
+//    bestEffortAtLocation = [[CLLocation alloc] initWithLatitude:35.72 longitude:139.71];
     
     //既存の位置情報との照合を開始する
     LocationDataClass *locationData = [[LocationDataClass alloc]init];
@@ -536,15 +536,15 @@ UIActivityIndicatorView *_indicator;
         [attr setValueToDevice:@"powerspot" strValue:@"0"];//初期値なので特に上書きは不要
         
         //今後聞かない設定にする
-        UIView *viewDontConfirmAnyMore = nil;
-        viewDontConfirmAnyMore =
+        UIView *viewConfirmNoMode = nil;
+        viewConfirmNoMode =
         [CreateComponentClass
          createAlertView2:self.view.bounds
          dialogRect:CGRectMake(10, 100, 290, 250)
          title:@"ドラゴンの回復スポットが近くにありません。"
          message:@"「はい」を押すと通常モードで開始します。「いいえ」を押すと再度GPS情報を取得します。"
          onYes:^{
-             [viewDontConfirmAnyMore removeFromSuperview];
+             [viewConfirmNoMode removeFromSuperview];
              
              //nsuserDefaultsを設定する
              [attr setValueToDevice:@"powerspot" strValue:@"0"];
@@ -553,13 +553,13 @@ UIActivityIndicatorView *_indicator;
          }
          onNo:^{
              
-             [viewDontConfirmAnyMore removeFromSuperview];
+             [viewConfirmNoMode removeFromSuperview];
              
              [self initSpeculateLocation];
              return;
          }];
         
-        [self.view addSubview:viewDontConfirmAnyMore];
+        [self.view addSubview:viewConfirmNoMode];
          
         
     }else{//最近接地が誤差の範囲内で取得できた場合
@@ -569,9 +569,9 @@ UIActivityIndicatorView *_indicator;
         alertModeView =
         [CreateComponentClass
          createAlertView2:self.view.bounds
-         dialogRect:CGRectMake(10, 100, 290, 250)
-         title:@"ドラゴンの回復ポイントの近くにいます。"
-         message:[NSString stringWithFormat:@"最近接地：%@, 距離:%f\nドラゴン全力モードで開始しますか？",
+         dialogRect:CGRectMake(10, 100, 315, 280)
+         title:@"回復ポイント周辺にいます。"
+         message:[NSString stringWithFormat:@"最近接地:%@\n距離:%.2fメートル\nドラゴン全力モードで開始しますか？",
                   [locationData getNameNearestLocation:bestEffortAtLocation],
                   [locationData getDistanceNearest:bestEffortAtLocation]]
          onYes:^{
@@ -593,10 +593,6 @@ UIActivityIndicatorView *_indicator;
          }];
         [self.view addSubview:alertModeView];
     }
-    
-    
-    
-    
 }
 
 @end
