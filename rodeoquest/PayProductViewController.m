@@ -407,10 +407,12 @@ NSArray *arrProductId;
 
 - (void)applicationDidEnterBackground
 {
+    //二重課金を回避
     [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
 }
 - (void)applicationWillEnterForeground
 {
+    //二重課金を回避
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
 }
 
@@ -567,7 +569,9 @@ NSArray *arrProductId;
         
         // Display an error here.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Purchase Unsuccessful"
-                                                        message:[NSString stringWithFormat:@"購入処理が失敗しました。Your purchase failed. reason:%@",[transaction.error description]]
+                                                        message:[NSString stringWithFormat:
+                                                                 @"購入処理が失敗しました。Your purchase failed. reason:%@",
+                                                                 [transaction.error description]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];

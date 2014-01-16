@@ -24,7 +24,7 @@ NSString *strImgCurrency;
 UIView *cashView;
 NSString *strSmallIcon;
 NSString *nameCurrency;
-NSString *idCurrency;
+NSString *idCurrency;//消費対価：@"gold" or @"ruby"
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;

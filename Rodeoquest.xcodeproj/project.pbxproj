@@ -1705,24 +1705,24 @@
 		34F3007118218C290082DCBC /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				3467B72017FD5980004EEE94 /* PowerGaugeClass.h */,
-				3467B72117FD5980004EEE94 /* PowerGaugeClass.m */,
 				3458DB231827C3E2003F1672 /* BackGroundClass.h */,
 				3458DB241827C3E2003F1672 /* BackGroundClass.m */,
-				3411FB8217FEE301001D1491 /* MyMachineClass.h */,
-				3411FB8317FEE301001D1491 /* MyMachineClass.m */,
+				342231A01845EDAF00055ADF /* BackGroundClass2.h */,
+				342231A11845EDAF00055ADF /* BackGroundClass2.m */,
+				342401FF17F6E8A100E06902 /* BeamClass.h */,
+				3424020017F6E8A100E06902 /* BeamClass.m */,
 				3400396D17F408070093E07E /* EnemyClass.h */,
 				3400396E17F408070093E07E /* EnemyClass.m */,
 				34FA999C17FBCEEF00317D83 /* ItemClass.h */,
 				34FA999D17FBCEEF00317D83 /* ItemClass.m */,
-				342401FF17F6E8A100E06902 /* BeamClass.h */,
-				3424020017F6E8A100E06902 /* BeamClass.m */,
-				340C3B8218549AB30017BBBE /* SpecialBeamClass.h */,
-				340C3B8318549AB30017BBBE /* SpecialBeamClass.m */,
+				3411FB8217FEE301001D1491 /* MyMachineClass.h */,
+				3411FB8317FEE301001D1491 /* MyMachineClass.m */,
 				34A8898518542B55005667B4 /* OrdinaryBeamClass.h */,
 				34A8898618542B55005667B4 /* OrdinaryBeamClass.m */,
-				342231A01845EDAF00055ADF /* BackGroundClass2.h */,
-				342231A11845EDAF00055ADF /* BackGroundClass2.m */,
+				3467B72017FD5980004EEE94 /* PowerGaugeClass.h */,
+				3467B72117FD5980004EEE94 /* PowerGaugeClass.m */,
+				340C3B8218549AB30017BBBE /* SpecialBeamClass.h */,
+				340C3B8318549AB30017BBBE /* SpecialBeamClass.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";

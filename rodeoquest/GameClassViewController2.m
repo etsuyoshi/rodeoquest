@@ -2529,6 +2529,12 @@ int sensitivity;
     //BGM stop
     [bgmClass stop];
     
+    //全てのメモリを解放する
+    EnemyArray = nil;
+    ItemArray = nil;
+    MyMachine = nil;
+    BackGround = nil;
+    
     //ウィンドウ閉じる
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
     //    [BackGround pauseAnimations];

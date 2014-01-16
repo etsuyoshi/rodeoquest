@@ -27,7 +27,8 @@ int imageMargin;
     gSecs = secs;
     nowSpeed = 1.0f;
     self = [super init];
-    imageMargin = 5;
+    imageMargin = 15;//new
+//    imageName = 5;//origin
     originalFrameSize = height;//フレーム縦サイズ
     
     iv_background1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, width, 2*originalFrameSize+imageMargin)];
@@ -399,7 +400,7 @@ int imageMargin;
             [iv_background1.layer removeAnimationForKey:@"position"];
             //speedup
 //            [self setSpeed:nowSpeed+0.15f];
-            gSecs -= (gSecs > 1.5f)?0.01f:0;
+            gSecs -= (gSecs > 1.5f)?0.05f:0;
             //recurrent構造にせずにrepeatCount=HUGE_VALにすれば繰り返し実行できるが、最初の位置からの移動で場合分けが必要になる
             
 //            NSLog(@"recursive lay1=%f, lay2=%f",
@@ -408,7 +409,7 @@ int imageMargin;
             
 //            [self animation1:-2*originalFrameSize];
             //微妙に呼び出し時間がかかって再起呼出しした後の表示場所が2の上端とズレるのでリアルタイムに2の場所を把握して逆算して表示
-            [self animation1:((CALayer *)[iv_background2.layer presentationLayer]).position.y - 2 * originalFrameSize+imageMargin];
+            [self animation1:((CALayer *)[iv_background2.layer presentationLayer]).position.y - 2 * originalFrameSize-imageMargin];
         }else{
             //ここには制御が移らない
 //            NSLog(@"強制終了");
