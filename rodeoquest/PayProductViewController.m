@@ -573,12 +573,18 @@ NSArray *arrProductId;
 -(void)updateData{
     //arrProductIdはrubyX.X.Xに変更したいがitunes connect側で実行する必要がある
     arrProductId = [NSArray arrayWithObjects:
-                    @"coin1.1.1",
-                    @"coin2.1.1",
-                    @"coin3.1.1",
-                    @"coin4.1.1",
-                    @"coin5.1.1",
-                    @"coin6.1.1",
+                    @"ruby0.0.1",
+                    @"ruby0.0.2",
+                    @"ruby0.0.3",
+                    @"ruby0.0.4",
+                    @"ruby0.0.5",
+                    @"ruby0.0.6",
+//                    @"coin1.1.1",
+//                    @"coin2.1.1",
+//                    @"coin3.1.1",
+//                    @"coin4.1.1",
+//                    @"coin5.1.1",
+//                    @"coin6.1.1",
                     nil];
     arrAcquired = [NSArray arrayWithObjects:
                    @"16",//number of ruby when user buy this item

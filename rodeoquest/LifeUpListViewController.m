@@ -105,6 +105,8 @@ void (^actNoForRubyShort)(void) = ^(void) {
 //    myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
     
     nameCurrency = @"ルビー";
+    idCurrency = @"ruby";
+    
     
     //    lblRubyAmount;
     

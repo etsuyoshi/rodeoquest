@@ -24,6 +24,7 @@ NSString *strImgCurrency;
 UIView *cashView;
 NSString *strSmallIcon;
 NSString *nameCurrency;
+NSString *idCurrency;
 
 @interface ItemListViewController : UIViewController{
     BackGroundClass2 *background;

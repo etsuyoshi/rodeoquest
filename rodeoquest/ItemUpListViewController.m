@@ -119,6 +119,7 @@
     
     
     nameCurrency = @"ゼニー";
+    idCurrency = @"gold";
 }
 
 - (void)didReceiveMemoryWarning

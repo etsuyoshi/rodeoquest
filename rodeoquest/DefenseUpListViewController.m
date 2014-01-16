@@ -69,6 +69,7 @@
 	// Do any additional setup after loading the view.
     
     nameCurrency = @"ゼニー";
+    idCurrency = @"gold";
 }
 
 - (void)didReceiveMemoryWarning

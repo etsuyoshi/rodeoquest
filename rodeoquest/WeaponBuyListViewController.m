@@ -194,6 +194,7 @@ UIView *superViewForEquipWpn;
     
     
     nameCurrency = @"ゼニー";
+    idCurrency = @"gold";
     
     //閉じるボタンの色を赤に変更
     [closeBtn removeFromSuperview];//remove superclasses'closeBtn
@@ -243,6 +244,8 @@ UIView *superViewForEquipWpn;
         
         //text size adjustment need?
     }
+    
+    
     
 }
 

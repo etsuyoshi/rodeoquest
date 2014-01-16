@@ -169,6 +169,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
 	// Do any additional setup after loading the view.
     
     nameCurrency = @"ゼニー";
+    idCurrency = @"gold";
     
     // ステータスバーを非表示にする:plistでの処理はiOS7以降非推奨
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
@@ -411,6 +412,14 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //    NSLog(@"end animation at list view");
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    
+    //キャッシュビューに最新値を更新する
+    tvGoldAmount.text = [attr getValueFromDevice:idCurrency];
+}
+
 -(void)effectOnOff:(UIImageView *)_viewArg{
 //    _viewArg.alpha = 1.0f;
     [UIView animateWithDuration:MAX(1.0f,(float)(arc4random() % 20)/10.0f)//発火、消火の繰り返し:3秒から1秒
@@ -482,6 +491,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
     [self.view addSubview:viewWantBuy];
     
 }
+
+
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
     if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];

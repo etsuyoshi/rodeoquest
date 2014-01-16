@@ -2948,6 +2948,7 @@ int sensitivity;
         exitLabel.center =
         CGPointMake(self.view.bounds.size.width/2,
                     self.view.bounds.size.height-80);
+        exitLabel.textAlignment = NSTextAlignmentCenter;
         exitLabel.text = @"画面上をタップして終了して下さい";
         exitLabel.textColor = [UIColor whiteColor];
         exitLabel.backgroundColor = [UIColor clearColor];
