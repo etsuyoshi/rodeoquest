@@ -2501,7 +2501,7 @@ int sensitivity;
                     }
                     
                     //サーバーにデータ登録
-                    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:0.001f];
+                    [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:1.0f];
                     
                     
                     
@@ -2836,15 +2836,24 @@ int sensitivity;
           [dbac getValueFromDB:_id column:@"exp"]
           );
     
-    //無限ループを組んで値が更新されるまでhideActivityIndicatorをしない
-    for(int i = 0;;i++){
-        NSLog(@"gameCntFromDevice= %d, gameCntFromDB=%@", gameCnt, [dbac getValueFromDB:_id column:@"gamecnt"]);
-        if(gameCnt == [[dbac getValueFromDB:_id column:@"gamecnt"] intValue] ||
-           i > 10){//10回やってダメなら諦める:ネット回線が切れているか遅すぎるか
-            [self hideActivityIndicator];
-            break;
-        }
-    }
+    
+    //最後の処理＝終了処理
+//    //無限ループを組んで値が更新されるまでhideActivityIndicatorをしない
+//    for(int i = 0;;i++){
+//        NSLog(@"gameCntFromDevice= %d, gameCntFromDB=%@", gameCnt, [dbac getValueFromDB:_id column:@"gamecnt"]);
+//        if(gameCnt == [[dbac getValueFromDB:_id column:@"gamecnt"] intValue] ||
+//           i > 10){//10回やってダメなら諦める:ネット回線が切れているか遅すぎるか
+//            [self hideActivityIndicator];
+//            break;
+//        }
+//    }
+    
+    //xx秒後にhideActivityIndicatorを実行(その中でactivityIndを消去＆画面全体に(透明の)終了ボタンを貼付ける)
+    [NSTimer scheduledTimerWithTimeInterval:3.0f
+                                     target:self
+                                   selector:@selector(hideActivityIndicator)
+                                   userInfo:nil repeats:NO];
+    
     
     // インジケーター非表示(このメソッドを表示する際に表示済)
     //    [self hideActivityIndicator];//network通信終了後までhideしないようにするためには？
@@ -2908,28 +2917,55 @@ int sensitivity;
     [_loadingView removeFromSuperview];
     //    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
+//    //ダサい
+//    if(time_game > 0){
+//        //終了ボタンの配置
+//        
+//        int radius = 100;
+//        CGRect rectBtn =
+//        CGRectMake(self.view.bounds.size.width/2 - radius,
+//                   self.view.bounds.size.height - radius*2,
+//                   radius*2, radius*2);
+//        ClowdButtonWIthView *btnForExit =
+//        [[ClowdButtonWIthView alloc]
+//         initWithFrame:rectBtn
+//         target:self
+//         method:@"pushExit"];//center調整してはいけない(内部で引数にあるフレームを参照しているため)
+//        
+////        btnForExit.center =
+////        CGPointMake(self.view.bounds.size.width/2,
+////                    self.view.bounds.size.height - btnForExit.bounds.size.height);
+//        
+//        [self.view addSubview:btnForExit];
+//        [self.view bringSubviewToFront:btnForExit];
+//        
+//    }
+    
     if(time_game > 0){
-        //終了ボタンの配置
+        UILabel *exitLabel =
+        [[UILabel alloc]
+         initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width,50)];
+        exitLabel.center =
+        CGPointMake(self.view.bounds.size.width/2,
+                    self.view.bounds.size.height-80);
+        exitLabel.text = @"画面上をタップして終了して下さい";
+        exitLabel.textColor = [UIColor whiteColor];
+        exitLabel.backgroundColor = [UIColor clearColor];
+        exitLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold"
+                                         size:15];
         
-        int radius = 100;
-        CGRect rectBtn =
-        CGRectMake(self.view.bounds.size.width/2 - radius,
-                   self.view.bounds.size.height - radius*2,
-                   radius*2, radius*2);
-        ClowdButtonWIthView *btnForExit =
-        [[ClowdButtonWIthView alloc]
-         initWithFrame:rectBtn
-         target:self
-         method:@"pushExit"];//center調整してはいけない(内部で引数にあるフレームを参照しているため)
+        [self.view addSubview:exitLabel];
         
-//        btnForExit.center =
-//        CGPointMake(self.view.bounds.size.width/2,
-//                    self.view.bounds.size.height - btnForExit.bounds.size.height);
-        
-        [self.view addSubview:btnForExit];
-        [self.view bringSubviewToFront:btnForExit];
-        
+        //画面全体に透明の終了ボタンを貼付ける
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        btn.frame = self.view.bounds;
+        btn.backgroundColor = [UIColor clearColor];
+        [btn addTarget:self
+                action:@selector(pushExit)
+      forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btn];
     }
+    
 }
 
 

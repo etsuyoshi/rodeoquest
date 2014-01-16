@@ -329,6 +329,12 @@ UIView *viewForDialog;
     //背景描画
     [self setBackGroundInit];
     
+    
+    //上段数字部分の更新
+    
+    //数字の大きさ
+    int sizeNumeric = 16;
+    
     //レベル表示部分:枠
     UIView *v_level =
     [CreateComponentClass createView:CGRectMake(x_frame_center - MARGIN_UPPER_COMPONENT - W_MOST_UPPER_COMPONENT*3/2,
@@ -361,16 +367,17 @@ UIView *viewForDialog;
 //    NSString *strLevel = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"level"] intValue]];
     NSString *strLevel = [attr getValueFromDevice:@"level"];
     tvLevelAmount = [CreateComponentClass createTextView:rectLevelAmount
-                                                                text:strLevel
+                                                                text:[NSString stringWithFormat:@"\n%@",strLevel]
                                                                 font:@"AmericanTypewriter-Bold"
-                                                                size:10
+                                                                size:sizeNumeric
                                                            textColor:[UIColor whiteColor]
                                                            backColor:[UIColor clearColor]
                                                           isEditable:NO];
     tvLevelAmount.textAlignment = NSTextAlignmentRight;
+    tvLevelAmount.center =
+    CGPointMake(v_level.center.x, v_level.center.y + v_level.bounds.size.height/2);
+//    tvLevelAmount.backgroundColor = [UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.3f];
     [self.view addSubview:tvLevelAmount];
-    
-    
     
     
     
@@ -411,10 +418,13 @@ UIView *viewForDialog;
     tvScoreAmount = [CreateComponentClass createTextView:rectScoreAmount
                                                                 text:strExp
                                                                 font:@"AmericanTypewriter-Bold"
-                                                                size:10
+                                                                size:sizeNumeric
                                                            textColor:[UIColor whiteColor]
                                                            backColor:[UIColor clearColor]
                                                           isEditable:NO];
+    tvScoreAmount.textAlignment = NSTextAlignmentRight;
+    tvScoreAmount.center = CGPointMake(v_tokuten.center.x,
+                                       v_tokuten.center.y + v_tokuten.bounds.size.height/2);
     [self.view addSubview:tvScoreAmount];
     
     
@@ -426,19 +436,21 @@ UIView *viewForDialog;
                                                 H_MOST_UPPER_COMPONENT)];
     [self.view addSubview:v_gold];
     //ゴールド表示部分:ラベル
-    CGRect rectGoldLabel2 = CGRectMake(x_frame_center + MARGIN_UPPER_COMPONENT + W_MOST_UPPER_COMPONENT/2 + 7,    //影を先に付ける
-                                       Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 46,
-                                       W_MOST_UPPER_COMPONENT,
-                                       H_MOST_UPPER_COMPONENT);
-    UITextView *tvGoldLabel2 = [CreateComponentClass createTextView:rectGoldLabel2
-                                                               text:@"Zeny."
-                                                               font:@"AmericanTypewriter-Bold"
-                                                               size:15
-                                                          textColor:[UIColor blackColor]
-                                                          backColor:[UIColor clearColor]
-                                                         isEditable:NO];
-    [self.view addSubview:tvGoldLabel2];
+    //ラベル影
+//    CGRect rectGoldLabel2 = CGRectMake(x_frame_center + MARGIN_UPPER_COMPONENT + W_MOST_UPPER_COMPONENT/2 + 7,    //影を先に付ける
+//                                       Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 46,
+//                                       W_MOST_UPPER_COMPONENT,
+//                                       H_MOST_UPPER_COMPONENT);
+//    UITextView *tvGoldLabel2 = [CreateComponentClass createTextView:rectGoldLabel2
+//                                                               text:@"Zeny."
+//                                                               font:@"AmericanTypewriter-Bold"
+//                                                               size:15
+//                                                          textColor:[UIColor blackColor]
+//                                                          backColor:[UIColor clearColor]
+//                                                         isEditable:NO];
+//    [self.view addSubview:tvGoldLabel2];
     
+    //ラベル本文
     CGRect rectGoldLabel = CGRectMake(x_frame_center + MARGIN_UPPER_COMPONENT + W_MOST_UPPER_COMPONENT/2 + 3,
                                       Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 50,
                                       W_MOST_UPPER_COMPONENT,
@@ -460,14 +472,18 @@ UIView *viewForDialog;
                                        Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT - 30,
                                        W_MOST_UPPER_COMPONENT,
                                        H_MOST_UPPER_COMPONENT);
-    NSString *strGold = [NSString stringWithFormat:@"%09d", [[attr getValueFromDevice:@"gold"] intValue]];
+    NSString *strGold = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"gold"] intValue]];
     tvGoldAmount_global = [CreateComponentClass createTextView:rectGoldAmount
                                                           text:strGold
                                                           font:@"AmericanTypewriter-Bold"
-                                                          size:10
+                                                          size:sizeNumeric
                                                      textColor:[UIColor whiteColor]
                                                      backColor:[UIColor clearColor]
                                                     isEditable:NO];
+    tvGoldAmount_global.textAlignment = NSTextAlignmentRight;
+    tvGoldAmount_global.center =
+    CGPointMake(v_gold.center.x,
+                v_gold.center.y + v_gold.bounds.size.height/2);
     [self.view addSubview:tvGoldAmount_global];
     
     

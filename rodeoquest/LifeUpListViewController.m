@@ -118,6 +118,14 @@ void (^actNoForRubyShort)(void) = ^(void) {
     [cashView addSubview:myLblRubyAmount];//cashView is defined in superclass
 }
 
+//rubyの更新
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    myLblRubyAmount.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"ruby"] intValue]];
+    
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
