@@ -257,7 +257,6 @@ int sensitivity;
     
     //いつでもデータを取り出せるようにグローバルに保存しておく：最初の一度だけにする
     attr = [[AttrClass alloc]init];//実際に使うのは最後のデータ表示部分@sendRequest...
-    
     if([[attr getValueFromDevice:@"powerspot"] isEqualToString:@"0"]){
         multipleBulletPower = 1;
     }else{//近さに応じて３倍、４倍にする？=>将来的仕様
@@ -3322,6 +3321,7 @@ int sensitivity;
     
 -(BOOL)giveDamageToEnemy:(int)i damage:(int)_damage x:(int)_xBeam y:(int)_yBeam beamType:(int)beamType{
     //ビームが衝突した位置にdamageParticle表示(damageParticle生成のため位置情報を渡す)
+    NSLog(@"multiple = %d", multipleBulletPower);
     [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage * multipleBulletPower location:CGPointMake(_xBeam, _yBeam) beamType:(int)beamType];
     
     

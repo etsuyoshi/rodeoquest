@@ -582,7 +582,8 @@ UIActivityIndicatorView *_indicator;
                      [alertModeView removeFromSuperview];
                      
                      //xxxモードへの移行：常に全回復？弾丸強度1.5倍
-                     [attr setValueToDevice:@"powersport" strValue:@"1"];
+                     [attr setValueToDevice:@"powerspot" strValue:@"1"];
+                     NSLog(@"powerspot process executed!");
                      [self transitToMenu];
                      return;
                  }
