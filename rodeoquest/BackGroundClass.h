@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, WorldType) {
     UIImageView *iv_background1;
     UIImageView *iv_background2;
 }
-@property(nonatomic) WorldType wType;
+@property WorldType wType;
 
 -(id)init;
 -(id)init:(WorldType)_type width:(int)width height:(int)height;

@@ -2545,6 +2545,7 @@ int sensitivity;
     MyMachine = nil;
     BackGround = nil;
     
+    
     //ウィンドウ閉じる
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
     //    [BackGround pauseAnimations];

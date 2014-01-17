@@ -90,10 +90,14 @@ UITextView* tvSubject;
 UITextView* tvDemand;
 NSString *strSubject = @"個人が特定されることはありません。お名前は匿名でも結構です。";
 NSString *strDemand = @"アプリの品質向上のためにこちらにご要望をお書き下さい。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nご協力ありがとうございます。";
-
-
 //dialog
 UIView *viewForDialog;
+
+
+//ゲーム開始可能フラグ：bt_startボタンを連打できないように(他の代替案としてはbt_startボタンを押したらgotoGameメソッド実行までタッチ不可能な透明板を張る)
+BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとlifeGameが何度も減ってしまう)
+
+
 
 
 //CreateComponentClass *createComponentClass;
@@ -579,7 +583,7 @@ UIView *viewForDialog;
     [CreateComponentClass
      createShadowView:CGRectMake(0, 0, W_BT_START/3, H_BT_START/3)//3分の1のサイズ
      viewColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.95f]
-     borderColor:[UIColor clearColor]
+     borderColor:[UIColor whiteColor]
      text:@"" textSize:13];
     [bt_start addSubview:shadowView];
     
@@ -718,6 +722,8 @@ UIView *viewForDialog;
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
+    
+    isStartable = true;//ゲームスタート可能にする
     
     //timer drive
     if(tm != nil){
@@ -890,11 +896,7 @@ UIView *viewForDialog;
 //    switch((ButtonMenuImageType)num.integerValue){
 //        case ButtonMenuImageTypeStart:{
     
-            NSLog(@"start games");
-            bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-            if(bgmClass.getIsPlaying){
-                [bgmClass stop];
-            }
+    
             
             
 #ifdef TEST
@@ -908,36 +910,52 @@ UIView *viewForDialog;
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
 //            lifeGame = 6;//test:life
             if(lifeGame > 0){
-            
+                
+                
+                
                 lifeGame--;
-                [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
                 
-                //lifeGameの表示
-                lbl_gameLife.text =
-                [NSString stringWithFormat:@"%d ／ %d",
-                 lifeGame, maxLifeGame];
-                
-                //日時を記憶
-                [attr setValueToDevice:@"ymdMenuLastOpen"
-                              strValue:[self getYYYYMMDD]];
-                [attr setValueToDevice:@"hmsMenuLastOpen"
-                              strValue:[self getHHMMSS]];
-                
-                NSLog(@"before game : %@", [attr getValueFromDevice:@"hmsMenuLastOpen"]);
-                //現在カウンターを記憶
-                [attr setValueToDevice:@"secondForLife"
-                              strValue:[NSString stringWithFormat:@"%d", secondForLife]];
-                
-                [tm invalidate];
-                tm = nil;
-//                [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
-                //遅らせる場合：lifeGameが減少したlbl_gameLifeを示す。
-                [NSTimer
-                 scheduledTimerWithTimeInterval:0.5f
-                 target:self
-                 selector:@selector(gotoGame) userInfo:nil repeats:NO];
-                [backGround exitAnimations];
-                //button resize
+                if(isStartable){
+                    
+                    isStartable = false;//続けてボタンを押せないように(続けて押せてしまうとlifeGameが何度も減ってしまう)
+                    NSLog(@"start games");
+                    bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                    if(bgmClass.getIsPlaying){
+                        [bgmClass stop];
+                    }
+                    
+                    
+                    [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
+                    
+                    //lifeGameの表示
+                    lbl_gameLife.text =
+                    [NSString stringWithFormat:@"%d ／ %d",
+                     lifeGame, maxLifeGame];
+                    
+                    //日時を記憶
+                    [attr setValueToDevice:@"ymdMenuLastOpen"
+                                  strValue:[self getYYYYMMDD]];
+                    [attr setValueToDevice:@"hmsMenuLastOpen"
+                                  strValue:[self getHHMMSS]];
+                    
+                    NSLog(@"before game : %@", [attr getValueFromDevice:@"hmsMenuLastOpen"]);
+                    //現在カウンターを記憶
+                    [attr setValueToDevice:@"secondForLife"
+                                  strValue:[NSString stringWithFormat:@"%d", secondForLife]];
+                    
+                    [tm invalidate];
+                    tm = nil;
+                    //                [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
+                    //遅らせる場合：lifeGameが減少したlbl_gameLifeを示す。
+                    [NSTimer
+                     scheduledTimerWithTimeInterval:0.5f
+                     target:self
+                     selector:@selector(gotoGame) userInfo:nil repeats:NO];
+                    [backGround exitAnimations];
+                    //button resize
+                }else{//誤操作等により続けて連打してしまった時は何もしない
+                    //do nothing
+                }
                 
             }else{
 //                NSLog(@"%d" , lifeGame);

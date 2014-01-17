@@ -12,7 +12,7 @@
 #import "DBAccessClass.h"
 #import "GADBannerView.h"
 #import "BGMClass.h"
-#import "GameClassViewController.h"
+//#import "GameClassViewController.h"
 #import "GameClassViewController2.h"
 #import "BackGroundClass2.h"
 #import "WeaponBuyListViewController.h"
