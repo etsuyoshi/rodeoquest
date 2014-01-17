@@ -767,9 +767,6 @@ int unique_id;
     
     if(hitPoint > 0){
         //
-        
-        
-        
         int numOfParticle = 3;
 //        NSMutableArray *arrDamageParticle = [[NSMutableArray alloc]init];
         for(int i = 0;i < numOfParticle ; i++){
@@ -779,12 +776,19 @@ int unique_id;
                                        arc4random() % (int)iv.bounds.size.height,
                                        iv.bounds.size.width/2, iv.bounds.size.width/2)];
             [damageParticle setIsEmitting:YES];
-            [damageParticle setColor:(DamageParticleType)(arc4random()%10)];
+            [damageParticle setColor:DamageParticleTypeOrange];//almost case
+            if(arc4random() % 3 == 0){
+                [damageParticle setColor:DamageParticleTypeWhite];
+            }else if(arc4random() % 2 == 0){
+                [damageParticle setColor:DamageParticleTypeYellow];
+            }else if(arc4random() % 10 == 0){
+                [damageParticle setColor:(DamageParticleType)(arc4random()%10)];
+            }
             [iv addSubview:damageParticle];
             
             
             [UIView
-             animateWithDuration:0.3f
+             animateWithDuration:0.4f
              animations:^{
                  [damageParticle setAlpha:0.0f];
              }
@@ -792,39 +796,10 @@ int unique_id;
                  if(finished){
                      [damageParticle setIsEmitting:NO];
                      [damageParticle removeFromSuperview];
+                     [self setDamageBySpecialWeapon];
                  }
              }];
         }
-        
-//                
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        ExplodeParticleView *viewFireEffect;
-//        viewFireEffect =
-//        (ExplodeParticleView *)[[ExplodeParticleView alloc]
-//                                initWithFrame:CGRectMake(iv.bounds.size.width/2,
-//                                                         iv.bounds.size.height/2,
-//                                                         iv.bounds.size.width,
-//                                                         iv.bounds.size.height)
-//                                type:ExplodeParticleTypeBlackFire];//black_fire
-//        [viewFireEffect setBirthRate:30];//particleの生成数が多くなりすぎて重なった部分が白くならないように。
-//        [viewFireEffect setEmitDirection:-M_PI_2];//(前に進むので)後ろ向きに放射
-//        [iv addSubview:viewFireEffect];
-//        
-//        
-//        [self setDamageBySpecialWeapon];
-//        //0.1秒後に消火
-//        [NSTimer scheduledTimerWithTimeInterval:0.2f
-//                                         target:viewFireEffect
-//                                       selector:@selector(setNoEmitting)
-//                                       userInfo:Nil repeats:NO];
-//        
-        
     }
 }
 
@@ -983,7 +958,12 @@ int unique_id;
                 break;
             }
             case BeamTypeSpace:{//メテオストライク
-                [self dispMeteoEffect];
+                [NSTimer
+                 scheduledTimerWithTimeInterval:0.5f
+                 target:self
+                 selector:@selector(dispMeteoEffect)
+                 userInfo:nil repeats:YES];
+                
                 break;
             }
             case BeamTypeWater:{//done->check:done

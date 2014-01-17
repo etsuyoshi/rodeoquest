@@ -71,6 +71,10 @@ int diameterMagnet;//マグネット引力有効範囲
 //Boolean isBigMode;//ビッグモード
 //int countBig;
 
+
+//パワースポットによる弾丸パワー倍率
+int multipleBulletPower;
+
 UIPanGestureRecognizer *panGesture;
 //UILongPressGestureRecognizer *longPress_frame;
 Boolean isTouched;
@@ -253,6 +257,12 @@ int sensitivity;
     
     //いつでもデータを取り出せるようにグローバルに保存しておく：最初の一度だけにする
     attr = [[AttrClass alloc]init];//実際に使うのは最後のデータ表示部分@sendRequest...
+    
+    if([[attr getValueFromDevice:@"powerspot"] isEqualToString:@"0"]){
+        multipleBulletPower = 1;
+    }else{//近さに応じて３倍、４倍にする？=>将来的仕様
+        multipleBulletPower = 2;//弾丸パワーを２倍に強化
+    }
     
     //bgmの有効化判定
     if([[attr getValueFromDevice:@"bgm"] isEqual:[NSNull null]] ||
@@ -804,6 +814,7 @@ int sensitivity;
             isGameMode = false;
             
             //            [self exitProcess];
+            //爆発を描画するために少し遅らせて実行
             [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(exitProcess) userInfo:nil repeats:NO];//低スピード再開
             [self showActivityIndicator];
             
@@ -1511,12 +1522,12 @@ int sensitivity;
                         
                         //dieと同時にremovefromSuperviewせずに集約する(画面外に出てもdieするため)
                         //dieメソッドはエフェクトを発動する特殊武器がある(発動する場合はBeamTypeを返す)
-                        int _beamType = [[MyMachine getBeam:j] die];//衝突したらビームは消去
+                        int _beamType = [[MyMachine getBeam:j] die];//衝突したらビームは消去＆型を取り出して(特殊武器の場合は)エフェクト表示の判別変数とする
 //                        [[MyMachine getBeam:j] die];//衝突したらビームは消去
                         
                         
                         //攻撃によって敵が死んだらYES:生きてればNO
-                        if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy beamType:_beamType]){
+                        if([self giveDamageToEnemy:i damage:[_beam getPower] x:_xEnemy y:_yEnemy beamType:_beamType]){//_beamType:エフェクト表示
 #ifdef log
                             NSLog(@"beam is hit to enemy%d which die", i);
 #endif
@@ -2050,7 +2061,6 @@ int sensitivity;
             //画面からは消去しなくても良いが、配列から削除してメモリ解放
             [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];
             [EnemyArray removeObjectAtIndex:i];
-            
         }
     }
     
@@ -2572,7 +2582,7 @@ int sensitivity;
                                                     message:@"再開するにはボタンを押して下さい"
                                                    delegate:self//デリゲートによりボタン反応はalertViewメソッドに委ねられる
                                           cancelButtonTitle:@"ゲームに戻る"
-                                          otherButtonTitles:@"quit"
+                                          otherButtonTitles:@"止める"
                           ,nil];
     [alert show];
     
@@ -2589,7 +2599,13 @@ int sensitivity;
         case 1:
             //２番目のボタンが押されたときの処理を記述する
             NSLog(@"2");
-            //exitprocessなし(情報記録なし)で終了した方が良いかも。
+            
+            [self showActivityIndicator];
+            
+            //startDateからこの時点までの時間をゲーム時間として定義(attr:time_maxと比較、必要に応じて格納)
+            time_game = (int)[[NSDate date] timeIntervalSinceDate:startDate];//時間を計測して格納する
+            
+            //exitprocessなし(情報記録なし)で終了した方が良いかも？
             [self exitProcess];
             break;
     }
@@ -3306,7 +3322,7 @@ int sensitivity;
     
 -(BOOL)giveDamageToEnemy:(int)i damage:(int)_damage x:(int)_xBeam y:(int)_yBeam beamType:(int)beamType{
     //ビームが衝突した位置にdamageParticle表示(damageParticle生成のため位置情報を渡す)
-    [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage location:CGPointMake(_xBeam, _yBeam) beamType:(int)beamType];
+    [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage * multipleBulletPower location:CGPointMake(_xBeam, _yBeam) beamType:(int)beamType];
     
     
     //エフェクトについて
