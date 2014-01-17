@@ -27,12 +27,12 @@ int imageMargin;
     gSecs = secs;
     nowSpeed = 1.0f;
     self = [super init];
-    imageMargin = 15;//new
+    imageMargin = 50;//new
 //    imageName = 5;//origin
     originalFrameSize = height;//フレーム縦サイズ
     
     iv_background1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, width, 2*originalFrameSize+imageMargin)];
-    iv_background2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, -2*originalFrameSize,
+    iv_background2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, -2*originalFrameSize - imageMargin,//imageMarginだけ上にずらした@20140117
                                                                   width, 2*originalFrameSize+imageMargin)];
     iv_oscillate1 = [[UIImageView alloc]initWithFrame:iv_background1.frame];
     iv_oscillate2 = [[UIImageView alloc]initWithFrame:iv_background2.frame];
@@ -52,13 +52,13 @@ int imageMargin;
 
     UIImage *image1 = nil;
     UIImage *image2 = nil;
-    //#ifndef TEST
+    
+    
     switch(wType){
         case WorldTypeUniverse1:{
             //宇宙空間の描画方法
             image1 = [UIImage imageNamed:@"cosmos_star4_repair.png"];
             image2 = [UIImage imageNamed:@"cosmos_star4_repair.png"];
-//            image2 = [UIImage imageNamed:@"back_nangoku.png"];//test:image
             [iv_background1 setBackgroundColor:[UIColor blackColor]];
             break;
         }
@@ -66,7 +66,6 @@ int imageMargin;
             //宇宙バージョン
             image1 = [UIImage imageNamed:@"back_univ.png"];
             image2 = [UIImage imageNamed:@"back_univ2.png"];//attention!
-//            image2 = [UIImage imageNamed:@"back_nangoku.png"];//test:image
             [iv_background1 setBackgroundColor:[UIColor blackColor]];
             
             break;
@@ -140,7 +139,7 @@ int imageMargin;
     subIv_background22.image = image2;//[UIImage imageNamed:@"back_forest2.png"];
     //test:image
 //    subIv_background11.image = [UIImage imageNamed:@"back_nangoku.png"];//image1;
-//    subIv_background12.image = [UIImage imageNamed:@"back_snow.png"];
+//    subIv_background12.image = [UIImage imageNamed:@"back_snow_continue.png"];
 //    subIv_background21.image = [UIImage imageNamed:@"back_desert.png"];
 //    subIv_background22.image = [UIImage imageNamed:@"back_forest2.png"];
 
@@ -409,7 +408,7 @@ int imageMargin;
             
 //            [self animation1:-2*originalFrameSize];
             //微妙に呼び出し時間がかかって再起呼出しした後の表示場所が2の上端とズレるのでリアルタイムに2の場所を把握して逆算して表示
-            [self animation1:((CALayer *)[iv_background2.layer presentationLayer]).position.y - 2 * originalFrameSize];//-imageMargin];//test
+            [self animation1:((CALayer *)[iv_background2.layer presentationLayer]).position.y - 2 * originalFrameSize-imageMargin];//test
         }else{
             //ここには制御が移らない
 //            NSLog(@"強制終了");
@@ -456,7 +455,7 @@ int imageMargin;
             [iv_background2.layer removeAnimationForKey:@"position"];
             //recurrent構造にせずにrepeatCount=HUGE_VALにすれば無限ループ
 //            [self animation2:-2 * originalFrameSize];
-            [self animation2:((CALayer *)[iv_background1.layer presentationLayer]).position.y - 2 * originalFrameSize];// + imageMargin];//test
+            [self animation2:((CALayer *)[iv_background1.layer presentationLayer]).position.y - 2 * originalFrameSize - imageMargin];//test
         }
     }];
     

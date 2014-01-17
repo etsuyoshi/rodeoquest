@@ -217,11 +217,12 @@ int sensitivity;
                                  timer = nil;
                                  [timer invalidate];
                              }
-                             timer = [NSTimer scheduledTimerWithTimeInterval:0.01f
-                                                                      target:self
-                                                                    selector:@selector(time:)//タイマー呼び出し
-                                                                    userInfo:nil
-                                                                     repeats:YES];
+                             timer = [NSTimer
+                                      scheduledTimerWithTimeInterval:0.01f
+                                      target:self
+                                      selector:@selector(time:)//タイマー呼び出し
+                                      userInfo:nil
+                                      repeats:YES];
                              
                              for(int i = 0 ;i < 1;i++){
                                  //敵1体生成とビーム1個生成
@@ -231,7 +232,6 @@ int sensitivity;
                              }
                          }
                      }];
-    
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -354,7 +354,6 @@ int sensitivity;
     
     
     //UI編集：ナビゲーションボタンの追加＝一時停止
-    
     UIBarButtonItem* right_button_stop = [[UIBarButtonItem alloc] initWithTitle:@"stop"
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -2565,9 +2564,10 @@ int sensitivity;
 
 -(void)onClickedStopButton{
     NSLog(@"clicked stop button");
-    isGameMode = false;
-    
-    [self displayStoppedFrame];
+    if(isGameMode){//@20140117
+        isGameMode = false;
+        [self displayStoppedFrame];
+    }
 }
 
 -(void)onClickedSettingButton{
