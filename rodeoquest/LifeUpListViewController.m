@@ -143,8 +143,14 @@ void (^actNoForRubyShort)(void) = ^(void) {
     if([[attr getValueFromDevice:@"ruby"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
         NSLog(@"buy button pressed : %d", [sender tag]);
+        NSLog(@"now ruby is %@ and cost is %d", [attr getValueFromDevice:@"ruby"], cost);//test
         //device data update
         [self updateToDeviceRuby:[[attr getValueFromDevice:@"ruby"] intValue] - cost];//[attr setValueToDev..
+        
+        //after update data
+        NSLog(@"after buying ruby change to %@", [attr getValueFromDevice:@"ruby"]);
+        
+        
         //displayed ruby data update
         [self displayRuby];//tv.text = ...
         [self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
@@ -222,7 +228,7 @@ void (^actNoForRubyShort)(void) = ^(void) {
 -(void)displayRuby{//購入後ruby値を修正する
     NSLog(@"now ruby = %d", [[attr getValueFromDevice:@"ruby"] intValue]);
     int _ruby = [[attr getValueFromDevice:@"ruby"] intValue];
-    tvGoldAmount.text = [NSString stringWithFormat:@"%d", _ruby];
+    myLblRubyAmount.text = [NSString stringWithFormat:@"%d", _ruby];
 }
 
 

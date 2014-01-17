@@ -673,7 +673,7 @@ NSArray *arrProductId;
                 [NSArray arrayWithObjects:
                  @"2500",
                  @"4100",
-                 @"6300",
+                 @"6400",//tier53
                  nil],
                 nil];
     arrTypeBack = [NSArray arrayWithObjects:
