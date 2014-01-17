@@ -596,7 +596,7 @@ UIView *viewForDialog;
     secondForLife = maxSecondForLife;//equal to 6minutes
     
     NSString *strLifeGame =
-    [NSString stringWithFormat:@"%@ / %d",
+    [NSString stringWithFormat:@"%@ ／ %d",
     [attr getValueFromDevice:@"lifeGame"],
      maxLifeGame];
     
@@ -837,7 +837,7 @@ UIView *viewForDialog;
     if(lifeGame < maxLifeGame){
         NSLog(@"lifegameInt=%d", lifeGame);
         lbl_gameLife.text =
-        [NSString stringWithFormat:@"%d / %d", lifeGame, maxLifeGame];
+        [NSString stringWithFormat:@"%d ／ %d", lifeGame, maxLifeGame];
         if(secondForLife < maxSecondForLife){
             tv_timer.text = [self transformSecToMMSS:secondForLife];
         }else{
@@ -993,11 +993,16 @@ UIView *viewForDialog;
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-            lifeGame = 6;//test:life
+//            lifeGame = 6;//test:life
             if(lifeGame > 0){
             
                 lifeGame--;
                 [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
+                
+                //lifeGameの表示
+                lbl_gameLife.text =
+                [NSString stringWithFormat:@"%d ／ %d",
+                 lifeGame, maxLifeGame];
                 
                 //日時を記憶
                 [attr setValueToDevice:@"ymdMenuLastOpen"
@@ -1012,9 +1017,12 @@ UIView *viewForDialog;
                 
                 [tm invalidate];
                 tm = nil;
-                [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
-                //遅らせる場合
-//                [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(gotoGame) userInfo:nil repeats:NO];//低スピード
+//                [self performSelector:@selector(gotoGame) withObject:nil];// afterDelay:0.1f];
+                //遅らせる場合：lifeGameが減少したlbl_gameLifeを示す。
+                [NSTimer
+                 scheduledTimerWithTimeInterval:0.5f
+                 target:self
+                 selector:@selector(gotoGame) userInfo:nil repeats:NO];
                 [backGround exitAnimations];
                 //button resize
                 
