@@ -40,7 +40,7 @@ int unique_id;
     isDamaged = 0;
     isImpact = -1;
     explodeParticle = nil;
-    damageParticle  = nil;
+//    damageParticle  = nil;
     rect = CGRectMake(x_loc, y_loc, mySize, mySize);
     iv = [[UIImageView alloc]initWithFrame:rect];
     iv.center = CGPointMake(x_loc, y_loc);//位置を修正
@@ -279,10 +279,10 @@ int unique_id;
     return explodeParticle;
 //    return nil;
 }
--(DamageParticleView *)getDamageParticle{//被弾イフェクト
-    //dieしていれば爆発用particleは初期化されているはず=>描画用クラスで描画(self.view addSubview:particle);
-    return damageParticle;
-}
+//-(DamageParticleView *)getDamageParticle{//被弾イフェクト
+//    //dieしていれば爆発用particleは初期化されているはず=>描画用クラスで描画(self.view addSubview:particle);
+//    return damageParticle;
+//}
 
 -(UIView*)getSmokeEffect{
     
@@ -763,6 +763,71 @@ int unique_id;
     }
 }
 
+-(void)dispMeteoEffect{
+    
+    if(hitPoint > 0){
+        //
+        
+        
+        
+        int numOfParticle = 3;
+//        NSMutableArray *arrDamageParticle = [[NSMutableArray alloc]init];
+        for(int i = 0;i < numOfParticle ; i++){
+            DamageParticleView *damageParticle =
+             [[DamageParticleView alloc]
+              initWithFrame:CGRectMake(arc4random() % (int)iv.bounds.size.width,
+                                       arc4random() % (int)iv.bounds.size.height,
+                                       iv.bounds.size.width/2, iv.bounds.size.width/2)];
+            [damageParticle setIsEmitting:YES];
+            [damageParticle setColor:(DamageParticleType)(arc4random()%10)];
+            [iv addSubview:damageParticle];
+            
+            
+            [UIView
+             animateWithDuration:0.3f
+             animations:^{
+                 [damageParticle setAlpha:0.0f];
+             }
+             completion:^(BOOL finished){
+                 if(finished){
+                     [damageParticle setIsEmitting:NO];
+                     [damageParticle removeFromSuperview];
+                 }
+             }];
+        }
+        
+//                
+//        
+//        
+//        
+//        
+//        
+//        
+//        
+//        ExplodeParticleView *viewFireEffect;
+//        viewFireEffect =
+//        (ExplodeParticleView *)[[ExplodeParticleView alloc]
+//                                initWithFrame:CGRectMake(iv.bounds.size.width/2,
+//                                                         iv.bounds.size.height/2,
+//                                                         iv.bounds.size.width,
+//                                                         iv.bounds.size.height)
+//                                type:ExplodeParticleTypeBlackFire];//black_fire
+//        [viewFireEffect setBirthRate:30];//particleの生成数が多くなりすぎて重なった部分が白くならないように。
+//        [viewFireEffect setEmitDirection:-M_PI_2];//(前に進むので)後ろ向きに放射
+//        [iv addSubview:viewFireEffect];
+//        
+//        
+//        [self setDamageBySpecialWeapon];
+//        //0.1秒後に消火
+//        [NSTimer scheduledTimerWithTimeInterval:0.2f
+//                                         target:viewFireEffect
+//                                       selector:@selector(setNoEmitting)
+//                                       userInfo:Nil repeats:NO];
+//        
+        
+    }
+}
+
 //drawScratchを３回繰り返す(各0.1秒、合計で0.3秒)
 //0.5秒間隔で呼び出されるので0.2秒の空白がある
 -(void)dispGrassEffect{
@@ -918,7 +983,7 @@ int unique_id;
                 break;
             }
             case BeamTypeSpace:{//メテオストライク
-                
+                [self dispMeteoEffect];
                 break;
             }
             case BeamTypeWater:{//done->check:done

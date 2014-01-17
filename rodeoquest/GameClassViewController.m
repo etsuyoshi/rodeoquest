@@ -2011,7 +2011,7 @@ int sensitivity;
                 //                for(int i = 0; i < 10;i++){//
                 [[[EnemyArray lastObject] getImageView] removeFromSuperview];
                 //(パーティクルを生成していたら)パーティクルを消去
-                [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
+//                [[[EnemyArray lastObject] getDamageParticle] removeFromSuperview];
                 [[[EnemyArray lastObject] getExplodeParticle] removeFromSuperview];
                 //配列から削除してメモリを解放
                 [EnemyArray removeLastObject];
@@ -2048,7 +2048,7 @@ int sensitivity;
             
         }else{//死亡した敵の処理：爆発パーティクルは消去：メモリ消去
             [[[EnemyArray objectAtIndex:i] getExplodeParticle] removeFromSuperview];
-            [[[EnemyArray objectAtIndex:i] getDamageParticle] removeFromSuperview];
+//            [[[EnemyArray objectAtIndex:i] getDamageParticle] removeFromSuperview];
             
             //画面からは消去しなくても良いが、配列から削除してメモリ解放
             [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];

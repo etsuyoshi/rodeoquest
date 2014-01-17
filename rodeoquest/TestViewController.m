@@ -144,37 +144,37 @@ int tempCount = 0;
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
-    
-    uiv = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];//赤、大正方形
-    [uiv setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.5f]];
-    [self.view addSubview:uiv];
-    
-    
-    
-    uiv.userInteractionEnabled = YES;
-    UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                          action:@selector(onFlickedFrame:)];
-    
-    [uiv addGestureRecognizer:flick_frame];
-    
-    
-    NSMutableArray *ar = [NSMutableArray arrayWithObjects:
-//                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
-                           nil];
-    NSLog(@"first log");
-    
-    [ar insertObject:[NSValue valueWithCGPoint:CGPointMake(99, 99)] atIndex:0];
-    NSLog(@"first log = %f", [[ar objectAtIndex:0] CGPointValue].x);
-    
-    for(int i = 0; i < 10;i++){
-//        [ar addObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)]];
-        [ar insertObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)] atIndex:0];
-    }
-    for(int i  = 0; i < [ar count] ;i++){
-        NSLog(@"x=%f,y=%f",
-              [[ar objectAtIndex:i] CGPointValue].x,
-              [[ar objectAtIndex:i] CGPointValue].y);
-    }
+//    
+//    uiv = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];//赤、大正方形
+//    [uiv setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.5f]];
+//    [self.view addSubview:uiv];
+//    
+//    
+//    
+//    uiv.userInteractionEnabled = YES;
+//    UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
+//                                                          action:@selector(onFlickedFrame:)];
+//    
+//    [uiv addGestureRecognizer:flick_frame];
+//    
+//    
+//    NSMutableArray *ar = [NSMutableArray arrayWithObjects:
+////                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
+//                           nil];
+//    NSLog(@"first log");
+//    
+//    [ar insertObject:[NSValue valueWithCGPoint:CGPointMake(99, 99)] atIndex:0];
+//    NSLog(@"first log = %f", [[ar objectAtIndex:0] CGPointValue].x);
+//    
+//    for(int i = 0; i < 10;i++){
+////        [ar addObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)]];
+//        [ar insertObject:[NSValue valueWithCGPoint:CGPointMake(i, 100*i)] atIndex:0];
+//    }
+//    for(int i  = 0; i < [ar count] ;i++){
+//        NSLog(@"x=%f,y=%f",
+//              [[ar objectAtIndex:i] CGPointValue].x,
+//              [[ar objectAtIndex:i] CGPointValue].y);
+//    }
     
 #ifdef KIRA_TEST
     
@@ -207,11 +207,16 @@ int tempCount = 0;
 //    [self.view addSubview:uiiv];
     
     
-    viewLayerTest = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];//紫、小正方形
-    [viewLayerTest setBackgroundColor:[UIColor purpleColor]];
-    [self.view addSubview:viewLayerTest];
-//    mylayer = [CALayer layer];
-    mylayer = (CALayer*)(viewLayerTest.layer.presentationLayer);
+    //紫色のブロックを下に下げる
+//    viewLayerTest = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];//紫、小正方形
+//    [viewLayerTest setBackgroundColor:[UIColor purpleColor]];
+//    [self.view addSubview:viewLayerTest];
+////    mylayer = [CALayer layer];
+//    mylayer = (CALayer*)(viewLayerTest.layer.presentationLayer);
+    
+    
+    
+    
 //    mylayer = viewLayerTest.layer;
 
 //    mylayer = [CALayer layer]; //mylayer declared in .h file
@@ -309,28 +314,28 @@ int tempCount = 0;
     
     
     
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.5f];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-    {
-        [CATransaction setAnimationDuration:2];
-//        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-
-//        viewLayerTest.layer.position=CGPointMake(200, 200);
-//        viewLayerTest.layer.opacity=0.5;
-        
-        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
-        [anim setDuration:0.5f];
-        anim.fromValue = [NSValue valueWithCGPoint:((CALayer *)[viewLayerTest.layer presentationLayer]).position];//現在位置
-        anim.toValue = [NSValue valueWithCGPoint:CGPointMake(0, self.view.bounds.size.height)];
-        
-        anim.removedOnCompletion = NO;
-        anim.fillMode = kCAFillModeForwards;
-        [viewLayerTest.layer addAnimation:anim forKey:@"position"];
-        
-//        mylayer.position=CGPointMake(200, 200);
-//        mylayer.opacity=0.5;
-    } [CATransaction commit];
+//    [CATransaction begin];
+//    [CATransaction setAnimationDuration:0.5f];
+//    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+//    {
+//        [CATransaction setAnimationDuration:2];
+////        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//
+////        viewLayerTest.layer.position=CGPointMake(200, 200);
+////        viewLayerTest.layer.opacity=0.5;
+//        
+//        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+//        [anim setDuration:0.5f];
+//        anim.fromValue = [NSValue valueWithCGPoint:((CALayer *)[viewLayerTest.layer presentationLayer]).position];//現在位置
+//        anim.toValue = [NSValue valueWithCGPoint:CGPointMake(0, self.view.bounds.size.height)];
+//        
+//        anim.removedOnCompletion = NO;
+//        anim.fillMode = kCAFillModeForwards;
+//        [viewLayerTest.layer addAnimation:anim forKey:@"position"];
+//        
+////        mylayer.position=CGPointMake(200, 200);
+////        mylayer.opacity=0.5;
+//    } [CATransaction commit];
     
     
 //    [CATransaction begin];
@@ -888,23 +893,21 @@ int tempCount = 0;
     [self.view addSubview:[a getImageView]];
     
 #elif defined PARTICLE_TEST
-    NSLog(@"counter=%d", counter);
     if(counter == 0){
 //        array = [[NSMutableArray alloc] init];
-//        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-//        [self.view addSubview:v];
+        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [self.view addSubview:v];
         
 
     }else if(counter % 4 == 0){//every 3sec
-        NSLog(@"damageParticle%d", (int)(counter / 4));
+//        NSLog(@"damageParticle%d", (int)(counter / 4));
         DamageParticleView *damageParticle;
         damageParticle =
         [[DamageParticleView alloc]
-         initWithFrame:CGRectMake(15 + 20 * (counter % 10),
-                                  self.view.bounds.size.height/2, 30, 30)];
+         initWithFrame:CGRectMake(self.view.bounds.size.width/2 + (arc4random() % 50) * pow(-1, arc4random()%2+1),
+                                  self.view.bounds.size.height - arc4random()%50, 30, 30)];
         [damageParticle setIsEmitting:YES];
         
-        NSLog(@"1");
         [damageParticle setColor:(DamageParticleType)(counter % 10)];
         [self.view addSubview:damageParticle];
         
@@ -914,12 +917,10 @@ int tempCount = 0;
                          }
                          completion:^(BOOL finished){
                              if(finished){//終了時処理
-                                 NSLog(@"finished:  %@", damageParticle);
                                  [damageParticle setIsEmitting:NO];
                                  [damageParticle removeFromSuperview];
                              }
                          }];
-        NSLog(@"2");
     }
     
     

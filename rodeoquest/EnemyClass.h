@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     UIImageView *iv;
     CGRect rect;
     ExplodeParticleView *explodeParticle;
-    DamageParticleView *damageParticle;
+//    DamageParticleView *damageParticle;
     
     ViewExplode *viewExplode;
 }
@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
 -(int) getY;
 -(UIImageView *)getImageView;
 -(ExplodeParticleView *)getExplodeParticle;
--(DamageParticleView *)getDamageParticle;
+//-(DamageParticleView *)getDamageParticle;
 -(UIView*)getSmokeEffect;
 -(ViewExplode *)getExplodeEffect;
 

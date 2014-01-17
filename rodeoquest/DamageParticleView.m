@@ -58,7 +58,6 @@
 }
 
 -(void)setColor:(DamageParticleType)_type{
-    NSLog(@"type=%d", _type);
     [particleEmitter setValue:(id)[[self getColor:_type] CGColor]
                    forKeyPath:@"emitterCells.damage.color"];
 //    switch ((DamageParticleType)_type) {
@@ -110,7 +109,7 @@
 //     nil];
 //    return arrColor[_type];
     
-    //adjusted-color
+    //adjusted-color：http://lowlife.jp/yasusii/static/color_chart.html
     NSArray *arrColor =
     [NSArray arrayWithObjects:
      [NSArray arrayWithObjects:@255.0, @105.0f,@180.0f,nil],//hotpink//DamageParticleTypePink,
@@ -124,7 +123,7 @@
      [NSArray arrayWithObjects:@139, @123, @139, nil],//thistle4//DamageParticleTypeBlack,
      [NSArray arrayWithObjects:@238, @210, @238, nil],//thistle2//DamageParticleTypeWhite,
      nil];
-    NSLog(@"from getColor:%@", arrColor[_type]);
+//    NSLog(@"from getColor:%@", arrColor[_type]);
     float red = [arrColor[_type][0] floatValue]/255.0f;
     float green = [arrColor[_type][1] floatValue]/255.0f;
     float blue = [arrColor[_type][2] floatValue]/255.0f;
