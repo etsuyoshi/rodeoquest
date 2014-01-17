@@ -88,8 +88,8 @@ UITextView *tvGoldAmount_global;//金額はメニュー画面内で更新する�
 UIView *viewMailSuperForm;
 UITextView* tvSubject;
 UITextView* tvDemand;
-NSString *strSubject = @"お名前は匿名です。個人が特定されることはありません。";
-NSString *strDemand = @"こちらにご要望をお書き下さい。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nご協力ありがとうございます。";
+NSString *strSubject = @"個人が特定されることはありません。お名前は匿名でも結構です。";
+NSString *strDemand = @"アプリの品質向上のためにこちらにご要望をお書き下さい。\n頂いたご意見はアプリの改善に役立てるためだけに用い、他の用途には使用しません。\nご協力ありがとうございます。";
 
 
 //dialog
@@ -573,6 +573,18 @@ UIView *viewForDialog;
        forControlEvents:UIControlEventTouchDragInside];//ドラッグして戻ってきた時にサイズを大きくする
     [self.view addSubview:bt_start];
     
+    
+    //lifeを表示する背景の影の部分を表示する
+    UIView *shadowView =
+    [CreateComponentClass
+     createShadowView:CGRectMake(0, 0, W_BT_START/3, H_BT_START/3)//3分の1のサイズ
+     viewColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.95f]
+     borderColor:[UIColor clearColor]
+     text:@"" textSize:13];
+    [bt_start addSubview:shadowView];
+    
+    
+    
     //game開始以外でも、ホームボタン押下時、アイテムリストViewCon起動時等、様々なイベント(MenuViewConが消えるイベント)毎にsetValueToDeviceをする。
     //null判定等の例外(アプリ初期起動時対応等も)
     //secondForLifeが１秒に何度も引かれる自体(複数のスレッドによるバグ？)を控除or,secondForLife--ではなく、hmsMenuLastOpenからの経過時間を逐次計算する至要にするなど。
@@ -584,30 +596,31 @@ UIView *viewForDialog;
     secondForLife = maxSecondForLife;//equal to 6minutes
     
     NSString *strLifeGame =
-    [attr getValueFromDevice:@"lifeGame"];
+    [NSString stringWithFormat:@"%@ / %d",
+    [attr getValueFromDevice:@"lifeGame"],
+     maxLifeGame];
     
     
     lbl_gameLife =
     [[UILabel alloc]
      initWithFrame:
-     CGRectMake(0, 0, rect_start.size.width, rect_start.size.height/2)];
+     CGRectMake(0, 0, shadowView.bounds.size.width,
+                shadowView.bounds.size.height)];
     lbl_gameLife.text = strLifeGame;
     lbl_gameLife.font = [UIFont fontWithName:@"AmericanTypewriter-Bold"
                          size:15.0f];
-    lbl_gameLife.textColor = [UIColor purpleColor];
+//    lbl_gameLife.textColor = [UIColor purpleColor];
+    lbl_gameLife.textColor = [UIColor whiteColor];
     lbl_gameLife.backgroundColor = [UIColor clearColor];
+    lbl_gameLife.center =
+    CGPointMake(shadowView.bounds.size.width/2,
+                shadowView.bounds.size.height/2);
+    lbl_gameLife.textAlignment = NSTextAlignmentCenter;
+    
+    [shadowView addSubview:lbl_gameLife];
     
     
-//    [CreateComponentClass
-//     createTextView:CGRectMake(0, 0, rect_start.size.width,
-//                               rect_start.size.height/2)
-//     text:strLifeGame
-//     font:@"AmericanTypewriter-Bold"
-//     size:15
-//     textColor:[UIColor purpleColor]
-//     backColor:[UIColor clearColor]
-//     isEditable:NO];
-    [bt_start addSubview:lbl_gameLife];
+    
     
     CGRect rect_timer =
     CGRectMake(x_frame_center - W_BT_START/2 - MARGIN_UPPER_COMPONENT*2 - H_BT_START,
@@ -823,7 +836,8 @@ UIView *viewForDialog;
     }
     if(lifeGame < maxLifeGame){
         NSLog(@"lifegameInt=%d", lifeGame);
-        lbl_gameLife.text = [NSString stringWithFormat:@"%d", lifeGame];
+        lbl_gameLife.text =
+        [NSString stringWithFormat:@"%d / %d", lifeGame, maxLifeGame];
         if(secondForLife < maxSecondForLife){
             tv_timer.text = [self transformSecToMMSS:secondForLife];
         }else{
@@ -1262,7 +1276,7 @@ UIView *viewForDialog;
             int heightSubjects = 40;
             //件名
             UILabel *lbSubject = [[UILabel alloc]initWithFrame:CGRectMake(xSubject, ySubject, wSubject, hSubject)];
-            lbSubject.text = @" 件名:";
+            lbSubject.text = @"お名前:";
             lbSubject.textColor = [UIColor whiteColor];
             [viewFrame addSubview:lbSubject];
             

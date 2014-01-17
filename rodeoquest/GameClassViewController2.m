@@ -156,10 +156,11 @@ int sensitivity;
     if (self) {
         // Custom initialization
         //if home-button is pressed:
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(pressedHomeButton)
-                                                     name: @"didEnterBackground"
-                                                   object: nil];
+        [[NSNotificationCenter defaultCenter]
+         addObserver: self
+         selector: @selector(pressedHomeButton)
+         name: @"didEnterBackground"
+         object: nil];
         
         
     }
@@ -227,8 +228,6 @@ int sensitivity;
                              for(int i = 0 ;i < 1;i++){
                                  //敵1体生成とビーム1個生成
                                  [self initEnemyBreak];
-                                 enemyCount++;
-                                 enemyDown++;
                              }
                          }
                      }];
@@ -2016,9 +2015,10 @@ int sensitivity;
     [EnemyArray insertObject:_enemy atIndex:0];
     [self.view addSubview:[[EnemyArray objectAtIndex:0] getImageView]];
     [self.view bringSubviewToFront:[[EnemyArray objectAtIndex:0] getImageView]];
+    enemyCount++;//最初にenemyCountを設定(対応するenemyDownはordinaryループで実行予定：未確認。)
     [_enemy setDamage:[_enemy getHitPoint]-1 location:[_enemy getLocation]];
     
-    //removeFromSuperviewは不要？
+    //removeFromSuperviewは不要：ordinaryAnimationループの後でgarbageCollectionを実行しているので完了
     NSLog(@"initEnemyBreak complete");
     
 //    [(EnemyClass *)[EnemyArray objectAtIndex:0] setDamage:[_enemy getHitPoint]+1 location:[_enemy getLocation]];
@@ -2564,7 +2564,7 @@ int sensitivity;
 
 -(void)onClickedStopButton{
     NSLog(@"clicked stop button");
-    if(isGameMode){//@20140117
+    if(isGameMode){//@add at 20140117
         isGameMode = false;
         [self displayStoppedFrame];
     }
@@ -2573,7 +2573,6 @@ int sensitivity;
 -(void)onClickedSettingButton{
     NSLog(@"clicked setting button");
     isGameMode = false;
-    
 }
 
 -(void)displayStoppedFrame{
@@ -2585,9 +2584,35 @@ int sensitivity;
                           ,nil];
     [alert show];
     
+    //ボタンをドラッグしたときの挙動について確認
+//    UIView *alertViewPause = nil;
+//    alertViewPause =
+//    [CreateComponentClass
+//     createAlertView2:self.view.bounds
+//     dialogRect:CGRectMake(10, 100, 290, 220)
+//     title:@"ポーズ中"
+//     message:@"再開しますか？\n再開する場合は「はい」を、終了する場合は「いいえ」を押して下さい。"
+//     onYes:^{
+//         NSLog(@"yes button pressed at alertViewPause");
+//         [alertViewPause removeFromSuperview];
+//         isGameMode = true;
+//         return;
+//     }
+//     onNo:^{
+//         NSLog(@"no button pressed at alertViewPause");
+//         [alertViewPause removeFromSuperview];
+//         [self showActivityIndicator];
+//         
+//         //startDateからこの時点までの時間をゲーム時間として定義(attr:time_maxと比較、必要に応じて格納)
+//         time_game = (int)[[NSDate date] timeIntervalSinceDate:startDate];//時間を計測して格納する
+//         [self exitProcess];
+//         return;
+//     }];
+//    [self.view addSubview:alertViewPause];
+    
     
 }
-//displayStoppedFrameメソッド内のalertと関連づけられている
+//displayStoppedFrameメソッド内のalertと関連づけられている:alertView2
 -(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     switch (buttonIndex) {
