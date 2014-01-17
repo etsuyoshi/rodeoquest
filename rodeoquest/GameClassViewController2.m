@@ -3321,7 +3321,6 @@ int sensitivity;
     
 -(BOOL)giveDamageToEnemy:(int)i damage:(int)_damage x:(int)_xBeam y:(int)_yBeam beamType:(int)beamType{
     //ビームが衝突した位置にdamageParticle表示(damageParticle生成のため位置情報を渡す)
-    NSLog(@"multiple = %d", multipleBulletPower);
     [(EnemyClass *)[EnemyArray objectAtIndex:i] setDamage:_damage * multipleBulletPower location:CGPointMake(_xBeam, _yBeam) beamType:(int)beamType];
     
     

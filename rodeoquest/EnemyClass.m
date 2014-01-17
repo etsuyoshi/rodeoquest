@@ -629,10 +629,11 @@ int unique_id;
 
 
 -(void)dispDieEffect{
-    NSLog(@"dispDieEffect");
+//    NSLog(@"dispDieEffect");
     //imageViewだけを消去(爆発パーティクルが描画するためインスタンス自体は残しておく)
 //    [[[EnemyArray objectAtIndex:i] getImageView] removeFromSuperview];
-    iv.image = [UIImage imageNamed:@"nothing.png"];//無地にした上でエフェクトを追加するためにインスタンス自体は残しておく
+//    iv.image = [UIImage imageNamed:@"nothing.png"];//無地にした上でエフェクトを追加するためにインスタンス自体は残しておく
+    iv.image = nil;
     
     
     

@@ -475,14 +475,25 @@ int numCell;
                    atIndex:0];
     
     if(lifetime_count > 5){//応急処置
+        //本番中にアイテムが消滅する問題は以下の判別の要素数が不足していたため->(0-5までの)6タイミングまで判別数を増やした
         if([[arrayLoc objectAtIndex:0] CGPointValue].x == [[arrayLoc objectAtIndex:1] CGPointValue].x &&
-           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y){
+           [[arrayLoc objectAtIndex:0] CGPointValue].y == [[arrayLoc objectAtIndex:1] CGPointValue].y &&
+           [[arrayLoc objectAtIndex:1] CGPointValue].x == [[arrayLoc objectAtIndex:2] CGPointValue].x &&
+           [[arrayLoc objectAtIndex:1] CGPointValue].y == [[arrayLoc objectAtIndex:2] CGPointValue].y &&
+           [[arrayLoc objectAtIndex:2] CGPointValue].x == [[arrayLoc objectAtIndex:3] CGPointValue].x &&
+           [[arrayLoc objectAtIndex:2] CGPointValue].y == [[arrayLoc objectAtIndex:3] CGPointValue].y &&
+           [[arrayLoc objectAtIndex:3] CGPointValue].x == [[arrayLoc objectAtIndex:4] CGPointValue].x &&
+           [[arrayLoc objectAtIndex:3] CGPointValue].y == [[arrayLoc objectAtIndex:4] CGPointValue].y &&
+           [[arrayLoc objectAtIndex:4] CGPointValue].x == [[arrayLoc objectAtIndex:5] CGPointValue].x &&
+           [[arrayLoc objectAtIndex:4] CGPointValue].y == [[arrayLoc objectAtIndex:5] CGPointValue].y
+           
+           ){
 //            NSLog(@"remove item at x=%f, y=%f",
 //                  [[arrayLoc objectAtIndex:0] CGPointValue].x,
 //                  [[arrayLoc objectAtIndex:0] CGPointValue].y);
             [self die];
             [iv removeFromSuperview];
-            NSLog(@"item is removed caz same location");
+            NSLog(@"item is removed caz same location which life_time = %d", lifetime_count);
             return isOccurringParticle;
         }else{
             
