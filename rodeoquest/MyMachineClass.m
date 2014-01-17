@@ -83,7 +83,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     numOfBeam = 1;//通常時、最初はビームの数は1つ(１列)
     isAlive = true;
     explodeParticle = nil;
-    damageParticle  = nil;
+//    damageParticle  = nil;
     
     
     //x_loc,y_loc is center point
@@ -301,19 +301,20 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         _damage = 0;
         return;
     }
-    damageParticle =
-    [[DamageParticleView alloc]
-     initWithFrame:CGRectMake(location.x, location.y, 30, 30)];
-    
-    [UIView animateWithDuration:0.5f
-                     animations:^{
-                         [damageParticle setAlpha:0.0f];//徐々に薄く
-                     }
-                     completion:^(BOOL finished){
-                         //終了時処理
-                         [damageParticle setIsEmitting:NO];
-                         [damageParticle removeFromSuperview];
-                     }];
+//    damageParticle =
+//    [[DamageParticleView alloc]
+//     initWithFrame:CGRectMake(location.x, location.y, 30, 30)];
+//    
+//    [UIView animateWithDuration:0.5f
+//                     animations:^{
+//                         [damageParticle setAlpha:0.0f];//徐々に薄く
+//                     }
+//                     completion:^(BOOL finished){
+//                         if(finished){//終了時処理
+//                             [damageParticle setIsEmitting:NO];
+//                             [damageParticle removeFromSuperview];
+//                         }
+//                     }];
     
     
     
@@ -644,10 +645,10 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     
     return explodeParticle;
 }
--(DamageParticleView *)getDamageParticle{
-    //dieしていれば爆発用particleは初期化されているはず=>描画用クラスで描画(self.view addSubview:particle);
-    return damageParticle;
-}
+//-(DamageParticleView *)getDamageParticle{
+//    //dieしていれば爆発用particleは初期化されているはず=>描画用クラスで描画(self.view addSubview:particle);
+//    return damageParticle;
+//}
 
 -(Boolean)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y{
 //    NSLog(@"beam count = %d", [beamArray count]);

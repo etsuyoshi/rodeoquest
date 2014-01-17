@@ -23,14 +23,14 @@
 //#define BTNPRESS_TEST
 //#define COOLBUTTON_TEST
 //#define SPECIALWEAPON_TEST
-//#define PARTICLE_TEST
+#define PARTICLE_TEST
 //#define KIRA_Test
 //#define EXPLODE_TEST
 //#define VIEWWITHEFFECTLEVELUP_TEST
 //#define LDPROGRESS_TEST
 //#define PAYPRODUCTBUTTON_TEST
 //#define LOCATION_TEST
-#define SPWeapon_TEST
+//#define SPWeapon_TEST
 
 #import <CoreLocation/CoreLocation.h>
 #import "LDProgressView.h"
@@ -44,6 +44,7 @@
 #import "CoolButton.h"
 #import "MenuButtonWithView.h"
 #import "ExplodeParticleView.h"
+#import "DamageParticleView.h"
 #import "EnemyClass.h"
 #import "ItemClass.h"
 #import "CreateComponentClass.h"
@@ -889,9 +890,35 @@ int tempCount = 0;
 #elif defined PARTICLE_TEST
     if(counter == 0){
 //        array = [[NSMutableArray alloc] init];
-        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 400, 20, 20)];
+        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [self.view addSubview:v];
+        
+
+    }else if(counter % 4 == 0){//every 3sec
+        NSLog(@"damageParticle%d", (int)(counter / 4));
+        DamageParticleView *damageParticle;
+        damageParticle =
+        [[DamageParticleView alloc]
+         initWithFrame:CGRectMake(15 + 50 * ((int)(counter / 4) % 6),
+                                  self.view.bounds.size.height/2, 30, 30)];
+        [damageParticle setIsEmitting:YES];
+        
+        [damageParticle setColor:(DamageParticleType)((int)(counter / 4) % 4)];
+        [self.view addSubview:damageParticle];
+        
+        [UIView animateWithDuration:0.3f
+                         animations:^{
+                             [damageParticle setAlpha:0.0f];//徐々に薄く
+                         }
+                         completion:^(BOOL finished){
+                             if(finished){//終了時処理
+                                 [damageParticle setIsEmitting:NO];
+                                 [damageParticle removeFromSuperview];
+                             }
+                         }];
     }
+    
+    
     if(false){//counter % 20 != 0){//0, 1, ..., 19
         tempInt1 = counter % 320;
         

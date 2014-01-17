@@ -57,6 +57,35 @@
     
 }
 
+-(void)setColor:(DamageParticleType)_type{
+    switch ((DamageParticleType)_type) {
+        case DamageParticleTypeBlack:{//done
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.5] CGColor]
+                           forKeyPath:@"emitterCells.damage.color"];
+            break;
+        }
+        case DamageParticleTypeBlue:{//done:調整必要
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0 green: 0.2f blue: 0.5 alpha: 0.5] CGColor]
+                           forKeyPath:@"emitterCells.damage.color"];
+            break;
+        }
+            
+        case DamageParticleTypeOrange:{//done
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.8 green: 0.4 blue: 0.2 alpha: 0.1] CGColor]
+                           forKeyPath:@"emitterCells.damage.color"];
+            break;
+        }
+        case DamageParticleTypeRed:{
+            [particleEmitter setValue:(id)[[UIColor colorWithRed: 0.5 green: 0.1 blue: 0.1 alpha: 0.1] CGColor]
+                           forKeyPath:@"emitterCells.damage.color"];
+            break;
+        }
+            
+        default:{
+            break;
+        }
+    }
+}
 
 + (Class) layerClass //3
 {

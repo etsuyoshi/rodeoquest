@@ -86,7 +86,7 @@
     
     NSMutableArray *beamArray;
     ExplodeParticleView *explodeParticle;
-    DamageParticleView *damageParticle;
+//    DamageParticleView *damageParticle;
     
     ViewExplode *viewExplode;
 
@@ -123,7 +123,7 @@
 -(UIImageView *)getImageView;
 -(UIImageView *)getLaserImageView;
 -(ExplodeParticleView *)getExplodeParticle;
--(DamageParticleView *)getDamageParticle;
+//-(DamageParticleView *)getDamageParticle;
 
 
 -(Boolean)yieldBeam:(int)beam_type init_x:(int)x init_y:(int)y;

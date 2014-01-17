@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+typedef NS_ENUM(NSInteger, DamageParticleType) {
+    DamageParticleTypeRed,
+    DamageParticleTypeOrange,
+    DamageParticleTypeBlue,
+    DamageParticleTypeBlack
+};
 
 @interface DamageParticleView : UIView{
     //    CAEmitterLayer *fireEmitter;
@@ -18,6 +24,6 @@
 -(void)setIsEmitting:(BOOL)isEmitting;
 -(Boolean)getIsFinished;
 
-
+-(void)setColor:(DamageParticleType)_type;
 
 @end
