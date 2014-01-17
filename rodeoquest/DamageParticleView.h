@@ -9,10 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 typedef NS_ENUM(NSInteger, DamageParticleType) {
+    DamageParticleTypePink,
     DamageParticleTypeRed,
     DamageParticleTypeOrange,
+    DamageParticleTypeYellow,
+    DamageParticleTypeGreen,
+    DamageParticleTypeCyan,
     DamageParticleTypeBlue,
-    DamageParticleTypeBlack
+    DamageParticleTypePurple,
+    DamageParticleTypeBlack,
+    DamageParticleTypeWhite
 };
 
 @interface DamageParticleView : UIView{

@@ -888,10 +888,11 @@ int tempCount = 0;
     [self.view addSubview:[a getImageView]];
     
 #elif defined PARTICLE_TEST
+    NSLog(@"counter=%d", counter);
     if(counter == 0){
 //        array = [[NSMutableArray alloc] init];
-        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        [self.view addSubview:v];
+//        ViewFireWorks *v = [[ViewFireWorks alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+//        [self.view addSubview:v];
         
 
     }else if(counter % 4 == 0){//every 3sec
@@ -899,11 +900,12 @@ int tempCount = 0;
         DamageParticleView *damageParticle;
         damageParticle =
         [[DamageParticleView alloc]
-         initWithFrame:CGRectMake(15 + 50 * ((int)(counter / 4) % 6),
+         initWithFrame:CGRectMake(15 + 20 * (counter % 10),
                                   self.view.bounds.size.height/2, 30, 30)];
         [damageParticle setIsEmitting:YES];
         
-        [damageParticle setColor:(DamageParticleType)((int)(counter / 4) % 4)];
+        NSLog(@"1");
+        [damageParticle setColor:(DamageParticleType)(counter % 10)];
         [self.view addSubview:damageParticle];
         
         [UIView animateWithDuration:0.3f
@@ -912,10 +914,12 @@ int tempCount = 0;
                          }
                          completion:^(BOOL finished){
                              if(finished){//終了時処理
+                                 NSLog(@"finished:  %@", damageParticle);
                                  [damageParticle setIsEmitting:NO];
                                  [damageParticle removeFromSuperview];
                              }
                          }];
+        NSLog(@"2");
     }
     
     
@@ -964,6 +968,7 @@ int tempCount = 0;
                          }];
 //        [array removeAllObjects];
     }
+    
     
 #elif defined EXPLODE_TEST
     if(counter == 0){
