@@ -761,95 +761,7 @@ UIView *viewForDialog;
     
     tvGoldAmount_global.text = [NSString stringWithFormat:@"%d", [[attr getValueFromDevice:@"gold"] intValue]];
 
-    
-    
-    //以下の目的：secondForLifeとlifeGameの更新
-    NSString *strLifeGame =
-    [attr getValueFromDevice:@"lifeGame"];
-    lifeGame = strLifeGame.integerValue;
-    NSString *ymdMenuLastOpen =
-    [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
-    NSString *hmsMenuLastOpen =
-    [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
-    
-//    NSLog(@"lifegame= %@", strLifeGame);
-
-    if([strLifeGame isEqual:[NSNull null]] ||
-       strLifeGame == nil ||
-       ymdMenuLastOpen == nil ||
-       [ymdMenuLastOpen isEqual:[NSNull null]] ||
-       hmsMenuLastOpen == nil ||
-       [hmsMenuLastOpen isEqual:[NSNull null]]){
-        lifeGame = maxLifeGame;
-    }else{
-        //前回のsecondForLifeがカウントされていた最後の日時と時刻からの経過時間passedSecondを計測
-        if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){//最後に観測されたのが同日ならば
-            
-            //getPassSecond:二つの時間からint型差額秒数を返す
-            int passedSecond = [self getPassTime:hmsMenuLastOpen
-                                            hms2:[self getHHMMSS]];
-            NSLog(@"passedSec=%d, last=%@, now=%@", passedSecond,
-                  hmsMenuLastOpen, [self getHHMMSS]);
-            //secondForLifeの更新
-            secondForLife = [attr getValueFromDevice:@"secondForLife"].integerValue - passedSecond;
-            NSLog(@"secondForLife:%d, passedSecond:%d", secondForLife, passedSecond);
-            
-            //lifeGameの更新
-            if(secondForLife < -maxSecondForLife * (maxLifeGame-1)){//30分以上経過
-                lifeGame = MIN(lifeGame + (maxLifeGame-0), maxLifeGame);
-                secondForLife += (maxLifeGame-1) * maxSecondForLife;
-                //以下、残りの経過時間(secondForLifeの負値はmaxSecondForLifeからの経過時間とする)
-                secondForLife = maxSecondForLife + secondForLife;
-                //結局上記２行によってsecondForLife += maxLifeGame * maxSecondForLifeで良い
-            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-2)){//24分以上経過
-                lifeGame = MIN(lifeGame + (maxLifeGame-1), maxLifeGame);
-//                secondForLife += (maxLifeGame-2) * maxSecondForLife;
-//                secondForLife = maxSecondForLife + secondForLife;
-                secondForLife += (maxLifeGame - 1) * maxSecondForLife;
-            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-3)){//18分以上経過
-                lifeGame = MIN(lifeGame + (maxLifeGame-2), maxLifeGame);
-//                secondForLife += (maxLifeGame-3) * maxSecondForLife;
-//                secondForLife = maxSecondForLife + secondForLife;
-                secondForLife += (maxLifeGame - 2) * maxSecondForLife;
-            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-4)){//12分以上経過
-                lifeGame = MIN(lifeGame + (maxLifeGame-3), maxLifeGame);
-//                secondForLife += (maxLifeGame-4) * maxSecondForLife;
-//                secondForLife = maxSecondForLife + secondForLife;
-                secondForLife += (maxLifeGame - 3) * maxSecondForLife;
-            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-5)){//6分以上経過
-                lifeGame = MIN(lifeGame + (maxLifeGame-4), maxLifeGame);
-//                secondForLife += (maxLifeGame-5) * maxSecondForLife;
-//                secondForLife = maxSecondForLife + secondForLife;
-                secondForLife += (maxLifeGame - 4) * maxSecondForLife;
-            }else if(secondForLife < 0){//6分未満の経過時間の場合
-                lifeGame = MIN(lifeGame + (maxLifeGame-5), maxLifeGame);
-                secondForLife += (maxLifeGame - 5) * maxSecondForLife;
-            }
-            secondForLife = MIN(secondForLife, maxSecondForLife);
-            
-//            NSLog(@"lifeGame == %d", lifeGame);
-//            NSLog(@"secondForLife == %d", secondForLife);
-        }else{//日付が違えば全回復
-            lifeGame = maxLifeGame;
-        }
-//        lifeGame = strLifeGame.integerValue;
-    }
-    if(lifeGame < maxLifeGame){
-        NSLog(@"lifegameInt=%d", lifeGame);
-        lbl_gameLife.text =
-        [NSString stringWithFormat:@"%d ／ %d", lifeGame, maxLifeGame];
-        if(secondForLife < maxSecondForLife){
-            tv_timer.text = [self transformSecToMMSS:secondForLife];
-        }else{
-            tv_timer.text = @"MAX";
-        }
-    }else{
-        lbl_gameLife.text = @"MAX";
-        tv_timer.text = @"MAX";
-    }
-    //上記により更新されたlifeGameとsecondForLifeを用いて、timeメソッド内でtv_timer, tv_lifegameに動的に反映
-    
-    NSLog(@"lifegame= %@", strLifeGame);
+    [self updateLifeAndSecond];
     
 }
 
@@ -919,8 +831,9 @@ UIView *viewForDialog;
             tv_timer.text = @"MAX";
         }
     }else{//lifeGame == maxLifeGame
-        lbl_gameLife.text = [NSString stringWithFormat:@"MAX"];
-        secondForLife = maxSecondForLife;
+//        lbl_gameLife.text = [NSString stringWithFormat:@"MAX"];
+//        secondForLife = maxSecondForLife;
+        [self updateLifeAndSecond];
     }
     
 }
@@ -2069,5 +1982,104 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                   strValue:[NSString stringWithFormat:@"%d", lifeGame]];
     
     [tm invalidate];
+}
+
+//viewWillAppearとtime関数から実行される
+-(void)updateLifeAndSecond{
+    
+    //以下の目的：secondForLifeとlifeGameの更新
+    NSString *strLifeGame =
+    [attr getValueFromDevice:@"lifeGame"];
+    lifeGame = strLifeGame.integerValue;
+    NSString *ymdMenuLastOpen =
+    [attr getValueFromDevice:@"ymdMenuLastOpen"];//最後にカウントされていた日にち
+    NSString *hmsMenuLastOpen =
+    [attr getValueFromDevice:@"hmsMenuLastOpen"];//最後にカウントされていた時間
+    
+    //    NSLog(@"lifegame= %@", strLifeGame);
+    
+    if([strLifeGame isEqual:[NSNull null]] ||
+       strLifeGame == nil ||
+       ymdMenuLastOpen == nil ||
+       [ymdMenuLastOpen isEqual:[NSNull null]] ||
+       hmsMenuLastOpen == nil ||
+       [hmsMenuLastOpen isEqual:[NSNull null]]){
+        lifeGame = maxLifeGame;
+    }else{
+        //前回のsecondForLifeがカウントされていた最後の日時と時刻からの経過時間passedSecondを計測
+        if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){//最後に観測されたのが同日ならば
+            
+            //getPassSecond:二つの時間からint型差額秒数を返す
+            int passedSecond = [self getPassTime:hmsMenuLastOpen
+                                            hms2:[self getHHMMSS]];
+            NSLog(@"passedSec=%d, last=%@, now=%@", passedSecond,
+                  hmsMenuLastOpen, [self getHHMMSS]);
+            //secondForLifeの更新
+            secondForLife = [attr getValueFromDevice:@"secondForLife"].integerValue - passedSecond;
+            NSLog(@"secondForLife:%d, passedSecond:%d", secondForLife, passedSecond);
+            
+            //lifeGameの更新:短く書くと分かりにくい
+            if(secondForLife < -maxSecondForLife * (maxLifeGame-1)){//30分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-0), maxLifeGame);
+                secondForLife += (maxLifeGame-1) * maxSecondForLife;
+                //以下、残りの経過時間(secondForLifeの負値はmaxSecondForLifeからの経過時間とする)
+                secondForLife = maxSecondForLife + secondForLife;
+                //結局上記２行によってsecondForLife += maxLifeGame * maxSecondForLifeで良い
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-2)){//24分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-1), maxLifeGame);
+                //                secondForLife += (maxLifeGame-2) * maxSecondForLife;
+                //                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 1) * maxSecondForLife;
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-3)){//18分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-2), maxLifeGame);
+                //                secondForLife += (maxLifeGame-3) * maxSecondForLife;
+                //                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 2) * maxSecondForLife;
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-4)){//12分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-3), maxLifeGame);
+                //                secondForLife += (maxLifeGame-4) * maxSecondForLife;
+                //                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 3) * maxSecondForLife;
+            }else if(secondForLife < -maxSecondForLife * (maxLifeGame-5)){//6分以上経過
+                lifeGame = MIN(lifeGame + (maxLifeGame-4), maxLifeGame);
+                //                secondForLife += (maxLifeGame-5) * maxSecondForLife;
+                //                secondForLife = maxSecondForLife + secondForLife;
+                secondForLife += (maxLifeGame - 4) * maxSecondForLife;
+            }else if(secondForLife < 0){//6分未満の経過時間の場合
+                lifeGame = MIN(lifeGame + (maxLifeGame-5), maxLifeGame);
+                secondForLife += (maxLifeGame - 5) * maxSecondForLife;
+            }
+            secondForLife = MIN(secondForLife, maxSecondForLife);
+            
+            //            NSLog(@"lifeGame == %d", lifeGame);
+            //            NSLog(@"secondForLife == %d", secondForLife);
+        }else{//日付が違えば全回復
+            lifeGame = maxLifeGame;
+        }
+        //        lifeGame = strLifeGame.integerValue;
+    }
+    if(lifeGame < maxLifeGame){
+        NSLog(@"lifegameInt=%d", lifeGame);
+        lbl_gameLife.text =
+        [NSString stringWithFormat:@"%d ／ %d", lifeGame, maxLifeGame];
+        if(secondForLife < maxSecondForLife){
+            tv_timer.text = [self transformSecToMMSS:secondForLife];
+        }else{
+            tv_timer.text = @"MAX";
+        }
+    }else if(lifeGame == maxLifeGame){
+        lbl_gameLife.text = @"MAX";
+        tv_timer.text = @"MAX";
+    }else if(lifeGame > maxLifeGame){//回復アイテム等を購入した場合にmaxを上回ることがある
+        lbl_gameLife.text =
+        [NSString stringWithFormat:@"%d ／ %d", lifeGame, maxLifeGame];
+        
+        secondForLife = maxSecondForLife;//秒数はマックスに設定
+        tv_timer.text = @"MAX";
+        
+    }
+    //上記により更新されたlifeGameとsecondForLifeを用いて、timeメソッド内でtv_timer, tv_lifegameに動的に反映
+    
+    NSLog(@"lifegame= %@", strLifeGame);
 }
 @end
