@@ -7,8 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "Utils.h"
-#import <AppSocially/AppSocially.h>
+
 
 @implementation AppDelegate
 
@@ -24,6 +23,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 //RodeoQuest APP's AppSociallyAPIKey and FacebookAppID
 //    https://developers.facebook.com/x/apps/487381754714313/dashboard/
     [AppSocially setFacebookAppID:@"487381754714313"];
+    
+    //setting of twitter??
+    
     
     
     //from:FirstSample by appSocially
@@ -70,6 +72,15 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     [AppDelegate setupSearchBarStyle];
     [AppDelegate setupSegmentedControlStyle];
 
+    
+    
+    
+    
+    //アプリレビュー推奨ライブラリAppirator:http://programming-ios.com/objective_c-appirater-alert/
+    [Appirater setAppId:@"769775185"];//https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/wo/3.0.0.9.5.2.5.9.1.1.1.2.3.3.1.3.0.4.0.1
+    
+    //必ず最後に実行する必要あり
+    [Appirater appLaunched:YES];
     
     return YES;
 }

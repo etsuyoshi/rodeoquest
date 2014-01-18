@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Appirater.h"
+#import "Utils.h"
+#import <AppSocially/AppSocially.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
