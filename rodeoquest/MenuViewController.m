@@ -897,8 +897,15 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
 //        case ButtonMenuImageTypeStart:{
     
     
-            
-            
+    //拡大したbt_startを元の大きさに戻す
+    NSLog(@"start games");
+    bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+    if(bgmClass.getIsPlaying){
+        [bgmClass stop];
+    }
+    
+    
+    
 #ifdef TEST
             TestViewController *tvc = [[TestViewController alloc]init];
             [self presentViewController: tvc animated:YES completion: nil];
@@ -917,12 +924,9 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
                 
                 if(isStartable){
                     
+                    //次にviewWillAppearが実行されるまでisStartableはfalseのまま
                     isStartable = false;//続けてボタンを押せないように(続けて押せてしまうとlifeGameが何度も減ってしまう)
-                    NSLog(@"start games");
-                    bt_start.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-                    if(bgmClass.getIsPlaying){
-                        [bgmClass stop];
-                    }
+                    
                     
                     
                     [attr setValueToDevice:@"lifeGame" strValue:[NSString stringWithFormat:@"%d",lifeGame]];
