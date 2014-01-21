@@ -11,6 +11,7 @@
 #import "DamageParticleView.h"
 #import "ViewExplode.h"
 #import "SpecialBeamClass.h"
+#import "UIView+Animation.h"
 
 typedef NS_ENUM(NSInteger, EnemyType) {//order with difficulty of get down
     EnemyTypeTanu,

@@ -57,7 +57,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     y_loc = [[UIScreen mainScreen] bounds].size.height;//center of mymachine's location
     
     x_loc = x_init;
-    maxHitPoint = 10;
+    maxHitPoint = 1;
     laserPower = level;
     hitPoint = maxHitPoint;
     offensePower = 1;
@@ -267,7 +267,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         [self barrierValidEffect];
         
         return;
-    }else if(shieldLife > 0 &&//バリアがなければシールドを判断
+    }else if(//shieldLife >= 0 &&//バリアがなければシールドを判断
              defense1Count > 0 &&
              defense1Count != INT_MAX)//シールドが有効ならば
     {//else if shield is valid
@@ -278,15 +278,19 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
 //        [self destroySheildEffect];//透明化の方が分かりやすい
         _damage = 0;
         
+        NSLog(@"damage=%d", _damage);
+        
         return;
     }else if(defense1Count == INT_MAX){
+        NSLog(@"defense1Count=%d, 1", defense1Count);
         //defense1(shield)のみ他のカウンターと異なる：被弾してから(shieldLife回のみ)次にシールドを張るまでの時間
         //シールドは被弾した回数だけ減る(shieldLife)
         //被弾して100カウント(1秒間)はダメージを受けない
         //100カウント超過したらshieldLifeを１減らす
-        if(shieldLife != 0){
+        if(shieldLife > 0){
             shieldLife--;
-            if(shieldLife==0){
+            NSLog(@"shieldLife = %d", shieldLife);
+            if(shieldLife<=0){
                 //カウントダウンモードへの移行
                 iv.alpha = 1.0f;
                 [self destroySheildEffect];//シールド解除されたことを示すためのエフェクト
@@ -301,6 +305,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         _damage = 0;
         return;
     }
+    NSLog(@"defense1Count=%d, 2", defense1Count);
 //    damageParticle =
 //    [[DamageParticleView alloc]
 //     initWithFrame:CGRectMake(location.x, location.y, 30, 30)];
@@ -318,18 +323,15 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
     
     
     
-//    if(defensePower >= 0){
-        if(hitPoint > 0){
-            hitPoint -= _damage;
-            if(hitPoint <= 0){
-                [self die:location];
-            }
-        }else{
-//            [self die:location];
+    if(hitPoint > 0){
+        hitPoint -= _damage;
+        NSLog(@"defense1Count=%d, hitpoint=%d, damage=%d", defense1Count, hitPoint, _damage);
+        if(hitPoint <= 0){
+            [self die:location];
         }
-//    }else{
-//        defensePower--;
-//    }
+    }else{
+        
+    }
 }
 
 -(int)die:(CGPoint) location{
@@ -520,7 +522,7 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
         
     }
     
-    if(defense0Count > 0){
+    if(defense0Count > 0){//barrier
         defense0Count--;
         if(defense0Count == 0){
             [self barrierValidEffect];
@@ -545,10 +547,11 @@ int shieldLifeMax;//耐用最高値：アイテム購入により変更可能
             iv.alpha = 1.0f;
         }
         defense1Count--;
+        NSLog(@"defense1Count=%d", defense1Count);//test
         if(defense1Count == 0){
             iv.alpha = 1.0f;
             shieldLife--;
-            if(shieldLife == 0){
+            if(shieldLife <= 0){//既にshieldLifeがゼロになった状態でdefense1Countがスタートしている状態でこの条件分岐に入っている可能性もあるため
                 [self barrierValidEffect];
                 [ivDefense1 removeFromSuperview];
                 [status setObject:@"0" forKey:[NSNumber numberWithInt:ItemTypeDeffense1]];

@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+//#import "SpecialBeamClass.h"
+
 //to sort in order
 typedef NS_ENUM(NSInteger, BowType) {
     BowTypeRock,
@@ -21,6 +23,18 @@ typedef NS_ENUM(NSInteger, BowType) {
     BowTypeWing
 };
 
+typedef NS_ENUM(NSInteger, BeamType) {
+    BeamTypeRock,
+    BeamTypeFire,
+    BeamTypeIce,
+    BeamTypeWater,
+    BeamTypeBug,
+    BeamTypeAnimal,
+    BeamTypeCloth,
+    BeamTypeGrass,
+    BeamTypeSpace,
+    BeamTypeWing
+};
 
 
 @interface AttrClass : NSObject{

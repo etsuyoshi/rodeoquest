@@ -8,7 +8,7 @@
 
 
 #import "EnemyClass.h"
-#import "UIView+Animation.h"
+
 
 @implementation EnemyClass
 @synthesize enemyType;
@@ -664,28 +664,45 @@ int unique_id;
     
 }
 
--(void)dispAnimalEffect{
+//ライオンの顔が中心から拡大して、左上から右下へ、右上から左下へscrachを３度繰り返す。
+-(void)dispAnimalEffect{//1.0sec interval
     if(hitPoint > 0){
         UIImageView *animalView = [[UIImageView alloc]
                                 initWithFrame:CGRectMake(0, 0, 1, 1)];
+        animalView.center = CGPointMake(iv.bounds.size.width/2,
+                                        iv.bounds.size.height/2);
         animalView.image = [UIImage imageNamed:@"icon_lion.png"];
         animalView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         [iv addSubview:animalView];
-        [self drawScratch:3];
-        [UIView animateWithDuration:0.5f
-                         animations:^{
-                             animalView.frame = CGRectMake(0, 0,
-                                                        iv.bounds.size.width,
-                                                        iv.bounds.size.height);
-                             animalView.transform =
-                             CGAffineTransformRotate(animalView.transform, M_PI_2);
-                         }
-                         completion:^(BOOL finished){
-                             if(finished){
-                                 [self setDamageBySpecialWeapon];
-                                 [animalView removeFromSuperview];
-                             }
-                         }];
+
+        [UIView
+         animateWithDuration:0.5f
+         animations:^{
+             animalView.frame = CGRectMake(0, 0,
+                                           iv.bounds.size.width,
+                                           iv.bounds.size.height);
+             animalView.transform =
+             CGAffineTransformRotate(animalView.transform, M_PI_2);
+         }
+         completion:^(BOOL finished){
+             if(finished){
+//                 [self setDamageBySpecialWeapon];
+//                 [animalView removeFromSuperview];
+//                 
+//                 [self drawScratch:3];
+                 //lionを強調するために少し長い時間拡大して表情を見せる
+                 [UIView
+                  animateWithDuration:0.5f
+                  animations:^{
+                      animalView.transform =
+                      CGAffineTransformMakeScale(1.2f, 1.2f);
+                  }
+                  completion:^(BOOL finished){
+                      [animalView removeFromSuperview];
+                      [self drawScratch:3];
+                  }];
+             }
+         }];
         
     }
 }
@@ -698,21 +715,22 @@ int unique_id;
     [scratchView setAlpha:0.8f];
     [iv addSubview:scratchView];
     
-    [UIView animateWithDuration:0.1f
-                     animations:^{
-                         scratchView.frame = CGRectMake(0, 0,
-                                                      iv.bounds.size.width,
-                                                      iv.bounds.size.height);
-                     }
-                     completion:^(BOOL finished){
-                         if(finished){
-                             
-                             [scratchView removeFromSuperview];
-                             if(times > 0){
-                                 [self drawScratch:times-1];
-                             }
-                         }
-                     }];
+    [UIView
+     animateWithDuration:0.1f
+     animations:^{
+         scratchView.frame = CGRectMake(0, 0,
+                                        iv.bounds.size.width,
+                                        iv.bounds.size.height);
+     }
+     completion:^(BOOL finished){
+         if(finished){
+             
+             [scratchView removeFromSuperview];
+             if(times > 0){
+                 [self drawScratch:times-1];
+             }
+         }
+     }];
 }
 
 -(void)dispRockEffect{
@@ -768,7 +786,7 @@ int unique_id;
     
     if(hitPoint > 0){
         //
-        int numOfParticle = 3;
+        int numOfParticle = 10;
 //        NSMutableArray *arrDamageParticle = [[NSMutableArray alloc]init];
         for(int i = 0;i < numOfParticle ; i++){
             DamageParticleView *damageParticle =
@@ -904,7 +922,7 @@ int unique_id;
         isImpact = beamType;//次から特殊攻撃判定をしないようにする
         switch ((BeamType)beamType) {
             case BeamTypeAnimal:{//done->check:done
-                [NSTimer scheduledTimerWithTimeInterval:0.5f
+                [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                  target:self
                                                selector:@selector(dispAnimalEffect)
                                                userInfo:nil

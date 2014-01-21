@@ -7,7 +7,7 @@
 //
 
 #import "AttrClass.h"
-#import "SpecialBeamClass.h"
+
 
 @implementation AttrClass{
     NSMutableArray *MaxExpArray;
@@ -75,6 +75,8 @@
                  @"break_enemy",
                  @"gold_max",
                  @"time_max",
+                 @"bgm",
+                 @"se",
                  
                  @"weaponID0",
                  @"weaponID1",
@@ -136,7 +138,7 @@
  */
 -(NSDictionary *)getAttrDict{
     
-    //initial value
+    //initial value:最初に起動した時に値が入っていないものは以下の値に設定される
 //    NSMutableArray *valueArray = [[NSMutableArray alloc]init];
     NSMutableArray *valueArray = [NSMutableArray arrayWithObjects:
                                   @"no_name",//name
@@ -151,6 +153,10 @@
                                   @"0",//break_enemy",
                                   @"0",//gold_max",
                                   @"0",//@"time_max,
+                                  @"1",//@"bgm"
+                                  @"1",//@"se"
+                                  
+                                  
                                   @"0",//@"weaponID0",
                                   @"0",//@"weaponID1",
                                   @"0",//@"weaponID2",

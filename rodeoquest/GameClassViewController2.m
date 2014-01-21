@@ -89,7 +89,7 @@ NSMutableArray *ItemArray;
 ScoreBoardClass *ScoreBoard;
 GoldBoardClass *GoldBoard;
 
-PowerGaugeClass *powerGauge;//imageviewを内包
+//PowerGaugeClass *powerGauge;//imageviewを内包
 //UIImageView *iv_powerGauge;
 //UIImageView *iv_pg_ribrary;
 //UIImageView *iv_pg_circle;
@@ -1436,7 +1436,7 @@ int sensitivity;
                 //ヒットポイントのセット
                 //                [powerGauge setValue:[MyMachine getHitPoint]];
                 //パワーゲージの減少
-                [self.view addSubview:[powerGauge getImageView]];
+//                [self.view addSubview:[powerGauge getImageView]];
                 
                 
                 
@@ -3103,11 +3103,20 @@ int sensitivity;
     }
     
     
-    //ターゲットにライブラリを付与
-    powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:0 y_init:0 width:OBJECT_SIZE height:OBJECT_SIZE];
+    //ターゲットにライブラリを付与：敵機撃破後も(エフェクトのためUIVをremovesしないため)表示されたままー＞アニメーションで薄くする？
+    PowerGaugeClass *powerGauge = [[PowerGaugeClass alloc ]init:0 x_init:0 y_init:0 width:OBJECT_SIZE height:OBJECT_SIZE];
     //    [powerGauge getImageView].transform = CGAffineTransformMakeRotation(2*M_PI* (float)(count-1)/60.0f );
     [[EnemyArray[noTargetEnemy] getImageView] addSubview:[powerGauge getImageView]];
     [[EnemyArray[noTargetEnemy] getImageView] bringSubviewToFront:[powerGauge getImageView]];
+    [UIView animateWithDuration:1.5f
+                     animations:^{
+                         [powerGauge getImageView].alpha = 0.0f;
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             [[powerGauge getImageView] removeFromSuperview];//もし消えなければPowerGauge側で設定しても良い
+                         }
+                     }];
     
     //target add ribrary effect
     
@@ -3475,7 +3484,7 @@ int sensitivity;
     }
     
     //test:item
-    //        _item = [[ItemClass alloc] init:ItemTypeWeapon0 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
+//    _item = [[ItemClass alloc] init:ItemTypeDeffense1 x_init:_xItem y_init:_yItem width:ITEM_SIZE height:ITEM_SIZE];
     
     [ItemArray insertObject:_item atIndex:0];
     //現状全てのアイテムは手前に進んで消えるので先に発生(FIFO)したものから消去

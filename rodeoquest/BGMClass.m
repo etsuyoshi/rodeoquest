@@ -7,7 +7,6 @@
 //
 
 #import "BGMClass.h"
-#import <AVFoundation/AVFoundation.h>
 
 @implementation BGMClass
 

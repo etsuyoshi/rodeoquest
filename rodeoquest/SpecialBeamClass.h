@@ -12,18 +12,7 @@
 #import "ViewExplode.h"
 
 
-typedef NS_ENUM(NSInteger, BeamType) {
-    BeamTypeRock,
-    BeamTypeFire,
-    BeamTypeIce,
-    BeamTypeWater,
-    BeamTypeBug,
-    BeamTypeAnimal,
-    BeamTypeCloth,
-    BeamTypeGrass,
-    BeamTypeSpace,
-    BeamTypeWing
-};
+
 
 
 
