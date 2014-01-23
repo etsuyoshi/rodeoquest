@@ -708,26 +708,49 @@ int unique_id;
 }
 
 -(void)drawScratch:(int)times{
-    UIImageView *scratchView = [[UIImageView alloc]
+    UIImageView *scratchView_horizon = [[UIImageView alloc]
                               initWithFrame:CGRectMake(0, 0, 1, iv.bounds.size.height)];
-    scratchView.image = [UIImage imageNamed:@"icon_scratch.png"];
+    scratchView_horizon.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
 //    scratchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
-    [scratchView setAlpha:0.8f];
-    [iv addSubview:scratchView];
+    [scratchView_horizon setAlpha:0.8f];
+    [iv addSubview:scratchView_horizon];
+    
+    
+    UIImageView *scratchView_vert = [[UIImageView alloc]
+                                        initWithFrame:CGRectMake(0, 0, iv.bounds.size.width, 1)];
+    scratchView_vert.image = [UIImage imageNamed:@"icon_scratch_vert.png"];
+    [scratchView_vert setAlpha:0.8f];
+    [iv addSubview:scratchView_vert];
+    
+    
+
     
     [UIView
      animateWithDuration:0.1f
      animations:^{
-         scratchView.frame = CGRectMake(0, 0,
+         scratchView_horizon.frame = CGRectMake(0, 0,
                                         iv.bounds.size.width,
                                         iv.bounds.size.height);
      }
      completion:^(BOOL finished){
          if(finished){
              
-             [scratchView removeFromSuperview];
+             [scratchView_horizon removeFromSuperview];
              if(times > 0){
-                 [self drawScratch:times-1];
+                 
+                 
+                 [UIView animateWithDuration:0.1f
+                                  animations:^{
+                                      scratchView_vert.frame =
+                                      CGRectMake(0, 0,
+                                                 iv.bounds.size.width,
+                                                 iv.bounds.size.height);
+                                  }
+                                  completion:^(BOOL finished1){
+                                      if(finished1){
+                                          [self drawScratch:times-1];
+                                      }
+                                  }];
              }
          }
      }];
