@@ -79,6 +79,9 @@ int unique_id;
             break;
         }
     }
+    
+    //test:
+    hitPoint = 500;
 //    iv.alpha = 0.5;
     
     
@@ -676,7 +679,7 @@ int unique_id;
         [iv addSubview:animalView];
 
         [UIView
-         animateWithDuration:0.5f
+         animateWithDuration:0.1f//test:0.5f
          animations:^{
              animalView.frame = CGRectMake(0, 0,
                                            iv.bounds.size.width,
@@ -692,7 +695,7 @@ int unique_id;
 //                 [self drawScratch:3];
                  //lionを強調するために少し長い時間拡大して表情を見せる
                  [UIView
-                  animateWithDuration:0.5f
+                  animateWithDuration:0.5f//test:0.5f
                   animations:^{
                       animalView.transform =
                       CGAffineTransformMakeScale(1.2f, 1.2f);
@@ -708,33 +711,55 @@ int unique_id;
 }
 
 -(void)drawScratch:(int)times{
-    UIImageView *scratchView_horizon = [[UIImageView alloc]
+    UIImageView *scratchView = [[UIImageView alloc]
                               initWithFrame:CGRectMake(0, 0, 1, iv.bounds.size.height)];
-    scratchView_horizon.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
+    scratchView.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
+    
+//    scratchView.layer.anchorPoint = CGPointMake(iv.bounds.size.width/2,
+//                                                iv.bounds.size.height/2);
 //    scratchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
-    [scratchView_horizon setAlpha:0.8f];
+    [scratchView setAlpha:0.8f];
     //45度回転させる
-    scratchView_horizon.transform =
+    scratchView.transform =
     CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
     
-    [iv addSubview:scratchView_horizon];
+    [iv addSubview:scratchView];
     
     
     
     [UIView
      animateWithDuration:0.1f
      animations:^{
-         scratchView_horizon.frame = CGRectMake(0, 0,
+         scratchView.frame = CGRectMake(0, 0,
                                         iv.bounds.size.width,
                                         iv.bounds.size.height);
      }
      completion:^(BOOL finished){
          if(finished){
              
-             [scratchView_horizon removeFromSuperview];
-             if(times > 0){
-                 [self drawScratch:times-1];
-             }
+             [scratchView removeFromSuperview];
+             
+             scratchView.transform =
+             CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);
+             scratchView.frame =
+             CGRectMake(iv.bounds.size.width, 0, iv.bounds.size.width, iv.bounds.size.height);
+             [iv addSubview:scratchView];
+             
+             
+             [UIView
+              animateWithDuration:0.1f
+              animations:^{
+                  scratchView.frame =
+                  CGRectMake(0, 0, iv.bounds.size.width, iv.bounds.size.height);
+              }
+              completion:^(BOOL finished){
+                  if(finished){
+                      [scratchView removeFromSuperview];
+                      if(times > 0){
+                          [self drawScratch:times-1];
+                      }
+                  }
+              }];
          }
      }];
 }
