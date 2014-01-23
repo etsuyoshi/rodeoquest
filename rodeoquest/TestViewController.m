@@ -23,7 +23,7 @@
 //#define BTNPRESS_TEST
 //#define COOLBUTTON_TEST
 //#define SPECIALWEAPON_TEST
-#define PARTICLE_TEST
+//#define PARTICLE_TEST
 //#define KIRA_Test
 //#define EXPLODE_TEST
 //#define VIEWWITHEFFECTLEVELUP_TEST
@@ -31,6 +31,7 @@
 //#define PAYPRODUCTBUTTON_TEST
 //#define LOCATION_TEST
 //#define SPWeapon_TEST
+#define Animation_TEST
 
 #import <CoreLocation/CoreLocation.h>
 #import "LDProgressView.h"
@@ -145,18 +146,15 @@ int tempCount = 0;
     
 	// Do any additional setup after loading the view.
 //    
-//    uiv = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];//赤、大正方形
-//    [uiv setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.5f]];
-//    [self.view addSubview:uiv];
-//    
-//    
-//    
-//    uiv.userInteractionEnabled = YES;
-//    UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
-//                                                          action:@selector(onFlickedFrame:)];
-//    
-//    [uiv addGestureRecognizer:flick_frame];
-//    
+    uiv = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];//赤、大正方形
+    [uiv setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.5f]];
+    [self.view addSubview:uiv];
+    uiv.userInteractionEnabled = YES;
+    UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                          action:@selector(onFlickedFrame:)];
+    
+    [uiv addGestureRecognizer:flick_frame];
+//
 //    
 //    NSMutableArray *ar = [NSMutableArray arrayWithObjects:
 ////                           [NSValue valueWithCGPoint:CGPointMake(0, 100)],
@@ -1145,6 +1143,46 @@ int tempCount = 0;
         
         
         
+    }
+    
+#elif defined Animation_TEST
+    if(counter == 0){
+        
+        
+        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 5, 200)];
+        view.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
+        [view setBackgroundColor:[UIColor colorWithRed:0 green:0.5 blue:0.3f alpha:1.0f]];
+        view.layer.anchorPoint = CGPointMake(0,0);//左端を中心に回転:但しview位置も変化してしまう
+        view.frame = CGRectMake(100, 100, 5, 200);//anchorPointを設定することでframe位置も変化してしまうため再度設定
+        view.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
+        [self.view addSubview:view];
+        
+        
+        //最終位置
+        UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 200, 200)];
+        [view1 setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.8f]];
+        [self.view addSubview:view1];
+        
+        //初期位置
+        UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 5, 200)];
+        [view2 setBackgroundColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.3f alpha:0.4f]];
+//        view2.layer.anchorPoint = CGPointMake(0, 0);//左端を中心に回転
+//        view2.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
+        [self.view addSubview:view2];
+        
+        [UIView
+         animateWithDuration:13.0f
+         animations:^{
+             view.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
+//             view.frame = CGRectMake(100, 100, 20, 200);
+//             view.transform =
+//             CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
+         }
+         completion:^(BOOL finished){
+             if(finished){
+                 
+             }
+         }];
     }
 #else
 //    NSLog(@"aaa");
