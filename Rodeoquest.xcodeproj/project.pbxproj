@@ -27,7 +27,6 @@
 		340A4641181E412200D9B005 /* ClothBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A463D181E412200D9B005 /* ClothBow.png */; };
 		340A4642181E412200D9B005 /* RockBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A463E181E412200D9B005 /* RockBow.png */; };
 		340A4643181E412200D9B005 /* SpaceBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A463F181E412200D9B005 /* SpaceBow.png */; };
-		340BC492188E294500E704C9 /* icon_scratch_vert.png in Resources */ = {isa = PBXBuildFile; fileRef = 340BC491188E294500E704C9 /* icon_scratch_vert.png */; };
 		340C3B8418549AB30017BBBE /* SpecialBeamClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 340C3B8318549AB30017BBBE /* SpecialBeamClass.m */; };
 		340C3B9118549DDD0017BBBE /* Animal.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8618549DDD0017BBBE /* Animal.png */; };
 		340C3B9218549DDD0017BBBE /* Bug.png in Resources */ = {isa = PBXBuildFile; fileRef = 340C3B8718549DDD0017BBBE /* Bug.png */; };
@@ -455,7 +454,6 @@
 		340A463D181E412200D9B005 /* ClothBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClothBow.png; sourceTree = "<group>"; };
 		340A463E181E412200D9B005 /* RockBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RockBow.png; sourceTree = "<group>"; };
 		340A463F181E412200D9B005 /* SpaceBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceBow.png; sourceTree = "<group>"; };
-		340BC491188E294500E704C9 /* icon_scratch_vert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_scratch_vert.png; sourceTree = "<group>"; };
 		340C3B8218549AB30017BBBE /* SpecialBeamClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialBeamClass.h; sourceTree = "<group>"; };
 		340C3B8318549AB30017BBBE /* SpecialBeamClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialBeamClass.m; sourceTree = "<group>"; };
 		340C3B8618549DDD0017BBBE /* Animal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Animal.png; sourceTree = "<group>"; };
@@ -1590,7 +1588,6 @@
 				34B7A35A1884FD3600E1D960 /* leaf03.png */,
 				34B7A3521884F46600E1D960 /* icon_lion.png */,
 				34B7A3501884EB6F00E1D960 /* icon_scratch_horizon.png */,
-				340BC491188E294500E704C9 /* icon_scratch_vert.png */,
 				34A6358018839ACB00722F81 /* wing_swirl.png */,
 				34A6357E188396E100722F81 /* wind_effect.png */,
 				34A6357C18837B2E00722F81 /* ice_icon.png */,
@@ -2070,7 +2067,6 @@
 				348D636017FE1A9D00A3049B /* ribrary.png in Resources */,
 				348C441418669C300029D09B /* W_AnimalBow.png in Resources */,
 				3411FB7217FED1DF001D1491 /* powerGauge_pt0.png in Resources */,
-				340BC492188E294500E704C9 /* icon_scratch_vert.png in Resources */,
 				3411FB7317FED1DF001D1491 /* powerGauge_pt1.png in Resources */,
 				348C444418669C640029D09B /* re_WaterBow.png in Resources */,
 				3411FB7417FED1DF001D1491 /* powerGauge_pt2.png in Resources */,

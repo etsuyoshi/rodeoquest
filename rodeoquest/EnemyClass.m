@@ -713,17 +713,13 @@ int unique_id;
     scratchView_horizon.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
 //    scratchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
     [scratchView_horizon setAlpha:0.8f];
+    //45度回転させる
+    scratchView_horizon.transform =
+    CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
+    
     [iv addSubview:scratchView_horizon];
     
     
-    UIImageView *scratchView_vert = [[UIImageView alloc]
-                                        initWithFrame:CGRectMake(0, 0, iv.bounds.size.width, 1)];
-    scratchView_vert.image = [UIImage imageNamed:@"icon_scratch_vert.png"];
-    [scratchView_vert setAlpha:0.8f];
-    [iv addSubview:scratchView_vert];
-    
-    
-
     
     [UIView
      animateWithDuration:0.1f
@@ -737,20 +733,7 @@ int unique_id;
              
              [scratchView_horizon removeFromSuperview];
              if(times > 0){
-                 
-                 
-                 [UIView animateWithDuration:0.1f
-                                  animations:^{
-                                      scratchView_vert.frame =
-                                      CGRectMake(0, 0,
-                                                 iv.bounds.size.width,
-                                                 iv.bounds.size.height);
-                                  }
-                                  completion:^(BOOL finished1){
-                                      if(finished1){
-                                          [self drawScratch:times-1];
-                                      }
-                                  }];
+                 [self drawScratch:times-1];
              }
          }
      }];
