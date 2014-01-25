@@ -711,50 +711,61 @@ int unique_id;
 }
 
 -(void)drawScratch:(int)times{
-    UIImageView *scratchView = [[UIImageView alloc]
-                              initWithFrame:CGRectMake(0, 0, 1, iv.bounds.size.height)];
-    scratchView.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
-    
-//    scratchView.layer.anchorPoint = CGPointMake(iv.bounds.size.width/2,
-//                                                iv.bounds.size.height/2);
-//    scratchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
-    [scratchView setAlpha:0.8f];
+    UIImageView *scratchViewFromLeft =
+    [[UIImageView alloc]
+     initWithFrame:CGRectMake(0, -iv.bounds.size.height/2,
+                              1, iv.bounds.size.height)];
+    scratchViewFromLeft.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
+    [scratchViewFromLeft setAlpha:0.8f];
     //45度回転させる
-    scratchView.transform =
-    CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
+    scratchViewFromLeft.transform =
+    CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
+    [iv addSubview:scratchViewFromLeft];
     
-    [iv addSubview:scratchView];
-    
-    
+    UIImageView *scratchViewFromRight =
+    [[UIImageView alloc]
+     initWithFrame:CGRectMake(iv.bounds.size.width, -iv.bounds.size.height/2,
+                              1, iv.bounds.size.height)];
+    scratchViewFromRight.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
+    [scratchViewFromRight setAlpha:0.8f];
+    scratchViewFromRight.transform =
+    CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);//反時計回り
+    //addSubviewは第一アニメーションが終了した後
     
     [UIView
      animateWithDuration:0.1f
      animations:^{
-         scratchView.frame = CGRectMake(0, 0,
-                                        iv.bounds.size.width,
-                                        iv.bounds.size.height);
+         scratchViewFromLeft.frame =
+         CGRectMake(iv.bounds.size.width/2,
+                    iv.bounds.size.height/2-iv.bounds.size.height/sqrt(2),
+                    0, iv.bounds.size.height/2+iv.bounds.size.height/sqrt(2));
+         scratchViewFromLeft.transform =
+         CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
+         
      }
      completion:^(BOOL finished){
          if(finished){
+             //第一アニメーションに使用したビューの消去
+             [scratchViewFromLeft removeFromSuperview];
              
-             [scratchView removeFromSuperview];
-             
-             scratchView.transform =
-             CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);
-             scratchView.frame =
-             CGRectMake(iv.bounds.size.width, 0, iv.bounds.size.width, iv.bounds.size.height);
-             [iv addSubview:scratchView];
-             
+             //第二アニメーションに使用するビューの表示
+             [iv addSubview:scratchViewFromRight];
              
              [UIView
               animateWithDuration:0.1f
               animations:^{
-                  scratchView.frame =
-                  CGRectMake(0, 0, iv.bounds.size.width, iv.bounds.size.height);
+                  
+                  scratchViewFromRight.frame =
+                  CGRectMake(iv.bounds.size.width/2,
+                             iv.bounds.size.height/2-iv.bounds.size.height/sqrt(2),
+                             0, iv.bounds.size.height/2+iv.bounds.size.height/sqrt(2));
+                  scratchViewFromRight.transform =
+                  CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);
               }
               completion:^(BOOL finished){
                   if(finished){
-                      [scratchView removeFromSuperview];
+                      [scratchViewFromRight removeFromSuperview];
+                      
                       if(times > 0){
                           [self drawScratch:times-1];
                       }
@@ -762,6 +773,8 @@ int unique_id;
               }];
          }
      }];
+    
+    
 }
 
 -(void)dispRockEffect{

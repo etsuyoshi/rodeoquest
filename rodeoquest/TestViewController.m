@@ -1149,37 +1149,51 @@ int tempCount = 0;
     if(counter == 0){
         
         
-        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 5, 200)];
+//        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 5, 200)];
+        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(100, 50, 1, 100)];
         view.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
         [view setBackgroundColor:[UIColor colorWithRed:0 green:0.5 blue:0.3f alpha:1.0f]];
-        view.layer.anchorPoint = CGPointMake(0,0);//左端を中心に回転:但しview位置も変化してしまう
-        view.frame = CGRectMake(100, 100, 5, 200);//anchorPointを設定することでframe位置も変化してしまうため再度設定
         view.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
         [self.view addSubview:view];
         
         
+        UIImageView *view2 = [[UIImageView alloc] initWithFrame:CGRectMake(200, 50, 1, 100)];
+        view2.image = [UIImage imageNamed:@"icon_scratch_horizon.png"];
+        [view2 setBackgroundColor:[UIColor colorWithRed:0 green:0.5 blue:0.3f alpha:1.0f]];
+        view2.transform = CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);//anti時計回り
+        [self.view addSubview:view2];
+        
+        
+        
+        
         //最終位置
-        UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 200, 200)];
+        UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
         [view1 setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.8f]];
         [self.view addSubview:view1];
         
-        //初期位置
-        UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 5, 200)];
-        [view2 setBackgroundColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.3f alpha:0.4f]];
-//        view2.layer.anchorPoint = CGPointMake(0, 0);//左端を中心に回転
-//        view2.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
-        [self.view addSubview:view2];
-        
         [UIView
-         animateWithDuration:13.0f
+         animateWithDuration:3.0f
          animations:^{
-             view.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
-//             view.frame = CGRectMake(100, 100, 20, 200);
-//             view.transform =
-//             CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
+//             view.transform = CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);//時計回り
+             view.frame = CGRectMake(150, 150 - 100/sqrt(2),
+                                     0, 50 + 100/sqrt(2));
+             view.transform =
+             CGAffineTransformMakeRotation(45.0f*M_PI/180.0f);
          }
          completion:^(BOOL finished){
              if(finished){
+                 [UIView
+                  animateWithDuration:3.0f
+                  animations:^{
+                      view2.frame = CGRectMake(150, 150 - 100/sqrt(2),
+                                              0, 50 + 100/sqrt(2));
+                      view2.transform =
+                      CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);
+                  }
+                  completion:^(BOOL finished){
+                      
+                  }];
+                 
                  
              }
          }];

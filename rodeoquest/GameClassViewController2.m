@@ -810,13 +810,14 @@ int sensitivity;
             
             isGameMode = false;
             
+            //startDateからこの時点までの時間をゲーム時間として定義(attr:time_maxと比較、必要に応じて格納)
+            time_game = (int)[[NSDate date] timeIntervalSinceDate:startDate];//時間を計測して格納する:exitProcessにおいて使用する
+            
             //            [self exitProcess];
             //爆発を描画するために少し遅らせて実行
             [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(exitProcess) userInfo:nil repeats:NO];//低スピード再開
             [self showActivityIndicator];
             
-            //startDateからこの時点までの時間をゲーム時間として定義(attr:time_maxと比較、必要に応じて格納)
-            time_game = (int)[[NSDate date] timeIntervalSinceDate:startDate];//時間を計測して格納する
             return;
         }
     }
@@ -2085,12 +2086,13 @@ int sensitivity;
     //描画用に使うため、更新前データを保存しておく
     //    AttrClass *attr = [[AttrClass alloc]init];
     int beforeLevel = [[attr getValueFromDevice:@"level"] intValue];
-    int beforeExp = [[attr getValueFromDevice:@"exp"] intValue];
+    int _bonus = [self getBonus:time_game];//飛行時間(time_game：既に格納済)に応じたボーナス：time_gameを引数とするシグモイド関数を定義
+    int beforeExp = [[attr getValueFromDevice:@"exp"] intValue] + _bonus;
     int go_component_width = 250;
     
     int _score = [ScoreBoard getScore];
     int _gold = [GoldBoard getScore];
-    int _bonus = 100;//飛行時間(time_game：既に格納済)に応じたボーナス：time_gameを引数とするシグモイド関数を定義
+    
     
     //全体のフレーム
     UIView *view_go = [CreateComponentClass createView];
@@ -2512,8 +2514,6 @@ int sensitivity;
                     
                     //サーバーにデータ登録
                     [self performSelector:@selector(sendRequestToServer) withObject:nil afterDelay:1.0f];
-                    
-                    
                     
                 }
             });
@@ -3851,4 +3851,17 @@ int sensitivity;
     return _value;
 }
 
+
+-(int)getBonus:(int)flightTime{
+    int _bonus = 0;
+    if(flightTime > 0){
+        _bonus = flightTime*2;
+        
+        return _bonus;
+    }
+    
+    return 0;
+}
+
 @end
+
