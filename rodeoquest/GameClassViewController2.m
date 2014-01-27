@@ -756,7 +756,7 @@ int sensitivity;
     NSLog(@"yield enemy");
 #endif
     if(gameSecond2 > 0.3f && timeIntervalEnemy <= 0){//0.3秒後で、かつ最後に生成した敵を倒してから３秒以上が経過していれば敵を開始
-        [self yieldEnemy];
+        [self yieldEnemy];//test:enemy
     }
 #ifdef log
     NSLog(@"[MyMachine getIsAlive] && isTouched");

@@ -31,7 +31,8 @@
 //#define PAYPRODUCTBUTTON_TEST
 //#define LOCATION_TEST
 //#define SPWeapon_TEST
-#define Animation_TEST
+//#define Animation_TEST
+#define BLOG_UP_TEST
 
 #import <CoreLocation/CoreLocation.h>
 #import "LDProgressView.h"
@@ -53,6 +54,7 @@
 #import "UIView+Animation.h"
 #import "Effect.h"
 #import "BackGroundClass2.h"
+#import "MyMachineClass.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface TestViewController ()<CLLocationManagerDelegate>
@@ -145,15 +147,20 @@ int tempCount = 0;
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
-//    
-    uiv = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];//赤、大正方形
-    [uiv setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.5f]];
-    [self.view addSubview:uiv];
-    uiv.userInteractionEnabled = YES;
-    UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                          action:@selector(onFlickedFrame:)];
+//
     
-    [uiv addGestureRecognizer:flick_frame];
+    //counter初期化用ブロック
+//    uiv = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];//赤、大正方形
+//    [uiv setBackgroundColor:[UIColor colorWithRed:0.5f green:0 blue:0 alpha:0.5f]];
+//    [self.view addSubview:uiv];
+//    uiv.userInteractionEnabled = YES;
+//    UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
+//                                                          action:@selector(onFlickedFrame:)];
+//    
+//    [uiv addGestureRecognizer:flick_frame];
+    
+    
+    
 //
 //    
 //    NSMutableArray *ar = [NSMutableArray arrayWithObjects:
@@ -362,11 +369,15 @@ int tempCount = 0;
 }
 
 - (void)onFlickedFrame:(UIPanGestureRecognizer*)gr {
-
+//    NSLog(@"onflicked : gr");
+    
     CGPoint point = [gr translationInView:uiv];
     
     CGPoint movedPoint = CGPointMake(uiv.center.x + point.x, uiv.center.y + point.y);
     uiv.center = movedPoint;
+    NSLog(@"uiv.x=%f, uiv.y=%f",
+          uiv.center.x,
+          uiv.center.y);
     [gr setTranslation:CGPointZero inView:uiv];//ここでself.viewを指定するのではなく、myMachineをセットする
 
     // 指が移動したとき、上下方向にビューをスライドさせる
@@ -374,7 +385,7 @@ int tempCount = 0;
     }else if (gr.state == UIGestureRecognizerStateEnded) {//指を離した時
     }
     
-    counter = 0;
+//    counter = 0;
 }
 
 - (void)time:(NSTimer*)timer{
@@ -1198,6 +1209,48 @@ int tempCount = 0;
              }
          }];
     }
+#elif defined BLOG_UP_TEST
+    
+    if(counter == 0){
+//        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(100,100,100,100)];
+//        iv.image = nil;
+//        [self.view addSubview:iv];
+        CGRect rect = CGRectMake(0, 0, 70, 70);
+        uiv = (UIImageView *)[[UIImageView alloc]initWithFrame:rect];
+
+        NSArray *imgArray = [[NSArray alloc] initWithObjects:
+                             [UIImage imageNamed:@"player.png"],
+                             [UIImage imageNamed:@"player2.png"],
+                             [UIImage imageNamed:@"player3.png"],
+                             [UIImage imageNamed:@"player4.png"],
+                             [UIImage imageNamed:@"player4.png"],
+                             [UIImage imageNamed:@"player3.png"],
+                             [UIImage imageNamed:@"player2.png"],
+                             [UIImage imageNamed:@"player.png"],
+                             nil];
+        ((UIImageView *)uiv).animationImages = imgArray;
+        ((UIImageView *)uiv).animationRepeatCount = 0;
+        ((UIImageView *)uiv).animationDuration = 1.0f; // アニメーション全体で1秒（＝各間隔は0.5秒）
+        [((UIImageView *)uiv) startAnimating]; // アニメーション開始
+        
+        [self.view addSubview:uiv];
+        
+        uiv.center = CGPointMake(self.view.bounds.size.width/2,
+                                self.view.bounds.size.height/2);
+        
+        uiv.userInteractionEnabled = YES;
+        UIPanGestureRecognizer *flick_frame = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                                      action:@selector(onFlickedFrame:)];
+        
+        [uiv addGestureRecognizer:flick_frame];
+        
+        
+
+        
+//        MyMachineClass *me = [[MyMachineClass alloc]init];
+//        [self.view addSubview:[me getImageView]];
+    }
+    
 #else
 //    NSLog(@"aaa");
     //nothing
