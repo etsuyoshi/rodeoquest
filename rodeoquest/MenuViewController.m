@@ -26,6 +26,10 @@
 
 //#define AD_UPPER
 
+
+//コインやルビーの購入機能を付ける場合はコメントアウトを外す
+//#define PaymentAllowMode
+
 #define MARGIN_UPPER_COMPONENT 5
 #ifdef AD_UPPER
     #define Y_MOST_UPPER_COMPONENT 53//広告縦幅50
@@ -273,14 +277,15 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
 
 //    imageFile = [[NSMutableArray alloc]init];
 //    _imageFile = [NSArray arrayWithObjects:@"red.png", @"blue_item_yuri_big.png", nil];
+#ifdef PaymentAllowMode
     arrNoImage = [NSMutableArray arrayWithObjects:
-                  [NSArray arrayWithObjects:
+                  [NSArray arrayWithObjects://上段
                        [NSNumber numberWithInt:ButtonMenuImageTypeWeapon],
                        [NSNumber numberWithInt:ButtonMenuImageTypeDefense],
                        [NSNumber numberWithInt:ButtonMenuImageTypeItem],//item-time-up
                        [NSNumber numberWithInt:ButtonMenuImageTypeWpnUp],//weapon-time-up
                        nil],
-                      [NSArray arrayWithObjects:
+                      [NSArray arrayWithObjects://下段
                        [NSNumber numberWithInt:ButtonMenuImageTypeInn],
                        [NSNumber numberWithInt:ButtonMenuImageTypeCoin],
                        [NSNumber numberWithInt:ButtonMenuImageTypeSet],
@@ -288,20 +293,52 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
                        nil],
                       nil];
     arrBtnBack = [NSMutableArray arrayWithObjects:
-                  [NSArray arrayWithObjects:
+                  [NSArray arrayWithObjects://上段
                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    nil],
-                  [NSArray arrayWithObjects:
+                  [NSArray arrayWithObjects://下段
                    [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
                    [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
                    [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
                    [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
                    nil],
                   nil];
-                   
+#else
+    arrNoImage = [NSMutableArray arrayWithObjects:
+                  [NSArray arrayWithObjects://上段
+                   [NSNumber numberWithInt:ButtonMenuImageTypeWeapon],
+                   [NSNumber numberWithInt:ButtonMenuImageTypeDefense],
+                   [NSNumber numberWithInt:ButtonMenuImageTypeItem],//item-time-up
+                   [NSNumber numberWithInt:ButtonMenuImageTypeWpnUp],//weapon-time-up
+                   nil],
+                  [NSArray arrayWithObjects://下段
+//                   [NSNumber numberWithInt:ButtonMenuImageTypeInn],
+//                   [NSNumber numberWithInt:ButtonMenuImageTypeCoin],
+                   [NSNumber numberWithInt:ButtonMenuImageTypeSet],
+                   [NSNumber numberWithInt:ButtonMenuImageTypeDemand],
+                   nil],
+                  nil];
+    arrBtnBack = [NSMutableArray arrayWithObjects:
+                  [NSArray arrayWithObjects://上段
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+                   nil],
+                  [NSArray arrayWithObjects://下段
+//                   [NSNumber numberWithInt:ButtonMenuBackTypeGreen],
+//                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeOrange],
+                   [NSNumber numberWithInt:ButtonMenuBackTypeBlue],
+                   nil],
+                  nil];
+    
+    
+#endif
+    
 //    NSLog(@"imageFileArray initialization complete");
     
 //    tagArray = [NSMutableArray arrayWithObjects:
@@ -652,6 +689,8 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     //    [tv_timer setContentVerticalAlignment:UIControlContentHorizontalAlignmentCenter];
     [viewForTimer addSubview:tv_timer];
     
+    
+#ifdef PaymentAllowMode
     //時間を買うためのコイン購入ページへの誘導イベントの駆動コンポーネント
     UIView *viewTimer =
     [CreateComponentClass
@@ -661,7 +700,7 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
      target:self
      selector:@"imageTapped:"];
     [self.view addSubview:viewTimer];
-    
+#endif
     
     
     //invitation of friends by app-socially
@@ -783,6 +822,7 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
 
 }
 -(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
 //    [self.view.subviews removeFromSuperview];
     
     
@@ -2048,9 +2088,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             NSLog(@"secondForLife:%d, passedSecond:%d", secondForLife, passedSecond);
             
             //lifeGameの更新:短く書くと分かりにくい
+            //やってること
+            //経過時間の判定
+            //lifeGameの更新:経過した秒数に対応する分だけ加算
+            //secondForLifeの更新:経過した秒数を加算し、lifeGameに加算された分の相当分を減算
+            //※lifeGameに加算した分の秒数(secondForLife)減算分は１ライフで360秒(maxSecondForLife)
             if(secondForLife < -maxSecondForLife * (maxLifeGame-1)){//30分以上経過
                 lifeGame = MIN(lifeGame + (maxLifeGame-0), maxLifeGame);
-                secondForLife += (maxLifeGame-1) * maxSecondForLife;
+                secondForLife += ((maxLifeGame-1) * maxSecondForLife);
                 //以下、残りの経過時間(secondForLifeの負値はmaxSecondForLifeからの経過時間とする)
                 secondForLife = maxSecondForLife + secondForLife;
                 //結局上記２行によってsecondForLife += maxLifeGame * maxSecondForLifeで良い

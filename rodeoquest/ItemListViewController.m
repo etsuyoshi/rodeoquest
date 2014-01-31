@@ -17,6 +17,16 @@
  */
 //
 
+//arrCostには初期値だけ代入しておき、サブクラスで実際の数字を代入する
+//一度アイテムを購入すると次の購入コストのそのx(５個までは５倍、それ以降は２倍)倍にする
+
+
+//コインの購入機能の付与(機能を許可する場合はコメントアウトを外す)
+//#define PaymentAllowMode
+
+//アイテムの購入数上限
+#define LimitNumBuyItem 12
+
 #import "ItemListViewController.h"
 
 @interface ItemListViewController ()
@@ -412,6 +422,28 @@ void (^actNoForCoinShort)(void) = ^(void) {
 //    NSLog(@"end animation at list view");
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //サブクラスで更新された表示文字(コスト)の初期値を保有数によってアップデート
+    
+    for(int i = 0; i < [arrCost count];i++){
+        //初期コストを取得
+        int cost = [arrCost[i] integerValue];
+        
+        //costを変換：５個までは５倍、それ以降は２倍
+        
+        
+        //コスト更新
+        arrCost[i] = [NSString stringWithFormat:@"%d", cost];
+        
+        //説明文の更新
+        arrTv[i] = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
+                    arrTv[i], arrCost[i],nameCurrency];
+    }
+    
+    
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
@@ -510,7 +542,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [self oscillateTextViewGold:9];
         
         //コインはゲームで取得するか購入することができますメッセージダイアログボックス
-        
+#ifdef PaymentAllowMode
         viewForCoinShort =
         [CreateComponentClass
          createAlertView:CGRectMake(10, 10,
@@ -531,6 +563,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
         CGPointMake(self.view.bounds.size.width/2,
                     self.view.bounds.size.height/2);
         [self.view addSubview:viewForCoinShort];
+#endif
         
     }
     
