@@ -253,11 +253,12 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                            cashFrameHeight)];
     [self.view addSubview:cashView];
     
+#ifdef PaymentAllowMode
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(pushedCashFrame:)];
     [cashView addGestureRecognizer:singleFingerTap];
-    
+#endif
     
     //cash image
     //    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
