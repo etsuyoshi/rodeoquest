@@ -47,7 +47,7 @@
                    nil];
         
         
-        arrTv = [NSMutableArray arrayWithObjects:
+        arrStrTvOriginal = [NSMutableArray arrayWithObjects:
                  @"次回以降全てのゲームにおいて、シールドアイテム獲得後の耐久回数を現状に+1上乗せする。",//1=10coin
                  @"次回のゲームにのみ、シールドアイテム獲得後のダメージ耐久回数を現状の２倍に長持ちさせる。",//1=9coin
                  @"次回以降全てのゲームにおいて、バリアアイテム獲得後の耐久時間を現状に0.5秒上乗せする。",//1=8coin

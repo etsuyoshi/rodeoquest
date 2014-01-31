@@ -79,7 +79,7 @@ UIView *superViewForEquipWpn;
                   nil];
                   
                   
-        arrTv = [NSMutableArray arrayWithObjects:
+        arrStrTvOriginal = [NSMutableArray arrayWithObjects:
                  @"着弾時のダメージはわずかでも、その後燃えさかる炎により継続的にダメージを与えることがあります。特に寒い地域で大ダメージを与えます。",
                  @"岩石の衝突により通常弾以上の物理ダメージを与えます。レベルアップにより継続的にダメージを与えることが可能になります。",
                  @"通常の敵に中ダメージを与えます。特に水属性以外の敵に大きなダメージを与えます。",
@@ -712,5 +712,27 @@ UIView *superViewForEquipWpn;
         ivIcon.image = [UIImage imageNamed:[imageArrayWithWhite objectAtIndex:_noOfItemList]];
         [uvOnScroll addSubview:ivIcon];
     }
+}
+
+//overlode from ItemListViewCntroller：画面表示時と購入処理後に実行される
+-(void)updateTextViewInListAt:(int)i{
+    //親クラスでは常に「xx枚のコインが必要です」という文言を追加していたが、このクラスでは重複購入はないので、
+    //購入済のアイテムについては必要コイン枚数については表示しない
+    NSString *strDisp;
+    if([[attr getValueFromDevice:@"aaa"] integerValue] > 0){
+        strDisp = [NSString stringWithFormat:@"%@\n購入済です。",
+                   arrStrTvOriginal[i]];
+    }else{
+        
+        strDisp = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
+                             arrStrTvOriginal[i], arrCost[i],nameCurrency];
+        
+    }
+    ((UITextView *)arrTv[i]).text = strDisp;
+    
+}
+
+-(void)updateIncreasedCost:(int)_index{
+    //do nothing:購入是非を問わず価格の更新はしない。
 }
 @end

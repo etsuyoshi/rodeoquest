@@ -31,12 +31,13 @@ NSString *idCurrency;//消費対価：@"gold" or @"ruby"
     NSMutableArray *arrIv;
     NSMutableArray *arrIv2;
     NSMutableArray *arrIvType;
-    NSMutableArray *arrTv;
+    NSMutableArray *arrStrTvOriginal;//string of textView
+//    NSMutableArray *arrStrTv;
+    NSMutableArray *arrTv;//textView
     NSMutableArray *arrCost;
     NSMutableArray *arrTitle;
     NSMutableArray *itemList;
     NSMutableArray *arrBtnBuy;//list of UIButton
-    
     
     
     
@@ -85,4 +86,7 @@ NSString *idCurrency;//消費対価：@"gold" or @"ruby"
 //in order to use :subclass method
 -(void)buyBtnPressed:(id)sender;
 -(void)oscillateTextViewGold:(int)count;
+
+-(void)updateTextViewInListAt:(int)i;
+-(void)updateIncreasedCost:(int)_index;
 @end

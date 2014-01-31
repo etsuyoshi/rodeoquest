@@ -90,12 +90,13 @@ void (^actNoForCoinShort)(void) = ^(void) {
                      @3,//max:static+animation
                      nil];
         //コメント
-        arrTv = [NSMutableArray arrayWithObjects:
+        arrStrTvOriginal = [NSMutableArray arrayWithObjects:
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  @"close.png",
                  nil];
+        
         //価格
         arrCost = [NSMutableArray arrayWithObjects:
                    @"100",
@@ -201,35 +202,40 @@ void (^actNoForCoinShort)(void) = ^(void) {
     UIGraphicsEndImageContext();
     self.view.backgroundColor = [UIColor colorWithPatternImage:image];
     
-    
+    //textView自体を格納する配列の初期化(配置位置指定等の表示文字列以外の更新をやって、viewDidAppearで表示文字列の更新を行う)
+    arrTv = [NSMutableArray array];//配列初期化(：0個の配列を作成)して以下で要素を格納
+    for(int i = 0; i < [arrStrTvOriginal count];i++){
+        UITextView *tv = [[TextViewForItemList alloc]
+                          initWithFrame:CGRectMake(textViewInitX,
+                                                   itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + textViewInitY,
+                                                   textViewWidth,
+                                                   textViewHeight)];
+        //        tv.alpha = 0.5f;//文字色にも適用されてしまう
+        //        tv.backgroundColor = [UIColor blueColor];//test
+        tv.backgroundColor = [UIColor clearColor];
+        tv.font = [UIFont fontWithName:@"Arial" size:10.0f];//12.0f
+        tv.textColor = [UIColor whiteColor];
+        //        tv.text = @"explanation";
+//        tv.text = [arrStrTvOriginal objectAtIndex:i];//viewDidAppearで再更新
+        //        tv.adjustsFontSizeToFitWidth = YES;//only for textlabel
+        tv.editable = NO;
+        tv.bounces = NO;//no-bound
+        
+        [arrTv addObject:tv];
+    }
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     //サブクラスで更新された表示文字(コスト)の初期値を保有数によってアップデート
-    
+    //サブクラスのinitで初期値が入力されているのでその後に実行される必要がある
     for(int _noItem = 0; _noItem < [arrCost count];_noItem++){
-        //初期コストを取得
-        int cost = [arrCost[_noItem] integerValue];
-        
-        //今までに購入した個数
         int sumOfItemBought = [[attr getValueFromDevice:itemList[_noItem]] integerValue];//各itemlistの値
-        
-        //costを変換：５個までは５倍、それ以降は２倍(最初は急激に増えるが最後は滑らかに上昇)
-        for(int i = 0;i < sumOfItemBought;i++){
-            if(i < 5){//5個までは５倍
-                cost *= 5;
-            }else{//５個より多く購入している場合は2倍
-                cost *= 2;
-            }
+//        if(sumOfItemBought > 0)
+        for(int i = 0 ;i < sumOfItemBought ;i++){
+            [self updateIncreasedCost:_noItem];
         }
-        
-        //コスト更新
-        arrCost[_noItem] = [NSString stringWithFormat:@"%d", cost];
-        
-        //説明文の更新
-        arrTv[_noItem] = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
-                    arrTv[_noItem], arrCost[_noItem],nameCurrency];
     }
     
     
@@ -389,24 +395,11 @@ void (^actNoForCoinShort)(void) = ^(void) {
         //        [self.view addSubview:iv];
         [uvOnScroll addSubview:ivIcon];
         
-        //名称、説明文の貼付：配列等にしておく必要あり
-        UITextView *tv = [[TextViewForItemList alloc]
-                          initWithFrame:CGRectMake(textViewInitX,
-                                                   itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + textViewInitY,
-                                                   textViewWidth,
-                                                   textViewHeight)];
-        //        tv.alpha = 0.5f;//文字色にも適用されてしまう
-        //        tv.backgroundColor = [UIColor blueColor];//test
-        tv.backgroundColor = [UIColor clearColor];
-        tv.font = [UIFont fontWithName:@"Arial" size:10.0f];//12.0f
-        tv.textColor = [UIColor whiteColor];
-        //        tv.text = @"explanation";
-        tv.text = [arrTv objectAtIndex:i];
-        //        tv.adjustsFontSizeToFitWidth = YES;//only for textlabel
-        tv.editable = NO;
-        tv.bounces = NO;//no-bound
-        //        [self.view addSubview:tv];
-        [uvOnScroll addSubview:tv];
+        
+        
+        //位置等の属性値はviewDidLoadで設定済
+        [uvOnScroll addSubview:arrTv[i]];
+        [self updateTextViewInListAt:i];//文字列を指定
         
         //drawing of smallIcon
         [self displaySmallIcon:i];
@@ -529,7 +522,15 @@ void (^actNoForCoinShort)(void) = ^(void) {
 
 
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
-    if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
+    int numOfItemBought = [[attr getValueFromDevice:itemList[[sender tag]]] integerValue];
+    if(numOfItemBought > 12){
+//        //ダイアログを表示して終了:未実装
+//        UIView *viewAlert;
+//        viewAlert =
+//        [CreateComponentClass
+//         createAlertView2...
+        
+    }else if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
         NSLog(@"buy button pressed : %d", [sender tag]);
         [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - cost];//[attr setValueToDev..
@@ -539,6 +540,12 @@ void (^actNoForCoinShort)(void) = ^(void) {
         [self processAfterBtnPressed:[itemList objectAtIndex:[sender tag]]];
         //反映されたデータから複数パールを表示
         [self displaySmallIcon:[sender tag]];//アイテムの購入個数
+        
+        //コストを増加させる:必ず個数データが反映された後に実行
+        [self updateIncreasedCost:[sender tag]];
+        
+        //テキストの反映(コストを反映した後に実行)
+        [self updateTextViewInListAt:[sender tag]];
         
     }else{
         //コインが足りない場合
@@ -654,6 +661,39 @@ void (^actNoForCoinShort)(void) = ^(void) {
         //itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),// + 10,
         [uvOnScroll addSubview:ivSmallIcon];
     }
+}
+
+-(void)updateTextViewInListAt:(int)i{
+    NSString *strDisp = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
+                         arrStrTvOriginal[i], arrCost[i],nameCurrency];
+    ((UITextView *)arrTv[i]).text = strDisp;
+}
+
+
+//初期値から更新する場合：初期値配列と現在値配列の二つを用意して表示毎及び購入時毎回更新をする＝＞面倒
+//常に一つずつ更新する
+
+-(void)updateIncreasedCost:(int)_index{
+    
+    //今までに購入した個数
+    int sumOfItemBought = [[attr getValueFromDevice:itemList[_index]] integerValue];//各itemlistの値
+    
+    int _cost = [arrCost[_index] integerValue];
+    //確認
+    NSLog(@"%@ : level = %d, cost=%d", itemList[_index] , sumOfItemBought ,_cost);
+    
+    //costを変換：４個までは５倍、それ以降は２倍(最初は急激に増えるが最後は滑らかに上昇)
+    
+    if(sumOfItemBought < 5){//5個までは５倍
+        _cost *= 5;
+    }else{//５個より多く購入している場合は2倍
+        _cost *= 2;
+    }
+    
+    arrCost[_index] = [NSString stringWithFormat:@"%d", _cost];
+    
+    //確認
+    NSLog(@"after cost=%@", arrCost[_index]);
 }
 
 @end

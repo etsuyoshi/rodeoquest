@@ -62,7 +62,7 @@ void (^actNoForRubyShort)(void) = ^(void) {
                      @3,
                      nil];
 
-        arrTv = [NSMutableArray arrayWithObjects:
+        arrStrTvOriginal = [NSMutableArray arrayWithObjects:
                  @"ドラゴンを1回だけ急速回復します。\n100枚のルビーが必要です。",//1rep=100coin
                  @"ドラゴンを2回だけ急速回復します。\n180枚のルビーが必要です。",//1rep=90coin
                  @"ドラゴンを3回だけ急速回復します。\n240枚のルビーが必要です。",//1rep=80coin

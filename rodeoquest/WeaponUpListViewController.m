@@ -45,7 +45,7 @@
                      @3,
                      nil];
         
-        arrTv = [NSMutableArray arrayWithObjects:
+        arrStrTvOriginal = [NSMutableArray arrayWithObjects:
                  @"次回以降全てのゲームにおいて、爆弾投下の持続時間を0.5秒上乗せする。",//1=10coin
                  @"1回のゲームでのみ、爆弾投下の持続時間を現状の２倍に長持ちさせる。",//1=9coin
                  @"次回以降全てのゲームにおいて、通常弾の攻撃力強化持続時間を0.5秒上乗せする。",//1=10coin
