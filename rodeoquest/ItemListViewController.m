@@ -494,43 +494,47 @@ void (^actNoForCoinShort)(void) = ^(void) {
  */
 
 -(void)onSelectButton:(id)sender{
-    int _cost = [[arrCost objectAtIndex:[sender tag]] intValue];
-    NSString *_titleView = @"購入手続";
-    NSString *_message = [NSString stringWithFormat:@"このアイテムを購入しますか？\n%d個の%@が必要です", _cost, nameCurrency];
-    viewWantBuy =
-    [CreateComponentClass
-     createAlertView2:self.view.bounds
-     dialogRect:CGRectMake(0, 0,
-                           self.view.bounds.size.width-20,
-                           self.view.bounds.size.width-100)
-     title:_titleView
-     message:_message
-     onYes:^{
-         //購入プロセス
-         [self buyBtnPressed:sender];
-         
-         [viewWantBuy removeFromSuperview];
-         
-     }
-     onNo:^{
-         [viewWantBuy removeFromSuperview];
-     }];
     
-    [self.view addSubview:viewWantBuy];
+    int numOfItemBought = [[attr getValueFromDevice:itemList[[sender tag]]] integerValue];
+    if(numOfItemBought > 12){
+        //        //ダイアログを表示して終了:未実装
+        //        UIView *viewAlert;
+        //        viewAlert =
+        //        [CreateComponentClass
+        //         createAlertView2...
+        
+    }else{
+        int _cost = [[arrCost objectAtIndex:[sender tag]] intValue];
+        NSString *_titleView = @"購入手続";
+        NSString *_message = [NSString stringWithFormat:@"このアイテムを購入しますか？\n%d個の%@が必要です", _cost, nameCurrency];
+        viewWantBuy =
+        [CreateComponentClass
+         createAlertView2:self.view.bounds
+         dialogRect:CGRectMake(0, 0,
+                               self.view.bounds.size.width-20,
+                               self.view.bounds.size.width-100)
+         title:_titleView
+         message:_message
+         onYes:^{
+             //購入プロセス
+             [self buyBtnPressed:sender];
+             
+             [viewWantBuy removeFromSuperview];
+             
+         }
+         onNo:^{
+             [viewWantBuy removeFromSuperview];
+         }];
+        
+        [self.view addSubview:viewWantBuy];
+    }
     
 }
 
 
 -(void)buyBtnPressed:(id)sender{//arg:selected-item-list-no
-    int numOfItemBought = [[attr getValueFromDevice:itemList[[sender tag]]] integerValue];
-    if(numOfItemBought > 12){
-//        //ダイアログを表示して終了:未実装
-//        UIView *viewAlert;
-//        viewAlert =
-//        [CreateComponentClass
-//         createAlertView2...
-        
-    }else if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
+    
+    if([[attr getValueFromDevice:@"gold"] intValue] >= [[arrCost objectAtIndex:[sender tag]] intValue]){
         int cost = [[arrCost objectAtIndex:[sender tag]] intValue];
         NSLog(@"buy button pressed : %d", [sender tag]);
         [self updateToDeviceCoin:[[attr getValueFromDevice:@"gold"] intValue] - cost];//[attr setValueToDev..
