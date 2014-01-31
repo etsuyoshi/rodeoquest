@@ -5,10 +5,10 @@
 //  Created by 遠藤 豪 on 2013/12/17.
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 /*ItemListViewControllerのサブクラス+slideShowを直接表示するボタンを追加
- *initWithNibName:データ初期化
- *viewDidLoad:各コンポーネントの張り付け
- *viewWillAppear:コインや装備状態(サブクラスのWeaponBuyList...)にデータを反映
- *viewDidAppear:
+ *initWithNibName:データ初期化(コスト等)
+ *viewDidLoad:
+ *viewWillAppear:コストデータの計算(NSUserDefaultを使って現状の保有数を取得し、それによってコストを初期値から再計算)
+ *viewDidAppear:コンポーネントの配置
  *onSelectButton:(id)sender:リスト中のボタン押下により呼出される。サブクラスである本クラスにおいて即座に購入せずに状態を判定する機能も備える。
  *buyBtnPressed:sender:onSelectButtonから呼出し:購入処理orコイン不足のエフェクト表示
  *processAfterBtnPressed:(NSString *)_key:各アイテムの状態をセット。サブクラスである本クラスにおいて装備状態を判定し、選択したアイテムを中央に表示
@@ -101,7 +101,7 @@ UIView *superViewForEquipWpn;
                   
                   
         arrTv = [NSMutableArray arrayWithObjects:
-                 @"敵に通常弾以上の物理ダメージを与えます。レベルアップにより攻撃力が向上します。",//1rep=100coin：茶色
+                 @"着弾時に通常弾以上の物理ダメージを与えます。レベルアップにより攻撃力が向上します。",//1rep=100coin：茶色
                  @"着弾した瞬間のダメージはわずかでも、その後燃えさかる炎により継続的にダメージを与えることがあります。水属性のステージで大ダメージを与えます。",//1rep=90coin：赤
                  @"通常の敵に中ダメージを与えます。特に水属性以外(火属性？)の敵に中ダメージを与えます。",//1rep=80coin：水色
                  @"発射頻度は中程度ですが、通常の敵に大ダメージを与えます。特に水属性以外(火属性？)の敵に最大のダメージを与えます。",//1rep=70coin：
@@ -209,18 +209,6 @@ UIView *superViewForEquipWpn;
     
     
     
-    //コレクションボタン:slideShowを表示するメソッド呼出しのためのボタン
-    btnClDispSlide =
-    [CreateComponentClass
-     createCoolButton:CGRectMake(10, 10, 130, 60)
-     text:@"コレクション"
-     hue:0.75f saturation:0.5f brightness:0.5f
-     target:self selector:@"onPressedBtnCollection" tag:0];
-    [self.view addSubview:btnClDispSlide];
-    
-    btnClDispSlide.center =
-    CGPointMake(btnClDispSlide.bounds.size.width/2+5,
-                cashView.center.y);
     
     
     
@@ -230,6 +218,13 @@ UIView *superViewForEquipWpn;
     
     [super viewWillAppear:animated];
     
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    
+    //superクラスでボタンの配置はviewDidAppearで実行するのでこのサブクラスでもviewDidAppearで実行すべき
     for(int i = 0 ;i < [itemList count];i++){
         //nsdefaultに書き込まれていないキーはint型に変換すると0になる:string型ではnil
         int stateHoldWpn =
@@ -247,6 +242,18 @@ UIView *superViewForEquipWpn;
     
     
     
+    //コレクションボタン:slideShowを表示するメソッド呼出しのためのボタン
+    btnClDispSlide =
+    [CreateComponentClass
+     createCoolButton:CGRectMake(10, 10, 130, 60)
+     text:@"コレクション"
+     hue:0.75f saturation:0.5f brightness:0.5f
+     target:self selector:@"onPressedBtnCollection" tag:0];
+    [self.view addSubview:btnClDispSlide];
+    
+    btnClDispSlide.center =
+    CGPointMake(btnClDispSlide.bounds.size.width/2+5,
+                cashView.center.y);
 }
 
 - (void)didReceiveMemoryWarning

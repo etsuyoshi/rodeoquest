@@ -202,6 +202,44 @@ void (^actNoForCoinShort)(void) = ^(void) {
     self.view.backgroundColor = [UIColor colorWithPatternImage:image];
     
     
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //サブクラスで更新された表示文字(コスト)の初期値を保有数によってアップデート
+    
+    for(int _noItem = 0; _noItem < [arrCost count];_noItem++){
+        //初期コストを取得
+        int cost = [arrCost[_noItem] integerValue];
+        
+        //今までに購入した個数
+        int sumOfItemBought = [[attr getValueFromDevice:itemList[_noItem]] integerValue];//各itemlistの値
+        
+        //costを変換：５個までは５倍、それ以降は２倍(最初は急激に増えるが最後は滑らかに上昇)
+        for(int i = 0;i < sumOfItemBought;i++){
+            if(i < 5){//5個までは５倍
+                cost *= 5;
+            }else{//５個より多く購入している場合は2倍
+                cost *= 2;
+            }
+        }
+        
+        //コスト更新
+        arrCost[_noItem] = [NSString stringWithFormat:@"%d", cost];
+        
+        //説明文の更新
+        arrTv[_noItem] = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
+                    arrTv[_noItem], arrCost[_noItem],nameCurrency];
+    }
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    
+    //コンポーネントの配置(少し遅らせてコンポーネントを表示することによって背景が強調され道具屋であることが分かる。)
     //ornament
     UIImageView *viewOrnament =
     [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
@@ -222,17 +260,17 @@ void (^actNoForCoinShort)(void) = ^(void) {
     
     
     //cash image
-//    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
-//                                                                       cashFrameInitY + 14, 23, 23)];
+    //    UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(cashFrameInitX + 10,
+    //                                                                       cashFrameInitY + 14, 23, 23)];
     UIImageView *cashIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 14, 23, 23)];
     cashIV.image = [UIImage imageNamed:strImgCurrency];
-//    [self.view addSubview:cashIV];
+    //    [self.view addSubview:cashIV];
     [cashView addSubview:cashIV];
     
     //cash numeric
-//    CGRect rectGoldAmount = CGRectMake(cashFrameInitX + 50,
-//                                       cashFrameInitY + 10,
-//                                       150, 32);
+    //    CGRect rectGoldAmount = CGRectMake(cashFrameInitX + 50,
+    //                                       cashFrameInitY + 10,
+    //                                       150, 32);
     CGRect rectGoldAmount = CGRectMake(50, 10, 150, 32);
     tvGoldAmount = [[UITextView alloc]initWithFrame:rectGoldAmount];
     //@"AmericanTypewriter-Bold"
@@ -241,7 +279,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
     tvGoldAmount.textColor = [UIColor whiteColor];
     tvGoldAmount.backgroundColor = [UIColor clearColor];//gray?
     tvGoldAmount.editable = NO;
-//    [self.view addSubview:tvGoldAmount];
+    //    [self.view addSubview:tvGoldAmount];
     [cashView addSubview:tvGoldAmount];
     
     
@@ -257,8 +295,8 @@ void (^actNoForCoinShort)(void) = ^(void) {
     [viewFrame setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.01]];
     [self.view addSubview:viewFrame];
     
-//    UIScrollView *sv = [[UIScrollView alloc]
-//                        initWithFrame:viewFrame.bounds];
+    //    UIScrollView *sv = [[UIScrollView alloc]
+    //                        initWithFrame:viewFrame.bounds];
     ScrollViewForItemList *sv = [[ScrollViewForItemList alloc]
                                  initWithFrame:viewFrame.bounds];
     sv.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];//こうすれば子どものalpha値は上書きされない
@@ -280,18 +318,18 @@ void (^actNoForCoinShort)(void) = ^(void) {
     for(int i = 0; i < [arrIv count]; i++){
         //frame作成
         UIView *eachView = [CreateComponentClass createView:CGRectMake(itemFrameInitX,
-                                                                itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),
-                                                                itemFrameWidth,
-                                                                itemFrameHeight)];
+                                                                       itemFrameInitY + i * (itemFrameHeight + itemFrameInterval),
+                                                                       itemFrameWidth,
+                                                                       itemFrameHeight)];
         
-//        [self.view addSubview:eachView];
+        //        [self.view addSubview:eachView];
         [uvOnScroll addSubview:eachView];
         
         //image(left-icon)の貼付
-//        UIImageView *ivIcon = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
-//                                                                   imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
-//                                                                   imageFrameWidth,
-//                                                                   imageFrameHeight)];
+        //        UIImageView *ivIcon = [[UIImageView alloc]initWithFrame:CGRectMake(imageFrameInitX-5,
+        //                                                                   imageFrameInitY + i * (imageFrameHeight + imageFrameInterval),
+        //                                                                   imageFrameWidth,
+        //                                                                   imageFrameHeight)];
         UIImageView *ivIcon = [[UIImageView alloc]
                                initWithFrame:CGRectMake(imageFrameInitX,
                                                         itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + imageFrameInitY,
@@ -303,7 +341,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
         //アイコンの上に載せるエフェクト(キラキラ)
         if([arrIv2 count] > 0 && [arrIvType count] > 0){
             if(![[arrIv2 objectAtIndex:i] isEqualToString:@""]){
-//                NSLog(@"arritType=%d, %d", (int)arrIvType[i], [arrIvType[i] integerValue]);
+                //                NSLog(@"arritType=%d, %d", (int)arrIvType[i], [arrIvType[i] integerValue]);
                 switch ([arrIvType[i] integerValue]) {
                     case 0:{
                         //do nothing
@@ -347,7 +385,7 @@ void (^actNoForCoinShort)(void) = ^(void) {
                 }
             }
         }
-//        [self.view addSubview:iv];
+        //        [self.view addSubview:iv];
         [uvOnScroll addSubview:ivIcon];
         
         //名称、説明文の貼付：配列等にしておく必要あり
@@ -356,17 +394,17 @@ void (^actNoForCoinShort)(void) = ^(void) {
                                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + textViewInitY,
                                                    textViewWidth,
                                                    textViewHeight)];
-//        tv.alpha = 0.5f;//文字色にも適用されてしまう
-//        tv.backgroundColor = [UIColor blueColor];//test
+        //        tv.alpha = 0.5f;//文字色にも適用されてしまう
+        //        tv.backgroundColor = [UIColor blueColor];//test
         tv.backgroundColor = [UIColor clearColor];
         tv.font = [UIFont fontWithName:@"Arial" size:10.0f];//12.0f
         tv.textColor = [UIColor whiteColor];
-//        tv.text = @"explanation";
+        //        tv.text = @"explanation";
         tv.text = [arrTv objectAtIndex:i];
-//        tv.adjustsFontSizeToFitWidth = YES;//only for textlabel
+        //        tv.adjustsFontSizeToFitWidth = YES;//only for textlabel
         tv.editable = NO;
         tv.bounces = NO;//no-bound
-//        [self.view addSubview:tv];
+        //        [self.view addSubview:tv];
         [uvOnScroll addSubview:tv];
         
         //drawing of smallIcon
@@ -375,18 +413,18 @@ void (^actNoForCoinShort)(void) = ^(void) {
         
         
         //プラスボタンの貼付
-//        CGRect btnRect = CGRectMake(imageFrameInitX + imageFrameWidth + 10 + itemFrameWidth / 2 + 20,
-//                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
-//                                    imageFrameWidth,
-//                                    imageFrameHeight);
+        //        CGRect btnRect = CGRectMake(imageFrameInitX + imageFrameWidth + 10 + itemFrameWidth / 2 + 20,
+        //                                    itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + 10,
+        //                                    imageFrameWidth,
+        //                                    imageFrameHeight);
         CGRect btnRect = CGRectMake(itemFrameInitX + textViewInitX + textViewWidth-5,//微調整
                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + textViewInitY,
                                     buttonFrameWidth, buttonFrameHeight);
         UIButton *btnBuy = [CreateComponentClass createQBButton:ButtonMenuBackTypeDefault
-                                                        rect:btnRect
-                                                       image:@"bullet_level6.png"
-                                                       title:[arrTitle objectAtIndex:i]
-                                                      target:self
+                                                           rect:btnRect
+                                                          image:@"bullet_level6.png"
+                                                          title:[arrTitle objectAtIndex:i]
+                                                         target:self
                                                        selector:@"onSelectButton:"];
         btnBuy.center = CGPointMake(btnBuy.center.x,
                                     itemFrameInitY + i * (itemFrameHeight + itemFrameInterval) + itemFrameHeight/2);//中心高さ
@@ -402,60 +440,16 @@ void (^actNoForCoinShort)(void) = ^(void) {
     //            NSLog(@"return");
     //            [self dismissViewControllerAnimated:YES completion:nil];
     closeBtn = [CreateComponentClass createButtonWithType:ButtonMenuBackTypeDefault
-                                                               rect:CGRectMake(300, 3, 50, 50)
-                                                              image:@"exit_b.png"
-                                                             target:self
-                                                           selector:@"closeBtnClicked"];
+                                                     rect:CGRectMake(300, 3, 50, 50)
+                                                    image:@"exit_b.png"
+                                                   target:self
+                                                 selector:@"closeBtnClicked"];
     closeBtn.center = CGPointMake(self.view.bounds.size.width-closeBtn.bounds.size.width/2,
                                   closeBtn.bounds.size.height/2);
     [self.view addSubview:closeBtn];
     [self.view bringSubviewToFront:closeBtn];
     
-//    [self.view addSubview:[background getImageView1]];
-//    [self.view addSubview:[background getImageView2]];
-////    [self.view sendSubviewToBack:[background getImageView1]];
-////    [self.view sendSubviewToBack:[background getImageView2]];
-//    [self.view bringSubviewToFront:[background getImageView1]];
-//    [self.view bringSubviewToFront:[background getImageView2]];
-//    NSLog(@"start animation at list view");
-//    [background startAnimation];
-//    NSLog(@"end animation at list view");
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    //サブクラスで更新された表示文字(コスト)の初期値を保有数によってアップデート
-    
-    for(int _noItem = 0; _noItem < [arrCost count];_noItem++){
-        //初期コストを取得
-        int cost = [arrCost[_noItem] integerValue];
-        
-        //今までに購入した個数
-        int sumOfItemBought = [[attr getValueFromDevice:itemList[_noItem]] integerValue];//各itemlistの値
-        
-        //costを変換：５個までは５倍、それ以降は２倍(最初は急激に増えるが最後は滑らかに上昇)
-        for(int i = 0;i < sumOfItemBought;i++){
-            if(i < 5){//5個までは５倍
-                
-            }else{//５個より多く購入している場合は2倍
-                
-            }
-        }
-        
-        //コスト更新
-        arrCost[_noItem] = [NSString stringWithFormat:@"%d", cost];
-        
-        //説明文の更新
-        arrTv[_noItem] = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
-                    arrTv[_noItem], arrCost[_noItem],nameCurrency];
-    }
-    
-    
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    
-    [super viewDidAppear:animated];
+    //以上、viewDidLoadから
     
     //キャッシュビューに最新値を更新する
     tvGoldAmount.text = [attr getValueFromDevice:idCurrency];
