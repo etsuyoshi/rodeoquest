@@ -449,7 +449,6 @@ void (^actNoForCoinShort)(void) = ^(void) {
     [self.view addSubview:closeBtn];
     [self.view bringSubviewToFront:closeBtn];
     
-    //以上、viewDidLoadから
     
     //キャッシュビューに最新値を更新する
     tvGoldAmount.text = [attr getValueFromDevice:idCurrency];

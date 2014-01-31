@@ -184,6 +184,10 @@ UIView *superViewForEquipWpn;
         
         //アイコンのサイズは正方形ではないので調整する(横長）
         imageFrameHeight *= 0.8f;
+        
+        //スモールアイコン(親クラスでは青パールで本クラスでは星)の大きさを小さく調整する
+        
+        smallIconHeight /= 2;
     }
     return self;
 }
@@ -707,13 +711,13 @@ UIView *superViewForEquipWpn;
         _numOfStar = [[attr getValueFromDevice:_strKeyLevel] integerValue];
     }
     
-    
     NSLog(@"level of weapon%d = %d",_noOfItemList, _numOfStar);
     for(int _num = 0; _num < _numOfStar; _num++){
         UIImageView *ivStar = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
         ivStar.image = [UIImage imageNamed:@"star2.png"];
-        ivStar.center = CGPointMake(textViewInitX + _num * 7,
-                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight);
+        ivStar.center = CGPointMake(textViewInitX + _num * 3,
+                                    itemFrameInitY + (_noOfItemList + 1) * itemFrameHeight + itemFrameInterval);
+//                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight);
         [uvOnScroll addSubview:ivStar];
     }
 }
