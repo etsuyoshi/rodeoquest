@@ -426,19 +426,28 @@ void (^actNoForCoinShort)(void) = ^(void) {
     [super viewWillAppear:animated];
     //サブクラスで更新された表示文字(コスト)の初期値を保有数によってアップデート
     
-    for(int i = 0; i < [arrCost count];i++){
+    for(int _noItem = 0; _noItem < [arrCost count];_noItem++){
         //初期コストを取得
-        int cost = [arrCost[i] integerValue];
+        int cost = [arrCost[_noItem] integerValue];
         
-        //costを変換：５個までは５倍、それ以降は２倍
+        //今までに購入した個数
+        int sumOfItemBought = [[attr getValueFromDevice:itemList[_noItem]] integerValue];//各itemlistの値
         
+        //costを変換：５個までは５倍、それ以降は２倍(最初は急激に増えるが最後は滑らかに上昇)
+        for(int i = 0;i < sumOfItemBought;i++){
+            if(i < 5){//5個までは５倍
+                
+            }else{//５個より多く購入している場合は2倍
+                
+            }
+        }
         
         //コスト更新
-        arrCost[i] = [NSString stringWithFormat:@"%d", cost];
+        arrCost[_noItem] = [NSString stringWithFormat:@"%d", cost];
         
         //説明文の更新
-        arrTv[i] = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
-                    arrTv[i], arrCost[i],nameCurrency];
+        arrTv[_noItem] = [NSString stringWithFormat:@"%@\n%@枚の%@が必要です。",
+                    arrTv[_noItem], arrCost[_noItem],nameCurrency];
     }
     
     
@@ -640,10 +649,10 @@ void (^actNoForCoinShort)(void) = ^(void) {
      */
     //smallicon:説明文の下に幾つ購入したかを示すスモールアイコン(星かパール)
     
-    int numOfItemBought = [[attr getValueFromDevice:itemList[_noOfItemList]] integerValue];//各itemlistの値
+    int sumOfItemBought = [[attr getValueFromDevice:itemList[_noOfItemList]] integerValue];//各itemlistの値
     int intervalSmallIcon = smallIconHeight*2/3;//width = height & small icon is too much margin so here needs one of width
-    NSLog(@"itemlist%d=%@, num of item bought = %d", _noOfItemList, itemList[_noOfItemList], numOfItemBought);
-    for(int _num = 0; _num < numOfItemBought;_num++){
+    NSLog(@"itemlist%d=%@, num of item bought = %d", _noOfItemList, itemList[_noOfItemList], sumOfItemBought);
+    for(int _num = 0; _num < sumOfItemBought;_num++){
         UIImageView *ivSmallIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
         ivSmallIcon.image = [UIImage imageNamed:strSmallIcon];
         ivSmallIcon.center = CGPointMake(textViewInitX + _num * intervalSmallIcon + 10,
