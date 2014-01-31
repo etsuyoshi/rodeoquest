@@ -702,7 +702,9 @@ int unique_id;
                   }
                   completion:^(BOOL finished){
                       [animalView removeFromSuperview];
-                      [self drawScratch:3];
+                      if(hitPoint > 0){
+                          [self drawScratch:3];
+                      }
                   }];
              }
          }];
@@ -747,30 +749,35 @@ int unique_id;
          if(finished){
              //第一アニメーションに使用したビューの消去
              [scratchViewFromLeft removeFromSuperview];
+             [self setDamageBySpecialWeapon];
              
-             //第二アニメーションに使用するビューの表示
-             [iv addSubview:scratchViewFromRight];
-             
-             [UIView
-              animateWithDuration:0.1f
-              animations:^{
-                  
-                  scratchViewFromRight.frame =
-                  CGRectMake(iv.bounds.size.width/2,
-                             iv.bounds.size.height/2-iv.bounds.size.height/sqrt(2),
-                             0, iv.bounds.size.height/2+iv.bounds.size.height/sqrt(2));
-                  scratchViewFromRight.transform =
-                  CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);
-              }
-              completion:^(BOOL finished){
-                  if(finished){
-                      [scratchViewFromRight removeFromSuperview];
+             if(hitPoint > 0){
+                 //第二アニメーションに使用するビューの表示
+                 [iv addSubview:scratchViewFromRight];
+                 
+                 [UIView
+                  animateWithDuration:0.1f
+                  animations:^{
                       
-                      if(times > 0){
-                          [self drawScratch:times-1];
-                      }
+                      scratchViewFromRight.frame =
+                      CGRectMake(iv.bounds.size.width/2,
+                                 iv.bounds.size.height/2-iv.bounds.size.height/sqrt(2),
+                                 0, iv.bounds.size.height/2+iv.bounds.size.height/sqrt(2));
+                      scratchViewFromRight.transform =
+                      CGAffineTransformMakeRotation(-45.0f*M_PI/180.0f);
                   }
-              }];
+                  completion:^(BOOL finished){
+                      if(finished){
+                          [scratchViewFromRight removeFromSuperview];
+                          [self setDamageBySpecialWeapon];
+                          
+                          if(times > 0 && hitPoint > 0){
+                              
+                              [self drawScratch:times-1];
+                          }
+                      }
+                  }];
+             }
          }
      }];
     

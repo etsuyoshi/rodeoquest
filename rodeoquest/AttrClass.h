@@ -11,8 +11,8 @@
 
 //to sort in order
 typedef NS_ENUM(NSInteger, BowType) {
-    BowTypeRock,
     BowTypeFire,
+    BowTypeRock,
     BowTypeIce,
     BowTypeWater,
     BowTypeBug,
@@ -24,8 +24,8 @@ typedef NS_ENUM(NSInteger, BowType) {
 };
 
 typedef NS_ENUM(NSInteger, BeamType) {
-    BeamTypeRock,
     BeamTypeFire,
+    BeamTypeRock,
     BeamTypeIce,
     BeamTypeWater,
     BeamTypeBug,

@@ -501,25 +501,11 @@ AttrClass *attr;
 //指定した特殊武器IDの画像名称(文字列)を返す
 -(NSString *)getWeaponImageName:(BowType)_bowType{
     
-    //WeaponBuyListViewControllerと同じ
-//    NSArray *imageArrayWithWhite = [NSArray arrayWithObjects:
-//                           @"W_RockBow.png",
-//                           @"W_FireBow.png",
-//                           @"W_WaterBow.png",
-//                           @"W_IceBow.png",
-//                           @"W_BugBow.png",
-//                           @"W_AnimalBow.png",
-//                           @"W_GrassBow.png",
-//                           @"W_ClothBow.png",
-//                           @"W_SpaceBow.png",
-//                           @"W_WingBow.png",
-//                           nil];
-//    return imageArrayWithWhite[_bowType];//BowTypeの対応の一致がズレた時修正が必要。
     switch (_bowType) {
-        case BowTypeRock:
-            return @"W_RockBow.png";
         case BowTypeFire:
             return @"W_FireBow.png";
+        case BowTypeRock:
+            return @"W_RockBow.png";
         case BowTypeIce:
             return @"W_IceBow.png";
         case BowTypeWater:
@@ -528,10 +514,10 @@ AttrClass *attr;
             return @"W_BugBow.png";
         case BowTypeAnimal:
             return @"W_AnimalBow.png";
-        case BowTypeGrass:
-            return @"W_GrassBow.png";
         case BowTypeCloth:
             return @"W_ClothBow.png";
+        case BowTypeGrass:
+            return @"W_GrassBow.png";
         case BowTypeSpace:
             return @"W_SpaceBow.png";
         case BowTypeWing:

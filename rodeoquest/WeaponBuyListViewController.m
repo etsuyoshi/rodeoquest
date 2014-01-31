@@ -50,30 +50,9 @@ UIView *superViewForEquipWpn;
         
         // Custom initialization
         arrIv = [NSMutableArray arrayWithObjects://bullet image
-//                 @"close.png",//0
-//                 @"close.png",//1
-//                 @"close.png",//2
-//                 @"close.png",//3
-//                 @"close.png",//4
-//                 @"close.png",//5
-//                 @"close.png",//6
-//                 @"close.png",//7
-//                 @"close.png",//8
-//                 @"close.png",//9
-//                 
-//                 @"Rock.png",
-//                 @"Fire.png",
-//                 @"Water.png",
-//                 @"Ice.png",
-//                 @"Bug.png",
-//                 @"Animal.png",
-//                 @"Grass.png",
-//                 @"Cloth.png",
-//                 @"Space.png",
-//                 @"Wing.png",
                  
-                 @"NH_RockBow.png",
                  @"NH_FireBow.png",
+                 @"NH_RockBow.png",
                  @"NH_IceBow.png",
                  @"NH_WaterBow.png",
                  @"NH_BugBow.png",
@@ -101,16 +80,16 @@ UIView *superViewForEquipWpn;
                   
                   
         arrTv = [NSMutableArray arrayWithObjects:
-                 @"着弾時に通常弾以上の物理ダメージを与えます。レベルアップにより攻撃力が向上します。",//1rep=100coin：茶色
-                 @"着弾した瞬間のダメージはわずかでも、その後燃えさかる炎により継続的にダメージを与えることがあります。水属性のステージで大ダメージを与えます。",//1rep=90coin：赤
-                 @"通常の敵に中ダメージを与えます。特に水属性以外(火属性？)の敵に中ダメージを与えます。",//1rep=80coin：水色
-                 @"発射頻度は中程度ですが、通常の敵に大ダメージを与えます。特に水属性以外(火属性？)の敵に最大のダメージを与えます。",//1rep=70coin：
-                 @"致死性の毒を持つ虫を発射します。クリティカルヒットにより即死することがあります。",//1rep=90coin
-                 @"着弾した瞬間に敵を食い尽くし、大ダメージを与えます。針属性の敵や虫属性の敵にはダメージを与えないことがあります。",//1rep=80coin
-                 @"切れ味鋭い針葉を放ちます。クリティカルヒットと継続的なダメージを与えます。",//1rep=70coin
-                 @"魔力によりクリティカルヒットすると敵を完全に消し去ります。",//1rep=90coin
-                 @"流れ星によるメテオストライク。全ての敵に大ダメージを与えます。",//1rep=80coin
-                 @"大気のエネルギーを使った真空波動により、全ての敵に極大ダメージを与えます。翼が生えた的に大ダメージを与えます。",//1rep=70coin
+                 @"着弾時のダメージはわずかでも、その後燃えさかる炎により継続的にダメージを与えることがあります。水属性のステージで大ダメージを与えます。",
+                 @"岩石の衝突により通常弾以上の物理ダメージを与えます。レベルアップにより継続的にダメージを与えることが可能になります。",
+                 @"通常の敵に中ダメージを与えます。特に水属性以外(火属性？)の敵に中ダメージを与えます。",
+                 @"発射頻度は中程度ですが、通常の敵に大ダメージを与えます。特に水属性以外(火属性？)の敵に最大のダメージを与えます。",
+                 @"致死性の毒を持つ虫を発射します。クリティカルヒットにより即死することがあります。",
+                 @"着弾した瞬間に敵を食い尽くし、大ダメージを与えます。針属性の敵や虫属性の敵にはダメージを与えないことがあります。",
+                 @"魔力によりクリティカルヒットすると敵を完全に消し去ります。",
+                 @"切れ味鋭い針葉を放ちます。クリティカルヒットと継続的なダメージを与えます。",
+                 @"流れ星によるメテオストライク。全ての敵に大ダメージを与えます。",
+                 @"大気のエネルギーを使った真空波動により、全ての敵に極大ダメージを与えます。翼が生えた的に大ダメージを与えます。",
                  nil];
         arrCost = [NSMutableArray arrayWithObjects:
                    @"50",//test:price=>increase
@@ -170,8 +149,8 @@ UIView *superViewForEquipWpn;
         
         //独自配列：slideShow表示用画像
         imageArrayWithWhite = [NSArray arrayWithObjects:
-                               @"W_RockBow.png",
                                @"W_FireBow.png",
+                               @"W_RockBow.png",
                                @"W_IceBow.png",
                                @"W_WaterBow.png",
                                @"W_BugBow.png",
@@ -716,8 +695,7 @@ UIView *superViewForEquipWpn;
         UIImageView *ivStar = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, smallIconHeight, smallIconHeight)];
         ivStar.image = [UIImage imageNamed:@"star2.png"];
         ivStar.center = CGPointMake(textViewInitX + _num * 3,
-                                    itemFrameInitY + (_noOfItemList + 1) * itemFrameHeight + itemFrameInterval);
-//                                    itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight);
+                                    itemFrameInterval + itemFrameInitY + _noOfItemList * (itemFrameHeight + itemFrameInterval) + textViewHeight);
         [uvOnScroll addSubview:ivStar];
     }
 }

@@ -36,8 +36,8 @@
     //game内で逐次呼び出すよりもデータクラスを定義した方が良いかも。
     dictWeapon = [NSDictionary dictionaryWithObjectsAndKeys:
                   //value, keys
-                  @"RockBow.png",[NSNumber numberWithInt:BowTypeRock],
                   @"FireBow.png",[NSNumber numberWithInt:BowTypeFire],
+                  @"RockBow.png",[NSNumber numberWithInt:BowTypeRock],
                   @"IceBow.png",[NSNumber numberWithInt:BowTypeIce],
                   @"WaterBow.png",[NSNumber numberWithInt:BowTypeWater],
                   @"BugBow.png",[NSNumber numberWithInt:BowTypeBug],
@@ -49,8 +49,8 @@
                   nil];
     
     dictBeam = [NSDictionary dictionaryWithObjectsAndKeys:
-                @"Rock.png",[NSNumber numberWithInt:BeamTypeRock],
                 @"Fire.png",[NSNumber numberWithInt:BeamTypeFire],
+                @"Rock.png",[NSNumber numberWithInt:BeamTypeRock],
                 @"Ice.png",[NSNumber numberWithInt:BeamTypeIce],
                 @"Water.png",[NSNumber numberWithInt:BeamTypeWater],
                 @"Bug.png",[NSNumber numberWithInt:BeamTypeBug],

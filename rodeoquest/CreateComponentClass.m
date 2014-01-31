@@ -20,47 +20,6 @@
 
 -(id)init{
     self = [super init];
-//    arrayBow = [NSArray arrayWithObjects:
-//                @"RockBow.png",
-//                @"FireBow.png",
-//                @"WaterBow.png",
-//                @"IceBow.png",
-//                @"BugBow.png",
-//                @"AnimalBow.png",
-//                @"GrassBow.png",
-//                @"ClothBow.png",
-//                @"SpaceBow.png",
-//                @"WingBow.png",nil
-//                ];
-//    arrayBeam = [NSArray arrayWithObjects:
-//                 [NSNumber numberWithInt:BeamTypeRock ],
-//                 [NSNumber numberWithInt:BeamTypeFire],
-//                 [NSNumber numberWithInt:BeamTypeWater ],
-//                 [NSNumber numberWithInt:BeamTypeIce ],
-//                 [NSNumber numberWithInt:BeamTypeBug],
-//                 [NSNumber numberWithInt:BeamTypeAnimal],
-//                 [NSNumber numberWithInt:BeamTypeGrass ],
-//                 [NSNumber numberWithInt:BeamTypeCloth],
-//                 [NSNumber numberWithInt:BeamTypeSpace ],
-//                 [NSNumber numberWithInt:BeamTypeWing ],nil
-//                 ];
-//    dictWeapon = [NSDictionary  dictionaryWithObjects:arrayBeam forKeys:arrayBow];
-    
-//    dictWeapon = [NSDictionary dictionaryWithObjectsAndKeys:
-//                  //value, keys
-//                  [NSNumber numberWithInt:BeamTypeRock], @"RockBow.png",
-//                  [NSNumber numberWithInt:BeamTypeFire], @"fireBow.png",
-//                  [NSNumber numberWithInt:BeamTypeWater], @"IceBow.png",
-//                  [NSNumber numberWithInt:BeamTypeBug], @"BugBow.png",
-//                  [NSNumber numberWithInt:BeamTypeAnimal], @"AnimalBow.png",
-//                  [NSNumber numberWithInt:BeamTypeGrass ], @"GrassBow.png",
-//                  [NSNumber numberWithInt:BeamTypeCloth], @"ClothBow.png",
-//                  [NSNumber numberWithInt:BeamTypeSpace ], @"SpaceBow.png",
-//                  [NSNumber numberWithInt:BeamTypeWing ], @"WingBow.png",
-//                  nil];
-//
-//    arrayBowAsKeys = [dictWeapon allKeys];
-//    arrayBeamAsValues = [dictWeapon allValues];
     
     return self;
 }
@@ -636,8 +595,8 @@
     AttrClass *_attr = [[AttrClass alloc] init];
 //    NSDictionary *dictWeapon = [_attr getWeaponDict];//key:image.png, value:beamtype
     NSArray *_arrNhImage = [NSArray arrayWithObjects:
-                            @"NH_RockBow.png",
                             @"NH_FireBow.png",
+                            @"NH_RockBow.png",
                             @"NH_IceBow.png",
                             @"NH_WaterBow.png",
                             @"NH_BugBow.png",
