@@ -229,9 +229,9 @@ UIActivityIndicatorView *_indicator;
         alertView =
         [CreateComponentClass
          createAlertView2:self.view.bounds
-         dialogRect:CGRectMake(0, 0, 290, 200)
+         dialogRect:CGRectMake(0, 0, 290, 310)
          title:@"インターネットへの接続が不安定です。"
-         message:@"このまま続けますか？\n続けた場合には記録の保存ができないことがあります。\n接続なしで続ける場合は「はい」を選択して下さい。"
+         message:@"このまま続けますか？\n続けた場合には記録の保存ができないことがあります。\n接続せずで続ける場合は「はい」を選択して下さい。"
          onYes:^{
              [alertView removeFromSuperview];
              

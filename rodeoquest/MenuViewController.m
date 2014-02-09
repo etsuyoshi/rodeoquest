@@ -6,7 +6,6 @@
 //  Copyright (c) 2013年 endo.tuyo. All rights reserved.
 //
 
-//#define TEST//TestViewController-transition
 
 
 #import "MenuViewController.h"
@@ -946,16 +945,13 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     
     
     
-#ifdef TEST
-            TestViewController *tvc = [[TestViewController alloc]init];
-            [self presentViewController: tvc animated:YES completion: nil];
-#else
+
 //            [backGround pauseAnimations];//exitAnimationsはgotoGameの中で実行(画面が白くなってしまう)
 //            [backGround stopAnimation];
 //            [backGround exitAnimations];
             //background stopAnimation(0.01sec必要)を実行しないとゲーム画面でアニメーションが開始されない(既存のiv animationが残っているため)
             //stopAnimationを実行するための0.01sを稼ぐためにここで0.1s-Delayさせる
-//            lifeGame = 6;//test:life
+//            lifeGame = 0;//test:life
             if(lifeGame > 0){
                 
                 
@@ -1004,6 +1000,8 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
             }else{
 //                NSLog(@"%d" , lifeGame);
                 //for short-life, transfer LifeUpListViewController
+#ifdef PaymentAllowMode
+                //ライフ不足を認識させ、購入の是非を問う
                 viewForDialog =
                 [CreateComponentClass
                  createAlertView:CGRectMake(10, 10,
@@ -1025,12 +1023,79 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
                  onNo:^{
                      [viewForDialog removeFromSuperview];
                  }
-                 ];
+                ];
                 
                 [self.view addSubview:viewForDialog];
+#else
+                
+                //振動幅
+                int widthOsci=4;
+                float timeOsci = 0.05f;
+                
+                //lifeを揺らす
+                @autoreleasepool {
+                    CGPoint centerOfLifeDisp = lbl_gameLife.center;
+                    
+                    
+                    [UIView
+                     animateWithDuration:timeOsci/2
+                     animations:^{//まず右へ
+                         lbl_gameLife.center =
+                         CGPointMake(centerOfLifeDisp.x + widthOsci,
+                                     centerOfLifeDisp.y);
+                     }
+                     completion:^(BOOL finished){
+                         if(finished){
+                             [UIView
+                              animateWithDuration:timeOsci
+                              animations:^{//左へ
+                                  lbl_gameLife.center =
+                                  CGPointMake(centerOfLifeDisp.x-widthOsci,
+                                              centerOfLifeDisp.y);
+                              }
+                              completion:^(BOOL finished){
+                                  if(finished){
+                                      [UIView
+                                       animateWithDuration:timeOsci
+                                       animations:^{//更に右へ
+                                           lbl_gameLife.center =
+                                           CGPointMake(centerOfLifeDisp.x + widthOsci,
+                                                       centerOfLifeDisp.y);
+                                       }
+                                       completion:^(BOOL finished){
+                                           if(finished){
+                                               
+                                               [UIView
+                                                animateWithDuration:timeOsci
+                                                animations:^{//更に左へ
+                                                    lbl_gameLife.center =
+                                                    CGPointMake(centerOfLifeDisp.x-widthOsci,
+                                                                centerOfLifeDisp.y);
+                                                }
+                                                completion:^(BOOL finished){
+                                                    if(finished){//元に位置へ
+                                                        lbl_gameLife.center =
+                                                        centerOfLifeDisp;
+                                                    }
+                                                }];
+                                           }
+                                       }];
+                                  }
+                              }];
+                             
+                         }
+                     }];
+//                    lbl_gameLife.text =
+//                    [NSString stringWithFormat:@"%d ／ %d",
+//                     lifeGame, maxLifeGame];
+                    lbl_gameLife.center = centerOfLifeDisp;
+                }
+                
+                
+                
+#endif
                 
             }
-#endif
 
             
 //            break;

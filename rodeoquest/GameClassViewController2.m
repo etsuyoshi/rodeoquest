@@ -2550,9 +2550,9 @@ int sensitivity;
     [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
     //    [BackGround pauseAnimations];
     //    [BackGround exitAnimations];//pauseAnimationsとexitAnimationのどちらかがおかしい
-    
+    //GameKit access
     GKScore *scoreReporter = [[GKScore alloc] initWithCategory:@"comendo.rodeoquest"];
-    scoreReporter.value = [ScoreBoard getScore];        // とりあえずランダム値をスコアに
+    scoreReporter.value = [ScoreBoard getScore];
     [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
         if (error != nil)
         {

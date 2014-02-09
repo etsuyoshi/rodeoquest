@@ -30,9 +30,9 @@
 //#define LDPROGRESS_TEST
 //#define PAYPRODUCTBUTTON_TEST
 //#define LOCATION_TEST
-//#define SPWeapon_TEST
+#define SPWeapon_TEST
 //#define Animation_TEST
-#define BLOG_UP_TEST
+//#define BLOG_UP_TEST
 
 #import <CoreLocation/CoreLocation.h>
 #import "LDProgressView.h"
@@ -1112,6 +1112,30 @@ int tempCount = 0;
         [self.view addSubview:blueFire];
         
         
+        
+        //orange-fire
+        ExplodeParticleView *orangeFire;
+        orangeFire =
+        //            viewEffect =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 300, 100, 100)];
+        [orangeFire setColor:ExplodeParticleTypeOrangeFire];
+        [orangeFire setBirthRate:150];
+        [orangeFire setOnOffEmitting];//発火と消火の繰り返し
+        [self.view addSubview:orangeFire];
+        
+        
+        //black-fire
+        ExplodeParticleView *blackFire;
+        blackFire =
+        //            viewEffect =
+        (ExplodeParticleView *)[[ExplodeParticleView alloc]initWithFrame:CGRectMake(200, 350, 100, 100)];
+        [blackFire setColor:ExplodeParticleTypeBlackFire];
+        [blackFire setBirthRate:150];
+        [blackFire setOnOffEmitting];//発火と消火の繰り返し
+        [self.view addSubview:blackFire];
+        
+        
+        
 //        KiraParticleView *water = [[KiraParticleView alloc] initWithFrame:CGRectMake(200, 300, 100, 100)
 //                                                    particleType:ParticleTypeKilled];
 //        [water setParticleType:ParticleTypeMoving];
@@ -1126,20 +1150,20 @@ int tempCount = 0;
 
 //        BeamTypeWing
         //http://jp.123rf.com/photo_7276437_abstract-spiral-galaxy-icon-isolated-on-white.html
-        UIImageView *ivWind = [[UIImageView alloc]initWithFrame:CGRectMake(200, 300, 50, 50)];
-        ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
-//        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
-        [self.view addSubview:ivWind];
-        [ivWind setAlpha:0.5f];
-        [self spinWith:ivWind times:30];
+//        UIImageView *ivWind = [[UIImageView alloc]initWithFrame:CGRectMake(200, 300, 50, 50)];
+//        ivWind.image = [UIImage imageNamed:@"wind_effect.png"];
+////        ivWind.image = [UIImage imageNamed:@"wing_swirl.png"];
+//        [self.view addSubview:ivWind];
+//        [ivWind setAlpha:0.5f];
+//        [self spinWith:ivWind times:30];
         
         
 //        BeamTypeCloth
-        UIImageView *ivCloth = [[UIImageView alloc]initWithFrame:CGRectMake(200,350, 1, 50)];
-        ivCloth.image = [UIImage imageNamed:@"sozai_maki.png"];
-        [self.view addSubview:ivCloth];
-        ivCloth.alpha = 0.3f;
-        [self extendWith:ivCloth times:30];
+//        UIImageView *ivCloth = [[UIImageView alloc]initWithFrame:CGRectMake(200,350, 1, 50)];
+//        ivCloth.image = [UIImage imageNamed:@"sozai_maki.png"];
+//        [self.view addSubview:ivCloth];
+//        ivCloth.alpha = 0.3f;
+//        [self extendWith:ivCloth times:30];
         
 //        [UIView animateWithDuration:1.0f
 //                         animations:^{
@@ -1215,6 +1239,8 @@ int tempCount = 0;
 //        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(100,100,100,100)];
 //        iv.image = nil;
 //        [self.view addSubview:iv];
+        
+        
         CGRect rect = CGRectMake(0, 0, 70, 70);
         uiv = (UIImageView *)[[UIImageView alloc]initWithFrame:rect];
 
@@ -1249,6 +1275,30 @@ int tempCount = 0;
         
 //        MyMachineClass *me = [[MyMachineClass alloc]init];
 //        [self.view addSubview:[me getImageView]];
+    }else if(counter == 10){
+        
+        
+        MyMachineClass *MyMachine = [[MyMachineClass alloc]init];//WithFrame:CGRectMake(10, 10, 60, 60)];
+//        [MyMachine getImageView].center = CGPointMake(self.view.bounds.size.width/2,
+//                                                      self.view.bounds.size.height/2);
+        [MyMachine setDamage:100 location:CGPointMake(self.view.bounds.size.width/2,
+                                                      self.view.bounds.size.height/2)];
+        
+        
+        
+        [[MyMachine getExplodeParticle] setUserInteractionEnabled: NO];//インタラクション拒否
+        [[MyMachine getExplodeParticle] setIsEmitting:YES];//消去するには数秒後にNOに
+        
+        [self.view addSubview: [MyMachine getExplodeParticle]];//表示する
+        [MyMachine getExplodeParticle].center =CGPointMake(self.view.bounds.size.width/2,
+                                                           self.view.bounds.size.height/2);
+        [self.view bringSubviewToFront: [MyMachine getExplodeParticle]];//最前面に
+        
+//        [UIView animateWithDuration:5.0f
+//                         animations:^{
+//                             [[MyMachine getExplodeParticle] setAlpha:0];
+//                         }];
+        
     }
     
 #else

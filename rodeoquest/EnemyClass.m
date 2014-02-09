@@ -81,7 +81,7 @@ int unique_id;
     }
     
     //test:
-    hitPoint = 500;
+//    hitPoint = 500;
 //    iv.alpha = 0.5;
     
     
@@ -967,7 +967,7 @@ int unique_id;
 }
 
 -(int)setDamage:(int)damage location:(CGPoint)location beamType:(int)beamType{
-    
+//    NSLog(@"damage = %d", damage);
     if(beamType != -1 && isImpact == -1){//初めて特殊攻撃を受けた場合
         NSLog(@"first impact");
         isImpact = beamType;//次から特殊攻撃判定をしないようにする
@@ -1057,9 +1057,10 @@ int unique_id;
         }
     }
     
-    //once damaed, he display damage-mode for 1sec(100count)
+    //once damaed, he display damage-mode for 1sec(100count) ,so that he doesn't get damage.
     isDamaged = 100;//countdown-start : 100count=1sec
     hitPoint -= damage;
+//    NSLog(@"hitpoint = %d", hitPoint);
     if(hitPoint <= 0){//爆発用パーティクルの初期化
         [self die];
         isDiedMoment = YES;

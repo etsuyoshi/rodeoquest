@@ -1068,36 +1068,25 @@
     //                       100);
     int heightBtn = 70;
     
-//    CoolButton *btnYes =
-//    [self
-//     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
-//     text:_titleYes
-//     hue:0.85f saturation:0.63f brightness:0.79f
-//     target:nil selector:nil tag:0];
+    CGRect rectLeftBtn =
+    CGRectMake(rectDialog.bounds.size.width/2 - intervalBtn/2 - widthBtn,
+               rectDialog.bounds.size.height - intervalBtn/2 - heightBtn,
+               widthBtn, heightBtn);
+    CGRect rectRightBtn =
+    CGRectMake(rectDialog.bounds.size.width/2 - intervalBtn/2 + widthBtn,
+               rectDialog.bounds.size.height - intervalBtn/2 - heightBtn,
+               widthBtn, heightBtn);
     
-//    CoolButton *btnNo =
-//    [self
-//     createCoolButton:CGRectMake(10, 10, widthBtn, heightBtn)
-//     text:_titleNo
-//     hue:0.535f saturation:0.553 brightness:0.535
-//     target:nil selector:nil tag:0];
     MenuButtonWithView *btnYes =
     (MenuButtonWithView *)[self createMenuButton:ButtonMenuBackTypeOrange
                  imageType:ButtonMenuImageTypeDialogYes
-                      rect:CGRectMake(10, 10, widthBtn, heightBtn)
+                      rect:rectLeftBtn
                     target:Nil selector:nil];
     MenuButtonWithView *btnNo =
     (MenuButtonWithView *)[self createMenuButton:ButtonMenuBackTypeBlue
                  imageType:ButtonMenuImageTypeDialogNo
-                      rect:CGRectMake(10, 10, widthBtn, heightBtn)
+                      rect:rectRightBtn
                     target:nil selector:nil];
-    
-    //left
-    btnYes.center = CGPointMake(rectDialog.bounds.size.width/2 - intervalBtn/2 - btnYes.bounds.size.width/2,
-                                rectDialog.bounds.size.height - intervalBtn/2 - btnYes.bounds.size.height/2);
-    //right
-    btnNo.center = CGPointMake(rectDialog.bounds.size.width/2 + intervalBtn/2 + btnNo.bounds.size.width/2,
-                               rectDialog.bounds.size.height - intervalBtn/2 - btnNo.bounds.size.height/2);
     
     //独自メソッド
 //    [btnYes handleControlEvent:(UIControlEvents)UIControlEventTouchUpInside
@@ -1112,7 +1101,7 @@
 }
 
 
-
+//影を入れたビュー：課金アイテムの個数やライフの個数を表示するビューの影付き
 +(UIView *)createShadowView:(CGRect)frame
                   viewColor:(UIColor *)colorView
                 borderColor:(UIColor *)colorBorder
