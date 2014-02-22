@@ -41,12 +41,13 @@
 #define MARGIN_UPPER_TO_RANKING 2
 
 #define W_RANKING_COMPONENT 300
-#define H_RANKING_COMPONENT 200
+//以下は画面サイズに依存するように可変にする=>global int h_ranking_component 150
+//#define H_RANKING_COMPONENT 200
 
 #define MARGIN_RANKING_TO_FORMAL_BUTTON 10
 
 #define SIZE_FORMAL_BUTTON 60
-#define INTERVAL_FORMAL_BUTTON 10
+#define INTERVAL_FORMAL_BUTTON 5
 
 #define MARGIN_FORMAL_TO_START 2
 
@@ -58,6 +59,7 @@
 #define WEAPON_BUY_COUNT 10
 
 int x_frame_center;//画面横軸中心値
+int h_ranking_component;
 NSTimer *tm;
 UITextView *tv_timer;
 UILabel *lbl_gameLife;
@@ -142,11 +144,8 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     return self;
 }
 
-
-- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
-    
-//	[self dismissModalViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:NO completion:nil];//itemSelectVCのpresentViewControllerからの場合
+-(void)gameCenterViewControllerDidFinish:(GKGameCenterViewController *)gameCenterViewController{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -350,6 +349,45 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
 
 	// Do any additional setup after loading the view.
     
+    h_ranking_component = 200;//iphone5以降、ios7の最大サイズ
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        // iPhone
+        if ([[UIScreen mainScreen] respondsToSelector: @selector(scale)]) {
+            CGSize result = [[UIScreen mainScreen] bounds].size;
+            CGFloat scale = [UIScreen mainScreen].scale;
+            result = CGSizeMake(result.width * scale, result.height * scale);
+            
+            if(result.height == 960){
+                // iPhone4 or 4S
+                NSLog(@"iphone 4, 4s retina resolution");
+                h_ranking_component = 170;
+            }
+            if(result.height == 1136){
+                // iPhone5
+                NSLog(@"iphone 5 resolution");
+                h_ranking_component = 250;
+            }
+        }
+        else{
+            // iPhone4より古い機種
+            NSLog(@"iphone standard resolution");
+            h_ranking_component = 150;
+        }
+    }
+    else
+    {
+        // iPad
+        if ([[UIScreen mainScreen] respondsToSelector: @selector(scale)]) {
+            // iPad retina
+            NSLog(@"ipad Retina resolution");
+        }
+        else{
+            // iPad,iPad2
+            NSLog(@"ipad Standard resolution");
+        }
+    }
+    if([[UIScreen mainScreen] bounds].size.height)
     
     x_frame_center = (int)[[UIScreen mainScreen] bounds].size.width/2;
     //    NSLog(@"%d" , x_frame_center);
@@ -533,7 +571,8 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     CGRect rect_ranking = CGRectMake(x_frame_center - W_RANKING_COMPONENT / 2,
                                      Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING,
                                      W_RANKING_COMPONENT,
-                                     H_RANKING_COMPONENT);
+                                     h_ranking_component);
+//                                     H_RANKING_COMPONENT);
     //    UIView *v_ranking = [CreateComponentClass createView:rect_ranking];
     UIView *v_ranking = [CreateComponentClass createViewWithFrame:rect_ranking
                                                             color:[UIColor colorWithRed:0 green:0 blue:0 alpha:ALPHA_COMPONENT]
@@ -543,7 +582,9 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     [self.view addSubview:v_ranking];
     
     UIImageView *viewOrnament =
-    [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,
+                                                  h_ranking_component,
+                                                  h_ranking_component)];//正方形にするために縦横サイズはh_ranking_componentにする
     viewOrnament.image = [UIImage imageNamed:@"frame02.png"];
     [v_ranking addSubview:viewOrnament];
     
@@ -561,7 +602,9 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
                                         (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * col,
                                         
                                         Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
-                                        H_RANKING_COMPONENT + MARGIN_RANKING_TO_FORMAL_BUTTON +
+//                                        H_RANKING_COMPONENT +
+                                        h_ranking_component +
+                                        MARGIN_RANKING_TO_FORMAL_BUTTON +
                                         (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * row,
                                         
                                         SIZE_FORMAL_BUTTON,
@@ -583,7 +626,9 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     //スタートボタン表示部分
     CGRect rect_start = CGRectMake(x_frame_center - W_BT_START/2,
                                    Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
-                                   H_RANKING_COMPONENT + MARGIN_RANKING_TO_FORMAL_BUTTON +
+//                                   H_RANKING_COMPONENT +
+                                   h_ranking_component +
+                                   MARGIN_RANKING_TO_FORMAL_BUTTON +
                                    (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count] + MARGIN_FORMAL_TO_START,
                                    W_BT_START,
                                    H_BT_START);
@@ -665,7 +710,9 @@ BOOL isStartable;//viewWillAppearで初期化：(続けて押せてしまうとl
     CGRect rect_timer =
     CGRectMake(x_frame_center - W_BT_START/2 - MARGIN_UPPER_COMPONENT*2 - H_BT_START,
                Y_MOST_UPPER_COMPONENT + H_MOST_UPPER_COMPONENT + MARGIN_UPPER_TO_RANKING +
-               H_RANKING_COMPONENT + MARGIN_RANKING_TO_FORMAL_BUTTON +
+//               H_RANKING_COMPONENT +
+               h_ranking_component +
+               MARGIN_RANKING_TO_FORMAL_BUTTON +
                (SIZE_FORMAL_BUTTON + INTERVAL_FORMAL_BUTTON) * [arrNoImage count] + MARGIN_FORMAL_TO_START,
                H_BT_START, H_BT_START);
     //startボタンの横にtimer
@@ -1668,10 +1715,15 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             
             NSLog(@"leader board");
             //learderboard
-            GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];
-            leaderboardController.leaderboardDelegate = self;
-            //    [self presentModalViewController:leaderboardController animated:YES];
-            [self presentViewController: leaderboardController animated:YES completion: nil];
+            GKGameCenterViewController *gameCenterController = [[GKGameCenterViewController alloc] init];
+//            gameCenterController.leaderboardCategory = self;
+//            [self presentModalViewController:leaderboardController animated:YES];
+//            [self presentViewController: gameCenterController animated:YES completion: nil];
+            
+            gameCenterController.viewState = GKGameCenterViewControllerStateLeaderboards;
+            gameCenterController.gameCenterDelegate = self;
+            [self presentViewController:gameCenterController animated:YES completion:nil];
+            
 
             break;
         }
@@ -2138,7 +2190,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
        [ymdMenuLastOpen isEqual:[NSNull null]] ||
        hmsMenuLastOpen == nil ||
        [hmsMenuLastOpen isEqual:[NSNull null]]){
+        
+        //最後のゲーム実行日時が記録されていない場合は以下のように初期化
         lifeGame = maxLifeGame;
+        strLifeGame = [NSString stringWithFormat:@"%d", lifeGame];
+        [attr setValueToDevice:@"lifeGame" strValue:strLifeGame];
     }else{
         //前回のsecondForLifeがカウントされていた最後の日時と時刻からの経過時間passedSecondを計測
         if([ymdMenuLastOpen isEqualToString:[self getYYYYMMDD]]){//最後に観測されたのが同日ならば
@@ -2188,7 +2244,13 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 lifeGame = MIN(lifeGame + (maxLifeGame-5), maxLifeGame);
                 secondForLife += (maxLifeGame - 5) * maxSecondForLife;
             }
+            //最大値360よりも大きくならないように
             secondForLife = MIN(secondForLife, maxSecondForLife);
+            
+            //最小値１より小さくならないように
+            secondForLife = MAX(secondForLife, 1);
+            
+            NSLog(@"initialization of secondForLife = %d , cf.max=%d", secondForLife, maxSecondForLife);
             
             //            NSLog(@"lifeGame == %d", lifeGame);
             //            NSLog(@"secondForLife == %d", secondForLife);

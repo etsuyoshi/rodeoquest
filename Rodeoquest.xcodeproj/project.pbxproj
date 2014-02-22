@@ -106,7 +106,6 @@
 		342DAB0C184CBD050004D3CB /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 344DA250184CB6A6004F71EE /* libGoogleAdMobAds.a */; };
 		342DAB0D184CBD270004D3CB /* libNendAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 344DA23D184CB638004F71EE /* libNendAd.a */; };
 		342DAB0E184CBD780004D3CB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349A7D9D184C586E006C2BD4 /* AdSupport.framework */; };
-		342DAB0F184CBDA60004D3CB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344DA256184CB728004F71EE /* StoreKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		342ECBBC17FC570500123886 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 342ECBBB17FC570500123886 /* star.png */; };
 		342ECBC517FC5AF900123886 /* DamageParticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342ECBC417FC5AF900123886 /* DamageParticleView.m */; };
 		3436369C180FDA8B005A5C01 /* FontTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3436369B180FDA8B005A5C01 /* FontTestViewController.m */; };
@@ -377,6 +376,7 @@
 		34CA558518447A9B00F9657A /* laser_r01.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CA557C18447A9B00F9657A /* laser_r01.png */; };
 		34CA558618447A9B00F9657A /* laser_r02.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CA557D18447A9B00F9657A /* laser_r02.png */; };
 		34CA558718447A9B00F9657A /* laser_r03.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CA557E18447A9B00F9657A /* laser_r03.png */; };
+		34D04CBE18A76C5900A77D01 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34D04CBD18A76C5900A77D01 /* StoreKit.framework */; };
 		34D09F541838B1B90039D78E /* chara01.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D09F531838B1B90039D78E /* chara01.png */; };
 		34D30EC2181EDB25006D05F0 /* WingBow.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D30EC1181EDB25006D05F0 /* WingBow.png */; };
 		34D55FC9183C939600788533 /* bomb012.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D55FC8183C939600788533 /* bomb012.png */; };
@@ -605,7 +605,6 @@
 		344DA24F184CB6A6004F71EE /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		344DA250184CB6A6004F71EE /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		344DA251184CB6A6004F71EE /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		344DA256184CB728004F71EE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		344DA25C184CB788004F71EE /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAdMobAds.a; path = "../../../Downloads/GoogleAdMobAdsSdkiOS-6.6.1/libGoogleAdMobAds.a"; sourceTree = "<group>"; };
 		34518646183B9F5B00DDD6D2 /* bomb026.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb026.png; sourceTree = "<group>"; };
 		3458DB231827C3E2003F1672 /* BackGroundClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackGroundClass.h; sourceTree = "<group>"; };
@@ -864,6 +863,7 @@
 		34CA557C18447A9B00F9657A /* laser_r01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser_r01.png; sourceTree = "<group>"; };
 		34CA557D18447A9B00F9657A /* laser_r02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser_r02.png; sourceTree = "<group>"; };
 		34CA557E18447A9B00F9657A /* laser_r03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser_r03.png; sourceTree = "<group>"; };
+		34D04CBD18A76C5900A77D01 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		34D09F531838B1B90039D78E /* chara01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chara01.png; sourceTree = "<group>"; };
 		34D30EC1181EDB25006D05F0 /* WingBow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WingBow.png; sourceTree = "<group>"; };
 		34D55FC8183C939600788533 /* bomb012.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb012.png; sourceTree = "<group>"; };
@@ -962,9 +962,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34D04CBE18A76C5900A77D01 /* StoreKit.framework in Frameworks */,
 				34A14982188169D3008858B0 /* CoreLocation.framework in Frameworks */,
 				3448B5061858533B004EDCA2 /* GameKit.framework in Frameworks */,
-				342DAB0F184CBDA60004D3CB /* StoreKit.framework in Frameworks */,
 				342DAB0E184CBD780004D3CB /* AdSupport.framework in Frameworks */,
 				342DAB0D184CBD270004D3CB /* libNendAd.a in Frameworks */,
 				342DAB0C184CBD050004D3CB /* libGoogleAdMobAds.a in Frameworks */,
@@ -1121,10 +1121,10 @@
 		342057D017F2B34C0084E99D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34D04CBD18A76C5900A77D01 /* StoreKit.framework */,
 				34A14981188169D2008858B0 /* CoreLocation.framework */,
 				3448B5051858533B004EDCA2 /* GameKit.framework */,
 				344DA25C184CB788004F71EE /* libGoogleAdMobAds.a */,
-				344DA256184CB728004F71EE /* StoreKit.framework */,
 				344DA246184CB685004F71EE /* AdMob */,
 				344DA23C184CB638004F71EE /* NendAd */,
 				349A7D9D184C586E006C2BD4 /* AdSupport.framework */,
@@ -1912,6 +1912,11 @@
 				TargetAttributes = {
 					342057CD17F2B34C0084E99D = {
 						DevelopmentTeam = Y7QGWHWRZ7;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

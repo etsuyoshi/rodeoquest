@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>8C71E90A-372F-4AEB-A6BC-CCE2F843627A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Rodeoquest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D96C53EE-1045-42C5-A3AE-697E4212007C</key>
+		<string>ssh://github.com/etsuyoshi/rodeoquest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Rodeoquest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D96C53EE-1045-42C5-A3AE-697E4212007C</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/etsuyoshi/rodeoquest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D96C53EE-1045-42C5-A3AE-697E4212007C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D96C53EE-1045-42C5-A3AE-697E4212007C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>rodeoquest</string>
+		</dict>
+	</array>
+</dict>
+</plist>

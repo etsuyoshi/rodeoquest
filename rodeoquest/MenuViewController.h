@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, WeaponType){
     WeaponType8,
     WeaponType9
 };
-@interface MenuViewController : UIViewController<UITextViewDelegate,GKLeaderboardViewControllerDelegate>{
+@interface MenuViewController : UIViewController<UITextViewDelegate,GKGameCenterControllerDelegate>{
     //admob
     GADBannerView *bannerView_;
 
